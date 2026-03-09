@@ -6,7 +6,6 @@
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
   - [Choosing a Linux distribution](#choosing-a-linux-distribution)
-    - [Linux Distribution Selection Matrix](#linux-distribution-selection-matrix)
 - [Linux Shell](#linux-shell)
 
 # Introducing the Linux operating system
@@ -57,8 +56,6 @@
 - openSUSE
 
 ## Choosing a Linux distribution
-
-### Linux Distribution Selection Matrix
 
 | Criteria           | Sub-Category          | Recommended Distros                | Key Rationale                                                       |
 | :----------------- | :-------------------- | :--------------------------------- | :------------------------------------------------------------------ |
