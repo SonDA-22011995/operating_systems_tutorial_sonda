@@ -5,7 +5,8 @@
 - [Linux Distributions](#linux-distributions)
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
-- [Linux Shell](#linux-shell)
+- [Bash Shell](#bash-shell)
+  - [The `echo` Command](#the-echo-command)
 
 # Introducing the Linux operating system
 
@@ -54,4 +55,15 @@
 - Linux Mint
 - openSUSE
 
-# Linux Shell
+# Bash Shell
+
+## The `echo` Command
+
+- The primary purpose of echo is to output text to the terminal.
+- **Quotes**: In Bash, single quotes are used to wrap strings
+- Working with Options
+  - `-n` (No newline): By default, echo adds a line break at the end. Using `-n` prevents this, causing the terminal prompt to appear immediately after the output.
+
+  - `-e` (Enable backslash escapes): This allows the command to interpret special characters like `\n` as an actual line break within the string.
+
+  - Combining Options: You can use options separately (e.g., `-n -e`) or combine them into a single block (e.g., `-ne` or `-en`). The order usually does not matter for most Unix commands
