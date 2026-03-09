@@ -2,6 +2,8 @@
   - [Core Concepts: OS, Kernel, and Unix](#core-concepts-os-kernel-and-unix)
   - [The "Linux" Identity: GNU + Linux](#the-linux-identity-gnu--linux)
   - [Why Linux Matters](#why-linux-matters)
+- [Linux Distributions](#linux-distributions)
+  - [What is a Linux Distribution](#what-is-a-linux-distribution)
 
 # Introducing the Linux operating system
 
@@ -30,3 +32,14 @@
 - Unix-like: It replicates the power of the original proprietary Unix systems but remains open-source and free to modify.
 
 - Multi-user/Multitasking: It inherently supports different permission levels and running multiple apps simultaneously, making it highly secure and efficient.
+
+# Linux Distributions
+
+## What is a Linux Distribution
+
+- A Linux distribution (or "distro") is an operating system built on top of the GNU/Linux core (the Kernel plus GNU software).
+  - **Customization**: Each distro adds specific software and default configurations to cater to different user groups.
+
+  - **Software Overlap**: While many tools (like web servers) are available across all distros, the way they are configured or managed may vary slightly.
+
+  - **Cost**: Most are free under open-source licenses, though some enterprise versions require a paid license for support and access.
