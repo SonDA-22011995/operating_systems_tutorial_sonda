@@ -5,7 +5,6 @@
 - [Linux Distributions](#linux-distributions)
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
-  - [Choosing a Linux distribution](#choosing-a-linux-distribution)
 - [Linux Shell](#linux-shell)
 
 # Introducing the Linux operating system
@@ -54,22 +53,5 @@
 - Ubuntu
 - Linux Mint
 - openSUSE
-
-## Choosing a Linux distribution
-
-| Criteria           | Sub-Category          | Recommended Distros                | Key Rationale                                                       |
-| :----------------- | :-------------------- | :--------------------------------- | :------------------------------------------------------------------ |
-| **Platform**       | **Server**            | Ubuntu Server, Rocky Linux, Debian | Minimalist core, essential services (SSH, HTTP), high optimization. |
-|                    | **Desktop**           | Ubuntu, Fedora, Pop!\_OS, Deepin   | Pre-loaded with GUI and user-friendly software packages.            |
-|                    | **Embedded**          | Raspbian, OpenWRT, Fedora IoT      | Highly optimized for small-form factors and limited resources.      |
-| **Infrastructure** | **Cloud / VPS**       | Amazon Linux, RHEL, Ubuntu         | Availability of optimized cloud images for AWS, Azure, and GCP.     |
-|                    | **Containers**        | **Alpine Linux**, Fedora CoreOS    | Low footprint, lightweight, and easier to scale in K8s/Docker.      |
-| **Performance**    | **High Tuning**       | Gentoo, Arch Linux                 | Allows kernel-level recompilation and granular package control.     |
-|                    | **Balanced**          | Ubuntu LTS, openSUSE Leap          | Ready-to-use performance optimizations for most applications.       |
-| **Security**       | **Desktop Isolation** | Qubes OS, Whonix, Tails            | Specialized in application isolation and anonymity.                 |
-|                    | **Pen-Testing**       | Kali Linux, Parrot Security OS     | Built-in tools for security research and penetration testing.       |
-|                    | **Server Hardening**  | RHEL, Rocky Linux, SUSE (SLE)      | Frequent stable upgrades and strictly controlled repositories.      |
-| **Reliability**    | **Conservative**      | Debian, RHEL, Rocky Linux          | Slower release cycles, extensively tested codebases.                |
-|                    | **Leading-Edge**      | Fedora, openSUSE Tumbleweed        | Rapid releases ("Rolling"), incorporating the latest upstream code. |
 
 # Linux Shell
