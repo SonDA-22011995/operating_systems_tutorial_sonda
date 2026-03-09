@@ -4,6 +4,10 @@
   - [Why Linux Matters](#why-linux-matters)
 - [Linux Distributions](#linux-distributions)
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
+  - [Common Linux distributions](#common-linux-distributions)
+  - [Choosing a Linux distribution](#choosing-a-linux-distribution)
+    - [Linux Distribution Selection Matrix](#linux-distribution-selection-matrix)
+- [Linux Shell](#linux-shell)
 
 # Introducing the Linux operating system
 
@@ -43,3 +47,32 @@
   - **Software Overlap**: While many tools (like web servers) are available across all distros, the way they are configured or managed may vary slightly.
 
   - **Cost**: Most are free under open-source licenses, though some enterprise versions require a paid license for support and access.
+
+## Common Linux distributions
+
+- Fedora, CentOS Stream, Rocky Linux and RHEL
+- Debian
+- Ubuntu
+- Linux Mint
+- openSUSE
+
+## Choosing a Linux distribution
+
+### Linux Distribution Selection Matrix
+
+| Criteria           | Sub-Category          | Recommended Distros                | Key Rationale                                                       |
+| :----------------- | :-------------------- | :--------------------------------- | :------------------------------------------------------------------ |
+| **Platform**       | **Server**            | Ubuntu Server, Rocky Linux, Debian | Minimalist core, essential services (SSH, HTTP), high optimization. |
+|                    | **Desktop**           | Ubuntu, Fedora, Pop!\_OS, Deepin   | Pre-loaded with GUI and user-friendly software packages.            |
+|                    | **Embedded**          | Raspbian, OpenWRT, Fedora IoT      | Highly optimized for small-form factors and limited resources.      |
+| **Infrastructure** | **Cloud / VPS**       | Amazon Linux, RHEL, Ubuntu         | Availability of optimized cloud images for AWS, Azure, and GCP.     |
+|                    | **Containers**        | **Alpine Linux**, Fedora CoreOS    | Low footprint, lightweight, and easier to scale in K8s/Docker.      |
+| **Performance**    | **High Tuning**       | Gentoo, Arch Linux                 | Allows kernel-level recompilation and granular package control.     |
+|                    | **Balanced**          | Ubuntu LTS, openSUSE Leap          | Ready-to-use performance optimizations for most applications.       |
+| **Security**       | **Desktop Isolation** | Qubes OS, Whonix, Tails            | Specialized in application isolation and anonymity.                 |
+|                    | **Pen-Testing**       | Kali Linux, Parrot Security OS     | Built-in tools for security research and penetration testing.       |
+|                    | **Server Hardening**  | RHEL, Rocky Linux, SUSE (SLE)      | Frequent stable upgrades and strictly controlled repositories.      |
+| **Reliability**    | **Conservative**      | Debian, RHEL, Rocky Linux          | Slower release cycles, extensively tested codebases.                |
+|                    | **Leading-Edge**      | Fedora, openSUSE Tumbleweed        | Rapid releases ("Rolling"), incorporating the latest upstream code. |
+
+# Linux Shell
