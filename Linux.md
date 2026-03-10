@@ -70,8 +70,7 @@
 
 # Introducing the Linux shell
 
-- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line
-  interface**. In the old days, this was called the **shell**
+- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line interface**. In the old days, this was called the **shell**
 - The shell is a program that has two streams: an input stream and an output stream. The input is a
   command given by the user, and the output is the result of that command, or an interpretation of it.
 - In other words, the shell is the primary interface between the user and the machine
@@ -114,6 +113,8 @@ command [-option(s)] [argument(s)]
 
 # commnad_name is name of command
 ```
+
+- The `man` command is the standard way to read comprehensive, built-in manuals for almost any program. Syntax `man [command]`
 
 ## The Linux filesystem
 
