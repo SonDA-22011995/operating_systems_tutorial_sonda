@@ -73,4 +73,10 @@ echo -e 'This is my car\nThis is my car'
 
 # This is my car
 # This is my car
+
+echo -en "Danh sách mua sắm:\n\t* Táo\n\t* Chuối\n"
+
+# Danh sách mua sắm:
+#     * Táo
+#     * Chuối
 ```
