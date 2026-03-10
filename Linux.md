@@ -6,6 +6,8 @@
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
+  - [Explaining the command structure](#explaining-the-command-structure)
+  - [The Linux filesystem](#the-linux-filesystem)
 - [Bash Shell](#bash-shell)
   - [The `echo` Command](#the-echo-command)
 
@@ -81,6 +83,19 @@ cat /etc/passwd | grep <<user>>
 ```bash
 echo $0
 ```
+
+## Explaining the command structure
+
+- In a nutshell, Unix and Linux commands have the following form:
+  - The command’s name
+  - The command’s options
+  - The command’s arguments
+
+```bash
+command [-option(s)] [argument(s)]
+```
+
+## The Linux filesystem
 
 # Bash Shell
 
