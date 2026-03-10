@@ -10,6 +10,7 @@
   - [Consulting the manual](#consulting-the-manual)
   - [The Linux filesystem](#the-linux-filesystem)
     - [Directory structure](#directory-structure)
+      - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
 - [Bash Shell](#bash-shell)
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
@@ -117,6 +118,17 @@ command [-option(s)] [argument(s)]
 - Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root
   (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout
   the filesystem.
+
+#### Exploring the Linux filesystem from the command line
+
+- Feel free to explore the filesystem yourself by using the tree command. In Fedora Linux, it is already
+  installed, but if you use Ubuntu, you will have to install it by using the following command
+
+```bash
+sudo apt install tree
+```
+
+![tree command](static/images/image_0001.png)
 
 # Bash Shell
 
