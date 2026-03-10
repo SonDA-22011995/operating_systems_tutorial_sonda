@@ -5,6 +5,7 @@
 - [Linux Distributions](#linux-distributions)
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
+- [Introducing the Linux shell](#introducing-the-linux-shell)
 - [Bash Shell](#bash-shell)
   - [The `echo` Command](#the-echo-command)
 
@@ -54,6 +55,17 @@
 - Ubuntu
 - Linux Mint
 - openSUSE
+
+# Introducing the Linux shell
+
+- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line
+  interface**. In the old days, this was called the **shell**
+- The shell is a program that has two streams: an input stream and an output stream. The input is a
+  command given by the user, and the output is the result of that command, or an interpretation of it.
+- In other words, the shell is the primary interface between the user and the machine
+- The main shell in major Linux distributions is called **Bash**, which is an acronym for Bourne Again
+  Shell, named after Steve Bourne, the original creator of the shell in UNIX
+- Alongside Bash, there are other shells available in Linux, such as **ksh**, **tcsh**, and **zsh**
 
 # Bash Shell
 
