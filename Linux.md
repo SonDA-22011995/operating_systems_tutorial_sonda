@@ -15,6 +15,7 @@
       - [Absolute Paths](#absolute-paths)
       - [Relative Paths](#relative-paths)
 - [Bash Shell](#bash-shell)
+  - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
@@ -194,6 +195,18 @@ Examples:
   - `../Documents`: Move one level up, then look for a folder named "Documents".
 
 # Bash Shell
+
+## How to execute several commands
+
+- The semicolon allows you to chain commands together so they run sequentially (one after the other).
+
+- Syntax: `command1 ; command2 ; command3`
+
+- Execution: The shell runs command1, waits for it to finish, then runs command2, and so on.
+
+- Trailing Semicolon: You can put a semicolon at the very end of the line, but it is optional and usually omitted.
+
+-Example: `echo -n "Hello " ; echo "World"`
 
 ## The `echo` command
 
