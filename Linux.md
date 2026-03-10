@@ -9,8 +9,11 @@
   - [Explaining the command structure](#explaining-the-command-structure)
   - [Consulting the manual](#consulting-the-manual)
   - [The Linux filesystem](#the-linux-filesystem)
+    - [Directory structure](#directory-structure)
 - [Bash Shell](#bash-shell)
-  - [The `echo` Command](#the-echo-command)
+  - [The `echo` command](#the-echo-command)
+  - [The `pwd` command](#the-pwd-command)
+  - [The `cd` command](#the-cd-command)
 
 # Introducing the Linux operating system
 
@@ -108,9 +111,15 @@ command [-option(s)] [argument(s)]
 
 ## The Linux filesystem
 
+### Directory structure
+
+- Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root
+  (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout
+  the filesystem.
+
 # Bash Shell
 
-## The `echo` Command
+## The `echo` command
 
 - The primary purpose of echo is to output text to the terminal.
 - **Quotes**: In Bash, single quotes are used to wrap strings
@@ -132,4 +141,58 @@ echo -en "Danh sách mua sắm:\n\t* Táo\n\t* Chuối\n"
 # Danh sách mua sắm:
 #     * Táo
 #     * Chuối
+```
+
+## The `pwd` command
+
+- `pwd` (Print Working Directory): Use this command to display the full path of your current location.
+
+```bash
+pwd
+# home/sonda
+```
+
+## The `cd` command
+
+- The `cd` command is used to move between folders. You can navigate using different types of paths:
+
+- Linux/Unix Structure: There are no drive letters (like C:). Everything starts from the root folder (`/`).
+
+- Home Directory: Represented by the tilde (`~`)` symbol, this is your user-specific folder (e.g., /home/username or /Users/username on macOS)
+
+- Navigation Methods
+
+| Command                | Result                                                                        |
+| :--------------------- | :---------------------------------------------------------------------------- |
+| **`pwd`**              | **Print Working Directory**: Displays the full path of the current directory. |
+| **`cd [folder]`**      | Moves into a subfolder of your current directory (e.g., `cd Desktop`).        |
+| **`cd /`**             | Moves to the **Root** directory (the base of the entire system).              |
+| **`cd ..`**            | Moves up one level to the **Parent** directory.                               |
+| **`cd ../..`**         | Moves up two levels.                                                          |
+| **`cd ~`** or **`cd`** | Returns you instantly to your **Home** directory.                             |
+| **`cd -`**             | Moves back to the previous directory you were in.                             |
+
+- Pro-Tips for Efficiency
+  - Tab Autocomplete: Type the first few letters of a folder name and press Tab. The shell will automatically complete the name for you, saving time and preventing typos.
+
+- Absolute path
+
+```bash
+[me@linuxbox usr]$ pwd
+/# usr
+
+[me@linuxbox usr]$ cd /usr/bin
+[me@linuxbox bin]$ pwd
+# /usr/bin
+```
+
+- Relative path
+
+```bash
+[me@linuxbox usr]$ pwd
+/# usr
+
+[me@linuxbox usr]$ cd ./bin
+[me@linuxbox bin]$ pwd
+# /usr/bin
 ```
