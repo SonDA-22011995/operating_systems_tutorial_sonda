@@ -7,6 +7,7 @@
   - [Common Linux distributions](#common-linux-distributions)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [Explaining the command structure](#explaining-the-command-structure)
+  - [Consulting the manual](#consulting-the-manual)
   - [The Linux filesystem](#the-linux-filesystem)
 - [Bash Shell](#bash-shell)
   - [The `echo` Command](#the-echo-command)
@@ -93,6 +94,16 @@ echo $0
 
 ```bash
 command [-option(s)] [argument(s)]
+```
+
+## Consulting the manual
+
+- Almost all commands in Linux have a `--help` option. You can use this for quick reference.
+
+```bash
+ <<commnad_name>> --help
+
+# commnad_name is name of command
 ```
 
 ## The Linux filesystem
