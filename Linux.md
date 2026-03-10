@@ -233,3 +233,15 @@ ls -la
 # drwxr-xr-x  2 user user  4096 Mar 10 10:00 Desktop
 # -rw-r--r--  1 user user   220 Mar 10 09:00 .bashrc
 ```
+
+- Linux `ls -l` Output Breakdown
+
+| Component                   | Example        | Description                                                                                                                                                                                                |
+| :-------------------------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **File Type & Permissions** | `drwxr-xr-x`   | The first character indicates the type (`d` for directory, `-` for regular file). The next 9 characters represent permissions for **Owner**, **Group**, and **Others** ($r$=read, $w$=write, $x$=execute). |
+| **Hard Links**              | `2`            | The number of hard links pointing to the file or directory.                                                                                                                                                |
+| **Owner**                   | `user`         | The username of the account that owns the file.                                                                                                                                                            |
+| **Group**                   | `user`         | The name of the group that has specific permissions for this file.                                                                                                                                         |
+| **Size**                    | `4096`         | The file size in bytes. (Tip: Use `ls -lh` to see this in "human-readable" format like KB or MB).                                                                                                          |
+| **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
+| **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
