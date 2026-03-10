@@ -14,6 +14,7 @@
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
+  - [The `ls` Command](#the-ls-command)
 
 # Introducing the Linux operating system
 
@@ -175,7 +176,7 @@ pwd
 - Pro-Tips for Efficiency
   - Tab Autocomplete: Type the first few letters of a folder name and press Tab. The shell will automatically complete the name for you, saving time and preventing typos.
 
-- Absolute path
+- Example absolute path
 
 ```bash
 [me@linuxbox usr]$ pwd
@@ -186,7 +187,7 @@ pwd
 # /usr/bin
 ```
 
-- Relative path
+- Example relative path
 
 ```bash
 [me@linuxbox usr]$ pwd
@@ -195,4 +196,40 @@ pwd
 [me@linuxbox usr]$ cd ./bin
 [me@linuxbox bin]$ pwd
 # /usr/bin
+```
+
+## The `ls` Command
+
+- The `ls` command shows the contents of your current working directory.
+  - Context: By default, it operates on your Present Working Directory (PWD), but it can be pointed at any path.
+
+- Command Options (Flags)
+
+| Command                | Description                                                         |
+| :--------------------- | :------------------------------------------------------------------ |
+| **`ls`**               | List files/folders in the current directory.                        |
+| **`ls -a`**            | List **all** files (including hidden files starting with `.`).      |
+| **`ls -t`**            | Sort contents by **time** (newest first).                           |
+| **`ls -r`**            | **Reverse** the sorting order.                                      |
+| **`ls -rt`**           | Sort by time in reverse (useful to see newest files at the bottom). |
+| **`ls [path]`**        | List contents of a **specific folder** (e.g., `ls /etc`).           |
+| **`ls --color=never`** | Disable colorized output.                                           |
+| **`ls -l`**            | Display results in long format                                      |
+
+- Directory Arguments
+  - You can provide a specific path as an argument to see what is inside a different folder without leaving your current location.
+
+```bash
+# will list everything in the root directory while you stay in your home folder
+
+ls ~
+```
+
+- Combined Flags: `ls -la` is a very common shortcut to see all files in a detailed list format.
+
+```bash
+ls -la
+
+# drwxr-xr-x  2 user user  4096 Mar 10 10:00 Desktop
+# -rw-r--r--  1 user user   220 Mar 10 09:00 .bashrc
 ```
