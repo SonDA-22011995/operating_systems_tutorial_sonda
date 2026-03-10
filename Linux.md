@@ -115,9 +115,30 @@ command [-option(s)] [argument(s)]
 
 ### Directory structure
 
-- Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root
-  (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout
-  the filesystem.
+- Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout the filesystem.
+- The following are the directories that exist on almost all versions of Linux
+  - `/`: Root directory. The root for all other directories.
+  - `/bin`: Essential command binaries. The place where binary programs are stored.
+  - `/boot`: Static files of the boot loader. The place where the kernel bootloader, and initramfs are stored
+  - `/dev`: Device files. Nodes to the device equipment, a kernel device list.
+  - `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
+  - `/home`: user Home directory. The place where the user’s files are stored.
+  - `/lib`: Essential shared libraries and kernel modules. Shared libraries are similar to Dynamic Link Library (DLL) files in Windows.
+  - `/media`: Mount point for removable media. For external devices and USB external media.
+  - `/mnt`: Mount point for mounting a filesystem temporarily. Used for legacy systems.
+  - `/opt`: Add-on application software packages. The place where optional software is installed.
+  - `/proc`: Virtual filesystem managed by the kernel. a special directory structure that contains files essential for the system.
+  - `/sbin`: Essential system binaries. Vital programs for the system’s operation.
+  - `/srv`: Data for services provided by this system.
+  - `/tmp`: Temporary files.
+  - `/usr`: Secondary hierarchy. The largest directory in Linux that contains support files for regular system users
+  - `/usr/bin` – system-executable files
+  - `/usr/lib` – shared libraries from `/usr/bin`
+  - `/usr/local` – source compiled programs not included in the distribution
+  - `/usr/sbin` – specific system administration programs
+  - `/usr/share` – data shared by the programs in /usr/bin such as config files, icons, wallpapers or sound files
+  - `/usr/share/doc` – documentation for the system-wide files
+  - `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others; `/var/log` – contains log files that register system activity
 
 #### Exploring the Linux filesystem from the command line
 
@@ -128,7 +149,15 @@ command [-option(s)] [argument(s)]
 sudo apt install tree
 ```
 
+- You can use the ls command to list the contents of directories, but tree offers different graphics. The following image shows you the differences between the outputs
+
 ![tree command](static/images/image_0001.png)
+
+- In our example, the command will go down one level, starting from the root directory, represented by the forward slash as an argument
+
+```bash
+tree -L 1
+```
 
 # Bash Shell
 
