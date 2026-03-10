@@ -67,6 +67,21 @@
   Shell, named after Steve Bourne, the original creator of the shell in UNIX
 - Alongside Bash, there are other shells available in Linux, such as **ksh**, **tcsh**, and **zsh**
 
+- One shell can be assigned to each user. Users on the same system can use different shells. One way
+  to check the default shell is by accessing the command
+
+```bash
+cat /etc/passwd | grep <<user>>
+
+# <<user>> is user account in linux system
+```
+
+- An easier way to see the current shell is by running the following command
+
+```bash
+echo $0
+```
+
 # Bash Shell
 
 ## The `echo` Command
