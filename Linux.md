@@ -11,6 +11,9 @@
   - [The Linux filesystem](#the-linux-filesystem)
     - [Directory structure](#directory-structure)
       - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
+    - [Understanding file paths](#understanding-file-paths)
+      - [Absolute Paths](#absolute-paths)
+      - [Relative Paths](#relative-paths)
 - [Bash Shell](#bash-shell)
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
@@ -158,6 +161,37 @@ sudo apt install tree
 ```bash
 tree -L 1
 ```
+
+### Understanding file paths
+
+#### Absolute Paths
+
+- Absolute paths define the complete address of a file or folder starting from the root of the system.
+  - **Starting Point**: They always start with a forward slash (/), representing the root directory.
+
+  - **Consistency**: They work from anywhere in the system, regardless of your current working directory.
+
+  - **Special Shortcut**: The tilde (`~`) is also treated as an absolute path because the shell (Bash) automatically expands it to the full path of your home directory (e.g., /home/username) before running the command.
+
+Examples:
+
+- `/home/giannis/Desktop`
+- `~/Desktop`
+- `/etc/network`
+
+#### Relative Paths
+
+- Relative paths define a location relative to your Current Working Directory (PWD).
+  - Starting Point: They do not start with a slash. They start with a folder name or a special dot notation.
+
+  - Dependency: Their success depends entirely on where you are currently "standing" in the terminal.
+
+- Common Notations:
+  - `Desktop/` or `./Desktop/`: Look for a folder named "Desktop" inside the current folder.
+
+  - `../`: Move one level up to the parent directory.
+
+  - `../Documents`: Move one level up, then look for a folder named "Documents".
 
 # Bash Shell
 
