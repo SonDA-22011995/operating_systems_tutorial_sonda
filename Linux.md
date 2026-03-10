@@ -67,3 +67,10 @@
   - `-e` (Enable backslash escapes): This allows the command to interpret special characters like `\n` as an actual line break within the string.
 
   - Combining Options: You can use options separately (e.g., `-n -e`) or combine them into a single block (e.g., `-ne` or `-en`). The order usually does not matter for most Unix commands
+
+```
+echo -e 'This is my car\nThis is my car'
+
+# This is my car
+# This is my car
+```
