@@ -19,6 +19,8 @@
 - [Linux Software Management](#linux-software-management)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
+  - [Understanding sudo](#understanding-sudo)
+    - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
@@ -231,6 +233,31 @@ Examples:
     - It has unrestricted access to every file and setting.
 
     - It can add/remove users, install software, and modify system configurations.
+
+## Understanding sudo
+
+### Elevating privileges: `sudo`
+
+- The root user is the default superuser account in Linux, and it has the ability to do anything on a
+  system. Ideally, acting as root on a system should generally be avoided due to safety and security
+  reasons.
+- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
+  privilege
+  - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
+
+  - **Authentication**: When using sudo, the system asks for your user password, not the root password.
+
+  - **Configuration**: Not all users can use sudo. During installation (Ubuntu/CentOS), a user must be designated as an "administrator" or added to the "sudoers" list to have this ability.
+
+- Syntax `sudo command [-option(s)] [argument(s)]`
+
+```bash
+ls /root
+# ls: cannot open directory '/root': Permission denied
+
+sudo ls /root
+# snap
+```
 
 # Bash Shell
 
