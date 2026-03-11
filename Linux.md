@@ -15,14 +15,16 @@
       - [Absolute Paths](#absolute-paths)
       - [Relative Paths](#relative-paths)
     - [Symbolic Links](#symbolic-links)
+    - [Hard Links](#hard-links)
+- [Linux Software Management](#linux-software-management)
+- [Managing Users and Groups](#managing-users-and-groups)
+  - [Managing users](#managing-users)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
   - [The `ls` Command](#the-ls-command)
-- [Linux Software Management](#linux-software-management)
-- [Managing Users and Groups](#managing-users-and-groups)
 
 # Introducing the Linux operating system
 
@@ -206,6 +208,30 @@ Examples:
   - Suppose we install version 2.6 of “foo,” which has the filename “foo-2.6,” and then create a symbolic link
     simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
 
+### Hard Links
+
+# Linux Software Management
+
+# Managing Users and Groups
+
+## Managing users
+
+- In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
+  user or user account is identified by a name and a unique identifier, known as a UID.
+
+- Linux categorizes users based on their role and level of access to the system:
+  - **System Accounts**: These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
+
+  - **Regular Users**: These are standard accounts created for people.
+    - They have a dedicated home directory for personal files.
+
+    - They are restricted from accessing other users' files or performing administrative tasks by default.
+
+  - **Superuser** (Root): This is the most powerful account on the system.
+    - It has unrestricted access to every file and setting.
+
+    - It can add/remove users, install software, and modify system configurations.
+
 # Bash Shell
 
 ## How to execute several commands
@@ -345,7 +371,3 @@ ls -la
 | **Size**                    | `4096`         | The file size in bytes. (Tip: Use `ls -lh` to see this in "human-readable" format like KB or MB).                                                                                                          |
 | **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
 | **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
-
-# Linux Software Management
-
-# Managing Users and Groups
