@@ -242,7 +242,7 @@ Examples:
   system. Ideally, acting as root on a system should generally be avoided due to safety and security
   reasons.
 - With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
-  privilege
+  privilege.
   - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
 
   - **Authentication**: When using sudo, the system asks for your user password, not the root password.
@@ -258,6 +258,22 @@ ls /root
 sudo ls /root
 # snap
 ```
+
+- Built-in command can't run with sudo command
+
+```bash
+sudo cd vandtt
+# sudo: "cd" is a shell built-in command, it cannot be run directly.
+```
+
+- The "Nuclear" Warning: Risk of High Privileges
+  - The most critical takeaway is that sudo removes the system's "safety rails." To demonstrate, the instructor runs a destructive command: `sudo rm -rf /etc`
+
+  - The Result: This command deletes the /etc folder, which contains essential system configuration files.
+
+  - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
+
+  - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
 
 # Bash Shell
 
