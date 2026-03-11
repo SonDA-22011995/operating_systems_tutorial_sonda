@@ -16,11 +16,11 @@
       - [Relative Paths](#relative-paths)
     - [Symbolic Links](#symbolic-links)
     - [Hard Links](#hard-links)
-- [Linux Software Management](#linux-software-management)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
     - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
+- [Linux Software Management](#linux-software-management)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
@@ -212,8 +212,6 @@ Examples:
 
 ### Hard Links
 
-# Linux Software Management
-
 # Managing Users and Groups
 
 ## Managing users
@@ -274,6 +272,8 @@ sudo cd vandtt
   - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
 
   - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
+
+# Linux Software Management
 
 # Bash Shell
 
