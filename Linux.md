@@ -29,6 +29,7 @@
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
+  - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
@@ -347,6 +348,18 @@ sudo cd vandtt
 - Remove: `sudo dnf remove <package_name>`
 
 - Legacy Support: The older command `yum` still works as an alias for `dnf` for those familiar with older versions of CentOS.
+
+## Enabling Additional Repositories
+
+- Additional repositories are third-party or non-standard software sources added to a Linux system to install specific applications not available in default repositories
+- Example on CentOS
+  - Install EPEL: `sudo dnf install epel-release` (This adds new "servers" or sources for software).
+
+  - Enable CodeReady Builder (CRB): Many EPEL packages require the CRB power tools. This is enabled via `sudo crb enable`.
+
+  - Refresh: Run `sudo dnf update` again to sync the newly added lists.
+
+  - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
 
 # Bash Shell
 
