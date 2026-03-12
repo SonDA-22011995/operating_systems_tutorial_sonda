@@ -27,6 +27,8 @@
     - [Managing Packages (Install/Remove)](#managing-packages-installremove)
     - [`apt` vs. `apt-get`](#apt-vs-apt-get)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
+    - [Updating the System](#updating-the-system)
+    - [Managing Software (Install/Remove)](#managing-software-installremove)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
@@ -327,6 +329,24 @@ sudo cd vandtt
 - `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
 
 ## The RPM packages anatomy
+
+### Updating the System
+
+- In CentOS, keeping the system current is straightforward because the package manager automatically handles list refreshes.
+
+- Commands: `sudo dnf upgrade` or `sudo dnf update`.
+
+- Key Difference from Ubuntu: Unlike `apt`, you do not need a separate "update" command to refresh package lists; DNF does this automatically before upgrading.
+
+- Rebooting: If the kernel is updated, a system restart is strongly recommended to apply the changes.
+
+### Managing Software (Install/Remove)
+
+- Install: `sudo dnf install <package_name>`
+
+- Remove: `sudo dnf remove <package_name>`
+
+- Legacy Support: The older command `yum` still works as an alias for `dnf` for those familiar with older versions of CentOS.
 
 # Bash Shell
 
