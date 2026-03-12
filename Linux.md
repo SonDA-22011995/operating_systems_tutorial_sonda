@@ -39,6 +39,7 @@
   - [Basic file operations](#basic-file-operations)
     - [The `touch` command](#the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
+    - [The `mv` Command](#the-mv-command)
 
 # Introducing the Linux operating system
 
@@ -539,3 +540,33 @@ mkdir ready
 
 - Distinguishing Files vs. Folders: `*` In a standard terminal, they might look identical in plain text.
   - Colors: You can use `ls --color` to visually differentiate them (folders are typically blue, while files are white/grey). Most modern terminals support this by default.
+
+### The `mv` Command
+
+- The `mv` command is versatile because it handles both moving and renaming in a single utility.
+
+- Moving a File: To move a file into a folder, use `mv [filename] [destination_folder]`.
+
+- Example:
+
+```bash
+mv ann.txt ready/
+```
+
+- Renaming a File: To rename a file, "move" it to a new name in the same location.
+
+- Example:
+
+```bash
+mv max.txt maximilian.txt
+```
+
+- Move and Rename at Once: You can change both the location and the name simultaneously.
+
+Example:
+
+```bash
+mv maximilian.txt ready/max.txt
+```
+
+- Pro Tip: Instead of using `cd` to check if a move worked, use `ls [folder_name]` to peek into a directory without leaving your current one.
