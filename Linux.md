@@ -40,6 +40,7 @@
     - [The `touch` command](#the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
     - [The `mv` Command](#the-mv-command)
+    - [The `cp` Command](#the-cp-command)
 
 # Introducing the Linux operating system
 
@@ -570,3 +571,32 @@ mv maximilian.txt ready/max.txt
 ```
 
 - Pro Tip: Instead of using `cd` to check if a move worked, use `ls [folder_name]` to peek into a directory without leaving your current one.
+
+### The `cp` Command
+
+- The cp command creates duplicates of files or directories.
+
+- Copying a File: Use `cp [source] [destination]`.
+
+- Example:
+
+```bash
+cp laura.txt laura_backup.txt
+cp laura.txt ./ready # cp laura.txt ready
+```
+
+- Copying to a Folder: You can copy a file into a different directory while optionally giving it a new name.
+
+- Example:
+
+```bash
+cp laura.txt ready/lauren.txt
+```
+
+- Copying Directories (-R): By default, cp cannot copy folders. To copy a folder and all its contents, you must use the recursive flag: -R.
+
+- Example:
+
+```bash
+cp -R ready ready_backup
+```
