@@ -8,14 +8,14 @@
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [Explaining the command structure](#explaining-the-command-structure)
   - [Consulting the manual](#consulting-the-manual)
-  - [The Linux filesystem](#the-linux-filesystem)
-    - [Directory structure](#directory-structure)
-      - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
-    - [Understanding file paths](#understanding-file-paths)
-      - [Absolute Paths](#absolute-paths)
-      - [Relative Paths](#relative-paths)
-    - [Symbolic Links](#symbolic-links)
-    - [Hard Links](#hard-links)
+- [The Linux filesystem](#the-linux-filesystem)
+  - [Directory structure](#directory-structure)
+    - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
+  - [Understanding file paths](#understanding-file-paths)
+    - [Absolute Paths](#absolute-paths)
+    - [Relative Paths](#relative-paths)
+  - [Symbolic Links](#symbolic-links)
+  - [Hard Links](#hard-links)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -132,9 +132,9 @@ command [-option(s)] [argument(s)]
 
 - The `man` command is the standard way to read comprehensive, built-in manuals for almost any program. Syntax `man [command]`
 
-## The Linux filesystem
+# The Linux filesystem
 
-### Directory structure
+## Directory structure
 
 - Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout the filesystem.
 - The following are the directories that exist on almost all versions of Linux
@@ -161,7 +161,7 @@ command [-option(s)] [argument(s)]
   - `/usr/share/doc` – documentation for the system-wide files
   - `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others; `/var/log` – contains log files that register system activity
 
-#### Exploring the Linux filesystem from the command line
+### Exploring the Linux filesystem from the command line
 
 - Feel free to explore the filesystem yourself by using the tree command. In Fedora Linux, it is already
   installed, but if you use Ubuntu, you will have to install it by using the following command
@@ -180,9 +180,9 @@ sudo apt install tree
 tree -L 1
 ```
 
-### Understanding file paths
+## Understanding file paths
 
-#### Absolute Paths
+### Absolute Paths
 
 - Absolute paths define the complete address of a file or folder starting from the root of the system.
   - **Starting Point**: They always start with a forward slash (/), representing the root directory.
@@ -197,7 +197,7 @@ Examples:
 - `~/Desktop`
 - `/etc/network`
 
-#### Relative Paths
+### Relative Paths
 
 - Relative paths define a location relative to your Current Working Directory (PWD).
   - Starting Point: They do not start with a slash. They start with a folder name or a special dot notation.
@@ -211,7 +211,7 @@ Examples:
 
   - `../Documents`: Move one level up, then look for a folder named "Documents".
 
-### Symbolic Links
+## Symbolic Links
 
 - a symbolic link (also known as a soft link or symlink)
 - The command used to create a symlink is `ln -s`. The syntax is: `ln -s [target_path] [link_name]`
@@ -219,7 +219,7 @@ Examples:
   - Suppose we install version 2.6 of “foo,” which has the filename “foo-2.6,” and then create a symbolic link
     simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
 
-### Hard Links
+## Hard Links
 
 # Managing Users and Groups
 
