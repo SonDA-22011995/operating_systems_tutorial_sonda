@@ -22,6 +22,11 @@
     - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
+    - [Updating the Package List](#updating-the-package-list)
+  - [Upgrading Software](#upgrading-software)
+    - [Managing Packages (Install/Remove)](#managing-packages-installremove)
+    - [`apt` vs. `apt-get`](#apt-vs-apt-get)
+  - [The RPM packages anatomy](#the-rpm-packages-anatomy)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
@@ -282,6 +287,46 @@ sudo cd vandtt
   - Fedora (or Rocky Linux and AlmaLinux) uses rpm packages, as it is based on RHEL
 
 ## The DEB package’s anatomy
+
+### Updating the Package List
+
+- Before installing or upgrading software, you must synchronize your local database with the online repositories.
+
+- Command: `sudo apt update`
+
+- Purpose: This does not install new software. It only refreshes the list of available packages and their versions.
+
+- Note: This requires sudo (root privileges) because it accesses protected system files.
+
+## Upgrading Software
+
+- Once the list is updated, you can move to the actual upgrade process.
+- Command
+  - `sudo apt upgrade`: Performs a "small" upgrade. It updates existing packages and, in the apt version, will install new dependencies if required.
+
+  - `sudo apt full-upgrade` (or dist-upgrade): Performs a "large" upgrade. It can install new packages or remove existing ones if they conflict with the upgrade. It is more thorough but carries a slightly higher risk of changing system behavior.
+
+- Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
+
+### Managing Packages (Install/Remove)
+
+- The lecture demonstrates how to add or take away specific tools:
+
+- Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
+
+- Remove: `sudo apt remove <package_name>`.
+
+- Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
+
+### `apt` vs. `apt-get`
+
+- The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
+
+- `apt upgrade` will install new dependencies if needed.
+
+- `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
+
+## The RPM packages anatomy
 
 # Bash Shell
 
