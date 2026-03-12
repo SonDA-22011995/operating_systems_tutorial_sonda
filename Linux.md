@@ -41,6 +41,8 @@
     - [The `mkdir` Command](#the-mkdir-command)
     - [The `mv` Command](#the-mv-command)
     - [The `cp` Command](#the-cp-command)
+    - [The `rm` Command](#the-rm-command)
+    - [The `rmdir` Command](#the-rmdir-command)
 
 # Introducing the Linux operating system
 
@@ -600,3 +602,37 @@ cp laura.txt ready/lauren.txt
 ```bash
 cp -R ready ready_backup
 ```
+
+### The `rm` Command
+
+- The `rm` command is the standard way to delete files, but it comes with a major warning.
+
+- Deleting Files: Use `rm [filename]` or list multiple files to delete them at once.
+
+- Example:
+
+```bash
+rm ann.txt eva.txt
+```
+
+- ⚠️ The Danger Zone: Unlike clicking "Delete" in a graphic interface, rm does not send files to a Trash or Bin. They are permanently deleted immediately.
+
+- Deleting Directories (-r): To delete a folder and everything inside it, you must use the recursive flag -r (or -R).
+
+- Example:
+
+```bash
+rm -r ready_backup/
+```
+
+### The `rmdir` Command
+
+- Because rm -r is so powerful and risky, rmdir serves as a "safety first" alternative.
+
+- Usage: `rmdir [folder_name]`
+
+- The Safety Catch: This command only works if the directory is completely empty. If there is even one file inside, Bash will block the command and give you an error.
+
+- Hidden Files: A folder might look empty in your file explorer but still fail to delete via rmdir. This is often due to hidden files (files starting with a dot, like .DS_Store or .thumbs.db). To see these, use ls -a.
+
+- You must delete the hidden files first before rmdir will work.
