@@ -23,7 +23,7 @@
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
-  - [Upgrading Software](#upgrading-software)
+    - [Upgrading Software](#upgrading-software)
     - [Managing Packages (Install/Remove)](#managing-packages-installremove)
     - [`apt` vs. `apt-get`](#apt-vs-apt-get)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
@@ -301,7 +301,7 @@ sudo cd vandtt
 
 - Note: This requires sudo (root privileges) because it accesses protected system files.
 
-## Upgrading Software
+### Upgrading Software
 
 - Once the list is updated, you can move to the actual upgrade process.
 - Command
