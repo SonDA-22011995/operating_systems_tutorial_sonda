@@ -38,6 +38,7 @@
   - [The `ls` Command](#the-ls-command)
   - [Basic file operations](#basic-file-operations)
     - [The `touch` command](#the-touch-command)
+    - [The `mkdir` Command](#the-mkdir-command)
 
 # Introducing the Linux operating system
 
@@ -522,3 +523,19 @@ touch file1 file2
   - If the file does not exist, touch creates it.
 
   - If the file already exists, touch updates its "last modified" timestamp to the current time without changing the file's content.
+
+### The `mkdir` Command
+
+- This command stands for "make directory."
+
+- Purpose: To create a new folder (directory).
+
+- Example:
+
+```bash
+# creates a folder named "ready" in the current location.
+mkdir ready
+```
+
+- Distinguishing Files vs. Folders: `*` In a standard terminal, they might look identical in plain text.
+  - Colors: You can use `ls --color` to visually differentiate them (folders are typically blue, while files are white/grey). Most modern terminals support this by default.
