@@ -36,6 +36,8 @@
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
   - [The `ls` Command](#the-ls-command)
+  - [Basic file operations](#basic-file-operations)
+    - [The `touch` command](#the-touch-command)
 
 # Introducing the Linux operating system
 
@@ -500,3 +502,23 @@ ls -la
 | **Size**                    | `4096`         | The file size in bytes. (Tip: Use `ls -lh` to see this in "human-readable" format like KB or MB).                                                                                                          |
 | **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
 | **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
+
+## Basic file operations
+
+### The `touch` command
+
+- While commonly used to create new files, its primary technical purpose is different.
+
+- Primary Use: To create an empty file (or multiple files) quickly.
+
+- Example:
+
+```bash
+# creates two empty files simultaneously.
+touch file1 file2
+```
+
+- Technical Function: It modifies the timestamp of a file.
+  - If the file does not exist, touch creates it.
+
+  - If the file already exists, touch updates its "last modified" timestamp to the current time without changing the file's content.
