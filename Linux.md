@@ -21,6 +21,7 @@
   - [Understanding sudo](#understanding-sudo)
     - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Linux Software Management](#linux-software-management)
+  - [The DEB package’s anatomy](#the-deb-packages-anatomy)
 - [Bash Shell](#bash-shell)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
@@ -274,6 +275,13 @@ sudo cd vandtt
   - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
 
 # Linux Software Management
+
+- In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
+- Each Linux distribution comes with several official repositories, but on top of those, you can add some new ones
+  - Ubuntu uses deb packages, as it is based on Debian
+  - Fedora (or Rocky Linux and AlmaLinux) uses rpm packages, as it is based on RHEL
+
+## The DEB package’s anatomy
 
 # Bash Shell
 
