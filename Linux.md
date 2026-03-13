@@ -19,6 +19,7 @@
   - [Wildcards](#wildcards)
     - [Wildcards](#wildcards-1)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
+    - [Pattern Examples](#pattern-examples)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -268,6 +269,20 @@ ls *[[:digit:]]
 # Xóa các file có tên chỉ gồm các ký tự chữ và số
 rm [[:alnum:]]*
 ```
+
+### Pattern Examples
+
+| Pattern                  | Matches                                                | Meaning                                                                 |
+| :----------------------- | :----------------------------------------------------- | :---------------------------------------------------------------------- |
+| `*`                      | All files                                              | Khớp với tất cả các file trong thư mục hiện tại.                        |
+| `g*`                     | Any file beginning with **g**                          | Các file bắt đầu bằng chữ `g` (vd: `gmail`, `get_data.py`).             |
+| `b*.txt`                 | Any file beginning with **b** and ending with **.txt** | File bắt đầu bằng `b`, sau đó là gì cũng được, kết thúc là `.txt`.      |
+| `Data???`                | **Data** followed by exactly **3 characters**          | Khớp với `Data123`, `DataOld`, nhưng không khớp với `DataNewer`.        |
+| `[abc]*`                 | Beginning with **a, b, or c**                          | Các file bắt đầu bằng một trong ba chữ cái `a`, `b`, hoặc `c`.          |
+| `BACKUP.[0-9][0-9][0-9]` | **BACKUP.** followed by **3 numerals**                 | Khớp với các file backup có số thứ tự (vd: `BACKUP.001`, `BACKUP.999`). |
+| `[[:upper:]]*`           | Beginning with an **uppercase letter**                 | Tất cả các file bắt đầu bằng chữ cái viết hoa.                          |
+| `[![:digit:]]*`          | **Not** beginning with a **numeral**                   | Tất cả các file không bắt đầu bằng con số.                              |
+| `*[[:lower:]123]`        | Ending with **lowercase** or **1, 2, 3**               | File kết thúc bằng một chữ cái thường hoặc một trong các số 1, 2, 3.    |
 
 # Managing Users and Groups
 
