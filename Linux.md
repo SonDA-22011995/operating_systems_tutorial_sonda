@@ -20,6 +20,7 @@
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
     - [The Asterisk (`*`) Wildcard](#the-asterisk--wildcard)
     - [The Single Character Wildcard (?)](#the-single-character-wildcard-)
+    - [Square Brackets (\[\]) and Ranges](#square-brackets--and-ranges)
     - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
@@ -276,6 +277,18 @@ Examples:
 - Use Case: If you have files like `IMG_1.jpg` and `IMG_A.jpg`, using `IMG_?.jpg` will find both.
 
 - Example from lecture: `IMG_?6677.*` matches files where only one character varies between the prefix and the numbers.
+
+### Square Brackets ([]) and Ranges
+
+- Square brackets allow you to define a set or a range of characters for a single position in the filename.
+
+- Numeric Ranges: `[0-9]` matches any single digit.
+
+- Alphabetic Ranges: `[a-z]` matches any single lowercase letter.
+
+- Manual Sets: `[abc]` matches exactly one character, but only if it is an 'a', 'b', or 'c'.
+
+- Important Note: In standard globbing, if you want to match three digits, you must repeat the brackets three times (e.g., `[0-9][0-9][0-9]`). There is no "repeat" multiplier in basic globbing.
 
 ### Wildcards
 
