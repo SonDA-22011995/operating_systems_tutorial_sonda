@@ -9,6 +9,7 @@
   - [Explaining the command structure](#explaining-the-command-structure)
   - [Consulting the manual](#consulting-the-manual)
 - [The Linux filesystem](#the-linux-filesystem)
+  - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
   - [Understanding file paths](#understanding-file-paths)
@@ -16,8 +17,8 @@
     - [Relative Paths](#relative-paths)
   - [Symbolic Links](#symbolic-links)
   - [Hard Links](#hard-links)
-  - [Wildcards](#wildcards)
-    - [Wildcards](#wildcards-1)
+  - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
+    - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
 - [Managing Users and Groups](#managing-users-and-groups)
@@ -145,6 +146,15 @@ command [-option(s)] [argument(s)]
 
 # The Linux filesystem
 
+## Important Facts About Filenames
+
+- On Linux systems, files are named in a manner similar to that of other systems such as Windows, but there are some important differences.
+- Filenames that begin with a period character are hidden. This only means that ls will not list them unless you say `ls -a`. When your account was created, several hidden files were placed in your home directory to configure things for your account. In Chapter 11 we will take a closer look at some of these files to see how you can customize your environment. In addition, some applications place their configuration and settings files in your home directory as hidden files.
+- Filenames and commands in Linux, like Unix, are case sensitive. The filenames `File1` and `file1` refer to different files.
+- Though Linux supports long filenames that may contain embedded spaces and punctuation characters, limit the punctuation characters in the names of files you create to period, dash, and underscore. Most important, do not
+  embed spaces in filenames. If you want to represent spaces between words in a filename, use underscore characters. You will thank yourself later.
+- Linux has no concept of a “file extension” like some other operating systems. You may name files any way you like. The contents or purpose of a file is determined by other means. Although Unix-like operating systems don’t use file extensions to determine the contents/purpose of files, many application programs do.
+
 ## Directory structure
 
 - Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout the filesystem.
@@ -232,7 +242,12 @@ Examples:
 
 ## Hard Links
 
-## Wildcards
+## Wildcards (File name expansion - Globbing)
+
+- Globbing is the process where Bash rewrites or expands a command before it is executed. It uses wildcard characters to search for files that match a specific pattern.
+  - The Power of Bash: Instead of moving 100 files manually, a single command with a wildcard can handle them all instantly.
+
+  - Pre-execution: The shell expands the pattern into a list of filenames before the actual command (like mv or cp) ever sees it
 
 ### Wildcards
 
