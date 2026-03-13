@@ -16,6 +16,9 @@
     - [Relative Paths](#relative-paths)
   - [Symbolic Links](#symbolic-links)
   - [Hard Links](#hard-links)
+  - [Wildcards](#wildcards)
+    - [Wildcards](#wildcards-1)
+    - [Commonly Used Character Classes](#commonly-used-character-classes)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -227,6 +230,44 @@ Examples:
     simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
 
 ## Hard Links
+
+## Wildcards
+
+### Wildcards
+
+| Wildcard        | Meaning                                                   | Example                               |
+| :-------------- | :-------------------------------------------------------- | :------------------------------------ |
+| `*`             | Matches **any** number of characters (including zero)     | `ls *.py` (All Python files)          |
+| `?`             | Matches any **single** character                          | `ls file?.txt` (file1.txt, fileA.txt) |
+| `[characters]`  | Matches any character that is a **member of the set**     | `ls [abc].txt` (file a, b, or c)      |
+| `[!characters]` | Matches any character that is **NOT** a member of the set | `ls [!0-9].txt` (Non-numeric start)   |
+| `[[:class:]]`   | Matches any character in a **predefined class**           | `ls [[:upper:]]*` (Uppercase files)   |
+
+### Commonly Used Character Classes
+
+| Character Class | Meaning                     | Matches                             |
+| :-------------- | :-------------------------- | :---------------------------------- |
+| `[[:alnum:]]`   | **Alphanumeric** characters | Any letter or digit (a-z, A-Z, 0-9) |
+| `[[:alpha:]]`   | **Alphabetic** characters   | Any letter (a-z, A-Z)               |
+| `[[:digit:]]`   | **Numerals**                | Any digit (0-9)                     |
+| `[[:lower:]]`   | **Lowercase** letters       | Any small letter (a-z)              |
+| `[[:upper:]]`   | **Uppercase** letters       | Any capital letter (A-Z)            |
+
+- Example
+
+```bash
+# Find all files that start with a capital letter:
+# Tìm tất cả các file bắt đầu bằng chữ cái viết hoa:
+ls [[:upper:]]*
+
+# Find files whose names end with at least one digit:
+# Tìm các file có tên kết thúc bằng ít nhất một chữ số:
+ls *[[:digit:]]
+
+# Delete files whose names consist only of letters and numbers.
+# Xóa các file có tên chỉ gồm các ký tự chữ và số
+rm [[:alnum:]]*
+```
 
 # Managing Users and Groups
 
