@@ -19,6 +19,7 @@
   - [Hard Links](#hard-links)
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
     - [The Asterisk (`*`) Wildcard](#the-asterisk--wildcard)
+    - [The Single Character Wildcard (?)](#the-single-character-wildcard-)
     - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
@@ -267,6 +268,14 @@ Examples:
   - Hidden Files: By default, the `*` wildcard does not match hidden files (those starting with a dot).
   - Failed Matches: `*` In Bash: If no files match the pattern, Bash treats the pattern as a literal string (e.g., it looks for a file actually named `*.jpeg`)
   - Quoting: To disable globbing, wrap the pattern in quotes (e.g., `'*.jpeg'`). This is useful if you actually have a file with a `*` in its name and don't want the shell to expand it.
+
+### The Single Character Wildcard (?)
+
+- Unlike the asterisk (which matches any number of characters), the question mark matches exactly one character.
+
+- Use Case: If you have files like `IMG_1.jpg` and `IMG_A.jpg`, using `IMG_?.jpg` will find both.
+
+- Example from lecture: `IMG_?6677.*` matches files where only one character varies between the prefix and the numbers.
 
 ### Wildcards
 
