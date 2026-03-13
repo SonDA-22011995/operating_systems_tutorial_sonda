@@ -252,7 +252,7 @@ Examples:
 
 - Important Distinctions
   - Not Regular Expressions: While they look similar, Globbing and Regular Expressions (Regex) use different syntax and rules. They are not the same thing.
-  - Command Agnostic: Globbing is a feature of the shell, not the specific command. You can use it with ls, mv, cp, echo, and more.
+  - Command Agnostic: Globbing is a feature of the shell, not the specific command. You can use it with `ls`, `mv`, `cp`, `echo`, and more.
 
 ### The Asterisk (`*`) Wildcard
 
