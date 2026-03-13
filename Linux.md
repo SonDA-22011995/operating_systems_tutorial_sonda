@@ -21,6 +21,7 @@
     - [The Asterisk (`*`) Wildcard](#the-asterisk--wildcard)
     - [The Single Character Wildcard (?)](#the-single-character-wildcard-)
     - [Square Brackets (\[\]) and Ranges](#square-brackets--and-ranges)
+    - [The Globstar (`**`)](#the-globstar-)
     - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
@@ -289,6 +290,18 @@ Examples:
 - Manual Sets: `[abc]` matches exactly one character, but only if it is an 'a', 'b', or 'c'.
 
 - Important Note: In standard globbing, if you want to match three digits, you must repeat the brackets three times (e.g., `[0-9][0-9][0-9]`). There is no "repeat" multiplier in basic globbing.
+
+### The Globstar (`**`)
+
+- The double asterisk is a powerful feature for recursive searching. It matches zero or more directories (including the slashes) to find files in nested subfolders.
+
+- Syntax: `**/*.jpg` searches the current folder and all subfolders for JPEG files.
+
+- Requirements: `*` Supported in Bash 4.0 or higher.
+
+- Often needs to be enabled manually with the command: `shopt -s globstar`.
+
+- Pro Tip: The instructor recommends using the `**` followed by a slash to ensure you are looking into folders rather than just matching a folder name itself.
 
 ### Wildcards
 
