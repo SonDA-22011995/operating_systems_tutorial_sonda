@@ -18,6 +18,7 @@
   - [Symbolic Links](#symbolic-links)
   - [Hard Links](#hard-links)
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
+    - [The Asterisk (`*`) Wildcard](#the-asterisk--wildcard)
     - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
@@ -248,6 +249,24 @@ Examples:
   - The Power of Bash: Instead of moving 100 files manually, a single command with a wildcard can handle them all instantly.
 
   - Pre-execution: The shell expands the pattern into a list of filenames before the actual command (like mv or cp) ever sees it
+
+- Important Distinctions
+  - Not Regular Expressions: While they look similar, Globbing and Regular Expressions (Regex) use different syntax and rules. They are not the same thing.
+  - Command Agnostic: Globbing is a feature of the shell, not the specific command. You can use it with ls, mv, cp, echo, and more.
+
+### The Asterisk (`*`) Wildcard
+
+- The most common wildcard is the asterisk, which matches **zero or more characters**
+
+- Example: `mv *.jpeg images/`
+  - Bash finds every file ending in `.jpeg` and replaces the `*.jpeg` part with the actual list of filenames.
+
+- Versatility: It can be used anywhere in a string. For example, `echo *` will expand to every non-hidden file and folder in the current directory.
+
+- Key Rules and Behaviors
+  - Hidden Files: By default, the `*` wildcard does not match hidden files (those starting with a dot).
+  - Failed Matches: `*` In Bash: If no files match the pattern, Bash treats the pattern as a literal string (e.g., it looks for a file actually named `*.jpeg`)
+  - Quoting: To disable globbing, wrap the pattern in quotes (e.g., `'*.jpeg'`). This is useful if you actually have a file with a `*` in its name and don't want the shell to expand it.
 
 ### Wildcards
 
