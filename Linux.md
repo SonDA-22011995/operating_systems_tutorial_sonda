@@ -149,7 +149,7 @@ command [-option(s)] [argument(s)]
 ## Important Facts About Filenames
 
 - On Linux systems, files are named in a manner similar to that of other systems such as Windows, but there are some important differences.
-- Filenames that begin with a period character are hidden. This only means that ls will not list them unless you say `ls -a`. When your account was created, several hidden files were placed in your home directory to configure things for your account. In Chapter 11 we will take a closer look at some of these files to see how you can customize your environment. In addition, some applications place their configuration and settings files in your home directory as hidden files.
+- Filenames that begin with a period character are hidden (Example `.index.html`). This only means that ls will not list them unless you say `ls -a`. When your account was created, several hidden files were placed in your home directory to configure things for your account. In Chapter 11 we will take a closer look at some of these files to see how you can customize your environment. In addition, some applications place their configuration and settings files in your home directory as hidden files.
 - Filenames and commands in Linux, like Unix, are case sensitive. The filenames `File1` and `file1` refer to different files.
 - Though Linux supports long filenames that may contain embedded spaces and punctuation characters, limit the punctuation characters in the names of files you create to period, dash, and underscore. Most important, do not
   embed spaces in filenames. If you want to represent spaces between words in a filename, use underscore characters. You will thank yourself later.
