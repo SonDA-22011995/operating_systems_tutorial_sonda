@@ -42,6 +42,7 @@
     - [Managing Software (Install/Remove)](#managing-software-installremove)
   - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Bash Shell](#bash-shell)
+  - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
@@ -516,6 +517,11 @@ sudo cd vandtt
   - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
 
 # Bash Shell
+
+## Shell autocompletion
+
+- To make use of shell autocompletion, start typing a file or directory name and **press Tab**
+- The shell will progressively narrow your choices, displaying possible matches below the line you’re typing on
 
 ## How to execute several commands
 
