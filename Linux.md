@@ -58,6 +58,8 @@
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
       - [Search by file size and filename](#search-by-file-size-and-filename)
+      - [Find Tests](#find-tests)
+      - [Predefined Actions](#predefined-actions)
 
 # Introducing the Linux operating system
 
@@ -830,3 +832,39 @@ find ~ -type f -name "*.JPG" -size +1M
   | k         | Kilobytes (1,024 bytes)                    | `find . -size 10k`  |
   | M         | Megabytes (1,048,576 bytes)                | `find . -size 5M`   |
   | G         | Gigabytes (1,073,741,824 bytes)            | `find . -size 1G`   |
+
+#### Find Tests
+
+- Note that in cases where a numeric argument is required, the same `+` and `-` notation discussed previously can be applied
+
+| Test           | Description                                                                                                                                                         | Example Command                |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| -cmin n        | Match files or directories whose content or attributes were last modified exactly n minutes ago. Use `-n` for less than n minutes and `+n` for more than n minutes. | `find . -cmin -10`             |
+| -cnewer file   | Match files or directories whose contents or attributes were modified more recently than the specified file.                                                        | `find . -cnewer reference.txt` |
+| -ctime n       | Match files or directories whose contents or attributes were last modified `n*24` hours ago.                                                                        | `find . -ctime 2`              |
+| -empty         | Match empty files and directories.                                                                                                                                  | `find . -empty`                |
+| -group name    | Match files or directories belonging to group `name` (group name or numeric GID).                                                                                   | `find . -group developers`     |
+| -iname pattern | Same as `-name` but case-insensitive.                                                                                                                               | `find . -iname "*.txt"`        |
+| -inum n        | Match files with inode number `n`. Useful for finding hard links.                                                                                                   | `find / -inum 12345`           |
+| -mmin n        | Match files or directories whose contents were last modified `n` minutes ago.                                                                                       | `find . -mmin -30`             |
+| -mtime n       | Match files or directories whose contents were last modified `n*24` hours ago.                                                                                      | `find . -mtime -1`             |
+| -name pattern  | Match files and directories with the specified wildcard pattern.                                                                                                    | `find . -name "*.log"`         |
+| -newer file    | Match files and directories modified more recently than the specified file.                                                                                         | `find . -newer backup.log`     |
+| -nouser        | Match files and directories that do not belong to a valid user.                                                                                                     | `find / -nouser`               |
+| -nogroup       | Match files and directories that do not belong to a valid group.                                                                                                    | `find / -nogroup`              |
+| -perm mode     | Match files or directories whose permissions match the specified mode (octal or symbolic).                                                                          | `find . -perm 644`             |
+| -samefile name | Match files that share the same inode number as `name`.                                                                                                             | `find . -samefile file.txt`    |
+| -size n        | Match files of size `n`.                                                                                                                                            | `find . -size 100M`            |
+| -type c        | Match files of type `c`.                                                                                                                                            | `find . -type f`               |
+| -user name     | Match files or directories belonging to `user`.                                                                                                                     | `find /home -user john`        |
+
+#### Predefined Actions
+
+- Having a list of results from our `find` command is useful, but what we really want to do is act on the items on the list. Fortunately, find allows actions to be performed based on the search results.
+
+| Action  | Description                                                                                                                   | Example Command                          |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| -delete | Delete the currently matching file.                                                                                           | `find . -name "*.tmp" -delete`           |
+| -ls     | Perform the equivalent of `ls -dils` on the matching file. Output is sent to standard output.                                 | `find . -type f -ls`                     |
+| -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
+| -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
