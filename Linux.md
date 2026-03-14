@@ -898,3 +898,16 @@ find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
 | `-or`    | Match if a test on either side of the operator is true. This can be shortened to `-o`                                                                                                                                                                                             |
 | `-not`   | Match if the test following the operator is false. This can be abbreviated with an exclamation point `!`                                                                                                                                                                          |
 | `( )`    | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
+
+- Let’s say that we have two expressions separated by a logical operator.In all cases, expr1 will always be performed; however, the operator will determine whether expr2 is performed
+
+```bash
+expr1 -operator expr2
+```
+
+| Result of `expr1` | Operator | `expr2` is...    |
+| ----------------- | -------- | ---------------- |
+| True              | `-and`   | Always performed |
+| False             | `-and`   | Never performed  |
+| True              | `-or`    | Never performed  |
+| False             | `-or`    | Always performed |
