@@ -891,9 +891,10 @@ find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
 | `-not -perm 0700` | Finds directories that **do NOT** have `0700` permissions (Owner: Full Access; Group/Others: None).                              |
 
 - Logical Operators
-  | Operator | Description |
-  | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `-and` (`-a`) | Match if the tests on both sides of the operator are true. When no operator is specified, `-and` is implied by default. |
-  | `-or` (`-o`) | Match if a test on either side of the operator is true. |
-  | `-not` (`!`) | Match if the test following the operator is false. |
-  | `( )` | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
+
+| Operator      | Description                                                                                                                                                                                                                                                                       |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-and` (`-a`) | Match if the tests on both sides of the operator are true. When no operator is specified, `-and` is implied by default.                                                                                                                                                           |
+| `-or` (`-o`)  | Match if a test on either side of the operator is true.                                                                                                                                                                                                                           |
+| `-not` (`!`)  | Match if the test following the operator is false.                                                                                                                                                                                                                                |
+| `( )`         | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
