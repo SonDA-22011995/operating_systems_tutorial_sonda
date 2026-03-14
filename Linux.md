@@ -60,6 +60,7 @@
       - [Search by file size and filename](#search-by-file-size-and-filename)
       - [Find Tests](#find-tests)
       - [Predefined Actions](#predefined-actions)
+      - [Operators](#operators)
 
 # Introducing the Linux operating system
 
@@ -868,3 +869,21 @@ find ~ -type f -name "*.JPG" -size +1M
 | -ls     | Perform the equivalent of `ls -dils` on the matching file. Output is sent to standard output.                                 | `find . -type f -ls`                     |
 | -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
 | -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
+
+#### Operators
+
+- For example, what if we needed to determine whether all the files and subdirectories in a directoryhad secure permissions? We would look for all the files with permissions that are not 0600 and the directories with permissions that are not 0700. Fortunately, find provides a way to combine tests using logical operators to create more complex logical relationships. To express the aforementioned test, we could do this
+
+```bash
+find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
+```
+
+| Component         | Description                                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `find ~`          | Starts the search from the current user's Home directory.                                                                        |
+| `\( ... \)`       | Escaped parentheses used to group conditions together (similar to mathematical grouping) so that the logic is applied correctly. |
+| `-type f`         | Filters the search to include only regular files.                                                                                |
+| `-not -perm 0600` | Finds files that **do NOT** have `0600` permissions (Owner: Read/Write; Group/Others: None).                                     |
+| `-or`             | Logical OR operator: returns results if either the file condition group **OR** the directory condition group is met.             |
+| `-type d`         | Filters the search to include only directories.                                                                                  |
+| `-not -perm 0700` | Finds directories that **do NOT** have `0700` permissions (Owner: Full Access; Group/Others: None).                              |
