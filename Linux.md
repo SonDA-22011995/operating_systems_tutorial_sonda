@@ -5,9 +5,6 @@
 - [Linux Distributions](#linux-distributions)
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
-- [Introducing the Linux shell](#introducing-the-linux-shell)
-  - [Explaining the command structure](#explaining-the-command-structure)
-  - [Consulting the manual](#consulting-the-manual)
 - [The Linux filesystem](#the-linux-filesystem)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
@@ -41,6 +38,9 @@
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
   - [Enabling Additional Repositories](#enabling-additional-repositories)
+- [Introducing the Linux shell](#introducing-the-linux-shell)
+  - [Explaining the command structure](#explaining-the-command-structure)
+  - [Consulting the manual](#consulting-the-manual)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -55,6 +55,7 @@
     - [The `cp` Command](#the-cp-command)
     - [The `rm` Command](#the-rm-command)
     - [The `rmdir` Command](#the-rmdir-command)
+    - [The `find` Command](#the-find-command)
 
 # Introducing the Linux operating system
 
@@ -102,54 +103,6 @@
 - Ubuntu
 - Linux Mint
 - openSUSE
-
-# Introducing the Linux shell
-
-- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line interface**. In the old days, this was called the **shell**
-- The shell is a program that has two streams: an input stream and an output stream. The input is a
-  command given by the user, and the output is the result of that command, or an interpretation of it.
-- In other words, the shell is the primary interface between the user and the machine
-- The main shell in major Linux distributions is called **Bash**, which is an acronym for Bourne Again
-  Shell, named after Steve Bourne, the original creator of the shell in UNIX
-- Alongside Bash, there are other shells available in Linux, such as **ksh**, **tcsh**, and **zsh**
-
-- One shell can be assigned to each user. Users on the same system can use different shells. One way
-  to check the default shell is by accessing the command
-
-```bash
-cat /etc/passwd | grep <<user>>
-
-# <<user>> is user account in linux system
-```
-
-- An easier way to see the current shell is by running the following command
-
-```bash
-echo $0
-```
-
-## Explaining the command structure
-
-- In a nutshell, Unix and Linux commands have the following form:
-  - The command’s name
-  - The command’s options
-  - The command’s arguments
-
-```bash
-command [-option(s)] [argument(s)]
-```
-
-## Consulting the manual
-
-- Almost all commands in Linux have a `--help` option. You can use this for quick reference.
-
-```bash
- <<commnad_name>> --help
-
-# commnad_name is name of command
-```
-
-- The `man` command is the standard way to read comprehensive, built-in manuals for almost any program. Syntax `man [command]`
 
 # The Linux filesystem
 
@@ -516,6 +469,54 @@ sudo cd vandtt
 
   - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
 
+# Introducing the Linux shell
+
+- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line interface**. In the old days, this was called the **shell**
+- The shell is a program that has two streams: an input stream and an output stream. The input is a
+  command given by the user, and the output is the result of that command, or an interpretation of it.
+- In other words, the shell is the primary interface between the user and the machine
+- The main shell in major Linux distributions is called **Bash**, which is an acronym for Bourne Again
+  Shell, named after Steve Bourne, the original creator of the shell in UNIX
+- Alongside Bash, there are other shells available in Linux, such as **ksh**, **tcsh**, and **zsh**
+
+- One shell can be assigned to each user. Users on the same system can use different shells. One way
+  to check the default shell is by accessing the command
+
+```bash
+cat /etc/passwd | grep <<user>>
+
+# <<user>> is user account in linux system
+```
+
+- An easier way to see the current shell is by running the following command
+
+```bash
+echo $0
+```
+
+## Explaining the command structure
+
+- In a nutshell, Unix and Linux commands have the following form:
+  - The command’s name
+  - The command’s options
+  - The command’s arguments
+
+```bash
+command [-option(s)] [argument(s)]
+```
+
+## Consulting the manual
+
+- Almost all commands in Linux have a `--help` option. You can use this for quick reference.
+
+```bash
+ <<commnad_name>> --help
+
+# commnad_name is name of command
+```
+
+- The `man` command is the standard way to read comprehensive, built-in manuals for almost any program. Syntax `man [command]`
+
 # Bash Shell
 
 ## Shell autocompletion
@@ -789,3 +790,8 @@ rm -r ready_backup/
 - Hidden Files: A folder might look empty in your file explorer but still fail to delete via rmdir. This is often due to hidden files (files starting with a dot, like .DS_Store or .thumbs.db). To see these, use ls -a.
 
 - You must delete the hidden files first before rmdir will work.
+
+### The `find` Command
+
+- `find` command, a powerful and sophisticated tool for searching files and directories in a Unix-based environment. Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
+- The basic syntax requires the command followed by the starting path: `find [path]`
