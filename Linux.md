@@ -56,6 +56,8 @@
     - [The `rm` Command](#the-rm-command)
     - [The `rmdir` Command](#the-rmdir-command)
     - [The `find` Command](#the-find-command)
+      - [Find file types](#find-file-types)
+      - [Search by file size and filename](#search-by-file-size-and-filename)
 
 # Introducing the Linux operating system
 
@@ -795,3 +797,36 @@ rm -r ready_backup/
 
 - `find` command, a powerful and sophisticated tool for searching files and directories in a Unix-based environment. Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
 - The basic syntax requires the command followed by the starting path: `find [path]`
+  - Performance Note: Searching large directories (like the root directory) can take a long time. You can terminate a hanging or long-running process by pressing **Ctrl + C**.
+
+#### Find file types
+
+| File Type | Description                   | Example Command     |
+| --------- | ----------------------------- | ------------------- |
+| b         | Block special device file     | `find /dev -type b` |
+| c         | Character special device file | `find /dev -type c` |
+| d         | Directory                     | `find . -type d`    |
+| f         | Regular file                  | `find . -type f`    |
+| l         | Symbolic link                 | `find . -type l`    |
+
+#### Search by file size and filename
+
+```bash
+find ~ -type f -name "*.JPG" -size +1M
+```
+
+- In this example
+  - We add the `-name` test followed by the wildcard pattern
+  - Notice how we enclose it in quotes to prevent pathname expansion by the shell
+  - We add the `-size` test followed by the string `+1M`. The leading plus `+` sign indicates that we are looking for files larger than the specified number. A leading minus `-` sign would change the meaning of the string to be smaller than the specified number. Using no sign means **“match the value exactly”**. The trailing letter `M` indicates that the unit of measurement is megabytes
+
+- Find Size Units
+
+  | Character | Unit                                       | Example             |
+  | --------- | ------------------------------------------ | ------------------- |
+  | b         | 512-byte blocks (default if no unit given) | `find . -size 10b`  |
+  | c         | Bytes                                      | `find . -size 100c` |
+  | w         | 2-byte words                               | `find . -size 50w`  |
+  | k         | Kilobytes (1,024 bytes)                    | `find . -size 10k`  |
+  | M         | Megabytes (1,048,576 bytes)                | `find . -size 5M`   |
+  | G         | Gigabytes (1,073,741,824 bytes)            | `find . -size 1G`   |
