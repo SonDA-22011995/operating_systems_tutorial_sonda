@@ -58,6 +58,7 @@
     - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
       - [The `cat` Command](#the-cat-command)
       - [`head` and `tail` Commands](#head-and-tail-commands)
+      - [The `less` command](#the-less-command)
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
       - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -824,6 +825,23 @@ rm -r ready_backup/
 | ------- | ----------------------------- | -------- | ------------------ |
 | head    | Shows the beginning of a file | 10 lines | `head -n [number]` |
 | tail    | Shows the end of a file       | 10 lines | `tail -n [number]` |
+
+#### The `less` command
+
+- The `less` command is a powerful tool for viewing large files (like books or log files) in the terminal without loading the entire file into memory at once, which avoids the performance issues common with the `cat `command.
+
+- Key Navigation and Features
+  - Basic Movement: Use the arrow keys to scroll line-by-line.
+  - Paging: Press **F** to move forward a full page and **B** to move backward a full page.
+  - Jumping to Content: You can navigate to a specific part of the file by typing a percentage (e.g., **50p**) to jump to the middle of the document.
+  - Status Information: Pressing the equals sign `=` displays information about your current position in the file.
+  - Line Numbers: Typing `-N` (uppercase) and pressing Enter toggles the display of row numbers for better orientation.
+
+- Searching and Exiting
+  - Use `/` followed by a keyword for a forward search (from your current position down).
+  - Use `?` followed by a keyword for a backward search (from your current position up).
+
+- Quitting: Simply press the `Q` key to exit the program and return to the command promp
 
 ### The `find` Command
 
