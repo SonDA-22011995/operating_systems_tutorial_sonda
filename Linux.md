@@ -55,6 +55,7 @@
     - [The `cp` Command](#the-cp-command)
     - [The `rm` Command](#the-rm-command)
     - [The `rmdir` Command](#the-rmdir-command)
+    - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
       - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -206,6 +207,12 @@ Examples:
     simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
 
 ## Hard Links
+
+- When we create a hard link, we create an additional directory entry for a file
+- Hard links have two important limitations:
+  - A hard link cannot reference a file outside its own file system. This means a link cannot reference a file that is not on the same disk partition as the link itself.
+  - A hard link may not reference a directory.
+- When a hard link is deleted, the link is removed, but the contents of the file itself continue to exist (that is, its space is not deallocated) until all links to the file are deleted.
 
 ## Wildcards (File name expansion - Globbing)
 
@@ -795,6 +802,8 @@ rm -r ready_backup/
 - Hidden Files: A folder might look empty in your file explorer but still fail to delete via rmdir. This is often due to hidden files (files starting with a dot, like .DS_Store or .thumbs.db). To see these, use ls -a.
 
 - You must delete the hidden files first before rmdir will work.
+
+### Read file Command (`cat`,`head`, `tail`)
 
 ### The `find` Command
 
