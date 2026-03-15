@@ -56,6 +56,8 @@
     - [The `rm` Command](#the-rm-command)
     - [The `rmdir` Command](#the-rmdir-command)
     - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
+      - [The `cat` Command](#the-cat-command)
+      - [`head` and `tail` Commands](#head-and-tail-commands)
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
       - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -805,6 +807,23 @@ rm -r ready_backup/
 - You must delete the hidden files first before rmdir will work.
 
 ### Read file Command (`cat`,`head`, `tail`)
+
+#### The `cat` Command
+
+- The most basic way to view a file is cat (concatenate). It prints the entire content of a file directly into the terminal.
+
+- Usage: `cat filename.txt`
+
+- Pro Tip: You can use globbing (e.g., `cat *.txt`) to output multiple files at once.
+
+- The "Binary" Warning: Avoid using `cat` on binary files (like JPEGs). This outputs gibberish and can send "special commands" to your terminal that may break its behavior, requiring a restart.
+
+#### `head` and `tail` Commands
+
+| Command | Function                      | Default  | Customization      |
+| ------- | ----------------------------- | -------- | ------------------ |
+| head    | Shows the beginning of a file | 10 lines | `head -n [number]` |
+| tail    | Shows the end of a file       | 10 lines | `tail -n [number]` |
 
 ### The `find` Command
 
