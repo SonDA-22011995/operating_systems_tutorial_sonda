@@ -61,6 +61,7 @@
       - [The `less` command](#the-less-command)
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
+      - [How to edit files](#how-to-edit-files)
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
       - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -867,6 +868,17 @@ rm -r ready_backup/
   - `du filename.txt` shows the size of a specific file.
   - `-s`: Provides a total summary of a directory rather than listing every subfolder.
   - To avoid confusion over block sizes, use the `-h` flag. This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
+
+#### How to edit files
+
+- There's no build-in text editor for bash
+- We have to install additional software for that
+- 4 quite popular options are:
+  - pico / nano: A simple editor for text files in bash
+  - vi / vim: A more advanced text editor
+- The install process depends on the system you're using
+  - Mac `brew install nano`
+  - Ubuntu `apt-get install -y nano`
 
 ### The `find` Command
 
