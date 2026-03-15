@@ -59,6 +59,8 @@
       - [The `cat` Command](#the-cat-command)
       - [`head` and `tail` Commands](#head-and-tail-commands)
       - [The `less` command](#the-less-command)
+      - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
+      - [Disk Usage (`du` command)](#disk-usage-du-command)
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
       - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -842,6 +844,29 @@ rm -r ready_backup/
   - Use `?` followed by a keyword for a backward search (from your current position up).
 
 - Quitting: Simply press the `Q` key to exit the program and return to the command promp
+
+#### The Word Count Program (`wc` command)
+
+- The `wc` command provides information about the internal structure of a file. By default, running wc filename.txt outputs three values: line count, word count, and byte count.
+
+- Key Flags:
+  - `-l`: Counts only the lines (the most common use case).
+
+  - `-w`: Counts only the words.
+
+  - `-c`: Counts the bytes. (Note: Historically "c" stood for "character" when 1 character equaled 1 byte, a naming convention that remains today.)
+
+- Example: `wc filename.txt`
+
+#### Disk Usage (`du` command)
+
+- The `du` command tells you how much space a file or directory actually occupies on your storage.
+
+- Behavior and Summaries:
+  - Running `du` by itself shows the size of every item in the current directory - Example: `du`.
+  - `du filename.txt` shows the size of a specific file.
+  - `-s`: Provides a total summary of a directory rather than listing every subfolder.
+  - To avoid confusion over block sizes, use the `-h` flag. This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
 
 ### The `find` Command
 
