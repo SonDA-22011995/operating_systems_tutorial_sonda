@@ -310,6 +310,8 @@ Examples:
 
 ### Commonly Used Character Classes
 
+- You need to remember that `[:upper:]` must be enclosed in another pair of square brackets `[]` to become a conditional expression.
+
 | Character Class | Meaning                     | Matches                             |
 | :-------------- | :-------------------------- | :---------------------------------- |
 | `[[:alnum:]]`   | **Alphanumeric** characters | Any letter or digit (a-z, A-Z, 0-9) |
