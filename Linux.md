@@ -8,6 +8,9 @@
 - [The Linux filesystem](#the-linux-filesystem)
   - [Standard streams: stdin, stdout, stderr](#standard-streams-stdin-stdout-stderr)
     - [Why Redirection Sometimes "Fails"](#why-redirection-sometimes-fails)
+  - [Redirect Standard Error](#redirect-standard-error)
+    - [Why Redirect Standard Error?](#why-redirect-standard-error)
+    - [Redirection Syntax](#redirection-syntax)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -140,6 +143,32 @@
   - The Error Case: When `du` can't find a file, it sends the "No such file" message to **Stream 2** (stderr).
 
   - The Result: Because your redirection was only listening to **Stream 1**, **Stream 2** remains "unplugged" and defaults to its original destination: your screen.
+
+## Redirect Standard Error
+
+### Why Redirect Standard Error?
+
+- There are two primary reasons to redirect stderr:
+  - To Silence Noise: If a program produces irrelevant error messages, you can redirect them to a "null" location so they don't clutter your terminal or interfere with scripts.
+
+  - To Log for Later: If you run a high-output program (like a daily automated task), you might want to discard the successful output but save the errors into a file to review them later.
+
+### Redirection Syntax
+
+- Redirecting stdout (Stream 1):
+  - Short version: `command > file.txt`
+
+  - Verbose version: `command 1> file.txt`
+
+- Redirecting stderr (Stream 2):
+  - Captures errors only: `command 2> error.txt`
+
+  - Appends errors to the file instead of overwriting `command 2>> error.txt`
+
+- Combined Redirection:
+  - Sends successes to one file and errors to another: `command > output.txt 2> error.txt`
+
+  - Verbose version: `command 1> output.txt 2> error.txt`
 
 ## Important Facts About Filenames
 
