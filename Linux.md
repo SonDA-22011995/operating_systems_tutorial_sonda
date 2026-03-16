@@ -68,6 +68,8 @@
       - [Find Tests](#find-tests)
       - [Predefined Actions](#predefined-actions)
       - [Operators](#operators)
+  - [Redirection (Streams)](#redirection-streams)
+    - [Wirte output to a file](#wirte-output-to-a-file)
 
 # Introducing the Linux operating system
 
@@ -997,3 +999,7 @@ expr1 -operator expr2
 | False             | `-and`   | Never performed  |
 | True              | `-or`    | Never performed  |
 | False             | `-or`    | Always performed |
+
+## Redirection (Streams)
+
+### Wirte output to a file
