@@ -7,6 +7,7 @@
   - [Common Linux distributions](#common-linux-distributions)
 - [The Linux filesystem](#the-linux-filesystem)
   - [Standard streams: stdin, stdout, stderr](#standard-streams-stdin-stdout-stderr)
+    - [Why Redirection Sometimes "Fails"](#why-redirection-sometimes-fails)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -122,6 +123,23 @@
 # The Linux filesystem
 
 ## Standard streams: stdin, stdout, stderr
+
+- The Three Standard Streams
+
+| Stream Name     | File Descriptor | Purpose                                                             |
+| --------------- | --------------- | ------------------------------------------------------------------- |
+| Standard Input  | stdin (0)       | Data flowing into the program (usually from your keyboard).         |
+| Standard Output | stdout (1)      | Normal data flowing out of the program (success messages, results). |
+| Standard Error  | stderr (2)      | Error messages flowing out of the program (failure alerts).         |
+
+### Why Redirection Sometimes "Fails"
+
+- When you use the `>` or `>>` operators without a number, Bash assumes you are talking about **Stream 1 (stdout)**.Example `du -h output.txt`
+  - The Success Case: When `du -h` finds your file, it sends the size to **Stream 1**. Your redirection captures it and puts it in the file.
+
+  - The Error Case: When `du` can't find a file, it sends the "No such file" message to **Stream 2** (stderr).
+
+  - The Result: Because your redirection was only listening to **Stream 1**, **Stream 2** remains "unplugged" and defaults to its original destination: your screen.
 
 ## Important Facts About Filenames
 
