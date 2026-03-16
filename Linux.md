@@ -6,6 +6,7 @@
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
 - [The Linux filesystem](#the-linux-filesystem)
+  - [Standard streams: stdin, stdout, stderr](#standard-streams-stdin-stdout-stderr)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -69,7 +70,7 @@
       - [Predefined Actions](#predefined-actions)
       - [Operators](#operators)
   - [Redirection (Streams)](#redirection-streams)
-    - [Wirte output to a file](#wirte-output-to-a-file)
+    - [Redirecting Standard Output](#redirecting-standard-output)
 
 # Introducing the Linux operating system
 
@@ -119,6 +120,8 @@
 - openSUSE
 
 # The Linux filesystem
+
+## Standard streams: stdin, stdout, stderr
 
 ## Important Facts About Filenames
 
@@ -1002,4 +1005,20 @@ expr1 -operator expr2
 
 ## Redirection (Streams)
 
-### Wirte output to a file
+### Redirecting Standard Output
+
+- In Bash, you can redirect the output of a command away from the terminal and into a file using specific operators:
+
+- The Overwrite Operator (`>`): \* Usage: `command > file.txt`
+  - Behavior: It takes the output of the command and writes it to the specified file. If the file doesn't exist, it creates it. If it does exist, it wipes the previous content and replaces it with the new output.
+
+- The Append Operator (`>>`):
+  - Usage: `command >> file.txt`
+
+  - Behavior: Instead of overwriting, this adds the new output to the end of the existing file. This is ideal for logs or building a history of command results.
+
+- You noticed a curious behavior: when a command fails (like trying to get the size of a non-existent file), the error message still prints to the screen instead of going into your file. Why this happens:
+  - Bash uses different "channels" (file descriptors) for different types of output:
+    - **Standard Output** (stdout): This is for successful program data. It is represented by the number 1.
+    - **Standard Error** (stderr): This is specifically for error messages. It is represented by the number 2.
+  - When you use `>` or `>>`, you are—by default—only redirecting stdout (1). The error messages on stderr (2) remain linked to your terminal screen.
