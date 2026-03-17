@@ -11,6 +11,9 @@
   - [Redirect Standard Error](#redirect-standard-error)
     - [Why Redirect Standard Error?](#why-redirect-standard-error)
     - [Redirection Syntax](#redirection-syntax)
+  - [Redirect stderr to stdout](#redirect-stderr-to-stdout)
+    - [Why Redirect stderr to stdout?](#why-redirect-stderr-to-stdout)
+    - [The Syntax](#the-syntax)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -169,6 +172,24 @@
   - Sends successes to one file and errors to another: `command > output.txt 2> error.txt`
 
   - Verbose version: `command 1> output.txt 2> error.txt`
+
+## Redirect stderr to stdout
+
+### Why Redirect stderr to stdout?
+
+- Unified Logging: It allows you to store both normal program output and error messages in a single file without having to list the filename multiple times in your command.
+
+- Piping: Standard Linux pipes (`|`) only pass **stdout** to the next command. If you want to filter or process error messages using a tool like grep, you must first redirect **stderr** into the **stdout** stream.
+
+### The Syntax
+
+```bash
+command > out.txt 2>&1
+```
+
+- `> out.txt`: Redirects stdout to the file.
+
+- `2>&1`: Redirects stderr to the same destination as stdout.
 
 ## Important Facts About Filenames
 
