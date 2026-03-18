@@ -37,10 +37,12 @@
       - [Case 1: The Successful Redirect (`> file 2>&1`)](#case-1-the-successful-redirect--file-21)
       - [Case 2: The Failed Redirect (`2>&1 > out.txt`)](#case-2-the-failed-redirect-21--outtxt)
       - [Summary](#summary)
+  - [Disposing of Unwanted Output](#disposing-of-unwanted-output)
   - [What about stdin](#what-about-stdin)
   - [The Stdin Redirector (`<`)](#the-stdin-redirector-)
   - [Chaining Concepts](#chaining-concepts)
   - [Pipes - Data processing through command chaining](#pipes---data-processing-through-command-chaining)
+    - [What is a Pipe?](#what-is-a-pipe)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -482,6 +484,14 @@ command > out.txt 2>&1
 | `command > file 2>&1` | Success | `1` (stdout) is redirected to file first; `2` (stderr) follows it. |
 | `command 2>&1 > file` | Partial | `2` goes to terminal (old stdout); then `1` is redirected to file. |
 
+## Disposing of Unwanted Output
+
+- Sometimes “silence is golden” and we don’t want output from a command; we just want to throw it away. This applies particularly to error and status messages. The system provides a way to do this by redirecting output to a special file called `/dev/null`. This file is a system device often referred to as a bit bucket, which accepts input and does nothing with it. To suppress error messages from a command, we do this
+
+```bash
+ls -l /bin/usr 2> /dev/null
+```
+
 ## What about stdin
 
 - By default, **stdin** is connected to your keyboard. When you run a command like `wc -l` (word count) or `cat` without specifying a file, the program doesn't finish; it waits for you to type.
@@ -511,6 +521,8 @@ command > out.txt 2>&1
   - The shell redirects that **stdout** into **output.txt.**
 
 ## Pipes - Data processing through command chaining
+
+### What is a Pipe?
 
 # Managing Users and Groups
 
