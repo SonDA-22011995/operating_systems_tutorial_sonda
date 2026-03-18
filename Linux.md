@@ -40,6 +40,7 @@
   - [What about stdin](#what-about-stdin)
   - [The Stdin Redirector (`<`)](#the-stdin-redirector-)
   - [Chaining Concepts](#chaining-concepts)
+  - [Pipes - Data processing through command chaining](#pipes---data-processing-through-command-chaining)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -508,6 +509,8 @@ command > out.txt 2>&1
   - cat outputs that text to **stdout**.
 
   - The shell redirects that **stdout** into **output.txt.**
+
+## Pipes - Data processing through command chaining
 
 # Managing Users and Groups
 
