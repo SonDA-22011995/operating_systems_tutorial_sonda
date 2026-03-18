@@ -82,12 +82,13 @@
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
       - [How to edit files](#how-to-edit-files)
-    - [The `find` Command](#the-find-command)
-      - [Find file types](#find-file-types)
-      - [Search by file size and filename](#search-by-file-size-and-filename)
-      - [Find Tests](#find-tests)
-      - [Predefined Actions](#predefined-actions)
-      - [Operators](#operators)
+  - [The `tee` command](#the-tee-command)
+  - [The `find` Command](#the-find-command)
+    - [Find file types](#find-file-types)
+    - [Search by file size and filename](#search-by-file-size-and-filename)
+    - [Find Tests](#find-tests)
+    - [Predefined Actions](#predefined-actions)
+    - [Operators](#operators)
 
 # Introducing the Linux operating system
 
@@ -1078,7 +1079,23 @@ rm -r ready_backup/
   - Mac `brew install nano`
   - Ubuntu `apt-get install -y nano`
 
-### The `find` Command
+## The `tee` command
+
+- The `tee` command reads **standard input-stdin 0** and copies it to both **standard output-stdout 1** (allowing the data to continue down the pipeline) and to one or more files
+
+- Syntax
+  - Basic usage: `command | tee output.txt`
+  - Appending: `command | tee -a output.txt` (The `-a` flag prevents overwriting the file).
+
+- Practical Use Case: Logging and Debugging: `ping google.com 2>&1 | tee network_log.txt`
+  - `ping` command to troubleshoot internet issues
+  - Why `2>&1` ? As we learned earlier, errors (stderr) usually bypass pipes. By redirecting stderr to stdout first, tee can "see" the error messages.
+  - The Result: You can watch the ping results in real-time to see when your connection drops, but you also create a `network_log.txt` file that you can send to your ISP as proof of the failure
+
+- Why is it called "tee"?
+  - The name comes from a T-junction used in plumbing. Just like a pipe shaped like a "T" splits water into two directions, the tee command splits your data stream into two directions: the file and the terminal.
+
+## The `find` Command
 
 - The `find` program searches **a given directory (and its subdirectories)** for files based on a variety of attributes
 - Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
