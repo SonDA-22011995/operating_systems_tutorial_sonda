@@ -1043,7 +1043,8 @@ rm -r ready_backup/
 
 ### The `find` Command
 
-- `find` command, a powerful and sophisticated tool for searching files and directories in a Unix-based environment. Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
+- The `find` program searches **a given directory (and its subdirectories)** for files based on a variety of attributes
+- Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
 - The basic syntax requires the command followed by the starting path: `find [path]`
   - Performance Note: Searching large directories (like the root directory) can take a long time. You can terminate a hanging or long-running process by pressing **Ctrl + C**.
 
