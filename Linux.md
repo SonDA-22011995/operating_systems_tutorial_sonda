@@ -43,6 +43,7 @@
   - [Chaining Concepts](#chaining-concepts)
   - [Pipes - Data processing through command chaining](#pipes---data-processing-through-command-chaining)
     - [What is a Pipe?](#what-is-a-pipe)
+    - [Practical Examples:](#practical-examples)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -525,6 +526,25 @@ ls -l /bin/usr 2> /dev/null
 ## Pipes - Data processing through command chaining
 
 ### What is a Pipe?
+
+- A pipe takes the **stdout** (Standard Output) of the command on its left and feeds it into the **stdin** (Standard Input) of the command on its right.
+
+- Syntax: `command1 | command2 | command3`
+
+- Visual: Think of it as a literal pipe where data flows from one "tank" (program) to the next
+
+### Practical Examples:
+
+- Counting Files `ls | wc -l`
+  - `ls` lists the files.
+
+  - The pipe (`|`) sends that list to `wc -l`.
+
+  - `wc -l` counts the lines, effectively telling you how many files are in the folder.
+
+- Filtering Errors `du file1 file2 2>&1 >/dev/null | wc -l`
+  - You can redirect stderr to stdout (`2>&1`), then redirect the "original" stdout to `/dev/null`.
+  - By piping the result to `wc -l`, you can count exactly how many errors occurred without seeing the successful output.
 
 # Managing Users and Groups
 
