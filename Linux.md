@@ -15,6 +15,10 @@
   - [Redirect stderr to stdout](#redirect-stderr-to-stdout)
     - [Why Redirect stderr to stdout?](#why-redirect-stderr-to-stdout)
     - [The Syntax](#the-syntax)
+    - [Redirection is Sequential](#redirection-is-sequential)
+      - [Case 1: The Successful Redirect (`> file 2>&1`)](#case-1-the-successful-redirect--file-21)
+      - [Case 2: The Failed Redirect (`2>&1 > out.txt`)](#case-2-the-failed-redirect-21--outtxt)
+      - [Summary](#summary)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -207,6 +211,39 @@ command > out.txt 2>&1
 - `> out.txt`: Redirects stdout to the file.
 
 - `2>&1`: Redirects stderr to the same destination as stdout.
+
+### Redirection is Sequential
+
+- When you run a command, the shell doesn't look at all the redirections as one single instruction. Instead, it processes them **step-by-step** from left to right before the command even starts
+
+#### Case 1: The Successful Redirect (`> file 2>&1`)
+
+- In this scenario, the shell follows these steps:
+
+- `> out.txt`: The shell sees this first. it points stdout (1) to the file **out.txt**.
+
+- `2>&1`: Next, the shell sees this. It says "make stderr (2) point to wherever stdout (1) is pointing right now." Since stdout is already pointing to the file, stderr follows it there.
+
+- Result: Both streams end up in the file
+
+#### Case 2: The Failed Redirect (`2>&1 > out.txt`)
+
+- When you swap the order, the logic breaks because of the timing:
+
+- `2>&1`: The shell sees this first. At this exact moment, stdout (1) is still pointing to the terminal. So, the shell points stderr (2) to the terminal.
+
+- `> out.txt`: Now the shell sees this. It moves stdout (1) to the file.
+
+- The Conflict: You moved stdout, but you didn't move stderr! Stderr is still "stuck" pointing to the terminal because that's where stdout was when the mapping was made.
+
+- Result: Errors hit your screen, while normal output goes to the file.
+
+#### Summary
+
+| Command               | Result  | Why                                                                |
+| --------------------- | ------- | ------------------------------------------------------------------ |
+| `command > file 2>&1` | Success | `1` (stdout) is redirected to file first; `2` (stderr) follows it. |
+| `command 2>&1 > file` | Partial | `2` goes to terminal (old stdout); then `1` is redirected to file. |
 
 ## Important Facts About Filenames
 
