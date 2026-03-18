@@ -380,7 +380,8 @@ rm [[:alnum:]]*
 
 - In Bash, you can redirect the output of a command away from the terminal and into a file using specific operators:
 
-- The Overwrite Operator (`>`): \* Usage: `command > file.txt`
+- The Overwrite Operator (`>`):
+  - Usage: `command > file.txt`
   - Behavior: It takes the output of the command and writes it to the specified file. If the file doesn't exist, it creates it. If it does exist, it wipes the previous content and replaces it with the new output.
 
 - The Append Operator (`>>`):
