@@ -86,6 +86,9 @@
     - [The `tee` command](#the-tee-command)
   - [Text Processing](#text-processing)
     - [The `sort` command](#the-sort-command)
+      - [Multiple sort keys](#multiple-sort-keys)
+      - [Offsets in `--key`](#offsets-in---key)
+      - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
     - [The `uniq` command](#the-uniq-command)
   - [The `find` Command](#the-find-command)
     - [Find file types](#find-file-types)
@@ -1111,6 +1114,117 @@ rm -r ready_backup/
 ## Text Processing
 
 ### The `sort` command
+
+- The sort program sorts the contents of standard input, or one or more files specified on the command line, and sends the results to standard output
+- By default, it sorts lines in alphabetical order and prints the result to the screen (stdout) without modifying the original file
+- Syntax: `sort [option] [file_path | stdin(0)]`
+- Key Parameters:
+  - `-r` (Reverse): Sorts the data in descending order (Z to A).
+
+  - `-n` (Numerical): Sorts based on numerical value rather than just the first digit (e.g., ensuring "10" comes after "2").
+
+  - `-k` (Column/Key): Sorts by a specific column (e.g., -k 2 to sort by last names).
+
+  - `-c` (Check): Checks if a file is already sorted.
+
+  - `-u` (Unique): Sorts the file and removes duplicates in a single step.
+
+- Practical Use Case:
+  - Standard: `sort users.txt`
+  - Using Pipes: `cat users.txt | sort`
+  - We pipe the results into `head` to limit the results to the first 10 lines. We can produce a numerically sorted list to show the 10 largest consumers of space this way `du -s /usr/share/* | sort -nr | head`
+  - **William Shotts** By default, `sort` sees this line as having two fields. The first field contains these characters: "William". The second field contains these characters: "Shotts". This means that whitespace characters (spaces and tabs) are used as delimiters between fields
+
+```bash
+du -s /usr/share/* | sort -nr | head
+
+# 509940 /usr/share/locale-langpack
+# 242660 /usr/share/doc
+# 197560 /usr/share/fonts
+# 179144 /usr/share/gnome
+# 146764 /usr/share/myspell
+# 144304 /usr/share/gimp
+# 135880 /usr/share/dict
+# 76508 /usr/share/icons
+# 68072 /usr/share/apps
+# 62844 /usr/share/foomatic
+```
+
+```bash
+ls -l /usr/bin | sort -nrk 5 | head
+
+# -rwxr-xr-x 1 root root 8234216 2016-04-07 17:42 inkscape
+# -rwxr-xr-x 1 root root 8222692 2016-04-07 17:42 inkview
+# -rwxr-xr-x 1 root root 3746508 2016-03-07 23:45 gimp-2.4
+# -rwxr-xr-x 1 root root 3654020 2016-08-26 16:16 quanta
+# -rwxr-xr-x 1 root root 2928760 2016-09-10 14:31 gdbtui
+# -rwxr-xr-x 1 root root 2928756 2016-09-10 14:31 gdb
+# -rwxr-xr-x 1 root root 2602236 2016-10-10 12:56 net
+# -rwxr-xr-x 1 root root 2304684 2016-10-10 12:56 rpcclient
+# -rwxr-xr-x 1 root root 2241832 2016-04-04 05:56 aptitude
+# -rwxr-xr-x 1 root root 2202476 2016-10-10 12:56 smbcacls
+```
+
+#### Multiple sort keys
+
+- distros.txt file
+
+```
+Distribution   Version   Release Date
+SUSE           10.2      12/07/2006
+Fedora         10        11/25/2008
+SUSE           11.0      06/19/2008
+Ubuntu         8.04      04/24/2008
+Fedora         8         11/08/2007
+SUSE           10.3      10/04/2007
+Ubuntu         6.10      10/26/2006
+Fedora         7         05/31/2007
+Ubuntu         7.10      10/18/2007
+Ubuntu         7.04      04/19/2007
+SUSE           10.1      05/11/2006
+Fedora         6         10/24/2006
+Fedora         9         05/13/2008
+Ubuntu         6.06      06/01/2006
+Ubuntu         8.10      10/30/2008
+Fedora         5         03/20/2006
+```
+
+- We want to perform an alphabetic sort on the first field and then a numeric sort on the second field. `sort` allows multiple instances of the `-k` option so that multiple sort keys can be specified
+- Here is the syntax for our multikey sort `sort --key=1,1 --key=2n distros.txt`
+  - The first key `--key=1,1`, we specified 1,1, which means “start at field 1 and end at field 1
+  - The second key `--key=2n`, which means field 2 is the sort key and that the sort should be numeric
+- An option letter may be included at the end of a key specifier to indicate the type of sort to
+  be performed. These option letters are the same as the global options for the `sort` command
+  - b (ignore leading blanks)
+  - n (numeric sort)
+  - r (reverse sort)
+
+#### Offsets in `--key`
+
+- The key option allows specification of **offsets** within fields, so we can define keys within fields
+  `sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt` or `sort --key 3.7nbr -k 3.1nbr --key 3.4nbr distros.txt`
+  - By specifying `-k 3.7`, we instruct sort to use a sort key that begins at the seventh character within the third field, which corresponds to the start of the year
+  - Likewise, we specify `-k 3.1` and `-k 3.4` to isolate the month and day portions of the date
+
+#### Some files don’t use tabs and spaces as field delimiters
+
+```
+head /etc/passwd
+
+# root:x:0:0:root:/root:/bin/bash
+# daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+# bin:x:2:2:bin:/bin:/bin/sh
+# sys:x:3:3:sys:/dev:/bin/sh
+# sync:x:4:65534:sync:/bin:/bin/sync
+# games:x:5:60:games:/usr/games:/bin/sh
+# man:x:6:12:man:/var/cache/man:/bin/sh
+# lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+# mail:x:8:8:mail:/var/mail:/bin/sh
+# news:x:9:9:news:/var/spool/news:/bin/sh
+```
+
+- So how would we `sort` this file using a key field? `sort` provides the `-t` option to define the
+  field separator character ` sort -t ':' -k 7 /etc/passwd | head`. By specifying the colon character as the field separator, we can sort on the seventh field
 
 ### The `uniq` command
 
