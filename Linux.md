@@ -37,6 +37,9 @@
       - [Case 1: The Successful Redirect (`> file 2>&1`)](#case-1-the-successful-redirect--file-21)
       - [Case 2: The Failed Redirect (`2>&1 > out.txt`)](#case-2-the-failed-redirect-21--outtxt)
       - [Summary](#summary)
+  - [What about stdin](#what-about-stdin)
+  - [The Stdin Redirector (`<`)](#the-stdin-redirector-)
+  - [Chaining Concepts](#chaining-concepts)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -476,6 +479,34 @@ command > out.txt 2>&1
 | --------------------- | ------- | ------------------------------------------------------------------ |
 | `command > file 2>&1` | Success | `1` (stdout) is redirected to file first; `2` (stderr) follows it. |
 | `command 2>&1 > file` | Partial | `2` goes to terminal (old stdout); then `1` is redirected to file. |
+
+## What about stdin
+
+- By default, **stdin** is connected to your keyboard. When you run a command like `wc -l` (word count) or `cat` without specifying a file, the program doesn't finish; it waits for you to type.
+  - Interactive Input: You type your data directly into the terminal.
+
+  - Ending Input: To tell the program you are finished typing, you use **Ctrl + D**. This sends an "End of File" (EOF) signal, prompting the program to process what you wrote and exit.
+
+## The Stdin Redirector (`<`)
+
+- Just as we use `>` to push output into a file, we use `<` to pull data from a file and "pour" it into a command's input stream.
+
+- Syntax: `command < file.txt`
+
+- How it works: The shell opens the file and feeds its content into the command as if you were typing it manually.
+
+## Chaining Concepts
+
+- The true power of **stdin** is revealed when you combine it with **stdout** redirection. You can create a "pipeline" of data flow:
+
+- Example: `cat < input.txt > output.txt`
+  - The shell reads **input.txt**.
+
+  - It feeds that text into `cat` via **stdin**.
+
+  - cat outputs that text to **stdout**.
+
+  - The shell redirects that **stdout** into **output.txt.**
 
 # Managing Users and Groups
 
