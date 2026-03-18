@@ -490,6 +490,8 @@ command > out.txt 2>&1
 
 ```bash
 ls -l /bin/usr 2> /dev/null
+
+# Don't print error messages (stderr 2) to the terminal
 ```
 
 ## What about stdin
