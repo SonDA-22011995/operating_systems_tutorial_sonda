@@ -1087,6 +1087,13 @@ rm -r ready_backup/
   - Basic usage: `command | tee output.txt`
   - Appending: `command | tee -a output.txt` (The `-a` flag prevents overwriting the file).
 
+- How it looks in a chain `echo "Hello" | tee hello.txt | wc -c`
+  - `echo` sends "Hello" to the pipe.
+
+  - `tee` catches "Hello", writes it into hello.txt, and then passes "Hello" out to the next pipe.
+
+  - `wc -c` receives "Hello" and counts the characters.
+
 - Practical Use Case: Logging and Debugging: `ping google.com 2>&1 | tee network_log.txt`
   - `ping` command to troubleshoot internet issues
   - Why `2>&1` ? As we learned earlier, errors (stderr) usually bypass pipes. By redirecting stderr to stdout first, tee can "see" the error messages.
