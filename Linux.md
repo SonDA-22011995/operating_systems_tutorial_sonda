@@ -82,7 +82,11 @@
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
       - [How to edit files](#how-to-edit-files)
-  - [The `tee` command](#the-tee-command)
+  - [Pipelines](#pipelines)
+    - [The `tee` command](#the-tee-command)
+  - [Text Processing](#text-processing)
+    - [The `sort` command](#the-sort-command)
+    - [The `uniq` command](#the-uniq-command)
   - [The `find` Command](#the-find-command)
     - [Find file types](#find-file-types)
     - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -1079,7 +1083,9 @@ rm -r ready_backup/
   - Mac `brew install nano`
   - Ubuntu `apt-get install -y nano`
 
-## The `tee` command
+## Pipelines
+
+### The `tee` command
 
 - The `tee` command reads **standard input-stdin 0** and copies it to both **standard output-stdout 1** (allowing the data to continue down the pipeline) and to one or more files
 
@@ -1101,6 +1107,12 @@ rm -r ready_backup/
 
 - Why is it called "tee"?
   - The name comes from a T-junction used in plumbing. Just like a pipe shaped like a "T" splits water into two directions, the tee command splits your data stream into two directions: the file and the terminal.
+
+## Text Processing
+
+### The `sort` command
+
+### The `uniq` command
 
 ## The `find` Command
 
