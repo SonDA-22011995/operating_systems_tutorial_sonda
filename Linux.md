@@ -6,19 +6,6 @@
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
 - [The Linux filesystem](#the-linux-filesystem)
-  - [Standard streams: stdin, stdout, stderr](#standard-streams-stdin-stdout-stderr)
-    - [Redirecting Standard Output](#redirecting-standard-output)
-    - [Why Redirection Sometimes "Fails"](#why-redirection-sometimes-fails)
-  - [Redirect Standard Error](#redirect-standard-error)
-    - [Why Redirect Standard Error?](#why-redirect-standard-error)
-    - [Redirection Syntax](#redirection-syntax)
-  - [Redirect stderr to stdout](#redirect-stderr-to-stdout)
-    - [Why Redirect stderr to stdout?](#why-redirect-stderr-to-stdout)
-    - [The Syntax](#the-syntax)
-    - [Redirection is Sequential](#redirection-is-sequential)
-      - [Case 1: The Successful Redirect (`> file 2>&1`)](#case-1-the-successful-redirect--file-21)
-      - [Case 2: The Failed Redirect (`2>&1 > out.txt`)](#case-2-the-failed-redirect-21--outtxt)
-      - [Summary](#summary)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -37,6 +24,19 @@
     - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
+  - [Standard streams: stdin, stdout, stderr](#standard-streams-stdin-stdout-stderr)
+    - [Redirecting Standard Output](#redirecting-standard-output)
+    - [Why Redirection Sometimes "Fails"](#why-redirection-sometimes-fails)
+  - [Redirect Standard Error](#redirect-standard-error)
+    - [Why Redirect Standard Error?](#why-redirect-standard-error)
+    - [Redirection Syntax](#redirection-syntax)
+  - [Redirect stderr to stdout](#redirect-stderr-to-stdout)
+    - [Why Redirect stderr to stdout?](#why-redirect-stderr-to-stdout)
+    - [The Syntax](#the-syntax)
+    - [Redirection is Sequential](#redirection-is-sequential)
+      - [Case 1: The Successful Redirect (`> file 2>&1`)](#case-1-the-successful-redirect--file-21)
+      - [Case 2: The Failed Redirect (`2>&1 > out.txt`)](#case-2-the-failed-redirect-21--outtxt)
+      - [Summary](#summary)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -130,120 +130,6 @@
 - openSUSE
 
 # The Linux filesystem
-
-## Standard streams: stdin, stdout, stderr
-
-- The Three Standard Streams
-
-| Stream Name     | File Descriptor | Purpose                                                             |
-| --------------- | --------------- | ------------------------------------------------------------------- |
-| Standard Input  | stdin (0)       | Data flowing into the program (usually from your keyboard).         |
-| Standard Output | stdout (1)      | Normal data flowing out of the program (success messages, results). |
-| Standard Error  | stderr (2)      | Error messages flowing out of the program (failure alerts).         |
-
-### Redirecting Standard Output
-
-- In Bash, you can redirect the output of a command away from the terminal and into a file using specific operators:
-
-- The Overwrite Operator (`>`): \* Usage: `command > file.txt`
-  - Behavior: It takes the output of the command and writes it to the specified file. If the file doesn't exist, it creates it. If it does exist, it wipes the previous content and replaces it with the new output.
-
-- The Append Operator (`>>`):
-  - Usage: `command >> file.txt`
-
-  - Behavior: Instead of overwriting, this adds the new output to the end of the existing file. This is ideal for logs or building a history of command results.
-
-- You noticed a curious behavior: when a command fails (like trying to get the size of a non-existent file), the error message still prints to the screen instead of going into your file. Why this happens:
-  - Bash uses different "channels" (file descriptors) for different types of output:
-    - **Standard Output** (stdout): This is for successful program data. It is represented by the number 1.
-    - **Standard Error** (stderr): This is specifically for error messages. It is represented by the number 2.
-  - When you use `>` or `>>`, you are—by default—only redirecting stdout (1). The error messages on stderr (2) remain linked to your terminal screen.
-
-### Why Redirection Sometimes "Fails"
-
-- When you use the `>` or `>>` operators without a number, Bash assumes you are talking about **Stream 1 (stdout)**.Example `du -h output.txt`
-  - The Success Case: When `du -h` finds your file, it sends the size to **Stream 1**. Your redirection captures it and puts it in the file.
-
-  - The Error Case: When `du` can't find a file, it sends the "No such file" message to **Stream 2** (stderr).
-
-  - The Result: Because your redirection was only listening to **Stream 1**, **Stream 2** remains "unplugged" and defaults to its original destination: your screen.
-
-## Redirect Standard Error
-
-### Why Redirect Standard Error?
-
-- There are two primary reasons to redirect stderr:
-  - To Silence Noise: If a program produces irrelevant error messages, you can redirect them to a "null" location so they don't clutter your terminal or interfere with scripts.
-
-  - To Log for Later: If you run a high-output program (like a daily automated task), you might want to discard the successful output but save the errors into a file to review them later.
-
-### Redirection Syntax
-
-- Redirecting stdout (Stream 1):
-  - Short version: `command > file.txt`
-
-  - Verbose version: `command 1> file.txt`
-
-- Redirecting stderr (Stream 2):
-  - Captures errors only: `command 2> error.txt`
-
-  - Appends errors to the file instead of overwriting `command 2>> error.txt`
-
-- Combined Redirection:
-  - Sends successes to one file and errors to another: `command > output.txt 2> error.txt`
-
-  - Verbose version: `command 1> output.txt 2> error.txt`
-
-## Redirect stderr to stdout
-
-### Why Redirect stderr to stdout?
-
-- Unified Logging: It allows you to store both normal program output and error messages in a single file without having to list the filename multiple times in your command.
-
-- Piping: Standard Linux pipes (`|`) only pass **stdout** to the next command. If you want to filter or process error messages using a tool like grep, you must first redirect **stderr** into the **stdout** stream.
-
-### The Syntax
-
-```bash
-command > out.txt 2>&1
-```
-
-- `> out.txt`: Redirects stdout to the file.
-
-- `2>&1`: Redirects stderr to the same destination as stdout.
-
-### Redirection is Sequential
-
-- When you run a command, the shell doesn't look at all the redirections as one single instruction. Instead, it processes them **step-by-step** from left to right before the command even starts
-
-#### Case 1: The Successful Redirect (`> file 2>&1`)
-
-- In this scenario, the shell follows these steps:
-
-- `> out.txt`: The shell sees this first. it points stdout (1) to the file **out.txt**.
-
-- `2>&1`: Next, the shell sees this. It says "make stderr (2) point to wherever stdout (1) is pointing right now." Since stdout is already pointing to the file, stderr follows it there.
-
-- Result: Both streams end up in the file
-
-#### Case 2: The Failed Redirect (`2>&1 > out.txt`)
-
-- When you swap the order, the logic breaks because of the timing:
-
-- `2>&1`: The shell sees this first. At this exact moment, stdout (1) is still pointing to the terminal. So, the shell points stderr (2) to the terminal.
-
-- `> out.txt`: Now the shell sees this. It moves stdout (1) to the file.
-
-- The Conflict: You moved stdout, but you didn't move stderr! Stderr is still "stuck" pointing to the terminal because that's where stdout was when the mapping was made.
-
-- Result: Errors hit your screen, while normal output goes to the file.
-
-#### Summary
-
-| Command               | Result  | Why                                                                |
-| --------------------- | ------- | ------------------------------------------------------------------ |
-| `command > file 2>&1` | Success | `1` (stdout) is redirected to file first; `2` (stderr) follows it. |
-| `command 2>&1 > file` | Partial | `2` goes to terminal (old stdout); then `1` is redirected to file. |
 
 ## Important Facts About Filenames
 
@@ -476,6 +362,120 @@ rm [[:alnum:]]*
 | `[[:upper:]]*`           | Beginning with an **uppercase letter**                 | Tất cả các file bắt đầu bằng chữ cái viết hoa.                          |
 | `[![:digit:]]*`          | **Not** beginning with a **numeral**                   | Tất cả các file không bắt đầu bằng con số.                              |
 | `*[[:lower:]123]`        | Ending with **lowercase** or **1, 2, 3**               | File kết thúc bằng một chữ cái thường hoặc một trong các số 1, 2, 3.    |
+
+## Standard streams: stdin, stdout, stderr
+
+- The Three Standard Streams
+
+| Stream Name     | File Descriptor | Purpose                                                             |
+| --------------- | --------------- | ------------------------------------------------------------------- |
+| Standard Input  | stdin (0)       | Data flowing into the program (usually from your keyboard).         |
+| Standard Output | stdout (1)      | Normal data flowing out of the program (success messages, results). |
+| Standard Error  | stderr (2)      | Error messages flowing out of the program (failure alerts).         |
+
+### Redirecting Standard Output
+
+- In Bash, you can redirect the output of a command away from the terminal and into a file using specific operators:
+
+- The Overwrite Operator (`>`): \* Usage: `command > file.txt`
+  - Behavior: It takes the output of the command and writes it to the specified file. If the file doesn't exist, it creates it. If it does exist, it wipes the previous content and replaces it with the new output.
+
+- The Append Operator (`>>`):
+  - Usage: `command >> file.txt`
+
+  - Behavior: Instead of overwriting, this adds the new output to the end of the existing file. This is ideal for logs or building a history of command results.
+
+- You noticed a curious behavior: when a command fails (like trying to get the size of a non-existent file), the error message still prints to the screen instead of going into your file. Why this happens:
+  - Bash uses different "channels" (file descriptors) for different types of output:
+    - **Standard Output** (stdout): This is for successful program data. It is represented by the number 1.
+    - **Standard Error** (stderr): This is specifically for error messages. It is represented by the number 2.
+  - When you use `>` or `>>`, you are—by default—only redirecting stdout (1). The error messages on stderr (2) remain linked to your terminal screen.
+
+### Why Redirection Sometimes "Fails"
+
+- When you use the `>` or `>>` operators without a number, Bash assumes you are talking about **Stream 1 (stdout)**.Example `du -h output.txt`
+  - The Success Case: When `du -h` finds your file, it sends the size to **Stream 1**. Your redirection captures it and puts it in the file.
+
+  - The Error Case: When `du` can't find a file, it sends the "No such file" message to **Stream 2** (stderr).
+
+  - The Result: Because your redirection was only listening to **Stream 1**, **Stream 2** remains "unplugged" and defaults to its original destination: your screen.
+
+## Redirect Standard Error
+
+### Why Redirect Standard Error?
+
+- There are two primary reasons to redirect stderr:
+  - To Silence Noise: If a program produces irrelevant error messages, you can redirect them to a "null" location so they don't clutter your terminal or interfere with scripts.
+
+  - To Log for Later: If you run a high-output program (like a daily automated task), you might want to discard the successful output but save the errors into a file to review them later.
+
+### Redirection Syntax
+
+- Redirecting stdout (Stream 1):
+  - Short version: `command > file.txt`
+
+  - Verbose version: `command 1> file.txt`
+
+- Redirecting stderr (Stream 2):
+  - Captures errors only: `command 2> error.txt`
+
+  - Appends errors to the file instead of overwriting `command 2>> error.txt`
+
+- Combined Redirection:
+  - Sends successes to one file and errors to another: `command > output.txt 2> error.txt`
+
+  - Verbose version: `command 1> output.txt 2> error.txt`
+
+## Redirect stderr to stdout
+
+### Why Redirect stderr to stdout?
+
+- Unified Logging: It allows you to store both normal program output and error messages in a single file without having to list the filename multiple times in your command.
+
+- Piping: Standard Linux pipes (`|`) only pass **stdout** to the next command. If you want to filter or process error messages using a tool like grep, you must first redirect **stderr** into the **stdout** stream.
+
+### The Syntax
+
+```bash
+command > out.txt 2>&1
+```
+
+- `> out.txt`: Redirects stdout to the file.
+
+- `2>&1`: Redirects stderr to the same destination as stdout.
+
+### Redirection is Sequential
+
+- When you run a command, the shell doesn't look at all the redirections as one single instruction. Instead, it processes them **step-by-step** from left to right before the command even starts
+
+#### Case 1: The Successful Redirect (`> file 2>&1`)
+
+- In this scenario, the shell follows these steps:
+
+- `> out.txt`: The shell sees this first. it points stdout (1) to the file **out.txt**.
+
+- `2>&1`: Next, the shell sees this. It says "make stderr (2) point to wherever stdout (1) is pointing right now." Since stdout is already pointing to the file, stderr follows it there.
+
+- Result: Both streams end up in the file
+
+#### Case 2: The Failed Redirect (`2>&1 > out.txt`)
+
+- When you swap the order, the logic breaks because of the timing:
+
+- `2>&1`: The shell sees this first. At this exact moment, stdout (1) is still pointing to the terminal. So, the shell points stderr (2) to the terminal.
+
+- `> out.txt`: Now the shell sees this. It moves stdout (1) to the file.
+
+- The Conflict: You moved stdout, but you didn't move stderr! Stderr is still "stuck" pointing to the terminal because that's where stdout was when the mapping was made.
+
+- Result: Errors hit your screen, while normal output goes to the file.
+
+#### Summary
+
+| Command               | Result  | Why                                                                |
+| --------------------- | ------- | ------------------------------------------------------------------ |
+| `command > file 2>&1` | Success | `1` (stdout) is redirected to file first; `2` (stderr) follows it. |
+| `command 2>&1 > file` | Partial | `2` goes to terminal (old stdout); then `1` is redirected to file. |
 
 # Managing Users and Groups
 
