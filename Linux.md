@@ -1363,6 +1363,15 @@ echo 'sonda vo doi' | rev
 
 - The "Empty Field" Trap: If your data has consecutive delimiters (e.g., two spaces in a row), cut treats the space between them as an empty field. This requires careful counting to reach the correct data.
 
+```bash
+uptime
+#   16:28:12 up  2:01,  1 user,  load average: 0.00, 0.00, 0.00
+# The output above has one space at the beginning of the line.
+
+uptime | cut -d " " -f 2
+# 16:29:35
+```
+
 ## The `find` Command
 
 - The `find` program searches **a given directory (and its subdirectories)** for files based on a variety of attributes
