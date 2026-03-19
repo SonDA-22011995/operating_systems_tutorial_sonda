@@ -1228,6 +1228,17 @@ head /etc/passwd
 
 ### The `uniq` command
 
+- The `uniq` command is used to filter out or identify repeated lines in a dataset.
+
+- **Important Limitation**: `uniq` only detects duplicate lines that are adjacent (directly below one another). Because of this, data must almost always be passed through the `sort` command before being piped into `uniq`.
+
+- Common Use Cases:
+  - **Removing Duplicates**: sort file.txt | uniq
+
+  - **Finding Only Duplicates**: Using the `-d` flag (e.g., `sort file.txt | uniq -d`) will print only the lines that appeared more than once.
+
+- The Efficient Method: `sort -u users.txt`. This uses the built-in unique flag within the sort command to handle both tasks at once
+
 ## The `find` Command
 
 - The `find` program searches **a given directory (and its subdirectories)** for files based on a variety of attributes
