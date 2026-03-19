@@ -97,6 +97,8 @@
       - [Cutting by Bytes (-b)](#cutting-by-bytes--b)
       - [Cutting by Characters (-c)](#cutting-by-characters--c)
       - [Cutting by Fields (-f)](#cutting-by-fields--f)
+    - [The `sed` command](#the-sed-command)
+      - [s (substitute) command.](#s-substitute-command)
   - [The `find` Command](#the-find-command)
     - [Find file types](#find-file-types)
     - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -1370,6 +1372,27 @@ uptime
 
 uptime | cut -d " " -f 2
 # 16:29:35
+```
+
+### The `sed` command
+
+- The name `sed` is short for stream editor. It performs text editing on a stream of text, either a set of specified files or standard input
+- A crucial takeaway is that sed is not identical across all systems:
+  - macOS (OS X): Uses the **FreeBSD implementation**.
+  - Linux: Typically uses **GNU sed**.
+  - The Impact: While basic substitutions usually work the same way, complex scripts may behave differently depending on the operating system. It is best practice to test your sed commands on the specific platforms where they will run.
+
+#### s (substitute) command.
+
+- Syntax: `sed 's/search_pattern/replacement/flags'`
+- Delimiters: While the forward slash (/) is the standard delimiter, you can technically use other characters as long as they are consistent throughout the command.
+- The `g` (Global) Flag: By default, sed only replaces the first occurrence in a line. Adding the `g` flag ensures all occurrences are replaced.
+- `sed` supports Regular Expressions (regex) for its search patterns
+- Example:
+
+```bash
+echo 'hello world' | sed 's/world/bash/g'
+# hello bash
 ```
 
 ## The `find` Command
