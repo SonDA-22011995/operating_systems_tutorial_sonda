@@ -93,6 +93,10 @@
     - [The `uniq` command](#the-uniq-command)
     - [The `tr` command](#the-tr-command)
     - [The `rev` Command (Reverse Command)](#the-rev-command-reverse-command)
+    - [The `cut` command](#the-cut-command)
+      - [Cutting by Bytes (-b)](#cutting-by-bytes--b)
+      - [Cutting by Characters (-c)](#cutting-by-characters--c)
+      - [Cutting by Fields (-f)](#cutting-by-fields--f)
   - [The `find` Command](#the-find-command)
     - [Find file types](#find-file-types)
     - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -1327,6 +1331,36 @@ echo 'sonda vo doi' | rev
 
 # iod ov adnos
 ```
+
+### The `cut` command
+
+- The `cut` command, a powerful tool for extracting specific sections of data from files or standard input
+
+#### Cutting by Bytes (-b)
+
+- This mode extracts data based on exact byte positions.
+
+- Usage: `cut -b 1-10` retrieves the first 10 bytes.
+
+- System Differences: The instructor demonstrates that commands like uptime vary by operating system (e.g., Linux vs. macOS), often adding leading spaces. You must account for these variations when defining byte ranges.
+
+#### Cutting by Characters (-c)
+
+- While similar to byte-cutting, this mode is essential for multi-byte characters (like German umlauts ö or Emojis).
+
+- The Difference: An Emoji might take up 3–4 bytes. If you use `-b` to cut in the middle of those bytes, the terminal will display a broken or "replacement" character. Using `-c` ensures you extract the full character regardless of its byte size.
+
+- Ranges: You can specify a single character (`-c 2`), a range (`-c 1-5`), or everything from a point onward (`-c 2-`).
+
+#### Cutting by Fields (-f)
+
+- This is described as the most powerful mode, allowing you to extract data based on columns or "fields."
+
+- Delimiters (`-d`): By default, cut expects **Tab** characters as separators. To use a different separator (like a space), you must define the delimiter using `-d`.
+
+- Field Selection: You can pick specific columns, such as `-f 1` for the first field or `-f 1,3` for the first and third.
+
+- The "Empty Field" Trap: If your data has consecutive delimiters (e.g., two spaces in a row), cut treats the space between them as an empty field. This requires careful counting to reach the correct data.
 
 ## The `find` Command
 
