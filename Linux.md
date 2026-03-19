@@ -92,6 +92,7 @@
       - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
     - [The `uniq` command](#the-uniq-command)
     - [The `tr` command](#the-tr-command)
+    - [The `rev` Command (Reverse Command)](#the-rev-command-reverse-command)
   - [The `find` Command](#the-find-command)
     - [Find file types](#find-file-types)
     - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -1315,6 +1316,16 @@ echo 'sonda vo doi' | tr -d ' '
 echo 'sonda vo doi' | tr -d 's'
 
 # onda vo doi
+```
+
+### The `rev` Command (Reverse Command)
+
+- The `rev` command is a straightforward tool used to reverse the order of characters in a string.
+
+```bash
+echo 'sonda vo doi' | rev
+
+# iod ov adnos
 ```
 
 ## The `find` Command
