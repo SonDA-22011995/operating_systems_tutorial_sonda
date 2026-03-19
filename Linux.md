@@ -91,6 +91,7 @@
       - [Offsets in `--key`](#offsets-in---key)
       - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
     - [The `uniq` command](#the-uniq-command)
+    - [The `tr` command](#the-tr-command)
   - [The `find` Command](#the-find-command)
     - [Find file types](#find-file-types)
     - [Search by file size and filename](#search-by-file-size-and-filename)
@@ -1260,6 +1261,61 @@ head /etc/passwd
   - **Finding Only Duplicates**: Using the `-d` flag (e.g., `sort file.txt | uniq -d`) will print only the lines that appeared more than once.
 
 - The Efficient Method: `sort -u users.txt`. This uses the built-in unique flag within the sort command to handle both tasks at once
+
+### The `tr` command
+
+- The `tr` command is used for character-level replacements within a pipe. It does not look for whole words, but rather maps individual characters from one set to another.
+- Basic Replacement: You can replace specific characters (e.g., changing 'B' to 'D').
+
+```bash
+echo 'bash' | tr 'b' 'd'
+
+# dash
+```
+
+- Multiple Characters: If you provide multiple characters, `tr` maps them positionally (e.g., the 1st character of set A is replaced by the 1st of set B).
+
+```bash
+echo 'sonda vo doi' | tr 'sonda' 'haopt'
+
+# haopt va pai
+```
+
+- Unequal Ranges: If the replacement set is smaller than the search set, tr typically uses the last character of the replacement set for all remaining matches.
+
+```bash
+echo 'sonda vo doi' | tr 'a-z' '1-2'
+
+# 22221 22 222
+
+echo 'sonda ban that vo doi' | tr 'a-z' '1-9.'
+
+# ...41 21. .81. .. 4.9
+# Because
+# 1 2 3 4 5 6 7 8 9 .
+# a b c d e f j h i j k ...
+# so the characters outside the range a-i are replaced by .
+```
+
+- Character Ranges: You can use ranges like `a-z` and `A-Z`. This is a feature of the `tr` program itself, not the shell, and is commonly used to **convert text to uppercase**
+
+```bash
+echo 'awesome' | tr 'a-z' 'A-Z'
+
+# AWESOMW
+```
+
+- Deleting Characters: Using the -d flag allows you to remove specific characters, such as deleting all spaces in a string.
+
+```bash
+echo 'sonda vo doi' | tr -d ' '
+
+# sondavodoi
+
+echo 'sonda vo doi' | tr -d 's'
+
+# onda vo doi
+```
 
 ## The `find` Command
 
