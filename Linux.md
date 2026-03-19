@@ -84,6 +84,7 @@
       - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
+    - [The `grep` Command](#the-grep-command)
   - [Text Processing](#text-processing)
     - [The `sort` command](#the-sort-command)
       - [Multiple sort keys](#multiple-sort-keys)
@@ -1110,6 +1111,27 @@ rm -r ready_backup/
 
 - Why is it called "tee"?
   - The name comes from a T-junction used in plumbing. Just like a pipe shaped like a "T" splits water into two directions, the tee command splits your data stream into two directions: the file and the terminal.
+
+### The `grep` Command
+
+- `grep` is a powerful program used to find text patterns within files
+
+- Key Usage & Parameters:
+  - Basic Syntax: grep -F "pattern" filename
+
+  - The `-F` Flag (Fixed Strings): By default, grep uses "Regular Expressions" (complex search patterns). Using -F tells grep to treat the pattern as a plain, literal string, making it simpler to use for beginners.
+
+  - Standard Input (stdin): Like sort and `uniq`, `grep` is frequently used in pipes: `command | grep "pattern"`
+
+- Why Avoid Binary Data? While grep can technically scan any file (including images or archives), the lecture strongly advises against using it on binary files for three reasons:
+  - False Positives: You might accidentally match a random byte sequence that isn't actually the text you're looking for.
+
+  - Performance: `grep` is optimized for text; scanning large binary files can be extremely slow.
+
+  - Terminal Corruption: Binary files contain non-printable characters. If grep finds a match and tries to print it, those characters can "break" your terminal, causing it to display gibberish or change settings unexpectedly
+
+- Practical Examples
+  - Filtering File Lists: `ls | grep -F "file"`. Only filenames containing the word "file" will be displayed
 
 ## Text Processing
 
