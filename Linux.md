@@ -1302,7 +1302,7 @@ echo 'sonda ban that vo doi' | tr 'a-z' '1-9.'
 ```bash
 echo 'awesome' | tr 'a-z' 'A-Z'
 
-# AWESOMW
+# AWESOME
 ```
 
 - Deleting Characters: Using the -d flag allows you to remove specific characters, such as deleting all spaces in a string.
