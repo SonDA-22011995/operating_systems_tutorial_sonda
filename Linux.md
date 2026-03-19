@@ -1335,6 +1335,7 @@ echo 'sonda vo doi' | rev
 ### The `cut` command
 
 - The `cut` command, a powerful tool for extracting specific sections of data from files or standard input
+- If the text contains Unicode characters (UTF-8), do not use `cut`. `cut`good for ASCII, `awk/perl` good for Unicode
 
 #### Cutting by Bytes (-b)
 
