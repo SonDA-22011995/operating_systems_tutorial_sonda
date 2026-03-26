@@ -67,6 +67,9 @@
     - [Definition and Conventions](#definition-and-conventions)
     - [Viewing Variables](#viewing-variables)
     - [Accessing Variables](#accessing-variables)
+    - [`HOME` The Home Directory](#home-the-home-directory)
+    - [`PWD` \& `OLDPWD` (The Path Tracking)](#pwd--oldpwd-the-path-tracking)
+  - [`USER` The Unix Username](#user-the-unix-username)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -782,7 +785,7 @@ ls -l /bin/usr 2> /dev/null
 
 ### Viewing Variables
 
-- To list all currently active environment variables, use the `env` command.
+- To list all currently active environment variables, use the `env` or `printenv` command.
 
 ```bash
 env
@@ -806,6 +809,30 @@ env
 - Curly Braces `{ }`: These explicitly define where the variable name starts and ends. This prevents Bash from getting confused if you add text immediately after the variable (e.g., `${PATH}text` works, whereas `$PATHtext` would make Bash look for a non-existent variable named `PATHtext`).
 
 - Double Quotes `" "`: These prevent "Shell Expansion." Without quotes, if a variable contains special characters (like `*`), Bash might try to rewrite or execute those characters before displaying the value. Quotes ensure you see the actual, raw value.
+
+### `HOME` The Home Directory
+
+- Purpose: Stores the absolute path to the current user's home directory.
+- You can use `cd "${HOME}"` to jump user's home directory
+
+### `PWD` & `OLDPWD` (The Path Tracking)
+
+- `PWD` (Print Working Directory): Stores the path of your current directory.
+
+- Note: While the command `pwd` and the variable `PWD` yield the same information, the command is a program that prints the data, while the variable is the data itself.
+
+- `OLDPWD`: Stores the path of the previous directory you were in before your last cd command.
+
+```bash
+echo "${PWD}" - "${OLDPWD}"
+```
+
+- You can use `cd "${OLDPWD}"` to jump back to your previous location
+
+## `USER` The Unix Username
+
+- Purpose: Stores the current user's technical Unix username.
+-
 
 # Bash Shell
 
