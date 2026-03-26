@@ -29,6 +29,7 @@
     - [Managing Software (Install/Remove)](#managing-software-installremove)
   - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
+  - [What is a shell?](#what-is-a-shell)
   - [Explaining the command structure](#explaining-the-command-structure)
   - [Consulting the manual](#consulting-the-manual)
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
@@ -399,6 +400,8 @@ sudo cd vandtt
   - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
 
 # Introducing the Linux shell
+
+## What is a shell?
 
 - Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line interface**. In the old days, this was called the **shell**
 - The shell is a program that has two streams: an input stream and an output stream. The input is a
