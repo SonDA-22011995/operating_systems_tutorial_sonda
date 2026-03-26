@@ -30,6 +30,7 @@
   - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
+  - [Shell command types](#shell-command-types)
   - [Explaining the command structure](#explaining-the-command-structure)
   - [Consulting the manual](#consulting-the-manual)
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
@@ -62,6 +63,10 @@
   - [Pipes - Data processing through command chaining](#pipes---data-processing-through-command-chaining)
     - [What is a Pipe?](#what-is-a-pipe)
     - [Practical Examples:](#practical-examples)
+  - [Environment variables](#environment-variables)
+    - [Definition and Conventions](#definition-and-conventions)
+    - [Viewing Variables](#viewing-variables)
+    - [Accessing Variables](#accessing-variables)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -426,6 +431,17 @@ cat /etc/passwd | grep <<user>>
 echo $0
 ```
 
+## Shell command types
+
+- **Internal commands** are built inside the shell
+- **External commands** are installed separately
+- For example, you can check what type of command `cd` (change directory) is
+
+```bash
+type cd
+# cd is a shell builtin
+```
+
 ## Explaining the command structure
 
 - In a nutshell, Unix and Linux commands have the following form:
@@ -576,7 +592,7 @@ rm [[:alnum:]]*
   - Instead of using `rm *`, use `rm ./*`
   - Why this works:
     - Explicit Pathing: By adding `./`, you are explicitly telling the shell that the expansion refers to a path in the current directory.
-    - Neutralizing Flags: A file expanded as `./-rf` is seen by the system as a file path. Because it starts with a dot rather than a dash, the rm command will not interpret it as the "recursive/force" flag. It will simply try (and likely fail) to delete a file by 그 name, leaving your directories safe.
+    - Neutralizing Flags: A file expanded as `./-rf` is seen by the system as a file path. Because it starts with a dot rather than a dash, the rm command will not interpret it as the "recursive/force" flag. It will simply try (and likely fail) to delete a file by name, leaving your directories safe.
 
 ## Standard streams: stdin, stdout, stderr
 
@@ -753,6 +769,43 @@ ls -l /bin/usr 2> /dev/null
 - Filtering Errors `du file1 file2 2>&1 >/dev/null | wc -l`
   - You can redirect stderr to stdout (`2>&1`), then redirect the "original" stdout to `/dev/null`.
   - By piping the result to `wc -l`, you can count exactly how many errors occurred without seeing the successful output.
+
+## Environment variables
+
+### Definition and Conventions
+
+- **Purpose**: Environment variables store configuration settings that influence the behavior of the shell and the programs running within it.
+
+- **Source**: Unlike "Bash variables" (which are local to the shell), environment variables are provided by the operating system.
+
+- **Naming**: By convention, they are written in UPPERCASE to distinguish them from standard Bash variables.
+
+### Viewing Variables
+
+- To list all currently active environment variables, use the `env` command.
+
+```bash
+env
+
+# SHELL=/bin/bash
+# WSL_DISTRO_NAME=Ubuntu
+# WT_SESSION=b4eaa57e-17d7-48a1-a4a8-9d38e174a2db
+# NAME=DESKTOP-SMAT1GE
+# PWD=/mnt/d/udemy/Mastering Linux The Comprehensive Guide
+# LOGNAME=sonda
+# HOME=/home/sonda
+# LANG=C.UTF-8
+```
+
+### Accessing Variables
+
+- The most reliable syntax is: `echo "${VARIABLE_NAME}"`
+
+- The Dollar Sign `$`: Tells Bash you are accessing a variable rather than printing literal text.
+
+- Curly Braces `{ }`: These explicitly define where the variable name starts and ends. This prevents Bash from getting confused if you add text immediately after the variable (e.g., `${PATH}text` works, whereas `$PATHtext` would make Bash look for a non-existent variable named `PATHtext`).
+
+- Double Quotes `" "`: These prevent "Shell Expansion." Without quotes, if a variable contains special characters (like `*`), Bash might try to rewrite or execute those characters before displaying the value. Quotes ensure you see the actual, raw value.
 
 # Bash Shell
 
@@ -998,7 +1051,7 @@ cp -R ready ready_backup
 
 - The `rm` command is the standard way to delete files, but it comes with a major warning.
 
-- Deleting Files: Use `rm [filename]` or list multiple files to delete them at once.
+- Deleting Files: Use `rm [option] filename` or list multiple files to delete them at once.
 
 - Example:
 
@@ -1006,7 +1059,7 @@ cp -R ready ready_backup
 rm ann.txt eva.txt
 ```
 
-- ⚠️ The Danger Zone: Unlike clicking "Delete" in a graphic interface, rm does not send files to a Trash or Bin. They are permanently deleted immediately.
+- ⚠️ The Danger Zone: Unlike clicking "Delete" in a graphic interface, `rm` does not send files to a Trash or Bin. They are permanently deleted immediately.
 
 - Deleting Directories (-r): To delete a folder and everything inside it, you must use the recursive flag -r (or -R).
 
@@ -1015,6 +1068,16 @@ rm ann.txt eva.txt
 ```bash
 rm -r ready_backup/
 ```
+
+- `rm -i`: This option enables interactive mode by asking you for acceptance before deleting
+
+```bash
+rm -i output.txt
+
+# rm: remove regular file 'output.txt'?
+```
+
+- `rm -f` : The `-f` option deletes the file by force, without any interaction from the user
 
 ### The `rmdir` Command
 
