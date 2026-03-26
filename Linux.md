@@ -14,6 +14,23 @@
     - [Relative Paths](#relative-paths)
   - [Symbolic Links](#symbolic-links)
   - [Hard Links](#hard-links)
+- [Managing Users and Groups](#managing-users-and-groups)
+  - [Managing users](#managing-users)
+  - [Understanding sudo](#understanding-sudo)
+    - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
+- [Linux Software Management](#linux-software-management)
+  - [The DEB package’s anatomy](#the-deb-packages-anatomy)
+    - [Updating the Package List](#updating-the-package-list)
+    - [Upgrading Software](#upgrading-software)
+    - [Managing Packages (Install/Remove)](#managing-packages-installremove)
+    - [`apt` vs. `apt-get`](#apt-vs-apt-get)
+  - [The RPM packages anatomy](#the-rpm-packages-anatomy)
+    - [Updating the System](#updating-the-system)
+    - [Managing Software (Install/Remove)](#managing-software-installremove)
+  - [Enabling Additional Repositories](#enabling-additional-repositories)
+- [Introducing the Linux shell](#introducing-the-linux-shell)
+  - [Explaining the command structure](#explaining-the-command-structure)
+  - [Consulting the manual](#consulting-the-manual)
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
     - [The Asterisk (`*`) Wildcard](#the-asterisk--wildcard)
     - [The Single Character Wildcard (?)](#the-single-character-wildcard-)
@@ -44,23 +61,6 @@
   - [Pipes - Data processing through command chaining](#pipes---data-processing-through-command-chaining)
     - [What is a Pipe?](#what-is-a-pipe)
     - [Practical Examples:](#practical-examples)
-- [Managing Users and Groups](#managing-users-and-groups)
-  - [Managing users](#managing-users)
-  - [Understanding sudo](#understanding-sudo)
-    - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
-- [Linux Software Management](#linux-software-management)
-  - [The DEB package’s anatomy](#the-deb-packages-anatomy)
-    - [Updating the Package List](#updating-the-package-list)
-    - [Upgrading Software](#upgrading-software)
-    - [Managing Packages (Install/Remove)](#managing-packages-installremove)
-    - [`apt` vs. `apt-get`](#apt-vs-apt-get)
-  - [The RPM packages anatomy](#the-rpm-packages-anatomy)
-    - [Updating the System](#updating-the-system)
-    - [Managing Software (Install/Remove)](#managing-software-installremove)
-  - [Enabling Additional Repositories](#enabling-additional-repositories)
-- [Introducing the Linux shell](#introducing-the-linux-shell)
-  - [Explaining the command structure](#explaining-the-command-structure)
-  - [Consulting the manual](#consulting-the-manual)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -257,6 +257,194 @@ Examples:
   - A hard link cannot reference a file outside its own file system. This means a link cannot reference a file that is not on the same disk partition as the link itself.
   - A hard link may not reference a directory.
 - When a hard link is deleted, the link is removed, but the contents of the file itself continue to exist (that is, its space is not deallocated) until all links to the file are deleted.
+
+# Managing Users and Groups
+
+## Managing users
+
+- In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
+  user or user account is identified by a name and a unique identifier, known as a UID.
+
+- Linux categorizes users based on their role and level of access to the system:
+  - **System Accounts**: These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
+
+  - **Regular Users**: These are standard accounts created for people.
+    - They have a dedicated home directory for personal files.
+
+    - They are restricted from accessing other users' files or performing administrative tasks by default.
+
+  - **Superuser** (Root): This is the most powerful account on the system.
+    - It has unrestricted access to every file and setting.
+
+    - It can add/remove users, install software, and modify system configurations.
+
+## Understanding sudo
+
+### Elevating privileges: `sudo`
+
+- The root user is the default superuser account in Linux, and it has the ability to do anything on a
+  system. Ideally, acting as root on a system should generally be avoided due to safety and security
+  reasons.
+- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
+  privilege.
+  - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
+
+  - **Authentication**: When using sudo, the system asks for your user password, not the root password.
+
+  - **Configuration**: Not all users can use sudo. During installation (Ubuntu/CentOS), a user must be designated as an "administrator" or added to the "sudoers" list to have this ability.
+
+- Syntax `sudo command [-option(s)] [argument(s)]`
+
+```bash
+ls /root
+# ls: cannot open directory '/root': Permission denied
+
+sudo ls /root
+# snap
+```
+
+- Built-in command can't run with sudo command
+
+```bash
+sudo cd vandtt
+# sudo: "cd" is a shell built-in command, it cannot be run directly.
+```
+
+- The "Nuclear" Warning: Risk of High Privileges
+  - The most critical takeaway is that sudo removes the system's "safety rails." To demonstrate, the instructor runs a destructive command: `sudo rm -rf /etc`
+
+  - The Result: This command deletes the /etc folder, which contains essential system configuration files.
+
+  - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
+
+  - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
+
+# Linux Software Management
+
+- In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
+- Each Linux distribution comes with several official repositories, but on top of those, you can add some new ones
+  - Ubuntu uses deb packages, as it is based on Debian
+  - Fedora (or Rocky Linux and AlmaLinux) uses rpm packages, as it is based on RHEL
+
+## The DEB package’s anatomy
+
+### Updating the Package List
+
+- Before installing or upgrading software, you must synchronize your local database with the online repositories.
+
+- Command: `sudo apt update`
+
+- Purpose: This does not install new software. It only refreshes the list of available packages and their versions.
+
+- Note: This requires sudo (root privileges) because it accesses protected system files.
+
+### Upgrading Software
+
+- Once the list is updated, you can move to the actual upgrade process.
+- Command
+  - `sudo apt upgrade`: Performs a "small" upgrade. It updates existing packages and, in the apt version, will install new dependencies if required.
+
+  - `sudo apt full-upgrade` (or dist-upgrade): Performs a "large" upgrade. It can install new packages or remove existing ones if they conflict with the upgrade. It is more thorough but carries a slightly higher risk of changing system behavior.
+
+- Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
+
+### Managing Packages (Install/Remove)
+
+- The lecture demonstrates how to add or take away specific tools:
+
+- Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
+
+- Remove: `sudo apt remove <package_name>`.
+
+- Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
+
+### `apt` vs. `apt-get`
+
+- The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
+
+- `apt upgrade` will install new dependencies if needed.
+
+- `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
+
+## The RPM packages anatomy
+
+### Updating the System
+
+- In CentOS, keeping the system current is straightforward because the package manager automatically handles list refreshes.
+
+- Commands: `sudo dnf upgrade` or `sudo dnf update`.
+
+- Key Difference from Ubuntu: Unlike `apt`, you do not need a separate "update" command to refresh package lists; DNF does this automatically before upgrading.
+
+- Rebooting: If the kernel is updated, a system restart is strongly recommended to apply the changes.
+
+### Managing Software (Install/Remove)
+
+- Install: `sudo dnf install <package_name>`
+
+- Remove: `sudo dnf remove <package_name>`
+
+- Legacy Support: The older command `yum` still works as an alias for `dnf` for those familiar with older versions of CentOS.
+
+## Enabling Additional Repositories
+
+- Additional repositories are third-party or non-standard software sources added to a Linux system to install specific applications not available in default repositories
+- Example on CentOS
+  - Install EPEL: `sudo dnf install epel-release` (This adds new "servers" or sources for software).
+
+  - Enable CodeReady Builder (CRB): Many EPEL packages require the CRB power tools. This is enabled via `sudo crb enable`.
+
+  - Refresh: Run `sudo dnf update` again to sync the newly added lists.
+
+  - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
+
+# Introducing the Linux shell
+
+- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line interface**. In the old days, this was called the **shell**
+- The shell is a program that has two streams: an input stream and an output stream. The input is a
+  command given by the user, and the output is the result of that command, or an interpretation of it.
+- In other words, the shell is the primary interface between the user and the machine
+- The main shell in major Linux distributions is called **Bash**, which is an acronym for Bourne Again
+  Shell, named after Steve Bourne, the original creator of the shell in UNIX
+- Alongside Bash, there are other shells available in Linux, such as **ksh**, **tcsh**, and **zsh**
+
+- One shell can be assigned to each user. Users on the same system can use different shells. One way
+  to check the default shell is by accessing the command
+
+```bash
+cat /etc/passwd | grep <<user>>
+
+# <<user>> is user account in linux system
+```
+
+- An easier way to see the current shell is by running the following command
+
+```bash
+echo $0
+```
+
+## Explaining the command structure
+
+- In a nutshell, Unix and Linux commands have the following form:
+  - The command’s name
+  - The command’s options
+  - The command’s arguments
+
+```bash
+command [-option(s)] [argument(s)]
+```
+
+## Consulting the manual
+
+- Almost all commands in Linux have a `--help` option. You can use this for quick reference.
+
+```bash
+ <<commnad_name>> --help
+
+# commnad_name is name of command
+```
+
+- The `man` command is the standard way to read comprehensive, built-in manuals for almost any program. Syntax `man [command]`
 
 ## Wildcards (File name expansion - Globbing)
 
@@ -562,194 +750,6 @@ ls -l /bin/usr 2> /dev/null
 - Filtering Errors `du file1 file2 2>&1 >/dev/null | wc -l`
   - You can redirect stderr to stdout (`2>&1`), then redirect the "original" stdout to `/dev/null`.
   - By piping the result to `wc -l`, you can count exactly how many errors occurred without seeing the successful output.
-
-# Managing Users and Groups
-
-## Managing users
-
-- In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
-  user or user account is identified by a name and a unique identifier, known as a UID.
-
-- Linux categorizes users based on their role and level of access to the system:
-  - **System Accounts**: These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
-
-  - **Regular Users**: These are standard accounts created for people.
-    - They have a dedicated home directory for personal files.
-
-    - They are restricted from accessing other users' files or performing administrative tasks by default.
-
-  - **Superuser** (Root): This is the most powerful account on the system.
-    - It has unrestricted access to every file and setting.
-
-    - It can add/remove users, install software, and modify system configurations.
-
-## Understanding sudo
-
-### Elevating privileges: `sudo`
-
-- The root user is the default superuser account in Linux, and it has the ability to do anything on a
-  system. Ideally, acting as root on a system should generally be avoided due to safety and security
-  reasons.
-- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
-  privilege.
-  - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
-
-  - **Authentication**: When using sudo, the system asks for your user password, not the root password.
-
-  - **Configuration**: Not all users can use sudo. During installation (Ubuntu/CentOS), a user must be designated as an "administrator" or added to the "sudoers" list to have this ability.
-
-- Syntax `sudo command [-option(s)] [argument(s)]`
-
-```bash
-ls /root
-# ls: cannot open directory '/root': Permission denied
-
-sudo ls /root
-# snap
-```
-
-- Built-in command can't run with sudo command
-
-```bash
-sudo cd vandtt
-# sudo: "cd" is a shell built-in command, it cannot be run directly.
-```
-
-- The "Nuclear" Warning: Risk of High Privileges
-  - The most critical takeaway is that sudo removes the system's "safety rails." To demonstrate, the instructor runs a destructive command: `sudo rm -rf /etc`
-
-  - The Result: This command deletes the /etc folder, which contains essential system configuration files.
-
-  - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
-
-  - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
-
-# Linux Software Management
-
-- In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
-- Each Linux distribution comes with several official repositories, but on top of those, you can add some new ones
-  - Ubuntu uses deb packages, as it is based on Debian
-  - Fedora (or Rocky Linux and AlmaLinux) uses rpm packages, as it is based on RHEL
-
-## The DEB package’s anatomy
-
-### Updating the Package List
-
-- Before installing or upgrading software, you must synchronize your local database with the online repositories.
-
-- Command: `sudo apt update`
-
-- Purpose: This does not install new software. It only refreshes the list of available packages and their versions.
-
-- Note: This requires sudo (root privileges) because it accesses protected system files.
-
-### Upgrading Software
-
-- Once the list is updated, you can move to the actual upgrade process.
-- Command
-  - `sudo apt upgrade`: Performs a "small" upgrade. It updates existing packages and, in the apt version, will install new dependencies if required.
-
-  - `sudo apt full-upgrade` (or dist-upgrade): Performs a "large" upgrade. It can install new packages or remove existing ones if they conflict with the upgrade. It is more thorough but carries a slightly higher risk of changing system behavior.
-
-- Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
-
-### Managing Packages (Install/Remove)
-
-- The lecture demonstrates how to add or take away specific tools:
-
-- Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
-
-- Remove: `sudo apt remove <package_name>`.
-
-- Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
-
-### `apt` vs. `apt-get`
-
-- The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
-
-- `apt upgrade` will install new dependencies if needed.
-
-- `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
-
-## The RPM packages anatomy
-
-### Updating the System
-
-- In CentOS, keeping the system current is straightforward because the package manager automatically handles list refreshes.
-
-- Commands: `sudo dnf upgrade` or `sudo dnf update`.
-
-- Key Difference from Ubuntu: Unlike `apt`, you do not need a separate "update" command to refresh package lists; DNF does this automatically before upgrading.
-
-- Rebooting: If the kernel is updated, a system restart is strongly recommended to apply the changes.
-
-### Managing Software (Install/Remove)
-
-- Install: `sudo dnf install <package_name>`
-
-- Remove: `sudo dnf remove <package_name>`
-
-- Legacy Support: The older command `yum` still works as an alias for `dnf` for those familiar with older versions of CentOS.
-
-## Enabling Additional Repositories
-
-- Additional repositories are third-party or non-standard software sources added to a Linux system to install specific applications not available in default repositories
-- Example on CentOS
-  - Install EPEL: `sudo dnf install epel-release` (This adds new "servers" or sources for software).
-
-  - Enable CodeReady Builder (CRB): Many EPEL packages require the CRB power tools. This is enabled via `sudo crb enable`.
-
-  - Refresh: Run `sudo dnf update` again to sync the newly added lists.
-
-  - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
-
-# Introducing the Linux shell
-
-- Linux has its roots in the Unix operating system, and one of its main strengths is the **command-line interface**. In the old days, this was called the **shell**
-- The shell is a program that has two streams: an input stream and an output stream. The input is a
-  command given by the user, and the output is the result of that command, or an interpretation of it.
-- In other words, the shell is the primary interface between the user and the machine
-- The main shell in major Linux distributions is called **Bash**, which is an acronym for Bourne Again
-  Shell, named after Steve Bourne, the original creator of the shell in UNIX
-- Alongside Bash, there are other shells available in Linux, such as **ksh**, **tcsh**, and **zsh**
-
-- One shell can be assigned to each user. Users on the same system can use different shells. One way
-  to check the default shell is by accessing the command
-
-```bash
-cat /etc/passwd | grep <<user>>
-
-# <<user>> is user account in linux system
-```
-
-- An easier way to see the current shell is by running the following command
-
-```bash
-echo $0
-```
-
-## Explaining the command structure
-
-- In a nutshell, Unix and Linux commands have the following form:
-  - The command’s name
-  - The command’s options
-  - The command’s arguments
-
-```bash
-command [-option(s)] [argument(s)]
-```
-
-## Consulting the manual
-
-- Almost all commands in Linux have a `--help` option. You can use this for quick reference.
-
-```bash
- <<commnad_name>> --help
-
-# commnad_name is name of command
-```
-
-- The `man` command is the standard way to read comprehensive, built-in manuals for almost any program. Syntax `man [command]`
 
 # Bash Shell
 
