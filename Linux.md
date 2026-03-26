@@ -36,11 +36,11 @@
     - [The Single Character Wildcard (?)](#the-single-character-wildcard-)
     - [Square Brackets (\[\]) and Ranges](#square-brackets--and-ranges)
     - [The Globstar (`**`)](#the-globstar-)
-  - [Pitfalls of Globbing](#pitfalls-of-globbing)
-    - [The Problem: File Names as Commands](#the-problem-file-names-as-commands)
     - [Wildcards](#wildcards)
     - [Commonly Used Character Classes](#commonly-used-character-classes)
     - [Pattern Examples](#pattern-examples)
+  - [Pitfalls of Globbing](#pitfalls-of-globbing)
+    - [The Problem: File Names as Commands](#the-problem-file-names-as-commands)
   - [Standard streams: stdin, stdout, stderr](#standard-streams-stdin-stdout-stderr)
     - [Redirecting Standard Output](#redirecting-standard-output)
     - [Why Redirection Sometimes "Fails"](#why-redirection-sometimes-fails)
@@ -503,26 +503,6 @@ command [-option(s)] [argument(s)]
 
 - Pro Tip: The instructor recommends using the `**` followed by a slash to ensure you are looking into folders rather than just matching a folder name itself.
 
-## Pitfalls of Globbing
-
-### The Problem: File Names as Commands
-
-- When you use a wildcard like `*`, Bash expands it into a list of every file in the directory before the command is executed. If a file in that directory happens to be named `-rf`, Bash will treat that filename as a command flag rather than a target file.
-  - The Scenario: You have a file literally named `-rf`.
-
-  - The Command: You run `rm *`.
-
-  - The Result: Bash expands `*` to include `-rf`. The command effectively becomes `rm -rf [other files]`.
-
-  - The Danger: This triggers a recursive, forced deletion. It will delete directories and subdirectories without asking for permission, potentially leading to permanent data loss.
-
-- The Solution: Using `./*`
-  - To prevent Bash from misinterpreting filenames as parameters, the lecture suggests a simple "best practice" adjustment to your syntax:
-  - Instead of using `rm *`, use `rm ./*`
-  - Why this works:
-    - Explicit Pathing: By adding `./`, you are explicitly telling the shell that the expansion refers to a path in the current directory.
-    - Neutralizing Flags: A file expanded as `./-rf` is seen by the system as a file path. Because it starts with a dot rather than a dash, the rm command will not interpret it as the "recursive/force" flag. It will simply try (and likely fail) to delete a file by 그 name, leaving your directories safe.
-
 ### Wildcards
 
 | Wildcard        | Meaning                                                   | Example                               |
@@ -574,6 +554,26 @@ rm [[:alnum:]]*
 | `[[:upper:]]*`           | Beginning with an **uppercase letter**                 | Tất cả các file bắt đầu bằng chữ cái viết hoa.                          |
 | `[![:digit:]]*`          | **Not** beginning with a **numeral**                   | Tất cả các file không bắt đầu bằng con số.                              |
 | `*[[:lower:]123]`        | Ending with **lowercase** or **1, 2, 3**               | File kết thúc bằng một chữ cái thường hoặc một trong các số 1, 2, 3.    |
+
+## Pitfalls of Globbing
+
+### The Problem: File Names as Commands
+
+- When you use a wildcard like `*`, Bash expands it into a list of every file in the directory before the command is executed. If a file in that directory happens to be named `-rf`, Bash will treat that filename as a command flag rather than a target file.
+  - The Scenario: You have a file literally named `-rf`.
+
+  - The Command: You run `rm *`.
+
+  - The Result: Bash expands `*` to include `-rf`. The command effectively becomes `rm -rf [other files]`.
+
+  - The Danger: This triggers a recursive, forced deletion. It will delete directories and subdirectories without asking for permission, potentially leading to permanent data loss.
+
+- The Solution: Using `./*`
+  - To prevent Bash from misinterpreting filenames as parameters, the lecture suggests a simple "best practice" adjustment to your syntax:
+  - Instead of using `rm *`, use `rm ./*`
+  - Why this works:
+    - Explicit Pathing: By adding `./`, you are explicitly telling the shell that the expansion refers to a path in the current directory.
+    - Neutralizing Flags: A file expanded as `./-rf` is seen by the system as a file path. Because it starts with a dot rather than a dash, the rm command will not interpret it as the "recursive/force" flag. It will simply try (and likely fail) to delete a file by 그 name, leaving your directories safe.
 
 ## Standard streams: stdin, stdout, stderr
 
