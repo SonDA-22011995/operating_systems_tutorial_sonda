@@ -69,7 +69,11 @@
     - [Accessing Variables](#accessing-variables)
     - [`HOME` The Home Directory](#home-the-home-directory)
     - [`PWD` \& `OLDPWD` (The Path Tracking)](#pwd--oldpwd-the-path-tracking)
-  - [`USER` The Unix Username](#user-the-unix-username)
+    - [`USER` The Unix Username](#user-the-unix-username)
+    - [Creating and Deleting Environment Variables](#creating-and-deleting-environment-variables)
+      - [Creating Variables - `export`](#creating-variables---export)
+      - [Modifying Variables](#modifying-variables)
+      - [Deleting Variables - `unset`](#deleting-variables---unset)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -829,10 +833,50 @@ echo "${PWD}" - "${OLDPWD}"
 
 - You can use `cd "${OLDPWD}"` to jump back to your previous location
 
-## `USER` The Unix Username
+### `USER` The Unix Username
 
 - Purpose: Stores the current user's technical Unix username.
--
+- Important Distinction: This variable refers to the Unix username (usually lowercase, no spaces), not the User Label (the "friendly" display name seen in OS settings)
+
+```bash
+echo "${USER}"
+```
+
+### Creating and Deleting Environment Variables
+
+#### Creating Variables - `export`
+
+- To create a new environment variable, use the export command followed by the name and value.
+
+- Syntax: `export VARIABLE_NAME='value'`
+
+- Best Practice: Always use UPPERCASE for environment variables (e.g., CITY instead of city) to follow standard Unix conventions and avoid confusion.
+
+- Quoting : Use single quotes `'` around the value to prevent Bash from performing "shell expansions" or misinterpreting special characters before the value is saved.
+
+```bash
+export CITY='new york'
+```
+
+- Crucial Note on Whitespace: In Bash, you cannot have spaces around the equals sign.
+  - `export CITY='Paris'` is correct.
+  - `export CITY = 'Paris`' will fail because Bash treats the first word as a command and the rest as arguments.
+
+#### Modifying Variables
+
+- Once a variable has been exported, you can overwrite its value without using the `export` command again.
+- Syntax: `VARIABLE_NAME='New Value'`
+- Crucial Note on Whitespace: In Bash, you cannot have spaces around the equals sign.
+  - `CITY='Paris'` is correct.
+  - `CITY = 'Paris'` will fail because Bash treats the first word as a command and the rest as arguments.
+
+#### Deleting Variables - `unset`
+
+- If you need to remove a variable from your environment (for cleanup or troubleshooting), use the `unset` command.
+
+- Syntax: `unset VARIABLE_NAME`
+
+- This effectively deletes the variable so it no longer appears when you run the `env` command.
 
 # Bash Shell
 
