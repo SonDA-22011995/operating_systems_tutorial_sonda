@@ -66,6 +66,7 @@
     - [What is a Pipe?](#what-is-a-pipe)
     - [Practical Examples:](#practical-examples)
   - [Environment variables](#environment-variables)
+    - [The Nature of Environment Variables](#the-nature-of-environment-variables)
     - [Definition and Conventions](#definition-and-conventions)
     - [Viewing Variables](#viewing-variables)
     - [Accessing Variables](#accessing-variables)
@@ -799,6 +800,36 @@ ls -l /bin/usr 2> /dev/null
 
 ## Environment variables
 
+### The Nature of Environment Variables
+
+- OS-Level Feature: Environment variables exist at the operating system level, allowing them to work seamlessly across different programs and programming languages (Python, PHP, etc.).
+- Process Inheritance: When a program is launched, the OS creates a copy of the current environment variables for that new process. Changes made within the program (e.g., in a Python script) do not affect the parent shel
+
+```bash
+# In bash shell
+
+export CITY='SONDA VO DOI'
+```
+
+```bash
+# In python code
+import os
+
+print(os.environ['CITY'])
+# SONDA VO DOI
+
+os.environ['CITY'] = '123'
+```
+
+```bash
+# in bash shell
+
+echo "${CITY}"
+# SONDA VO DOI'
+```
+
+- Temporary Variables: You can set a variable for a single command execution by prefixing the command with the variable assignment: `LOG_LEVEL=debug python3 app.py`. This changes the variable only for that specific run, leaving the shell environment untouched.
+
 ### Definition and Conventions
 
 - **Purpose**: Environment variables store configuration settings that influence the behavior of the shell and the programs running within it.
@@ -864,6 +895,8 @@ echo "${USER}"
 
 ### Creating and Deleting Environment Variables
 
+- Persistence: Changes made directly in the terminal are temporary and disappear when the session ends. Permanent changes require editing shell configuration files (like `.bashrc` or `.zshrc`)
+
 #### Creating Variables - `export`
 
 - To create a new environment variable, use the export command followed by the name and value.
@@ -920,10 +953,10 @@ export CITY='new york'
   - Simplify execution: Run custom scripts or downloaded binaries from any location without typing the full file path.
   - Organize software: Keep self-installed tools (like those from Homebrew on macOS or Anaconda for Python) in centralized, non-system directories.
   - Manage versions: Ensure the correct version of a program (e.g., a specific Python environment) is prioritized over the system default.
+  - Persistence: Changes made directly in the terminal are temporary and disappear when the session ends. Permanent changes require editing shell configuration files (like `.bashrc` or `.zshrc`)
 - Syntax: `PATH="${PATH}:<new_path>"`
   - Order Matters: Generally, keep system directories at the beginning and user-specific directories at the end, unless you specifically intend to override a system tool.
   - Efficiency: Avoid unnecessary duplication and keep the list of directories lean to maintain search performance.
-  - Persistence: Changes made directly in the terminal are temporary and disappear when the session ends. Permanent changes require editing shell configuration files (like `.bashrc` or `.zshrc`)
   - Caution: Be careful when modifying PATH, as incorrect settings can prevent the system from finding essential commands, leading to "command not found" errors.
 - Verification: You can use the `which` command (e.g., `which cat`) to see exactly which directory a specific program is being run from.
 
