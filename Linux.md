@@ -80,6 +80,8 @@
       - [What is the `PATH` Variable?](#what-is-the-path-variable)
       - [How It Works](#how-it-works)
       - [Modiffy `PATH` variable](#modiffy-path-variable)
+    - [Creating custom executable file](#creating-custom-executable-file)
+      - [The Shebang - `#!`](#the-shebang---)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -924,6 +926,46 @@ export CITY='new york'
   - Persistence: Changes made directly in the terminal are temporary and disappear when the session ends. Permanent changes require editing shell configuration files (like `.bashrc` or `.zshrc`)
   - Caution: Be careful when modifying PATH, as incorrect settings can prevent the system from finding essential commands, leading to "command not found" errors.
 - Verification: You can use the `which` command (e.g., `which cat`) to see exactly which directory a specific program is being run from.
+
+### Creating custom executable file
+
+- Modify `PATH` variable
+
+```bash
+PATH="${PATH}:$(pwd)
+```
+
+- Creating an executable, it is best practice to omit the extension (e.g `.py` extension)
+
+```bash
+# This allows you to run it as a natural command (just hello_world)
+# rather than a script (hello_world.py)
+touch hello_world
+```
+
+- Inside the hello_world
+
+```bash
+#!/usr/bin/env python3
+
+print('Hello the python world')
+```
+
+- Execution
+
+```
+hello_world
+
+# Hello the python world
+```
+
+#### The Shebang - `#!`
+
+- Since the shell doesn't know by default that a text file contains Python code, you must include a Shebang as the very first line of the file
+- Syntax: `#!<path_to_interpreter> [parameter]`
+  - Python script `#!/usr/bin/python3` or the better way `#!/usr/bin/env python3`
+- How it works: This line tells the operating system to use the `env` utility to find the `python3` interpreter and use it to execute the rest of the file.
+- Why use `env`? Using `/usr/bin/env python3` is more flexible than hardcoding a path like `/usr/bin/python3`, as it finds the version of Python currently active in your environment (important for tools like Anaconda or virtual environments).
 
 # Bash Shell
 
