@@ -30,7 +30,9 @@
   - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
-  - [Shell command types](#shell-command-types)
+  - [Identifying Commands](#identifying-commands)
+    - [Shell command types - `type`](#shell-command-types---type)
+    - [Display an Executable’s Location - `which`](#display-an-executables-location---which)
   - [Explaining the command structure](#explaining-the-command-structure)
   - [Consulting the manual](#consulting-the-manual)
   - [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
@@ -74,6 +76,10 @@
       - [Creating Variables - `export`](#creating-variables---export)
       - [Modifying Variables](#modifying-variables)
       - [Deleting Variables - `unset`](#deleting-variables---unset)
+    - [`PATH` environment variable](#path-environment-variable)
+      - [What is the `PATH` Variable?](#what-is-the-path-variable)
+      - [How It Works](#how-it-works)
+      - [Modiffy `PATH` variable](#modiffy-path-variable)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -438,7 +444,9 @@ cat /etc/passwd | grep <<user>>
 echo $0
 ```
 
-## Shell command types
+## Identifying Commands
+
+### Shell command types - `type`
 
 - **Internal commands** are built inside the shell
 - **External commands** are installed separately
@@ -447,6 +455,16 @@ echo $0
 ```bash
 type cd
 # cd is a shell builtin
+```
+
+### Display an Executable’s Location - `which`
+
+- To determine the exact location of a given executable, the which command is used
+
+```bash
+which ls
+
+# /bin/ls
 ```
 
 ## Explaining the command structure
@@ -877,6 +895,35 @@ export CITY='new york'
 - Syntax: `unset VARIABLE_NAME`
 
 - This effectively deletes the variable so it no longer appears when you run the `env` command.
+
+### `PATH` environment variable
+
+#### What is the `PATH` Variable?
+
+- The `PATH` variable is a colon-separated list of directories that the shell searches through whenever you type a command. It is the mechanism that allows you to run programs (like `cat`, `ls`, or `grep`) from any location in the terminal without typing their full file path.
+
+#### How It Works
+
+- Sequential Search: When you execute a command, the shell searches the directories listed in `PATH` from left to right.
+
+- The First Match Wins: The shell stops searching as soon as it finds an executable file with the matching name.
+
+- Manual vs. Automatic:
+  - Automatic: Typing `cat test.txt` relies on the shell finding `cat` within the `PATH` (e.g., in `/usr/bin/`).
+  - Manual: You can bypass the PATH entirely by providing the absolute path to the executable (e.g., `/bin/cat test.txt`).
+
+#### Modiffy `PATH` variable
+
+- Why Modify the PATH? The `PATH` variable tells the shell which directories to search for executable files. We modify it to:
+  - Simplify execution: Run custom scripts or downloaded binaries from any location without typing the full file path.
+  - Organize software: Keep self-installed tools (like those from Homebrew on macOS or Anaconda for Python) in centralized, non-system directories.
+  - Manage versions: Ensure the correct version of a program (e.g., a specific Python environment) is prioritized over the system default.
+- Syntax: `PATH="${PATH}:<new_path>"`
+  - Order Matters: Generally, keep system directories at the beginning and user-specific directories at the end, unless you specifically intend to override a system tool.
+  - Efficiency: Avoid unnecessary duplication and keep the list of directories lean to maintain search performance.
+  - Persistence: Changes made directly in the terminal are temporary and disappear when the session ends. Permanent changes require editing shell configuration files (like `.bashrc` or `.zshrc`)
+  - Caution: Be careful when modifying PATH, as incorrect settings can prevent the system from finding essential commands, leading to "command not found" errors.
+- Verification: You can use the `which` command (e.g., `which cat`) to see exactly which directory a specific program is being run from.
 
 # Bash Shell
 
