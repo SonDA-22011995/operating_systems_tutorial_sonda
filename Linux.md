@@ -70,6 +70,7 @@
     - [Definition and Conventions](#definition-and-conventions)
     - [Viewing Variables](#viewing-variables)
     - [Accessing Variables](#accessing-variables)
+    - [`SHELL` variable](#shell-variable)
     - [`HOME` The Home Directory](#home-the-home-directory)
     - [`PWD` \& `OLDPWD` (The Path Tracking)](#pwd--oldpwd-the-path-tracking)
     - [`USER` The Unix Username](#user-the-unix-username)
@@ -803,7 +804,7 @@ ls -l /bin/usr 2> /dev/null
 ### The Nature of Environment Variables
 
 - OS-Level Feature: Environment variables exist at the operating system level, allowing them to work seamlessly across different programs and programming languages (Python, PHP, etc.).
-- Process Inheritance: When a program is launched, the OS creates a copy of the current environment variables for that new process. Changes made within the program (e.g., in a Python script) do not affect the parent shel
+- Process Inheritance: When a program is launched, the OS creates a copy of the current environment variables for that new process. Changes made within the program (e.g., in a Python script) do not affect the parent shell
 
 ```bash
 # In bash shell
@@ -819,6 +820,8 @@ print(os.environ['CITY'])
 # SONDA VO DOI
 
 os.environ['CITY'] = '123'
+print(os.environ['CITY'])
+# 123
 ```
 
 ```bash
@@ -864,6 +867,38 @@ env
 - Curly Braces `{ }`: These explicitly define where the variable name starts and ends. This prevents Bash from getting confused if you add text immediately after the variable (e.g., `${PATH}text` works, whereas `$PATHtext` would make Bash look for a non-existent variable named `PATHtext`).
 
 - Double Quotes `" "`: These prevent "Shell Expansion." Without quotes, if a variable contains special characters (like `*`), Bash might try to rewrite or execute those characters before displaying the value. Quotes ensure you see the actual, raw value.
+
+### `SHELL` variable
+
+- `SHELL` stores the path to your default login shell—the one your operating system starts by default when you open a new terminal session
+
+```bash
+echo "${SHELL}"
+# /bin/bash
+```
+
+- How to Change the Default Shell
+  - Check Valid Shells: View the `/etc/shells` file to see the list of approved paths for shells on your system
+  - Execute Change: Use the command `chsh -s /path/to/shell`
+  - Apply Changes: You may need to restart your terminal or log out and back in for the change to take effect.
+
+```bash
+# Check Valid Shells
+cat /etc/shells
+
+# /etc/shells: valid login shells
+# /bin/sh
+# /usr/bin/sh
+# /bin/bash
+# /usr/bin/bash
+# /bin/rbash
+# /usr/bin/rbash
+# /usr/bin/dash
+# /usr/bin/tmux
+
+# Execute Change
+chsh -s /bin/bash
+```
 
 ### `HOME` The Home Directory
 
