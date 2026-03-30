@@ -89,6 +89,10 @@
       - [Interactive Non-Login Shell:](#interactive-non-login-shell)
       - [Non-Interactive Non-Login Shell](#non-interactive-non-login-shell)
       - [Non-Interactive Login Shell](#non-interactive-login-shell)
+  - [Alias](#alias)
+    - [What is an Alias?](#what-is-an-alias)
+    - [Managing Aliases](#managing-aliases)
+    - [Making Aliases Permanent](#making-aliases-permanent)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1080,6 +1084,33 @@ export CITY='SONDA VO DOI'
 #### Non-Interactive Login Shell
 
 - What it is: Very rare; used for specific remote command executions.
+
+## Alias
+
+### What is an Alias?
+
+- An alias is a user-defined shortcut for a command. For example, instead of typing a long path or a complex command every time, you can define a short keyword to do the work for you.
+
+- Syntax: `alias name='<command>'`
+
+- Example: `alias gohome='cd ~'` allows you to simply type gohome to return to your home directory.
+
+- Note on Quotes: Using quotes (e.g., `'cd ~'`) prevents Bash from expanding special characters (like the tilde) immediately, ensuring the command is interpreted correctly every time the alias is run.
+
+### Managing Aliases
+
+- View all aliases: Simply type `alias` to see a list of all shortcuts currently active in your session.
+
+- Remove an alias: Use the command `unalias <name>`.
+
+- Scope: By default, an alias is temporary. It only exists in the current terminal session. If you start a "sub-shell" (typing bash inside your terminal) or restart your computer, the alias will disappear.
+
+### Making Aliases Permanent
+
+- To ensure your shortcuts are available every time you open a terminal, you must add them to your shell's startup file:
+  - Open your `~/.bashrc` file by `nano ~/.bashrc`.
+  - Add the alias definition line to the bottom of file.
+  - Save and exit. The next time you start a shell, the alias will be loaded automatically.
 
 # Bash Shell
 
