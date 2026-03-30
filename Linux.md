@@ -84,6 +84,11 @@
       - [Modiffy `PATH` variable](#modiffy-path-variable)
     - [Creating custom executable file](#creating-custom-executable-file)
       - [The Shebang - `#!`](#the-shebang---)
+    - [Storing custom shell configurations](#storing-custom-shell-configurations)
+      - [Interactive Login Shell](#interactive-login-shell)
+      - [Interactive Non-Login Shell:](#interactive-non-login-shell)
+      - [Non-Interactive Non-Login Shell](#non-interactive-non-login-shell)
+      - [Non-Interactive Login Shell](#non-interactive-login-shell)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1034,6 +1039,47 @@ hello_world
   - Python script `#!/usr/bin/python3` or the better way `#!/usr/bin/env python3`
 - How it works: This line tells the operating system to use the `env` utility to find the `python3` interpreter and use it to execute the rest of the file.
 - Why use `env`? Using `/usr/bin/env python3` is more flexible than hardcoding a path like `/usr/bin/python3`, as it finds the version of Python currently active in your environment (important for tools like Anaconda or virtual environments).
+
+### Storing custom shell configurations
+
+- The Four Shell Modes
+  - Interactive Login Shell
+  - Interactive Non-Login Shell
+  - Non-Interactive Non-Login Shell
+  - Non-Interactive Login Shell
+
+#### Interactive Login Shell
+
+- What it is: When you log in directly (e.g., via SSH or a TTY terminal using Ctrl+Alt+F1).
+
+- Behavior: It loads system-wide configs first, then looks for the first available file among `~/.bash_profile`, `~/.bash_login`, or `~/.profile`.
+
+![Interactive Login Shell](static/images/image_0002.png)
+
+#### Interactive Non-Login Shell:
+
+- What it is: Opening a standard terminal window inside a GUI (like Ubuntu's desktop) or typing bash inside an existing shell.
+
+- Behavior: It primarily loads the `~/.bashrc` file.
+- How to custom shell configurations
+
+```bash
+nano ~/.bashrc
+
+# Scroll to the bottom of the .bashrc file
+# Add your environment variable at the end:
+export CITY='SONDA VO DOI'
+```
+
+#### Non-Interactive Non-Login Shell
+
+- What it is: When a shell script is executed.
+
+- Behavior: It doesn't load the standard startup files unless a specific environment variable `BASH_ENV` is set.
+
+#### Non-Interactive Login Shell
+
+- What it is: Very rare; used for specific remote command executions.
 
 # Bash Shell
 
