@@ -94,8 +94,11 @@
     - [Managing Aliases](#managing-aliases)
     - [Making Aliases Permanent](#making-aliases-permanent)
   - [Configure the Bash shell](#configure-the-bash-shell)
-    - [Syntax of the `set` Command](#syntax-of-the-set-command)
-    - [Key Feature: X-Trace](#key-feature-x-trace)
+    - [`shopt` vs `set`: Why both?](#shopt-vs-set-why-both)
+    - [`set` Command](#set-command)
+      - [Key Feature: X-Trace](#key-feature-x-trace)
+    - [`shopt` command](#shopt-command)
+      - [Practical Examples](#practical-examples-1)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1117,14 +1120,20 @@ export CITY='SONDA VO DOI'
 
 ## Configure the Bash shell
 
-### Syntax of the `set` Command
+### `shopt` vs `set`: Why both?
+
+- The instructor clarifies the distinction between these two mechanisms:
+  - `set` command: Used for options inherited from the original **shell** (sh). These are maintained for compatibility across different shell environments.
+  - `shopt` command: Used for options that are specific to **Bash**. These features were developed later and are not part of the standard POSIX shell definition.
+
+### `set` Command
 
 - The `set` command uses a somewhat counter-intuitive syntax for toggling features
 - Enable a feature: Use a minus sign `set -[letter]`
 - Disable a feature: Use a plus sign `set +[letter]`
 - More detail: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
 
-### Key Feature: X-Trace
+#### Key Feature: X-Trace
 
 - Syntax: `set -x`
 - Purpose: It prints every command the shell executes internally to the terminal before running it.
@@ -1141,6 +1150,16 @@ ls
 cd ~/Desktop
 #  /home/user/Desktop
 ```
+
+### `shopt` command
+
+- Enable an option: Use `-s` (set) followed by the option name `shopt -s [option]`
+- Disable an option: Use `-u` (unset) followed by the option name `shopt -u [option]`
+
+#### Practical Examples
+
+- `autocd` Allows you to change directories by simply typing the folder path without the `cd` command
+- `cdspell` Automatically corrects minor spelling errors (typos) in directory names when using the cd command
 
 # Bash Shell
 
