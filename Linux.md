@@ -93,6 +93,9 @@
     - [What is an Alias?](#what-is-an-alias)
     - [Managing Aliases](#managing-aliases)
     - [Making Aliases Permanent](#making-aliases-permanent)
+  - [Configure the Bash shell](#configure-the-bash-shell)
+    - [Syntax of the `set` Command](#syntax-of-the-set-command)
+    - [Key Feature: X-Trace](#key-feature-x-trace)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1111,6 +1114,32 @@ export CITY='SONDA VO DOI'
   - Open your `~/.bashrc` file by `nano ~/.bashrc`.
   - Add the alias definition line to the bottom of file.
   - Save and exit. The next time you start a shell, the alias will be loaded automatically.
+
+## Configure the Bash shell
+
+### Syntax of the `set` Command
+
+- Enable a feature: Use a minus sign `set -[letter]`
+- Disable a feature: Use a plus sign `set +[letter]`
+- More detail: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+
+### Key Feature: X-Trace
+
+- Syntax: `set -x`
+- Purpose: It prints every command the shell executes internally to the terminal before running it.
+- Use Case: Debugging complex commands, aliases, and expansions.
+- Example:
+
+```bash
+set -x
+# Running ls might reveal it is actually executing ls --color=auto.
+ls
+# ls --color=auto
+
+# it shows how the shell translates shorthand like ~/Desktop into the full absolute path (e.g., /home/user/Desktop).
+cd ~/Desktop
+#  /home/user/Desktop
+```
 
 # Bash Shell
 
