@@ -1119,6 +1119,7 @@ export CITY='SONDA VO DOI'
 
 ### Syntax of the `set` Command
 
+- The `set` command uses a somewhat counter-intuitive syntax for toggling features
 - Enable a feature: Use a minus sign `set -[letter]`
 - Disable a feature: Use a plus sign `set +[letter]`
 - More detail: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
