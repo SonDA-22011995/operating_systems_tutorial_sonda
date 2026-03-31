@@ -893,7 +893,7 @@ echo "${SHELL}"
 ```
 
 - How to Change the Default Shell
-  - Check Valid Shells: View the `/etc/shells` or `chsh -l` file to see the list of approved paths for shells on your system
+  - Check Valid Shells: View the `/etc/shells` file to see the list of approved paths for shells on your system
   - Execute Change: Use the command `chsh -s /path/to/shell`
   - Apply Changes: You may need to restart your terminal or log out and back in for the change to take effect.
 
