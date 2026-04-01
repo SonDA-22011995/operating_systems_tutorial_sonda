@@ -100,6 +100,7 @@
       - [Key Feature: X-Trace](#key-feature-x-trace)
     - [`shopt` command](#shopt-command)
       - [Practical Examples](#practical-examples-1)
+  - [Command substitution](#command-substitution)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1180,6 +1181,18 @@ cd ~/Desktop
 
 - `autocd` Allows you to change directories by simply typing the folder path without the `cd` command
 - `cdspell` Automatically corrects minor spelling errors (typos) in directory names when using the cd command
+
+## Command substitution
+
+- What is Command Substitution?
+  - Command substitution tells Bash to: Run a specific command. Capture its output (the text it prints). Place that text exactly where the substitution was written.
+
+- Syntax: Use a dollar sign followed by parentheses: `command "<text> $(command)"`
+  - You should almost always wrap your command substitution in double quotes `" "`
+  - Without quotes: Bash might try to "help" you by splitting your output into separate words or interpreting special characters, which often ruins the formatting.
+  - With quotes: Bash treats the entire output of the substituted command as a single block of text, preserving its structure.
+
+- Example: `echo -e "Directory Listing:\n$(ls)"`
 
 # Bash Shell
 
