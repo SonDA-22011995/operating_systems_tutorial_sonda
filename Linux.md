@@ -74,6 +74,7 @@
     - [`HOME` The Home Directory](#home-the-home-directory)
     - [`PWD` \& `OLDPWD` (The Path Tracking)](#pwd--oldpwd-the-path-tracking)
     - [`USER` The Unix Username](#user-the-unix-username)
+    - [`PS1` variable](#ps1-variable)
     - [Creating and Deleting Environment Variables](#creating-and-deleting-environment-variables)
       - [Creating Variables - `export`](#creating-variables---export)
       - [Modifying Variables](#modifying-variables)
@@ -942,6 +943,23 @@ echo "${PWD}" - "${OLDPWD}"
 ```bash
 echo "${USER}"
 ```
+
+### `PS1` variable
+
+- The `PS1` (Prompt String 1) variable defines the primary prompt displayed in your terminal before every command you type. While you can set it to a simple string, its real power lies in its escape sequences.
+
+- Common Placeholders
+
+| Sequence    | Description                                                                          |
+| ----------- | ------------------------------------------------------------------------------------ |
+| `\u`        | The username of the current user                                                     |
+| `\h` / `\H` | The hostname (`\h` for short lowercase name, `\H` for full domain name)              |
+| `\w` / `\W` | The current working directory (`\w` for full path, `\W` for just the current folder) |
+| `\t` / `\@` | The time (`\t` for 24-hour HH:MM:SS, `\@` for 12-hour AM/PM format)                  |
+| `\$`        | Displays `$` for normal users and `#` for the root user                              |
+
+- Setting a Standard Prompt: `PS1="\u@\h:\w\$ "`
+  - This gives you the "Who, Where, and What" of your current session at a single glance, saving you from running commands like `whoami` or `pwd` constantly
 
 ### Creating and Deleting Environment Variables
 
