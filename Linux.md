@@ -101,6 +101,9 @@
     - [`shopt` command](#shopt-command)
       - [Practical Examples](#practical-examples-1)
   - [Command substitution](#command-substitution)
+  - [Style terminal line use `tput` and `infocmp` command](#style-terminal-line-use-tput-and-infocmp-command)
+  - [Shel expansions](#shel-expansions)
+    - [Filename expansion](#filename-expansion)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -140,11 +143,11 @@
     - [The `sed` command](#the-sed-command)
       - [s (substitute) command.](#s-substitute-command)
   - [The `find` Command](#the-find-command)
-    - [Find file types](#find-file-types)
-    - [Search by file size and filename](#search-by-file-size-and-filename)
-    - [Find Tests](#find-tests)
-    - [Predefined Actions](#predefined-actions)
-    - [Operators](#operators)
+      - [Find file types](#find-file-types)
+      - [Search by file size and filename](#search-by-file-size-and-filename)
+      - [Find Tests](#find-tests)
+      - [Predefined Actions](#predefined-actions)
+      - [Operators](#operators)
 
 # Introducing the Linux operating system
 
@@ -1193,6 +1196,16 @@ cd ~/Desktop
   - With quotes: Bash treats the entire output of the substituted command as a single block of text, preserving its structure.
 
 - Example: `echo -e "Directory Listing:\n$(ls)"`
+
+## Style terminal line use `tput` and `infocmp` command
+
+## Shel expansions
+
+- **Shell Expansion** is a process where **Bash** "rewrites" or parses your command before it is actually executed.
+
+### Filename expansion
+
+- More detail in [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
 
 # Bash Shell
 
