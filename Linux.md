@@ -104,6 +104,7 @@
   - [Style terminal line use `tput` and `infocmp` command](#style-terminal-line-use-tput-and-infocmp-command)
   - [Shel expansions](#shel-expansions)
     - [Filename expansion](#filename-expansion)
+    - [Tilde expansion - `~`](#tilde-expansion---)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1206,6 +1207,18 @@ cd ~/Desktop
 ### Filename expansion
 
 - More detail in [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
+
+### Tilde expansion - `~`
+
+- The character `~` (tilde) acts as a pointer to your home directory
+  - **The Mechanism**: By default, the shell replaces `~` with the value stored in the `HOME` environment variable.
+  - **Variable Dependency**: If you change the value of the `HOME` variable (e.g., `HOME='/'`), the `~` character will then expand to that new path instead.
+  - Current Working Directory `~+`: Using `~+` expands to the value of $PWD (your current working directory). This is a quick way to reference where you are currently located in the file system.
+
+```bash
+echo ~
+echo ~+
+```
 
 # Bash Shell
 
