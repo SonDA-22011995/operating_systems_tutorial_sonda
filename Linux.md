@@ -948,6 +948,8 @@ echo "${USER}"
 
 - The `PS1` (Prompt String 1) variable defines the primary prompt displayed in your terminal before every command you type. While you can set it to a simple string, its real power lies in its escape sequences.
 
+![PS1 variable](static/images/image_0003.png)
+
 - Common Placeholders
 
 | Sequence    | Description                                                                          |
