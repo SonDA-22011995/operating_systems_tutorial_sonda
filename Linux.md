@@ -105,6 +105,8 @@
   - [Shel expansions](#shel-expansions)
     - [Filename expansion](#filename-expansion)
     - [Tilde expansion - `~`](#tilde-expansion---)
+    - [Variable expansion - `$`](#variable-expansion---)
+    - [Shell Parameter Expansion](#shell-parameter-expansion)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -144,11 +146,11 @@
     - [The `sed` command](#the-sed-command)
       - [s (substitute) command.](#s-substitute-command)
   - [The `find` Command](#the-find-command)
-      - [Find file types](#find-file-types)
-      - [Search by file size and filename](#search-by-file-size-and-filename)
-      - [Find Tests](#find-tests)
-      - [Predefined Actions](#predefined-actions)
-      - [Operators](#operators)
+    - [Find file types](#find-file-types)
+    - [Search by file size and filename](#search-by-file-size-and-filename)
+    - [Find Tests](#find-tests)
+    - [Predefined Actions](#predefined-actions)
+    - [Operators](#operators)
 
 # Introducing the Linux operating system
 
@@ -1219,6 +1221,21 @@ cd ~/Desktop
 echo ~
 echo ~+
 ```
+
+### Variable expansion - `$`
+
+- More detail in [Viewing Variables](#viewing-variables)
+
+### Shell Parameter Expansion
+
+- How to manipulate strings directly during expansion using the `${}` syntax
+
+| Feature        | Syntax                   | Description                                          | Example                                  |
+| -------------- | ------------------------ | ---------------------------------------------------- | ---------------------------------------- |
+| String Length  | `${#VAR}`                | Returns the length of the string (number of bytes).  | `echo "${#VAR}"`                         |
+| Substring      | `${VAR:offset:length}`   | Extracts a portion of the string starting at offset. | `VAR="hello" → ${VAR:1:3} = "ell"`       |
+| Replacement    | `${VAR/search/replace}`  | Replaces the first occurrence of a pattern.          | `VAR="hello" → ${VAR/l/LL} = "heLLo"`    |
+| Global Replace | `${VAR//search/replace}` | Replaces all occurrences of a pattern.               | `VAR="hello" → ${VAR//l/LL} = "heLLLLo"` |
 
 # Bash Shell
 
