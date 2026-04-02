@@ -1230,12 +1230,12 @@ echo ~+
 
 - How to manipulate strings directly during expansion using the `${}` syntax
 
-| Feature        | Syntax                   | Description                                          | Example                                         |
-| -------------- | ------------------------ | ---------------------------------------------------- | ----------------------------------------------- |
-| String Length  | `${#VAR}`                | Returns the length of the string (number of bytes).  | `echo "${#HOME}"`                               |
-| Substring      | `${VAR:offset:length}`   | Extracts a portion of the string starting at offset. | `export VAR="hello" → ${VAR:1:3} = "ell"`       |
-| Replacement    | `${VAR/search/replace}`  | Replaces the first occurrence of a pattern.          | `export VAR="hello" → ${VAR/l/LL} = "heLLo"`    |
-| Global Replace | `${VAR//search/replace}` | Replaces all occurrences of a pattern.               | `export VAR="hello" → ${VAR//l/LL} = "heLLLLo"` |
+| Feature        | Syntax                   | Description                                          | Example                                          |
+| -------------- | ------------------------ | ---------------------------------------------------- | ------------------------------------------------ |
+| String Length  | `${#VAR}`                | Returns the length of the string (number of bytes).  | `echo "${#HOME}"`                                |
+| Substring      | `${VAR:offset:length}`   | Extracts a portion of the string starting at offset. | `export VAR="hello" → echo "${VAR:1:3}" → "ell"` |
+| Replacement    | `${VAR/search/replace}`  | Replaces the first occurrence of a pattern.          | `export VAR="hello" → ${VAR/l/LL} = "heLLo"`     |
+| Global Replace | `${VAR//search/replace}` | Replaces all occurrences of a pattern.               | `export VAR="hello" → ${VAR//l/LL} = "heLLLLo"`  |
 
 # Bash Shell
 
