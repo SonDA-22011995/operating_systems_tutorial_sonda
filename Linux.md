@@ -1300,6 +1300,14 @@ touch 'a file.txt'
 
 ### No Quotes vs Single Quotes `''` vs Double Quotes `""`
 
+- The Three Levels of Quoting
+
+| Quoting Style       | Variable Expansion ($) | File Expansion (\*) | Word Splitting | Use Case                                                                         |
+| ------------------- | ---------------------- | ------------------- | -------------- | -------------------------------------------------------------------------------- |
+| No Quotes           | Yes                    | Yes                 | Yes            | Use when you want Bash to fully process everything (risky with spaces).          |
+| Double Quotes `""`  | Yes                    | No                  | No             | Use to keep variables intact while preventing files from being globbed or split. |
+| Single Quotes `' '` | No                     | No                  | No             | Use for "literal" text where you want Bash to ignore everything inside.          |
+
 - To visualize the difference, imagine we have a variable `DIR="/home/user/my docs"` and a file named `report.txt`.
 
 | Command Style                      | Behavior ("The Shield")                                                                  | Resulting Action                                                                                                                                                                                                                                 |
