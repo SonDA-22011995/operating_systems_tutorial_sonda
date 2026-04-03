@@ -1270,7 +1270,7 @@ touch  file1.txt      file2.txt
   - Newline -> Hex: 0a
 
 ```bash
-echo "${IFS} | hexdump
+echo "${IFS}" | hexdump
 
 # 0000000 0920 0a0a
 # 0000004
