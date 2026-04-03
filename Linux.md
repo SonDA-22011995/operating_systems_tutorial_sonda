@@ -112,6 +112,8 @@
       - [The Role of IFS](#the-role-of-ifs)
       - [Disabling Splitting with Quotes - `' '`](#disabling-splitting-with-quotes----)
     - [No Quotes vs Single Quotes `''` vs Double Quotes `""`](#no-quotes-vs-single-quotes--vs-double-quotes-)
+    - [Shell expensions: Be careful!](#shell-expensions-be-careful)
+    - [Filenames as Flags (The "Minus" Problem)](#filenames-as-flags-the-minus-problem)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1328,6 +1330,69 @@ touch 'a file.txt'
 | No Quotes `cat $DIR/*.txt`         | No Shield. Everything is fair game.                                                      | 1. `$DIR` expands to `/home/user/my docs`.<br>2. Word Splitting breaks that into two paths because of the space.<br>3. `*.txt` expands to `report.txt`.<br>**Result:** `cat` tries to find `/home/user/my`, `docs`, and `report.txt` separately. |
 | Double Quotes `cat "${DIR}/*.txt"` | Partial Shield. Protects against word splitting and globbing, but allows `$` expansions. | 1. `$DIR` expands to `/home/user/my docs`.<br>2. No Word Splitting happens.<br>3. No Globbing happens; `*.txt` stays literal.<br>**Result:** `cat` looks for one literal file named `/home/user/my docs/*.txt` (and fails).                      |
 | Single Quotes `cat '$DIR/*.txt'`   | Full Shield. Everything inside is literal. No exceptions.                                | 1. No expansion, no splitting, no globbing.<br>**Result:** `cat` looks for a file literally named `$DIR/*.txt`.                                                                                                                                  |
+
+### Shell expensions: Be careful!
+
+- The process: Bash follows a strict order
+  - First, the command is being expanded
+  - Then, word splitting is applied
+  - Quotes are being removed
+  - Command is being executed
+
+- Example 1: Let's say we got a folder and the filename of the first file was echo
+
+```
+bash_caution/
+├── echo # first file in bash_caution folder
+├── f.txt
+└── g.txt
+```
+
+```bash
+ls .
+# echo  f.txt  g.txt
+*
+# f.txt g.txt
+```
+
+### Filenames as Flags (The "Minus" Problem)
+
+- Example 2 : If you want to create a file which is literally named -al
+
+```bash
+touch -al
+
+# touch: invalid option -- 'l'
+# Try 'touch --help' for more information.
+
+# solution
+touch ./-al
+```
+
+- Example 3 : If you have a file literally named -al, running `ls *` expands to `ls -al`
+
+```
+bash_caution/
+├── -al
+├── echo
+├── f.txt
+└── g.txt
+```
+
+```bash
+# problem
+ls *
+
+# -rwxrwxrwx 1 sonda sonda 0 Apr  3 16:28 echo
+# -rwxrwxrwx 1 sonda sonda 0 Apr  3 16:29 f.txt
+# -rwxrwxrwx 1 sonda sonda 0 Apr  3 16:29 g.txt
+
+# solution
+
+ls ./*
+
+# ./-al  ./echo  ./f.txt  ./g.txt
+```
 
 # Bash Shell
 
