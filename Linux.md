@@ -107,6 +107,10 @@
     - [Tilde expansion - `~`](#tilde-expansion---)
     - [Variable expansion - `$`](#variable-expansion---)
     - [Shell Parameter Expansion](#shell-parameter-expansion)
+    - [Word Splitting](#word-splitting)
+      - [What is Word Splitting?](#what-is-word-splitting)
+      - [The Role of IFS](#the-role-of-ifs)
+      - [Disabling Splitting with Quotes - `' '`](#disabling-splitting-with-quotes----)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1236,6 +1240,62 @@ echo ~+
 | Substring      | `${VAR:offset:length}`   | Extracts a portion of the string starting at offset. | `export VAR="hello" → echo "${VAR:1:3}" → "ell"`       |
 | Replacement    | `${VAR/search/replace}`  | Replaces the first occurrence of a pattern.          | `export VAR="hello" → echo "${VAR/l/LL}" → "heLLo"`    |
 | Global Replace | `${VAR//search/replace}` | Replaces all occurrences of a pattern.               | `export VAR="hello" → echo "${VAR//l/LL}" → "heLLLLo"` |
+
+### Word Splitting
+
+#### What is Word Splitting?
+
+- Word splitting is the process where Bash divides a command line into separate segments or "words."
+  - The first word is treated as the command (the program to execute).
+  - The subsequent words are treated as individual arguments or parameters passed to that program.
+
+```bash
+touch a.txt b.txt
+# is split into three words, telling the touch program to create two distinct files
+```
+
+- If you have multiple spaces or tabs between words, Bash treats the entire sequence as a single delimiter.
+
+```bash
+touch  file1.txt      file2.txt
+
+# still only creates two files, because the extra spaces are collapsed during the splitting process
+```
+
+#### The Role of IFS
+
+- The splitting happens based on the Internal Field Separator (IFS) variable. By default, Bash looks for three specific characters to determine where one word ends and the next begins:
+  - Space -> Hex: 20
+  - Tab -> Hex: 09
+  - Newline -> Hex: 0a
+
+```bash
+echo "${IFS} | hexdump
+
+# 0000000 0920 0a0a
+# 0000004
+```
+
+#### Disabling Splitting with Quotes - `' '`
+
+- To prevent Bash from splitting a string that contains spaces, you must use quoting. This is essential when dealing with file names or data that contain spaces.
+- Both single (`'`) and double (`"`) quotes disable word splitting, though they behave differently regarding other expansions (which is a deeper topic for later)
+
+```bash
+# Without Quotes
+
+touch a file.txt
+
+# creates two files: a and file.txt.
+```
+
+```bash
+# With Quotes
+
+touch 'a file.txt'
+
+# creates exactly one file named a file.txt
+```
 
 # Bash Shell
 
