@@ -1231,6 +1231,13 @@ echo ~+
 
 - More detail in [Viewing Variables](#viewing-variables)
 
+| Priority                   | Syntax          | Why use it? (Pros)                                                                                                                            | Risks (Cons)                                                                                                            |
+| -------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 1. Highest (Best Practice) | `"${VARIABLE}"` | Maximum Safety. Combines curly braces and double quotes. Prevents Word Splitting, File Expansion (globbing), and ambiguity when joining text. | None (slightly more typing).                                                                                            |
+| 2. High                    | `"$VARIABLE"`   | Prevents Word Splitting. Ensures the variable content is treated as a single string even if it contains spaces or special characters.         | Can be ambiguous if you want to append text directly to the variable name (e.g., `"$HOMEpath"`).                        |
+| 3. Medium                  | `${VARIABLE}`   | Defines Boundaries. Clearly tells Bash where the variable name ends. Essential for appending text (e.g., `${NAME}ing`).                       | Vulnerable to Word Splitting and Globbing if the variable value contains spaces or `*`.                                 |
+| 4. Lowest                  | `$VARIABLE`     | Simple & Quick. Only safe if you are 100% sure the variable contains no spaces and you don't need to join it with other text.                 | High Risk. Can cause scripts to crash or delete the wrong files if the variable contains spaces or wildcard characters. |
+
 ### Shell Parameter Expansion
 
 - How to manipulate strings directly during expansion using the `${}` syntax
