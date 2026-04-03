@@ -114,8 +114,9 @@
     - [No Quotes vs Single Quotes `''` vs Double Quotes `""`](#no-quotes-vs-single-quotes--vs-double-quotes-)
     - [Shell expensions: Be careful!](#shell-expensions-be-careful)
       - [The Danger of "Accidental" Commands](#the-danger-of-accidental-commands)
-    - [Filenames as Flags (The "Minus" Problem)](#filenames-as-flags-the-minus-problem)
-    - [The "Golden Rule" of Variables](#the-golden-rule-of-variables)
+      - [Filenames as Flags (The "Minus" Problem)](#filenames-as-flags-the-minus-problem)
+      - [The "Golden Rule" of Variables](#the-golden-rule-of-variables)
+      - [Best practice](#best-practice)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1359,7 +1360,7 @@ ls .
 # f.txt g.txt
 ```
 
-### Filenames as Flags (The "Minus" Problem)
+#### Filenames as Flags (The "Minus" Problem)
 
 - Example 2 : If you want to create a file which is literally named -al
 
@@ -1400,9 +1401,46 @@ ls ./*
 
 More detail: [The Problem: File Names as Commands](#the-problem-file-names-as-commands)
 
-### The "Golden Rule" of Variables
+#### The "Golden Rule" of Variables
 
-- You must always wrap your variables in double quotes: "$VAR".
+- You must always wrap your variables in double quotes: `"$VAR"`.
+
+```
+# If a folder name contains a space (e.g a folder)
+a folder/
+├──
+```
+
+```bash
+touch $PWD/a.txt
+
+# touch: cannot touch 'Guide/bash_caution/a': No such file or directory
+# touch: cannot touch 'folder/file.txt': No such file or directory
+
+# the command above fails because PWD have a white space
+
+echo "${PWD}"
+# /mnt/d/udemy/Mastering Linux The Comprehensive Guide/bash_caution/a folder
+# Bash will perform word splitting after expanding the variable. This turns one path into two separate arguments, leading to "No such file or directory" errors.
+
+# the solution
+
+touch "$PWD/file.txt"
+# With Quotes: "$PWD/file.txt" ensures the entire path is treated as a single word, even if the path contains spaces.
+```
+
+#### Best practice
+
+- Try to refer to filenames in the same directory as `./file.txt`
+- And, for the quotes: Always use the quoting style that is as restrictive as possible
+  - Prefer single quotes: `'hello world'`
+  - If this is not possible, use double quotes:
+    - `echo "hello ${USER}"`
+    - `echo 'hello '"${USER}"`
+- Use no quoting only if there's no ambiguity, or you want all expansions to be applied:
+  - Example for no ambiguity:
+    - `ls -al` (would be annoying: 'ls' '-al')
+    - Here we want all expansions: `echo ./*.txt`
 
 # Bash Shell
 
