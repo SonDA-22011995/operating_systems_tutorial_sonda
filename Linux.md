@@ -115,6 +115,7 @@
     - [Shell expensions: Be careful!](#shell-expensions-be-careful)
       - [The Danger of "Accidental" Commands](#the-danger-of-accidental-commands)
     - [Filenames as Flags (The "Minus" Problem)](#filenames-as-flags-the-minus-problem)
+    - [The "Golden Rule" of Variables](#the-golden-rule-of-variables)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1396,6 +1397,12 @@ ls ./*
 
 # ./-al  ./echo  ./f.txt  ./g.txt
 ```
+
+More detail: [The Problem: File Names as Commands](#the-problem-file-names-as-commands)
+
+### The "Golden Rule" of Variables
+
+- You must always wrap your variables in double quotes: "$VAR".
 
 # Bash Shell
 
