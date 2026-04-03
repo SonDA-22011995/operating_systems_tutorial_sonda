@@ -1307,6 +1307,12 @@ touch 'a file.txt'
 
 ### No Quotes vs Single Quotes `''` vs Double Quotes `""`
 
+- No quotes: All available shell expansions are being applied
+- Single quotes - `''`: All expansions are disabled, word splitting is disabled
+- Double quotes:
+  - Disables most expansions, such as tilde expansion `~`, filename expansion `*`, word splitting,...
+  - However certain expansions are still enabled: Variable and parameter expansion are still working
+
 - The Three Levels of Quoting
 
 | Quoting Style       | Variable Expansion ($) | File Expansion (\*) | Word Splitting | Use Case                                                                         |
