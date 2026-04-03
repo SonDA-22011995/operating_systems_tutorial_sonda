@@ -111,6 +111,7 @@
       - [What is Word Splitting?](#what-is-word-splitting)
       - [The Role of IFS](#the-role-of-ifs)
       - [Disabling Splitting with Quotes - `' '`](#disabling-splitting-with-quotes----)
+    - [No Quotes vs Single Quotes `''` vs Double Quotes `""`](#no-quotes-vs-single-quotes--vs-double-quotes-)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1296,6 +1297,16 @@ touch 'a file.txt'
 
 # creates exactly one file named a file.txt
 ```
+
+### No Quotes vs Single Quotes `''` vs Double Quotes `""`
+
+- To visualize the difference, imagine we have a variable `DIR="/home/user/my docs"` and a file named `report.txt`.
+
+| Command Style                    | Behavior ("The Shield")                                                                  | Resulting Action                                                                                                                                                                                                                                 |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No Quotes `cat $DIR/*.txt`       | No Shield. Everything is fair game.                                                      | 1. `$DIR` expands to `/home/user/my docs`.<br>2. Word Splitting breaks that into two paths because of the space.<br>3. `*.txt` expands to `report.txt`.<br>**Result:** `cat` tries to find `/home/user/my`, `docs`, and `report.txt` separately. |
+| Double Quotes `cat "$DIR/*.txt"` | Partial Shield. Protects against word splitting and globbing, but allows `$` expansions. | 1. `$DIR` expands to `/home/user/my docs`.<br>2. No Word Splitting happens.<br>3. No Globbing happens; `*.txt` stays literal.<br>**Result:** `cat` looks for one literal file named `/home/user/my docs/*.txt` (and fails).                      |
+| Single Quotes `cat '$DIR/*.txt'` | Full Shield. Everything inside is literal. No exceptions.                                | 1. No expansion, no splitting, no globbing.<br>**Result:** `cat` looks for a file literally named `$DIR/*.txt`.                                                                                                                                  |
 
 # Bash Shell
 
