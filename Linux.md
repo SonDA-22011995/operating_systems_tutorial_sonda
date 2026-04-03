@@ -113,6 +113,7 @@
       - [Disabling Splitting with Quotes - `' '`](#disabling-splitting-with-quotes----)
     - [No Quotes vs Single Quotes `''` vs Double Quotes `""`](#no-quotes-vs-single-quotes--vs-double-quotes-)
     - [Shell expensions: Be careful!](#shell-expensions-be-careful)
+      - [The Danger of "Accidental" Commands](#the-danger-of-accidental-commands)
     - [Filenames as Flags (The "Minus" Problem)](#filenames-as-flags-the-minus-problem)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
@@ -1338,6 +1339,8 @@ touch 'a file.txt'
   - Then, word splitting is applied
   - Quotes are being removed
   - Command is being executed
+
+#### The Danger of "Accidental" Commands
 
 - Example 1: Let's say we got a folder and the filename of the first file was echo
 
