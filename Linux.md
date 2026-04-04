@@ -117,6 +117,10 @@
       - [Filenames as Flags (The "Minus" Problem)](#filenames-as-flags-the-minus-problem)
       - [The "Golden Rule" of Variables](#the-golden-rule-of-variables)
       - [Best practice](#best-practice)
+    - [Escaping](#escaping)
+      - [Handling Whitespace](#handling-whitespace)
+      - [Printing Quotes](#printing-quotes)
+      - [The "Single Quote" Exception](#the-single-quote-exception)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1441,6 +1445,47 @@ touch "$PWD/file.txt"
   - Example for no ambiguity:
     - `ls -al` (would be annoying: 'ls' '-al')
     - Here we want all expansions: `echo ./*.txt`
+
+### Escaping
+
+#### Handling Whitespace
+
+- The default action of a space in Bash is word splitting (separating arguments). To treat a filename with spaces as a single argument, you have two choices:
+
+- Backslash Escaping: Placing a `\` before the space (e.g., `A\ folder/`).
+- Quoting: Wrapping the entire path in double quotes (e.g., `"A folder/"` or `'A folder/'`).
+
+#### Printing Quotes
+
+- If you want to print a literal double quote (`"`), you cannot simply type `echo "`. Bash will think you are starting a "quoting area" and wait for you to close it. Instead, you can:
+
+- Escape it: `echo \"`
+
+- Nest it: Place the double quote inside single quotes: `echo '"'`.
+- Nest it: Place the single quote inside double quotes: `echo "'"`.
+
+#### The "Single Quote" Exception
+
+- Escaping is also a feature that "rewrites" `/` expands our command as well
+- The single quotes `'` disable all "rewrites" `/` expansions
+- Thus, also the backslash is disabled
+- Problem
+
+```bash
+# this one does not print out a single single quote
+echo '\''
+```
+
+- Solution
+
+```bash
+echo '123'"'"'456'
+echo '123'\''456'
+
+# Close the current single-quoted area: '
+# Insert the single quote using a backslash: \' (outside of any quotes) or double quotes: "'"
+# Re-open a new single-quoted area: '
+```
 
 # Bash Shell
 
