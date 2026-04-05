@@ -121,6 +121,7 @@
       - [Handling Whitespace](#handling-whitespace)
       - [Printing Quotes](#printing-quotes)
       - [The "Single Quote" Exception](#the-single-quote-exception)
+    - [Brace expansion](#brace-expansion)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1485,6 +1486,38 @@ echo '123'\''456'
 # Close the current single-quoted area: '
 # Insert the single quote using a backslash: \' (outside of any quotes) or double quotes: "'"
 # Re-open a new single-quoted area: '
+```
+
+### Brace expansion
+
+- Brace expansion is a powerful feature in Bash 4 used to generate arbitrary strings or sequences. It allows users to streamline repetitive tasks, such as creating multiple files or listing specific extensions, by wrapping comma-separated strings or ranges in curly braces `{}`
+
+- String Lists: You can provide a comma-separated list within braces to generate specific variations of a string
+
+```bash
+echo data.{csv,txt}
+
+# data.csv data.txt
+```
+
+- Sequence Generation: Brace expansion can automatically generate a range of characters or numbers using the `..` syntax
+
+```bash
+echo {a..z}.txt
+
+# a.txt b.txt c.txt ... z.txt
+```
+
+- Syntax Rules and Limitations
+  - No Spaces: There must be no unquoted spaces inside the braces.
+  - No Quotes: The braces themselves must not be inside single or double quotes
+
+```bash
+echo "{a,b}" # incorrect
+# {a,b}
+
+echo "data".{csv,txt}
+# data.csv data.txt
 ```
 
 # Bash Shell
