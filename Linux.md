@@ -72,6 +72,7 @@
     - [Accessing Variables](#accessing-variables)
     - [`SHELL` variable](#shell-variable)
     - [`HOME` The Home Directory](#home-the-home-directory)
+      - [Why Relying on $HOME is Often Safer](#why-relying-on-home-is-often-safer)
     - [`PWD` \& `OLDPWD` (The Path Tracking)](#pwd--oldpwd-the-path-tracking)
     - [`USER` The Unix Username](#user-the-unix-username)
     - [`PS1` variable](#ps1-variable)
@@ -950,6 +951,16 @@ chsh -s /bin/bash
 
 - Purpose: Stores the absolute path to the current user's home directory.
 - You can use `cd "${HOME}"` to jump user's home directory
+
+#### Why Relying on $HOME is Often Safer
+
+- While `~` is great for quick typing in a terminal, using the explicit variable `$HOME` is generally preferred in scripts and automation for three main reasons:
+
+- Quotes Break the Tilde
+  - The shell is very strict about where a tilde sits. If you wrap it in double quotes, it loses its power.
+  - `ls "~/Desktop"` → Fails. The shell looks for a literal folder named `~`.
+  - `ls "$HOME/Desktop"` → Succeeds. The variable expands inside the quotes.
+- Pro-tip: Always quote your paths to handle spaces in folder names. Since you should be quoting anyway, `$HOME` is the natural choice.
 
 ### `PWD` & `OLDPWD` (The Path Tracking)
 
