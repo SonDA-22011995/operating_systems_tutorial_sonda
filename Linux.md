@@ -1587,6 +1587,8 @@ echo "test" > >(cat)
 # `>(cat)`: another command that acts as a destination
 ```
 
+- Asynchronous Behavior: Because the command inside the parentheses runs in a subshell, it may finish slightly after the main command. This is why you might see your terminal prompt ($) appear before the output of the subshell is printed
+
 ## Choosing the Right Tool: Pipe vs. Substitutions
 
 ### Use Pipe `|`
