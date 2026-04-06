@@ -122,6 +122,7 @@
       - [Printing Quotes](#printing-quotes)
       - [The "Single Quote" Exception](#the-single-quote-exception)
     - [Brace expansion](#brace-expansion)
+    - [Command substitution](#command-substitution-1)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1213,7 +1214,16 @@ cd ~/Desktop
   - Without quotes: Bash might try to "help" you by splitting your output into separate words or interpreting special characters, which often ruins the formatting.
   - With quotes: Bash treats the entire output of the substituted command as a single block of text, preserving its structure.
 
-- Example: `echo -e "Directory Listing:\n$(ls)"`
+- Example:
+
+```bash
+echo -e "Directory Listing:\n$(ls)"
+echo "My path is $(pwd)"
+echo "Home size: $(du -sh ~)"
+echo "There are $(ls | wc -l) files here."
+echo 'The size of my house directory is: '"$(du -sh ~)"
+echo 'There'"'"'re '"$(ls | wc -l)"' files in the current directory'
+```
 
 ## Style terminal line use `tput` and `infocmp` command
 
@@ -1519,6 +1529,10 @@ echo "{a,b}" # incorrect
 echo "data".{csv,txt}
 # data.csv data.txt
 ```
+
+### Command substitution
+
+- More detail [Command substitution](#command-substitution)
 
 # Bash Shell
 
