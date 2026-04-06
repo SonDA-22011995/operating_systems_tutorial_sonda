@@ -123,6 +123,13 @@
       - [The "Single Quote" Exception](#the-single-quote-exception)
     - [Brace expansion](#brace-expansion)
     - [Command substitution](#command-substitution-1)
+    - [Process Substitution](#process-substitution)
+      - [Output-to-Input Substitution](#output-to-input-substitution)
+      - [Input-from-Output Substitution](#input-from-output-substitution)
+  - [Choosing the Right Tool: Pipe vs. Substitutions](#choosing-the-right-tool-pipe-vs-substitutions)
+    - [Use Pipe `|`](#use-pipe-)
+    - [Use Process Substitution `<(command)`](#use-process-substitution-command)
+    - [Use Command Substitution `$()`](#use-command-substitution-)
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
@@ -1533,6 +1540,82 @@ echo "data".{csv,txt}
 ### Command substitution
 
 - More detail [Command substitution](#command-substitution)
+
+### Process Substitution
+
+- Process substitution is a powerful feature that allows you to treat the output (or input) of a command as if it were a temporary file
+- This is especially useful for commands that expect file arguments rather than standard input (pipes)
+
+#### Output-to-Input Substitution
+
+- Syntax: `<(command)`
+- This is the most common form. Bash executes command, saves the output to a temporary named pipe (or a file in `/dev/fd/`), and replaces the expression with the path to that "file.
+- The Problem: Some tools, like diff, require two files to compare. Normally, you would have to save command outputs to disk first
+
+```bash
+ls folder1 > f1.txt
+ls folder2 > f2.txt
+diff f1.txt f2.txt
+```
+
+- The Solution:
+  - Use process substitution to do it in one line without creating manual garbage files:
+  - Bash automatically creates the temporary path (e.g., /dev/fd/63) and cleans it up immediately after the command finishes.
+
+```bash
+diff <(ls folder1) <(ls folder2)
+```
+
+- Another example
+
+```bash
+wc -l < <(ls)
+
+# `<`: redirection input
+# `<(ls)`: process substitution
+```
+
+#### Input-from-Output Substitution
+
+- Syntax: `>(command)`
+- This syntax is used when you want to send the output of a process to another command that acts as a destination, treating that command like a file you are writing into
+
+```
+echo "test" > >(cat)
+
+# `>`: redirection output
+# `>(cat)`: another command that acts as a destination
+```
+
+## Choosing the Right Tool: Pipe vs. Substitutions
+
+### Use Pipe `|`
+
+- When: The next command is designed to read from Standard Input (STDIN) (e.g., grep, awk, sed, cat, sort).
+
+- Pro Tip: This is the most standard and efficient method in Linux because it streams data directly between processes without creating temporary files.
+
+### Use Process Substitution `<(command)`
+
+- When: The next command requires a physical file path as an argument, or when you need to compare the outputs of two commands simultaneously.
+
+- Example: `diff <(ls folder1) <(ls folder2)`
+
+- Why: You cannot use a pipe here because diff requires two separate files to perform a comparison. Process Substitution "tricks" the command into thinking the output is a file.
+
+### Use Command Substitution `$()`
+
+- When: You want to save the output into a variable or embed the result directly into another command as a text string.
+
+- Example: `echo "The number of files is: $(ls | wc -l)"`
+
+- Why: This evaluates the command inside the parentheses first and then replaces the `$()` block with the resulting text.
+
+| Feature   | Pipe (`                                                | `)                                                              | Process Substitution (`<( )`) |
+| --------- | ------------------------------------------------------ | --------------------------------------------------------------- | ----------------------------- |
+| Usage     | Passes stdout of one command to stdin of another.      | Passes a file path to a command.                                |
+| Limit     | Only connects one command to the next.                 | Can provide multiple inputs to a single command (e.g., `diff`). |
+| Variables | Sometimes runs in a subshell, making variables tricky. | Allows more complex redirection in scripts.                     |
 
 # Bash Shell
 
