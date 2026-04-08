@@ -93,6 +93,7 @@
       - [Non-Interactive Login Shell](#non-interactive-login-shell)
   - [Alias](#alias)
     - [What is an Alias?](#what-is-an-alias)
+    - [Viewing Alias](#viewing-alias)
     - [Managing Aliases](#managing-aliases)
     - [Making Aliases Permanent](#making-aliases-permanent)
   - [Configure the Bash shell](#configure-the-bash-shell)
@@ -1169,6 +1170,14 @@ export CITY='SONDA VO DOI'
 - Example: `alias gohome='cd ~'` allows you to simply type gohome to return to your home directory.
 
 - Note on Quotes: Using quotes (e.g., `'cd ~'`) prevents Bash from expanding special characters (like the tilde) immediately, ensuring the command is interpreted correctly every time the alias is run.
+
+### Viewing Alias
+
+- To see them, enter the alias command without arguments
+
+```bash
+alias
+```
 
 ### Managing Aliases
 
