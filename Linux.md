@@ -109,6 +109,7 @@
     - [Tilde expansion - `~`](#tilde-expansion---)
     - [Variable expansion - `$`](#variable-expansion---)
     - [Shell Parameter Expansion](#shell-parameter-expansion)
+    - [Arithmetic Expansion](#arithmetic-expansion)
     - [Word Splitting](#word-splitting)
       - [What is Word Splitting?](#what-is-word-splitting)
       - [The Role of IFS](#the-role-of-ifs)
@@ -1301,6 +1302,28 @@ echo ~+
 | Substring      | `${VAR:offset:length}`   | Extracts a portion of the string starting at offset. | `export VAR="hello" → echo "${VAR:1:3}" → "ell"`       |
 | Replacement    | `${VAR/search/replace}`  | Replaces the first occurrence of a pattern.          | `export VAR="hello" → echo "${VAR/l/LL}" → "heLLo"`    |
 | Global Replace | `${VAR//search/replace}` | Replaces all occurrences of a pattern.               | `export VAR="hello" → echo "${VAR//l/LL}" → "heLLLLo"` |
+
+### Arithmetic Expansion
+
+- The shell allows arithmetic to be performed by expansion. This allows us to use the shell prompt as a calculator
+- Syntax: `$((expression))`
+
+| Operator | Description                                         |
+| -------- | --------------------------------------------------- |
+| +        | Addition                                            |
+| -        | Subtraction                                         |
+| \*       | Multiplication                                      |
+| /        | Division (integer arithmetic, result is an integer) |
+| %        | Modulo (remainder)                                  |
+| \*\*     | Exponentiation                                      |
+
+```bash
+echo $((2 + 2))
+# 4
+
+echo $(($((5**2)) * 3))
+# 75
+```
 
 ### Word Splitting
 
