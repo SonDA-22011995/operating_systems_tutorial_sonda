@@ -1599,6 +1599,13 @@ echo "data".{csv,txt}
 
 - Syntax: `<(command)`
 - This is the most common form. Bash executes command, saves the output to a temporary named pipe (or a file in `/dev/fd/`), and replaces the expression with the path to that "file.
+
+```bash
+echo <(true)
+
+# /dev/fd/63
+```
+
 - The Problem: Some tools, like diff, require two files to compare. Normally, you would have to save command outputs to disk first
 
 ```bash
