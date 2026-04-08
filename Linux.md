@@ -9,6 +9,7 @@
   - [What is a File?](#what-is-a-file)
   - [How Data is Stored: The Inode System](#how-data-is-stored-the-inode-system)
   - [The Unix Philosophy: "Everything is a File"](#the-unix-philosophy-everything-is-a-file)
+    - [Identifying File Types in the Terminal](#identifying-file-types-in-the-terminal)
   - [Understanding file paths](#understanding-file-paths)
     - [Absolute Paths](#absolute-paths)
     - [Relative Paths](#relative-paths)
@@ -252,6 +253,27 @@
 - Note: While older spinning hard drives (HDD - Hard Disk Drive) required "defragmentation" to keep data blocks together for speed, modern SSDs handle split data blocks efficiently without performance loss.
 
 ## The Unix Philosophy: "Everything is a File"
+
+- In Unix, almost everything—including hardware—is represented as a file. There are several types:
+  - Ordinary Files: Standard text or binary data.
+
+  - Directories: Folders (which are technically special files containing a list of other files).
+
+  - Links: Symbolic links (shortcuts).
+
+  - Special Files: Hardware devices (character/block devices) , named pipes, and sockets for process communication.
+
+### Identifying File Types in the Terminal
+
+- To see file details, use the command ls -l. The first character of the output indicates the file type:
+  - `-` : Ordinary file
+  - `d` : Directory
+  - `l` : Symbolic link
+  - `c` : Character devices
+  - `b` : block devices
+  - `p` : pipes
+  - `s` : Sockets
+- Hidden Files: Any file or folder starting with a dot (e.g., `.bashrc`) is hidden by default. To view them, use the `ls -la` command.
 
 ## Understanding file paths
 
