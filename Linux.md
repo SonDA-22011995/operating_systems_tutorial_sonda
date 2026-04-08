@@ -265,7 +265,7 @@
 
 ### Identifying File Types in the Terminal
 
-- To see file details, use the command ls -l. The first character of the output indicates the file type:
+- To see file details, use the command `ls -l`. The first character of the output indicates the file type:
   - `-` : Ordinary file
   - `d` : Directory
   - `l` : Symbolic link
@@ -274,6 +274,8 @@
   - `p` : pipes
   - `s` : Sockets
 - Hidden Files: Any file or folder starting with a dot (e.g., `.bashrc`) is hidden by default. To view them, use the `ls -la` command.
+
+![Identifying File Types](static/images/image_0005.png)
 
 ## Understanding file paths
 
