@@ -1387,7 +1387,7 @@ touch 'a file.txt'
 - Single quotes - `''`: All expansions are disabled, word splitting is disabled
 - Double quotes:
   - Disables most expansions, such as tilde expansion `~`, filename expansion `*`, word splitting,...
-  - However certain expansions are still enabled: Variable and parameter expansion are still working
+  - However certain expansions are still enabled: Variable and Arithmetic expansion and substitution command are still working
 
 - The Three Levels of Quoting
 
