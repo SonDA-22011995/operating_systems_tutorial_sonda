@@ -905,6 +905,12 @@ env
 # LANG=C.UTF-8
 ```
 
+- The `set` command will show both the shell and environment variables. The `set` builtin in bash
+
+```bash
+set
+```
+
 ### Accessing Variables
 
 - The most reliable syntax is: `echo "${VARIABLE_NAME}"`
