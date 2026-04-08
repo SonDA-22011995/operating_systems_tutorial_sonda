@@ -6,14 +6,17 @@
   - [What is a Linux Distribution](#what-is-a-linux-distribution)
   - [Common Linux distributions](#common-linux-distributions)
 - [The Linux filesystem](#the-linux-filesystem)
-  - [Important Facts About Filenames](#important-facts-about-filenames)
-  - [Directory structure](#directory-structure)
-    - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
+  - [What is a File?](#what-is-a-file)
+  - [How Data is Stored: The Inode System](#how-data-is-stored-the-inode-system)
+  - [The Unix Philosophy: "Everything is a File"](#the-unix-philosophy-everything-is-a-file)
   - [Understanding file paths](#understanding-file-paths)
     - [Absolute Paths](#absolute-paths)
     - [Relative Paths](#relative-paths)
   - [Symbolic Links](#symbolic-links)
   - [Hard Links](#hard-links)
+  - [Important Facts About Filenames](#important-facts-about-filenames)
+  - [Directory structure](#directory-structure)
+    - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
   - [Understanding sudo](#understanding-sudo)
@@ -227,6 +230,77 @@
 
 # The Linux filesystem
 
+## What is a File?
+
+- A file is defined as a container for storing and managing data, identified by a unique name and path. Every file possesses specific attributes (metadata), including:
+  - Size: The amount of data stored in the file
+  - Permissions: Who can read, write, or execute the file
+  - Ownership: Which user and group owns the file
+  - Timestamps: When the file was created, last accessed, or modified
+
+## How Data is Stored: The Inode System
+
+![How Data is Stored](static/images/image_0004.png)
+
+- On most Linux file systems (like ext4), files are managed through a structure called an Inode:
+  - Filename: The name we see (e.g., file.txt) points to an Inode.
+
+  - Inode: This stores all metadata (permissions, size, etc.) and the physical location of the data on the disk, but not the filename itself.
+
+  - Data Blocks: The actual content stored on the disk. For a folder, the "data" is simply a list of the files and Inodes it contains.
+
+- Note: While older spinning hard drives (HDD - Hard Disk Drive) required "defragmentation" to keep data blocks together for speed, modern SSDs handle split data blocks efficiently without performance loss.
+
+## The Unix Philosophy: "Everything is a File"
+
+## Understanding file paths
+
+### Absolute Paths
+
+- Absolute paths define the complete address of a file or folder starting from the root of the system.
+  - **Starting Point**: They always start with a forward slash (/), representing the root directory.
+
+  - **Consistency**: They work from anywhere in the system, regardless of your current working directory.
+
+  - **Special Shortcut**: The tilde (`~`) is also treated as an absolute path because the shell (Bash) automatically expands it to the full path of your home directory (e.g., /home/username) before running the command.
+
+Examples:
+
+- `/home/giannis/Desktop`
+- `~/Desktop`
+- `/etc/network`
+
+### Relative Paths
+
+- Relative paths define a location relative to your Current Working Directory (PWD).
+  - Starting Point: They do not start with a slash. They start with a folder name or a special dot notation.
+
+  - Dependency: Their success depends entirely on where you are currently "standing" in the terminal.
+
+- Common Notations:
+  - `Desktop/` or `./Desktop/`: Look for a folder named "Desktop" inside the current folder.
+
+  - `../`: Move one level up to the parent directory.
+
+  - `../Documents`: Move one level up, then look for a folder named "Documents".
+
+## Symbolic Links
+
+- a symbolic link (also known as a soft link or symlink)
+- The command used to create a symlink is `ln -s`. The syntax is: `ln -s [target_path] [link_name]`
+- Why use Symbolic Links:
+  - Suppose we install version 2.6 of “foo,” which has the filename “foo-2.6,” and then create a symbolic link
+    simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
+- Symbolic links were created to overcome the limitations of hard links. They work by creating a special type of file that contains a text pointer to the referenced file or directory. In this regard, they operate in much the same way as a Windows shortcut, though of course they predate theWindows feature by many years.
+
+## Hard Links
+
+- When we create a hard link, we create an additional directory entry for a file
+- Hard links have two important limitations:
+  - A hard link cannot reference a file outside its own file system. This means a link cannot reference a file that is not on the same disk partition as the link itself.
+  - A hard link may not reference a directory.
+- When a hard link is deleted, the link is removed, but the contents of the file itself continue to exist (that is, its space is not deallocated) until all links to the file are deleted.
+
 ## Important Facts About Filenames
 
 - On Linux systems, files are named in a manner similar to that of other systems such as Windows, but there are some important differences.
@@ -281,54 +355,6 @@ sudo apt install tree
 ```bash
 tree -L 1
 ```
-
-## Understanding file paths
-
-### Absolute Paths
-
-- Absolute paths define the complete address of a file or folder starting from the root of the system.
-  - **Starting Point**: They always start with a forward slash (/), representing the root directory.
-
-  - **Consistency**: They work from anywhere in the system, regardless of your current working directory.
-
-  - **Special Shortcut**: The tilde (`~`) is also treated as an absolute path because the shell (Bash) automatically expands it to the full path of your home directory (e.g., /home/username) before running the command.
-
-Examples:
-
-- `/home/giannis/Desktop`
-- `~/Desktop`
-- `/etc/network`
-
-### Relative Paths
-
-- Relative paths define a location relative to your Current Working Directory (PWD).
-  - Starting Point: They do not start with a slash. They start with a folder name or a special dot notation.
-
-  - Dependency: Their success depends entirely on where you are currently "standing" in the terminal.
-
-- Common Notations:
-  - `Desktop/` or `./Desktop/`: Look for a folder named "Desktop" inside the current folder.
-
-  - `../`: Move one level up to the parent directory.
-
-  - `../Documents`: Move one level up, then look for a folder named "Documents".
-
-## Symbolic Links
-
-- a symbolic link (also known as a soft link or symlink)
-- The command used to create a symlink is `ln -s`. The syntax is: `ln -s [target_path] [link_name]`
-- Why use Symbolic Links:
-  - Suppose we install version 2.6 of “foo,” which has the filename “foo-2.6,” and then create a symbolic link
-    simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
-- Symbolic links were created to overcome the limitations of hard links. They work by creating a special type of file that contains a text pointer to the referenced file or directory. In this regard, they operate in much the same way as a Windows shortcut, though of course they predate theWindows feature by many years.
-
-## Hard Links
-
-- When we create a hard link, we create an additional directory entry for a file
-- Hard links have two important limitations:
-  - A hard link cannot reference a file outside its own file system. This means a link cannot reference a file that is not on the same disk partition as the link itself.
-  - A hard link may not reference a directory.
-- When a hard link is deleted, the link is removed, but the contents of the file itself continue to exist (that is, its space is not deallocated) until all links to the file are deleted.
 
 # Managing Users and Groups
 
