@@ -14,6 +14,8 @@
     - [Absolute Paths](#absolute-paths)
     - [Relative Paths](#relative-paths)
   - [Symbolic Links](#symbolic-links)
+    - [Working with Symlinks via CLI](#working-with-symlinks-via-cli)
+    - [Why use Symbolic Links:](#why-use-symbolic-links)
   - [Hard Links](#hard-links)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
@@ -310,12 +312,25 @@ Examples:
 
 ## Symbolic Links
 
-- a symbolic link (also known as a soft link or symlink)
-- The command used to create a symlink is `ln -s`. The syntax is: `ln -s [target_path] [link_name]`
-- Why use Symbolic Links:
-  - Suppose we install version 2.6 of “foo,” which has the filename “foo-2.6,” and then create a symbolic link
-    simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
-- Symbolic links were created to overcome the limitations of hard links. They work by creating a special type of file that contains a text pointer to the referenced file or directory. In this regard, they operate in much the same way as a Windows shortcut, though of course they predate theWindows feature by many years.
+- A symbolic link (Symlink) is a special type of file that serves as a reference or a "shortcut" to another file or directory. Unlike Windows shortcuts, which are often just files recognized by the graphical interface, Unix symlinks are resolved at the system level, making them transparent to most applications.
+- Key Characteristics
+  - Path Reference: It stores the text of the destination path (target).
+  - Runtime Resolution: The system resolves the link every time you access it. If the target is moved or deleted, the link becomes "broken."
+  - Transparency: To the system and most applications, a symlink to a folder behaves exactly like a real folder.
+
+### Working with Symlinks via CLI
+
+- Create a Symlink: `ln -s [target_path] [symlink_name]`
+  - The `target_path` and `symlink_name` should be absolute paths.
+- Identify a Symlink and View Destination: `ls -l` (Look for `l `as the first character in the permissions string)
+- Deleting a symbolic link (symlink) is straightforward and safe. Deleting the link only removes the "shortcut" and does not affect the original file or folder it points to
+  - `rm symlink_name`: This is the most common method. Treat the symlink as if it were a regular file.
+  - `unlink symlink_name`: This is a dedicated tool for removing links. It can only remove one link at a time and cannot delete actual directories.
+
+### Why use Symbolic Links:
+
+- Suppose we install version 2.6 of “foo,” which has the filename “foo-2.6,” and then create a symbolic link
+  simply called “foo” that points to “foo-2.6.” This means that when a program opens the file “foo,” it is actually opening the file “foo-2.6.” Now everybody is happy. The programs that rely on “foo” can find it, and we can still see what actual version is installed. When it is time to upgrade to “foo-2.7,” we just add the file to our system, delete the symbolic link “foo,” and create a new one that points to the new version. Not only does this solve the problem of the version upgrade, it also allows us to keep both versions on our machine. Imagine that “foo-2.7” has a bug (damn those developers!), and we need to revert to the old version. Again, we just delete the symbolic link pointing to the new version and create a new symbolic link pointing to the old version
 
 ## Hard Links
 
