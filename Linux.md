@@ -336,6 +336,8 @@ Examples:
 ln -s /mnt/d/udemy/Mastering\ Linux\ The\ Comprehensive\ Guide/ ~/udemy_linux
 ```
 
+![Symbolic link](static/images/image_0006.png)
+
 ## Hard Links
 
 - When we create a hard link, we create an additional directory entry for a file
