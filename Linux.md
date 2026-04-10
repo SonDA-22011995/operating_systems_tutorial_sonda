@@ -24,7 +24,7 @@
       - [Identify a Symlink and View Destination](#identify-a-symlink-and-view-destination)
       - [Copy files with a hard link](#copy-files-with-a-hard-link)
       - [Deleting](#deleting)
-        - [How to Completely Delete Data (Find all Hard Links).](#how-to-completely-delete-data-find-all-hard-links)
+  - [Hard Links vs. Symbolic Links](#hard-links-vs-symbolic-links) - [How to Completely Delete Data (Find all Hard Links).](#how-to-completely-delete-data-find-all-hard-links)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -435,6 +435,15 @@ rm link_name
 # OR
 unlink link_name
 ```
+
+## Hard Links vs. Symbolic Links
+
+| Feature              | Hard Link             | Symbolic Link (Symlink)     |
+| -------------------- | --------------------- | --------------------------- |
+| Points to            | Inode (Physical Data) | File Path (String)          |
+| Cross File Systems   | No                    | Yes                         |
+| Link to Directories  | No                    | Yes                         |
+| If original is moved | Link still works      | Link breaks (Dangling link) |
 
 ##### How to Completely Delete Data (Find all Hard Links).
 
