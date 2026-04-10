@@ -321,7 +321,7 @@ Examples:
 ### Working with Symlinks via CLI
 
 - Create a Symlink: `ln -s [target_path] [symlink_name]`
-  - The `target_path` and `symlink_name` should be absolute paths.
+  - The `target_path` and `symlink_name` should be absolute paths.You shouldn't use a dot `.` in the file path.
 - Identify a Symlink and View Destination: `ls -l` (Look for `l `as the first character in the permissions string)
 - Deleting a symbolic link (symlink) is straightforward and safe. Deleting the link only removes the "shortcut" and does not affect the original file or folder it points to
   - `rm symlink_name`: This is the most common method. Treat the symlink as if it were a regular file.
