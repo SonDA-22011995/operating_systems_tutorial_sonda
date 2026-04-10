@@ -17,6 +17,9 @@
     - [Working with Symlinks via CLI](#working-with-symlinks-via-cli)
     - [Why use Symbolic Links:](#why-use-symbolic-links)
   - [Hard Links](#hard-links)
+    - [What is hardlink?](#what-is-hardlink)
+    - [How it Works](#how-it-works)
+    - [Working with hard link via CLI](#working-with-hard-link-via-cli)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -88,7 +91,7 @@
       - [Deleting Variables - `unset`](#deleting-variables---unset)
     - [`PATH` environment variable](#path-environment-variable)
       - [What is the `PATH` Variable?](#what-is-the-path-variable)
-      - [How It Works](#how-it-works)
+      - [How It Works](#how-it-works-1)
       - [Modiffy `PATH` variable](#modiffy-path-variable)
     - [Creating custom executable file](#creating-custom-executable-file)
       - [The Shebang - `#!`](#the-shebang---)
@@ -340,11 +343,29 @@ ln -s /mnt/d/udemy/Mastering\ Linux\ The\ Comprehensive\ Guide/ ~/udemy_linux
 
 ## Hard Links
 
-- When we create a hard link, we create an additional directory entry for a file
-- Hard links have two important limitations:
-  - A hard link cannot reference a file outside its own file system. This means a link cannot reference a file that is not on the same disk partition as the link itself.
-  - A hard link may not reference a directory.
-- When a hard link is deleted, the link is removed, but the contents of the file itself continue to exist (that is, its space is not deallocated) until all links to the file are deleted.
+### What is hardlink?
+
+![hardlink](static/images/image_0007.png)
+
+- A hard link is essentially an additional name for an existing file. Unlike a symbolic link (shortcut) which points to a path, a hard link points directly to the inode—the data structure on the disk that stores everything about a file except its name and the actual data content.
+
+### How it Works
+
+- **When you create a file**, you are creating its first hard link. The file system uses an inode to store the file's metadata (permissions, type, size) and the pointers to where the actual data lives on the disk
+
+- **Shared Identity**: Multiple hard links point to the same inode. This means they share the same permissions, owner, and data. If you change the content of one, the other reflects that change immediately because they are the same data.
+
+- **Reference Counting**: The inode keeps track of how many hard links point to it.
+
+- **Deletion Logic**: If you delete a hard link, the data remains on the disk as long as at least one other hard link still exists. The data is only deleted when the hard link count reaches zero.
+
+### Working with hard link via CLI
+
+- Creating a Hard Link: Use the `ln` command without any flags
+
+```bash
+ln target_file link_name
+```
 
 ## Important Facts About Filenames
 
