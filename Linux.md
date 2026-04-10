@@ -24,7 +24,8 @@
       - [Identify a Symlink and View Destination](#identify-a-symlink-and-view-destination)
       - [Copy files with a hard link](#copy-files-with-a-hard-link)
       - [Deleting](#deleting)
-  - [Hard Links vs. Symbolic Links](#hard-links-vs-symbolic-links) - [How to Completely Delete Data (Find all Hard Links).](#how-to-completely-delete-data-find-all-hard-links)
+        - [How to Completely Delete Data (Find all Hard Links).](#how-to-completely-delete-data-find-all-hard-links)
+  - [Hard Links vs. Symbolic Links](#hard-links-vs-symbolic-links)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -436,15 +437,6 @@ rm link_name
 unlink link_name
 ```
 
-## Hard Links vs. Symbolic Links
-
-| Feature              | Hard Link             | Symbolic Link (Symlink)     |
-| -------------------- | --------------------- | --------------------------- |
-| Points to            | Inode (Physical Data) | File Path (String)          |
-| Cross File Systems   | No                    | Yes                         |
-| Link to Directories  | No                    | Yes                         |
-| If original is moved | Link still works      | Link breaks (Dangling link) |
-
 ##### How to Completely Delete Data (Find all Hard Links).
 
 - If your goal is to wipe the data entirely, you must find and delete every file name associated with that specific Inode.
@@ -467,6 +459,15 @@ find /path/to/search -inum 1234567
 ```bash
 find /path/to/search -inum 1234567 -delete
 ```
+
+## Hard Links vs. Symbolic Links
+
+| Feature              | Hard Link             | Symbolic Link (Symlink)     |
+| -------------------- | --------------------- | --------------------------- |
+| Points to            | Inode (Physical Data) | File Path (String)          |
+| Cross File Systems   | No                    | Yes                         |
+| Link to Directories  | No                    | Yes                         |
+| If original is moved | Link still works      | Link breaks (Dangling link) |
 
 ## Important Facts About Filenames
 
