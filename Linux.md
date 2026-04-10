@@ -26,6 +26,12 @@
       - [Deleting](#deleting)
         - [How to Completely Delete Data (Find all Hard Links).](#how-to-completely-delete-data-find-all-hard-links)
   - [Hard Links vs. Symbolic Links](#hard-links-vs-symbolic-links)
+  - [Inode](#inode)
+    - [What is an Inode?](#what-is-an-inode)
+    - [Monitoring Inodes](#monitoring-inodes)
+    - [Identify physical disk partitions or boundaries](#identify-physical-disk-partitions-or-boundaries)
+    - [The Problem: Reaching the Limit](#the-problem-reaching-the-limit)
+    - [Solutions to Inode Exhaustion](#solutions-to-inode-exhaustion)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -468,6 +474,56 @@ find /path/to/search -inum 1234567 -delete
 | Cross File Systems   | No                    | Yes                         |
 | Link to Directories  | No                    | Yes                         |
 | If original is moved | Link still works      | Link breaks (Dangling link) |
+
+## Inode
+
+### What is an Inode?
+
+- An **inode** (index node) is a data structure on a file system that stores information about a file or directory (such as ownership, permissions, and location on the disk), but not the actual content or the filename itself.
+  - The Process: A directory entry points to an inode. The inode points to the data blocks on the disk.
+  - The Limitation: Inodes are stored in a centralized table that is created when the file system is first formatted. This space is fixed; you cannot simply "expand" it like a regular folder without risk.
+
+### Monitoring Inodes
+
+- You can check your current inode usage using the df (disk free) command with specific flags:
+
+```bash
+df -ih
+```
+
+- `-i`: Displays inode information instead of block usage.
+
+- `-h`: "Human-readable" format (showing numbers in thousands/millions).
+
+- The output shows the total inodes available, how many are used, and the percentage of usage. Even if your disk is only 10% full of data, you could be at 100% inode usage if you have millions of tiny files.
+
+![Monitoring Inode](static/images/image_0011.png)
+
+### Identify physical disk partitions or boundaries
+
+```bash
+df -ih <target_path>
+```
+
+![Identify physical disk partitions or boundaries](static/images/image_0012.png)
+
+### The Problem: Reaching the Limit
+
+- If you run out of inodes, the system cannot create new files, even if there are gigabytes of free space. This can cause:
+  - Applications to crash or fail to start.
+  - System-wide instability or OS crashes.
+  - Specific issues with environments like JavaScript/Node.js, which often install hundreds of thousands of small dependency files (e.g., node_modules).
+
+### Solutions to Inode Exhaustion
+
+- If you hit the limit, you have several strategies to fix it:
+  - Delete Unnecessary Files: Clear out old logs, temporary files, or cache.
+
+  - Archive Files (The "Tar" Method): Move many small files into a single .tar archive. A .tar file contains many files but consumes only one inode on the host file system.
+
+  - Mount Additional Drives: Add a new physical or virtual drive and "mount" it to a specific folder to provide a fresh pool of inodes.
+
+  - Reformat the File System: Recreate the file system with a higher inode density (usually done on a new drive to avoid data loss).
 
 ## Important Facts About Filenames
 
