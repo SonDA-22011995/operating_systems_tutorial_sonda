@@ -312,7 +312,7 @@ Examples:
 
 ## Symbolic Links
 
-- A symbolic link (Symlink) is a special type of file that serves as a reference or a "shortcut" to another file or directory. Unlike Windows shortcuts, which are often just files recognized by the graphical interface, Unix symlinks are resolved at the system level, making them transparent to most applications.
+- A symbolic link (Symlink or Softlink) is a special type of file that serves as a reference or a "shortcut" to another file or directory. Unlike Windows shortcuts, which are often just files recognized by the graphical interface, Unix symlinks are resolved at the system level, making them transparent to most applications.
 - Key Characteristics
   - Path Reference: It stores the text of the destination path (target).
   - Runtime Resolution: The system resolves the link every time you access it. If the target is moved or deleted, the link becomes "broken."
