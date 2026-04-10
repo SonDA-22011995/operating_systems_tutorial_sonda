@@ -20,6 +20,8 @@
     - [What is hardlink?](#what-is-hardlink)
     - [How it Works](#how-it-works)
     - [Working with hard link via CLI](#working-with-hard-link-via-cli)
+      - [Creating a Hard Link](#creating-a-hard-link)
+      - [Identify a Symlink and View Destination](#identify-a-symlink-and-view-destination)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -361,11 +363,47 @@ ln -s /mnt/d/udemy/Mastering\ Linux\ The\ Comprehensive\ Guide/ ~/udemy_linux
 
 ### Working with hard link via CLI
 
-- Creating a Hard Link: Use the `ln` command without any flags
+#### Creating a Hard Link
+
+- Use the `ln` command without any flags
 
 ```bash
 ln target_file link_name
 ```
+
+![Create hard link](static/images/image_0009.png)
+
+- No Directories: You cannot create hard links for directories to prevent infinite loops in the file system structure
+
+![No Directories](static/images/image_0008.png)
+
+- Same File System Only: Hard links cannot cross physical partitions or disk boundaries because inode numbers are only unique within a specific file system
+
+![Same File System Only](static/images/image_0010.png)
+
+PHYSICAL DISK (SSD 512GB) | LOGICAL TREE (Linux)
+======================================== | ========================================
+|
+[ /dev/nvme0n1 ] | [ Root Directory ]
++------------------------------------+ | /
+| Partition 1 (200GB) |--|--[Mount]--> /
+| (File System A) | | /etc, /bin, /var
+| Inodes: 1 to 500,000 | |
++------------------------------------+ |
+| DISK BOUNDARY | | <--- CANNOT CROSS WITH HARD LINK
++------------------------------------+ |
+| Partition 2 (312GB) |--|--[Mount]--> /home
+| (File System B) | | └── /sonda
+| Inodes: 1 to 800,000 | |
++------------------------------------+ |
+
+#### Identify a Symlink and View Destination
+
+```bash
+ls -l
+```
+
+- Appearance: To the user and most applications, a hard link looks like a regular, independent file
 
 ## Important Facts About Filenames
 
