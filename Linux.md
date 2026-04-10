@@ -381,21 +381,23 @@ ln target_file link_name
 
 ![Same File System Only](static/images/image_0010.png)
 
-PHYSICAL DISK (SSD 512GB) | LOGICAL TREE (Linux)
+```
+PHYSICAL DISK (SSD 512GB)         |       LOGICAL TREE (Linux)
 ======================================== | ========================================
-|
-[ /dev/nvme0n1 ] | [ Root Directory ]
-+------------------------------------+ | /
-| Partition 1 (200GB) |--|--[Mount]--> /
-| (File System A) | | /etc, /bin, /var
-| Inodes: 1 to 500,000 | |
-+------------------------------------+ |
-| DISK BOUNDARY | | <--- CANNOT CROSS WITH HARD LINK
-+------------------------------------+ |
-| Partition 2 (312GB) |--|--[Mount]--> /home
-| (File System B) | | └── /sonda
-| Inodes: 1 to 800,000 | |
-+------------------------------------+ |
+                                         |
+ [ /dev/nvme0n1 ]                        |            [ Root Directory ]
+ +------------------------------------+  |                   /
+ | Partition 1 (200GB)                |--|--[Mount]-->     /
+ | (File System A)                    |  |                 /etc, /bin, /var
+ | Inodes: 1 to 500,000               |  |
+ +------------------------------------+  |
+ |          DISK BOUNDARY             |  | <--- CANNOT CROSS WITH HARD LINK
+ +------------------------------------+  |
+ | Partition 2 (312GB)                |--|--[Mount]-->     /home
+ | (File System B)                    |  |                   └── /sonda
+ | Inodes: 1 to 800,000               |  |
+ +------------------------------------+  |
+```
 
 #### Identify a Symlink and View Destination
 
