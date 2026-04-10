@@ -22,6 +22,9 @@
     - [Working with hard link via CLI](#working-with-hard-link-via-cli)
       - [Creating a Hard Link](#creating-a-hard-link)
       - [Identify a Symlink and View Destination](#identify-a-symlink-and-view-destination)
+      - [Copy files with a hard link](#copy-files-with-a-hard-link)
+      - [Deleting](#deleting)
+        - [How to Completely Delete Data (Find all Hard Links).](#how-to-completely-delete-data-find-all-hard-links)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -406,6 +409,55 @@ ls -l
 ```
 
 - Appearance: To the user and most applications, a hard link looks like a regular, independent file
+
+#### Copy files with a hard link
+
+- You can "copy" a directory structure using hard links for the files to save space:
+
+```bash
+cp -al source_folder destination_folder
+```
+
+- `-a`: Archive mode (preserves attributes and recurses).
+
+- `-l`: Create hard links instead of copying the actual data.
+
+- Result: A new folder structure is created, but the files inside point to the original data blocks.
+
+#### Deleting
+
+- Basic Deletion
+  - What happens? The system reduces the link count of the inode by 1.
+  - Is the data deleted? Only if the link count reaches zero. If another name (the original file or another hard link) still points to that data, the data remains on the disk.
+
+```bash
+rm link_name
+# OR
+unlink link_name
+```
+
+##### How to Completely Delete Data (Find all Hard Links).
+
+- If your goal is to wipe the data entirely, you must find and delete every file name associated with that specific Inode.
+
+- Step 1: Identify the Inode number
+
+```bash
+ls -i filename
+# Output example: 1234567 filename (1234567 is the Inode)
+```
+
+- Step 2: Find all filenames sharing that Inode
+
+```bash
+find /path/to/search -inum 1234567
+```
+
+-Step 3: Delete them all
+
+```bash
+find /path/to/search -inum 1234567 -delete
+```
 
 ## Important Facts About Filenames
 
