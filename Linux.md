@@ -36,6 +36,9 @@
     - [What is an I/O Device?](#what-is-an-io-device)
     - [Unbuffered I/O](#unbuffered-io)
     - [Buffered I/O](#buffered-io)
+  - [How devices are handled within a Unix-based system](#how-devices-are-handled-within-a-unix-based-system)
+    - [What is a Device?](#what-is-a-device)
+    - [Main Types of Devices](#main-types-of-devices)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -571,6 +574,25 @@ df -ih <target_path>
 | Speed         | Slower for large tasks (more overhead) | Faster for large tasks (less overhead) |
 | Latency       | Extremely low (Real-time)              | Higher (Waiting for buffer to fill)    |
 | Best For      | Mice, keyboards, real-time sensors     | Hard drives, file transfers, streaming |
+
+## How devices are handled within a Unix-based system
+
+- The core philosophy is that **"everything is a file," or more accurately, "everything is a stream of bytes."**
+
+### What is a Device?
+
+- In Unix, a device is a physical or virtual entity accessed through a file-like interface.
+  - Abstraction: The kernel handles the complex technical details of the hardware. Users and applications simply interact with a "file" in the `/dev` directory to read from or write to the hardware
+  - Interface: This allows for a consistent way to communicate with everything from hard drives to terminal windows.
+
+### Main Types of Devices
+
+- The lecture distinguishes between two primary categories based on how data is accessed:
+
+| Type             | Indicator (`ls -l`) | Data Handling                                                                | Example                           |
+| ---------------- | ------------------- | ---------------------------------------------------------------------------- | --------------------------------- |
+| Character Device | c                   | Unbuffered: Accesses data byte-by-byte (or character-by-character) directly. | Keyboards, Virtual Terminals      |
+| Block Device     | b                   | Buffered: Groups bytes into blocks (e.g., 512 bytes) to improve performance. | Hard drives (HDD/SSD), USB drives |
 
 ## Important Facts About Filenames
 
