@@ -548,7 +548,7 @@ df -ih <target_path>
   - Precision: Gives the application total control over timing.
 
   - Use Cases:
-    - Mouse Movements: You need the cursor to move instantly; waiting for a buffer to fill would cause lag.
+    - Mouse Movements: You need the cursor to move instantly; waiting for a buffer to fill would cause lag. Try this command `sudo cat /dev/input/mice` to see how unbuffered I/O work
     - Keyboard Input: Capturing keystrokes in real-time.
     - Sensors: Reading critical, immediate environmental data.
 
