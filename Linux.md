@@ -32,6 +32,10 @@
     - [Identify physical disk partitions or boundaries of a file](#identify-physical-disk-partitions-or-boundaries-of-a-file)
     - [The Problem: Reaching the Limit](#the-problem-reaching-the-limit)
     - [Solutions to Inode Exhaustion](#solutions-to-inode-exhaustion)
+  - [The difference between Buffered and Unbuffered I/O](#the-difference-between-buffered-and-unbuffered-io)
+    - [What is an I/O Device?](#what-is-an-io-device)
+    - [Unbuffered I/O](#unbuffered-io)
+    - [Buffered I/O](#buffered-io)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -524,6 +528,49 @@ df -ih <target_path>
   - Mount Additional Drives: Add a new physical or virtual drive and "mount" it to a specific folder to provide a fresh pool of inodes.
 
   - Reformat the File System: Recreate the file system with a higher inode density (usually done on a new drive to avoid data loss).
+
+## The difference between Buffered and Unbuffered I/O
+
+### What is an I/O Device?
+
+- An I/O device is any hardware or interface that generates input or receives output.
+  - Storage: Hard drives or SSDs.
+  - Peripherals: Keyboards, mice, and sensors.
+  - Connectivity: Network connections (often treated as files in systems like Linux).
+
+### Unbuffered I/O
+
+- In unbuffered I/O, data is handled directly between the device and the program. Every single piece of data (even a single byte) is processed immediately as it arrives or is sent.
+
+- Advantages:
+  - Real-time: Provides immediate access to data with no delays.
+
+  - Precision: Gives the application total control over timing.
+
+  - Use Cases:
+    - Mouse Movements: You need the cursor to move instantly; waiting for a buffer to fill would cause lag.
+    - Keyboard Input: Capturing keystrokes in real-time.
+    - Sensors: Reading critical, immediate environmental data.
+
+### Buffered I/O
+
+- Buffered I/O uses a temporary storage area (a buffer) to hold data before it is sent to its final destination. Instead of many small, individual transfers, data is collected and moved in larger "chunks."
+
+- Advantages:
+  - Efficiency: Reduces the number of system calls or physical operations (like disk spins), which are "expensive" in terms of processing power.
+  - Performance: Significantly faster for large-scale data transfers.
+  - Integrity: Easier to perform error checks on a 1KB block of data than on individual bytes.
+
+- Use Cases:
+  - Reading/Writing Files: It is much faster to read a block of a file into memory than to access the disk for every single character.
+  - Network Transfers: Sending large packets of data at once rather than bit by bit.
+
+| Feature       | Unbuffered I/O                         | Buffered I/O                           |
+| ------------- | -------------------------------------- | -------------------------------------- |
+| Data Handling | Direct / Immediate                     | Accumulated in temporary storage       |
+| Speed         | Slower for large tasks (more overhead) | Faster for large tasks (less overhead) |
+| Latency       | Extremely low (Real-time)              | Higher (Waiting for buffer to fill)    |
+| Best For      | Mice, keyboards, real-time sensors     | Hard drives, file transfers, streaming |
 
 ## Important Facts About Filenames
 
