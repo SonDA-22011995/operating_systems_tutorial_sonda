@@ -29,7 +29,7 @@
   - [Inode](#inode)
     - [What is an Inode?](#what-is-an-inode)
     - [Monitoring Inodes](#monitoring-inodes)
-    - [Identify physical disk partitions or boundaries](#identify-physical-disk-partitions-or-boundaries)
+    - [Identify physical disk partitions or boundaries of a file](#identify-physical-disk-partitions-or-boundaries-of-a-file)
     - [The Problem: Reaching the Limit](#the-problem-reaching-the-limit)
     - [Solutions to Inode Exhaustion](#solutions-to-inode-exhaustion)
   - [Important Facts About Filenames](#important-facts-about-filenames)
@@ -499,7 +499,7 @@ df -ih
 
 ![Monitoring Inode](static/images/image_0011.png)
 
-### Identify physical disk partitions or boundaries
+### Identify physical disk partitions or boundaries of a file
 
 ```bash
 df -ih <target_path>
