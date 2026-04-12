@@ -609,6 +609,7 @@ ls -l
 ```
 
 - Modern terminal windows are pseudo-devices. If you find the device path for one terminal (using the `tty` command). You can send text to it from a completely different terminal window by redirecting output
+- The `tty` command in Linux displays the name of the terminal device linked to your standard input. In simple terms, it shows which terminal session you're currently using
 
 ```bash
 # open terminal 1
