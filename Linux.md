@@ -39,6 +39,7 @@
   - [How devices are handled within a Unix-based system](#how-devices-are-handled-within-a-unix-based-system)
     - [What is a Device?](#what-is-a-device)
     - [Main Types of Devices](#main-types-of-devices)
+    - [Practical Interaction](#practical-interaction)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -581,9 +582,10 @@ df -ih <target_path>
 
 ### What is a Device?
 
-- In Unix, a device is a physical or virtual entity accessed through a file-like interface.
-  - Abstraction: The kernel handles the complex technical details of the hardware. Users and applications simply interact with a "file" in the `/dev` directory to read from or write to the hardware
-  - Interface: This allows for a consistent way to communicate with everything from hard drives to terminal windows.
+- A device refers to a physical or virtual entity that can be accessed through a file-like interface
+- Devices in Unix serve as the interface between the operating system and various hardware or virtual components
+- They allow applications and users to interact with these components by reading from and writing to their
+  corresponding device files
 
 ### Main Types of Devices
 
@@ -596,6 +598,32 @@ df -ih <target_path>
 
 - Pseudo-Devices: Not all devices represent physical hardware. Pseudo-devices (or virtual devices) provide specific system features.
   - Example: A partition like `/dev/sda1` is a pseudo-device because it represents a logical section of a physical disk (`/dev/sda`)
+
+### Practical Interaction
+
+- The `/dev` Directory: This is where the operating system stores all device files
+
+```bash
+cd /dev
+ls -l
+```
+
+- Modern terminal windows are pseudo-devices. If you find the device path for one terminal (using the `tty` command). You can send text to it from a completely different terminal window by redirecting output
+
+```bash
+# open terminal 1
+tty
+# /dev/pts/0
+```
+
+```bash
+# open terminal 2
+tty
+# /dev/pts/2
+
+# send text to terminal 1
+echo 'SONDA vo doi' >/dev/pts/0
+```
 
 ## Important Facts About Filenames
 
