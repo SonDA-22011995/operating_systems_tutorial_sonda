@@ -594,6 +594,9 @@ df -ih <target_path>
 | Character Device | c                   | Unbuffered: Accesses data byte-by-byte (or character-by-character) directly. | Keyboards, Virtual Terminals      |
 | Block Device     | b                   | Buffered: Groups bytes into blocks (e.g., 512 bytes) to improve performance. | Hard drives (HDD/SSD), USB drives |
 
+- Pseudo-Devices: Not all devices represent physical hardware. Pseudo-devices (or virtual devices) provide specific system features.
+  - Example: A partition like `/dev/sda1` is a pseudo-device because it represents a logical section of a physical disk (`/dev/sda`)
+
 ## Important Facts About Filenames
 
 - On Linux systems, files are named in a manner similar to that of other systems such as Windows, but there are some important differences.
