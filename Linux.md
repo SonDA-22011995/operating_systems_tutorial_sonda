@@ -40,6 +40,8 @@
     - [What is a Device?](#what-is-a-device)
     - [Main Types of Devices](#main-types-of-devices)
     - [Practical Interaction](#practical-interaction)
+  - [Example pseudo devices](#example-pseudo-devices)
+    - [The "Black Hole": `/dev/null`](#the-black-hole-devnull)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -624,6 +626,22 @@ tty
 
 # send text to terminal 1
 echo 'SONDA vo doi' >/dev/pts/0
+```
+
+## Example pseudo devices
+
+### The "Black Hole": `/dev/null`
+
+- This is arguably the most used pseudo device. It is a data sink.
+
+- Writing to it: Any data sent here is immediately discarded (deleted).
+
+- Reading from it: It always returns an "End of File" (EOF) marker, essentially acting as an empty file.
+
+- Use Case: Use it to silence a chatty program by redirecting its output: `command > /dev/null`.
+
+```bash
+ping google.com >/dev/null 2>/mnt/d/error.txt
 ```
 
 ## Important Facts About Filenames
