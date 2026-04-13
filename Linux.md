@@ -381,7 +381,7 @@ ln -s /mnt/d/udemy/Mastering\ Linux\ The\ Comprehensive\ Guide/ ~/udemy_linux
 
 - **Shared Identity**: Multiple hard links point to the same inode. This means they share the same permissions, owner, and data. If you change the content of one, the other reflects that change immediately because they are the same data.
 
-- **Reference Counting**: The inode keeps track of how many hard links point to it.
+- **Reference Counting**: The inode keeps track of how many hard links point to it. The second column in the `ls -l` output, after the permission information.
 
 - **Deletion Logic**: If you delete a hard link, the data remains on the disk as long as at least one other hard link still exists. The data is only deleted when the hard link count reaches zero.
 
