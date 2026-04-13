@@ -45,6 +45,7 @@
     - [Random Data Generators](#random-data-generators)
       - [`/dev/random` (The High-Security Version)](#devrandom-the-high-security-version)
       - [`/dev/urandom` (The Faster Version)](#devurandom-the-faster-version)
+    - [Standard Streams: `stdin`, `stdout`, and `stderr`](#standard-streams-stdin-stdout-and-stderr)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -666,6 +667,18 @@ cat /dev/random >~/random.tx
 - Behavior: It stands for "unlimited random." It reuses entropy. If it runs out of environmental noise, it uses a formula to keep generating "pseudo-random" data. It never blocks.
 
 - Best for: Most general-purpose scripts or generating random files for testing
+
+### Standard Streams: `stdin`, `stdout`, and `stderr`
+
+- Every time you run a command, it automatically opens these three "files" located in `/dev/`
+
+| Device Path | Purpose                                                         |
+| ----------- | --------------------------------------------------------------- |
+| /dev/stdin  | Where the program reads its input (usually the keyboard).       |
+| /dev/stdout | Where the program sends its normal data (usually the terminal). |
+| /dev/stderr | Where the program sends error messages.                         |
+
+- Why this matters: When you type `echo 'Hello'`, the text isn't just "appearing"; the program is literally writing that string to the file `/dev/stdout`. When you use a redirect (`>`), you are simply telling the shell to swap `/dev/stdout` for a different file (like `echo 'Hello' > hello.txt` ).
 
 ## Important Facts About Filenames
 
