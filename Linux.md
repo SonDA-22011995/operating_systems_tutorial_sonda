@@ -721,7 +721,7 @@ cat /dev/random >~/random.tx
 
 ![Monitors system load over the last 1, 5, and 15 minutes](static/images/image_0018.png)
 
-- Monitors system load over the last 1, 5, and 15 minutes. It also shows the number of currently running processes/threads and the most recent Process ID (PID) created.
+- Monitors system load over the last 1, 5, and 15 minutes (number of currently running processes /number of threads) and the last Process ID (PID) created.
 
 ## Important Facts About Filenames
 
