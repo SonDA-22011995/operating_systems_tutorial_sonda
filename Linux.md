@@ -46,6 +46,12 @@
       - [`/dev/random` (The High-Security Version)](#devrandom-the-high-security-version)
       - [`/dev/urandom` (The Faster Version)](#devurandom-the-faster-version)
     - [Standard Streams: `stdin`, `stdout`, and `stderr`](#standard-streams-stdin-stdout-and-stderr)
+  - [`/proc` directory](#proc-directory)
+    - [`/proc/cpuinfo`](#proccpuinfo)
+    - [`/proc/meminfo`](#procmeminfo)
+    - [`/proc/version`](#procversion)
+    - [`/proc/uptime`](#procuptime)
+    - [`/proc/loadavg`](#procloadavg)
   - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Directory structure](#directory-structure)
     - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
@@ -679,6 +685,43 @@ cat /dev/random >~/random.tx
 | /dev/stderr | Where the program sends error messages.                         |
 
 - Why this matters: When you type `echo 'Hello'`, the text isn't just "appearing"; the program is literally writing that string to the file `/dev/stdout`. When you use a redirect (`>`), you are simply telling the shell to swap `/dev/stdout` for a different file (like `echo 'Hello' > hello.txt` ).
+
+## `/proc` directory
+
+- The files in `/proc` are "virtual," meaning they are generated on the fly by the kernel to provide real-time data
+
+### `/proc/cpuinfo`
+
+![Information about the system's processors](static/images/image_0013.png)
+
+![Information about the system's processors](static/images/image_0014.png)
+
+- Logical vs. Physical Cores: It lists how the operating system sees the cores. Due to Hyperthreading, one physical core may appear as two logical cores
+- CPU Flags: These indicate specific instruction sets (like matrix multiplication) that can significantly boost performance for tasks like video transcoding or data processing.
+
+### `/proc/meminfo`
+
+![system memory](static/images/image_0015.png)
+
+- Provides a breakdown of system memory (RAM). It shows total, free, and available memory, allowing users to verify if they are receiving the RAM promised by a provider
+
+### `/proc/version`
+
+![Linux kernel version](static/images/image_0016.png)
+
+- Displays the Linux kernel version, the specific distribution, and the version of the compiler (GCC) used to build the kernel
+
+### `/proc/uptime`
+
+![How long the system has been running](static/images/image_0017.png)
+
+- Shows two numbers in seconds: how long the system has been running and how much total time the cores have spent idling
+
+### `/proc/loadavg`
+
+![Monitors system load over the last 1, 5, and 15 minutes](static/images/image_0018.png)
+
+- Monitors system load over the last 1, 5, and 15 minutes. It also shows the number of currently running processes/threads and the most recent Process ID (PID) created.
 
 ## Important Facts About Filenames
 
