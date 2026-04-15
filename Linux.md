@@ -734,15 +734,27 @@ cat /dev/random >~/random.tx
 - `/dev`: Device files. Nodes to the device equipment, a kernel device list.
   - Examples: `/dev/sda` (a hard drive), `/dev/tty` (terminal devices), or `/dev/null` (a virtual "black hole" for data)
 - `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
+  - These are typically plain text files that can be edited to change system behavior.
 - `/home`: user Home directory. The place where the user’s files are stored.
+  - Structure: Each user has their own subfolder (e.g., /home/username).
+  - Permissions: For security, users typically cannot access each other's home folders.
+  - Content: Contains personal documents, downloads, and user-specific configuration files.
 - `/lib`: Essential shared libraries and kernel modules. Shared libraries are similar to Dynamic Link Library (DLL) files in Windows.
+  - Contains library files that supports the binaries located under `/bin` and `/sbin`
+  - Depending on the system, we might also have additional lib folders for additional architectures. Example Example: `/lib32`, `/lib64`
+  - Similar to `/bin`, these are increasingly becoming symbolic links to `/usr/lib` in modern distributions.
 - `/media`: Mount point for removable media. For external devices and USB external media.
 - `/mnt`: Mount point for mounting a filesystem temporarily. Used for legacy systems.
 - `/opt`: Add-on application software packages. The place where optional software is installed.
 - `/proc`: Virtual filesystem managed by the kernel. a special directory structure that contains files essential for the system.
+- `/run`: Run-time data
+  - Files here will be removed / emptied during boot, or will be discarded on shutdown
 - `/sbin`: Essential system binaries. Vital programs for the system’s operation.
 - `/srv`: Data for services provided by this system.
+- `/sys`: Information about devices, drivers and kernel features
 - `/tmp`: Temporary files.
+  - Contains temporary files created by system and users
+  - These files are typically deleted on reboot
 - `/usr`: Secondary hierarchy. The largest directory in Linux that contains support files for regular system users
 - `/usr/bin` – system-executable files
 - `/usr/lib` – shared libraries from `/usr/bin`
