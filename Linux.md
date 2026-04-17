@@ -181,6 +181,7 @@
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
   - [The `ls` Command](#the-ls-command)
+  - [The `stat` command](#the-stat-command)
   - [Basic file operations](#basic-file-operations)
     - [The `touch` command](#the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
@@ -2285,6 +2286,12 @@ ls -la
 | **Size**                    | `4096`         | The file size in bytes. (Tip: Use `ls -lh` to see this in "human-readable" format like KB or MB).                                                                                                          |
 | **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
 | **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
+
+## The `stat` command
+
+- The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
+
+![stat command](static/images/image_0019.png)
 
 ## Basic file operations
 
