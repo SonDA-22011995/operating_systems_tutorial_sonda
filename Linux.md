@@ -843,9 +843,17 @@ tree -L 1
 - Contains basic user account information
 - Username, user ID (UID) , group ID (GID), user description (fullname), home directory and default shell
 - Readable by all users
+- The Shell (`/bin/bash` vs `/usr/sbin/nologin`): In `/etc/passwd`, the last field defines what happens when a user logs in. For service users, it is set to `nologin` or `false` to prevent anyone from getting a command prompt through that account.
 
-```
+```bash
 cat /etc/passwd
+
+# sonda:x:1000:1000:,,,:/home/sonda:/bin/bash
+# sonda - user
+# 1000 - User Id
+# 1000 - Group ID
+# /home/sonda - Home directory
+# /bin/bash - Default shell should be launched when user login
 ```
 
 ![/etc/passwd](static/images/image_0020.png)
