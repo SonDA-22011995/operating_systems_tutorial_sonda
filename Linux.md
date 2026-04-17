@@ -763,7 +763,7 @@ cat /dev/random >~/random.tx
 - `/usr/sbin` – specific system administration programs
 - `/usr/share` – data shared by the programs in /usr/bin such as config files, icons, wallpapers or sound files
 - `/usr/share/doc` – documentation for the system-wide files
-- `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others;
+- `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others. Backup Priority: This is arguably the most important folder to back up because it contains your unique data (databases, emails, web content).
   - `/var/log` – contains log files that register system activity
   - `/var/www` - Website files (for servers like Apache or Nginx).
   - `/var/lib` - Databases (like MySQL or PostgreSQL).
