@@ -805,17 +805,23 @@ tree -L 1
   user or user account is identified by a name and a unique identifier, known as a UID.
 
 - Linux categorizes users based on their role and level of access to the system:
-  - **System Accounts**: These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
+  - **System Accounts/ Service users**:
+    - These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
+    - Accounts like `sshd`, `www-data`, or `mysql`. They aren't meant for humans to log into; they exist so that if a web server is hacked, the attacker is "trapped" within that service user's limited permissions
 
-  - **Regular Users**: These are standard accounts created for people.
+  - **Regular Users**:
+    - These are standard accounts created for people.
     - They have a dedicated home directory for personal files.
-
     - They are restricted from accessing other users' files or performing administrative tasks by default.
+    - Limited privileges
+    - We can allow regular users to temporarily get root access through `sudo` command
 
-  - **Superuser** (Root): This is the most powerful account on the system.
+  - **Superuser/Root** :
+    - This is the most powerful account on the system. Highest privileges
     - It has unrestricted access to every file and setting.
-
     - It can add/remove users, install software, and modify system configurations.
+    - It has the user ID: 0
+    - There can only be one root user on the system
 
 ## Understanding sudo
 
