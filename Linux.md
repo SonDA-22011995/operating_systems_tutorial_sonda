@@ -57,6 +57,8 @@
   - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
+    - [Linux has different kind of users](#linux-has-different-kind-of-users)
+    - [Groups](#groups)
   - [Understanding sudo](#understanding-sudo)
     - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Linux Software Management](#linux-software-management)
@@ -804,6 +806,8 @@ tree -L 1
 - In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
   user or user account is identified by a name and a unique identifier, known as a UID.
 
+### Linux has different kind of users
+
 - Linux categorizes users based on their role and level of access to the system:
   - **System Accounts/ Service users**:
     - These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
@@ -822,6 +826,11 @@ tree -L 1
     - It can add/remove users, install software, and modify system configurations.
     - It has the user ID: 0
     - There can only be one root user on the system
+
+### Groups
+
+- All users have a primary group
+- And can be assigned to zero to unlimited additional groups
 
 ## Understanding sudo
 
