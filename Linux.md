@@ -61,6 +61,8 @@
     - [Groups](#groups)
     - [On Linux, user information is stored in various files](#on-linux-user-information-is-stored-in-various-files)
       - [Basic account info - `/etc/passwd`](#basic-account-info---etcpasswd)
+      - [Encrypted passwords and aging info - `/etc/shadow`](#encrypted-passwords-and-aging-info---etcshadow)
+      - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
   - [Understanding sudo](#understanding-sudo)
     - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Linux Software Management](#linux-software-management)
@@ -847,6 +849,16 @@ cat /etc/passwd
 ```
 
 ![/etc/passwd](static/images/image_0020.png)
+
+#### Encrypted passwords and aging info - `/etc/shadow`
+
+- Stores encrypted user passwords and password aging information
+- Also stores additional information, such as the date of the last password change, expiry dates,...
+- Readable only by the root users (or users with root privileges)
+
+![/etc/shadow](static/images/image_0021.png)
+
+#### List of groups and their members - `/etc/group`
 
 ## Understanding sudo
 
