@@ -59,6 +59,8 @@
   - [Managing users](#managing-users)
     - [Linux has different kind of users](#linux-has-different-kind-of-users)
     - [Groups](#groups)
+    - [On Linux, user information is stored in various files](#on-linux-user-information-is-stored-in-various-files)
+      - [Basic account info - `/etc/passwd`](#basic-account-info---etcpasswd)
   - [Understanding sudo](#understanding-sudo)
     - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Linux Software Management](#linux-software-management)
@@ -831,6 +833,20 @@ tree -L 1
 
 - All users have a primary group
 - And can be assigned to zero to unlimited additional groups
+
+### On Linux, user information is stored in various files
+
+#### Basic account info - `/etc/passwd`
+
+- Contains basic user account information
+- Username, user ID (UID) , group ID (GID), user description (fullname), home directory and default shell
+- Readable by all users
+
+```
+cat /etc/passwd
+```
+
+![/etc/passwd](static/images/image_0020.png)
 
 ## Understanding sudo
 
