@@ -755,14 +755,18 @@ cat /dev/random >~/random.tx
 - `/tmp`: Temporary files.
   - Contains temporary files created by system and users
   - These files are typically deleted on reboot
-- `/usr`: Secondary hierarchy. The largest directory in Linux that contains support files for regular system users
+  - To prevent apps from snooping on each other, modern Linux uses "private" temporary folders (often via systemd). While an app thinks it’s writing to `/tmp`, it is actually writing to a isolated sub-folde
+- `/usr`: Despite the name, it doesn’t hold "user files" (those are in /home). Instead, it holds shareable, read-only system resources. In theory, if you lost this folder, your personal data would be safe, but the OS wouldn't function until you reinstalled the software packages.
 - `/usr/bin` – system-executable files
 - `/usr/lib` – shared libraries from `/usr/bin`
 - `/usr/local` – source compiled programs not included in the distribution
 - `/usr/sbin` – specific system administration programs
 - `/usr/share` – data shared by the programs in /usr/bin such as config files, icons, wallpapers or sound files
 - `/usr/share/doc` – documentation for the system-wide files
-- `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others; `/var/log` – contains log files that register system activity
+- `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others;
+  - `/var/log` – contains log files that register system activity
+  - `/var/www` - Website files (for servers like Apache or Nginx).
+  - `/var/lib` - Databases (like MySQL or PostgreSQL).
 
 ## Important Facts About Filenames
 
