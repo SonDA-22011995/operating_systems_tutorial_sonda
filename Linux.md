@@ -844,6 +844,7 @@ tree -L 1
 - Username, user ID (UID) , group ID (GID), user description (fullname), home directory and default shell
 - Readable by all users
 - The Shell (`/bin/bash` vs `/usr/sbin/nologin`): In `/etc/passwd`, the last field defines what happens when a user logs in. For service users, it is set to `nologin` or `false` to prevent anyone from getting a command prompt through that account.
+- Linux internals actually care about the number (UID). If you see a file owned by 1001 instead of a name, it means the user was deleted, but the UID remains on the file
 
 ```bash
 cat /etc/passwd
@@ -864,9 +865,28 @@ cat /etc/passwd
 - Also stores additional information, such as the date of the last password change, expiry dates,...
 - Readable only by the root users (or users with root privileges)
 
+```bash
+sudo cat /etc/shadow
+```
+
 ![/etc/shadow](static/images/image_0021.png)
 
 #### List of groups and their members - `/etc/group`
+
+- Contains information about the groups, and their members
+- Readable by all users
+
+```bash
+cat /etc/group
+
+# sonda:x:1000:
+# This is the primary group of sonda user
+# docker:x:1001:sonda
+# docker - group name
+# sonda: user inside in docker group
+```
+
+![/etc/shadow](static/images/image_0022.png)
 
 ## Understanding sudo
 
