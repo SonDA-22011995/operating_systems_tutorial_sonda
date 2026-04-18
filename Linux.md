@@ -58,13 +58,12 @@
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Managing users](#managing-users)
     - [Linux has different kind of users](#linux-has-different-kind-of-users)
+    - [Understanding sudo - Elevating privileges: `sudo`](#understanding-sudo---elevating-privileges-sudo)
     - [Groups](#groups)
     - [On Linux, user information is stored in various files](#on-linux-user-information-is-stored-in-various-files)
       - [Basic account info - `/etc/passwd`](#basic-account-info---etcpasswd)
       - [Encrypted passwords and aging info - `/etc/shadow`](#encrypted-passwords-and-aging-info---etcshadow)
       - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
-  - [Understanding sudo](#understanding-sudo)
-    - [Elevating privileges: `sudo`](#elevating-privileges-sudo)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -831,6 +830,45 @@ tree -L 1
     - It has the user ID: 0
     - There can only be one root user on the system
 
+### Understanding sudo - Elevating privileges: `sudo`
+
+- The root user is the default superuser account in Linux, and it has the ability to do anything on a
+  system. Ideally, acting as root on a system should generally be avoided due to safety and security
+  reasons.
+- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
+  privilege.
+  - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
+
+  - **Authentication**: When using sudo, the system asks for your user password, not the root password.
+
+  - **Configuration**: Not all users can use sudo. During installation (Ubuntu/CentOS), a user must be designated as an "administrator" or added to the "sudoers" list to have this ability.
+
+- Syntax `sudo command [-option(s)] [argument(s)]`
+
+```bash
+ls /root
+# ls: cannot open directory '/root': Permission denied
+
+sudo ls /root
+# snap
+```
+
+- Built-in command can't run with sudo command
+
+```bash
+sudo cd vandtt
+# sudo: "cd" is a shell built-in command, it cannot be run directly.
+```
+
+- The "Nuclear" Warning: Risk of High Privileges
+  - The most critical takeaway is that sudo removes the system's "safety rails." To demonstrate, the instructor runs a destructive command: `sudo rm -rf /etc`
+
+  - The Result: This command deletes the /etc folder, which contains essential system configuration files.
+
+  - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
+
+  - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
+
 ### Groups
 
 - All users have a primary group
@@ -887,47 +925,6 @@ cat /etc/group
 ```
 
 ![/etc/shadow](static/images/image_0022.png)
-
-## Understanding sudo
-
-### Elevating privileges: `sudo`
-
-- The root user is the default superuser account in Linux, and it has the ability to do anything on a
-  system. Ideally, acting as root on a system should generally be avoided due to safety and security
-  reasons.
-- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
-  privilege.
-  - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
-
-  - **Authentication**: When using sudo, the system asks for your user password, not the root password.
-
-  - **Configuration**: Not all users can use sudo. During installation (Ubuntu/CentOS), a user must be designated as an "administrator" or added to the "sudoers" list to have this ability.
-
-- Syntax `sudo command [-option(s)] [argument(s)]`
-
-```bash
-ls /root
-# ls: cannot open directory '/root': Permission denied
-
-sudo ls /root
-# snap
-```
-
-- Built-in command can't run with sudo command
-
-```bash
-sudo cd vandtt
-# sudo: "cd" is a shell built-in command, it cannot be run directly.
-```
-
-- The "Nuclear" Warning: Risk of High Privileges
-  - The most critical takeaway is that sudo removes the system's "safety rails." To demonstrate, the instructor runs a destructive command: `sudo rm -rf /etc`
-
-  - The Result: This command deletes the /etc folder, which contains essential system configuration files.
-
-  - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
-
-  - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
 
 # Linux Software Management
 
