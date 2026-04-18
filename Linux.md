@@ -940,6 +940,12 @@ cat /etc/group
     - `-g`: Specify primary group instead of using the default configuration. Often, default configuration is that a new group will be created with the same name as the username
     - `-G`: Add user to secondary groups
 
+```bash
+sudo useradd -m -d /home/vandtt -s /bin/bash vandtt
+```
+
+![Creating the user](static/images/image_0023.png)
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
