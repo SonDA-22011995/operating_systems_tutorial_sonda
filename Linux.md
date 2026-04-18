@@ -945,6 +945,7 @@ sudo useradd -m -d /home/vandtt -s /bin/bash vandtt
 ```
 
 ![Creating the user](static/images/image_0023.png)
+![Creating the user](static/images/image_0024.png)
 
 # Linux Software Management
 
