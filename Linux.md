@@ -64,6 +64,7 @@
       - [Basic account info - `/etc/passwd`](#basic-account-info---etcpasswd)
       - [Encrypted passwords and aging info - `/etc/shadow`](#encrypted-passwords-and-aging-info---etcshadow)
       - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
+    - [Creating the User: `useradd`](#creating-the-user-useradd)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -925,6 +926,19 @@ cat /etc/group
 ```
 
 ![/etc/shadow](static/images/image_0022.png)
+
+### Creating the User: `useradd`
+
+- Syntax: `useradd [options] username`
+- The most important options are:
+  - `-m`: Create home directory.
+    - This is important if the user should be a regular user and we want this user to be able to log in to linux system
+    - Why do we have users without home directories? Let's say we have a service user for our web server then this user doesn't necessarily need to log into our system. It doesn't need to store any data
+  - `-d`: Set custom home directory
+  - `-s`: Specify default shell
+  - Manage groups
+    - `-g`: Specify primary group instead of using the default configuration. Often, default configuration is that a new group will be created with the same name as the username
+    - `-G`: Add user to secondary groups
 
 # Linux Software Management
 
