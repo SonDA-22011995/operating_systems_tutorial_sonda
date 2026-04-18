@@ -883,7 +883,7 @@ cat /etc/group
 # This is the primary group of sonda user
 # docker:x:1001:sonda
 # docker - group name
-# sonda: user inside in docker group
+# sonda: The user is a member of the Docker group
 ```
 
 ![/etc/shadow](static/images/image_0022.png)
