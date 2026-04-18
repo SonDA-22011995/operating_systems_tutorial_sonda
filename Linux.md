@@ -65,6 +65,7 @@
       - [Encrypted passwords and aging info - `/etc/shadow`](#encrypted-passwords-and-aging-info---etcshadow)
       - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
     - [Creating the User: `useradd`](#creating-the-user-useradd)
+    - [Managing Passwords: `passwd`](#managing-passwords-passwd)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -939,6 +940,7 @@ cat /etc/group
   - Manage groups
     - `-g`: Specify primary group instead of using the default configuration. Often, default configuration is that a new group will be created with the same name as the username
     - `-G`: Add user to secondary groups
+- System Defaults: On many distributions (like Ubuntu/Debian), a group with the same name as the username is created automatically when create a new user
 
 ```bash
 sudo useradd -m -d /home/vandtt -s /bin/bash vandtt
@@ -946,6 +948,32 @@ sudo useradd -m -d /home/vandtt -s /bin/bash vandtt
 
 ![Creating the user](static/images/image_0023.png)
 ![Creating the user](static/images/image_0024.png)
+
+### Managing Passwords: `passwd`
+
+- With the `passwd` command, we can set the password for users
+- Syntax: `passwd [options] [username]`
+- The most important options are:
+  - `-S`: Display password status
+  - `-d`: Delete password
+  - `-n`: Set minimum password age (days)
+  - `-x`: Set maximum password age (days)
+- We can also use it to lock / unlock the account:
+  - `-l`: Lock user account
+  - `-u`: Unlock user account
+
+```bash
+passwd -S
+
+# sonda P 2026-03-05 0 99999 7 -1
+# sonda: The username.
+# P: The password status. P indicates that the password is usable (set). Other statuses include L (locked) or N (no password).
+# 2026-03-05: The date the password was last changed (YYYY-MM-DD).
+# 0:	The minimum number of days required between password changes. 0 means the user can change it immediately.
+# 99999:	The maximum number of days the password is valid. 99999 effectively means the password never expires.
+# 7:	The number of days of warning before the password expires.
+# -1:	The period of inactivity (in days) after the password expires before the account is disabled. -1 means the account will never be disabled due to inactivity. If my password expires, I can still log in
+```
 
 # Linux Software Management
 
