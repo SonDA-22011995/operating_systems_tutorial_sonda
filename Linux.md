@@ -66,6 +66,7 @@
       - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
     - [Creating the User: `useradd`](#creating-the-user-useradd)
     - [Managing Passwords: `passwd`](#managing-passwords-passwd)
+    - [Modify user: `usermod`](#modify-user-usermod)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -974,6 +975,31 @@ passwd -S
 # 7:	The number of days of warning before the password expires.
 # -1:	The period of inactivity (in days) after the password expires before the account is disabled. -1 means the account will never be disabled due to inactivity. If my password expires, I can still log in
 ```
+
+### Modify user: `usermod`
+
+- The `usermod` command allows administrators to modify user account details. Because these changes affect system-level configurations, **root/sudo** privileges are required
+- Syntax: `usermod [options] username`
+- Quick Reference: `usermod` Options
+
+| Option | Action   | Description                                                |
+| ------ | -------- | ---------------------------------------------------------- |
+| -c     | Comment  | Change the user's description (full name/GECOS field).     |
+| -s     | Shell    | Change the login shell (e.g., /bin/bash).                  |
+| -d     | Home Dir | Change the login directory.                                |
+| -m     | Move     | Used with -d to move the existing home directory contents. |
+| -l     | Login    | Change the Unix username.                                  |
+| -g     | Group    | Change the user's primary group.                           |
+| -G     | Groups   | Change the user's supplementary (secondary) groups.        |
+| -aG    | Groups   | Add secondary group                                        |
+
+```bash
+sudo usermod -s /bin/bash -c 'Lauren M' lauren
+```
+
+- Administrative vs. User-Level Changes
+  - Administrator `sudo usermod -s /bin/bash`: Has root power and can assign any binary as a shell, regardless of whether it is listed in `/etc/shells`
+  - Standard User `chsh -s /bin/bash`: Users can change their own shell, but they are restricted to shells explicitly defined in `/etc/shells` for security purpose
 
 # Linux Software Management
 
