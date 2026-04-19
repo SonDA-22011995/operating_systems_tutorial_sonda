@@ -747,6 +747,7 @@ cat /dev/random >~/random.tx
   - `/etc/shells`: the list of approved paths for shells on your system
   - `/etc/passwd`: Contains basic user account information
   - `/etc/shadow`: Stores encrypted user passwords and password aging information
+  - `/etc/group`: Contains information about the groups, and their members
 - `/home`: user Home directory. The place where the user’s files are stored.
   - Structure: Each user has their own subfolder (e.g., /home/username).
   - Permissions: For security, users typically cannot access each other's home folders.
