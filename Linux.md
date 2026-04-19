@@ -744,6 +744,9 @@ cat /dev/random >~/random.tx
   - Examples: `/dev/sda` (a hard drive), `/dev/tty` (terminal devices), or `/dev/null` (a virtual "black hole" for data)
 - `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
   - These are typically plain text files that can be edited to change system behavior.
+  - `/etc/shells`: the list of approved paths for shells on your system
+  - `/etc/passwd`: Contains basic user account information
+  - `/etc/shadow`: Stores encrypted user passwords and password aging information
 - `/home`: user Home directory. The place where the user’s files are stored.
   - Structure: Each user has their own subfolder (e.g., /home/username).
   - Permissions: For security, users typically cannot access each other's home folders.
