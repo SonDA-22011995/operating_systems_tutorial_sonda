@@ -741,7 +741,10 @@ cat /dev/random >~/random.tx
   - In these cases, `/bin` is no longer a physical folder but a symbolic link (symlink) pointing to `/usr/bin` to simplify the structure
 - `/boot`: Static files of the boot loader. The place where the kernel bootloader, and initramfs are stored
 - `/dev`: Device files. Nodes to the device equipment, a kernel device list.
-  - Examples: `/dev/sda` (a hard drive), `/dev/tty` (terminal devices), or `/dev/null` (a virtual "black hole" for data)
+  - Examples:
+    - `/dev/sda` (a hard drive)
+    - `/dev/tty` (terminal devices)
+    - `/dev/null` (a virtual "black hole" for data)
 - `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
   - These are typically plain text files that can be edited to change system behavior.
   - `/etc/shells`: the list of approved paths for shells on your system
