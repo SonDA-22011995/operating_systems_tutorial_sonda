@@ -67,6 +67,7 @@
     - [Creating the User: `useradd`](#creating-the-user-useradd)
     - [Managing Passwords: `passwd`](#managing-passwords-passwd)
     - [Modify user: `usermod`](#modify-user-usermod)
+    - [Deleting users: `userdel`](#deleting-users-userdel)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1007,6 +1008,23 @@ sudo usermod -s /bin/bash -c 'Lauren M' lauren
 - Administrative vs. User-Level Changes
   - Administrator `sudo usermod -s /bin/bash`: Has root power and can assign any binary as a shell, regardless of whether it is listed in `/etc/shells`
   - Standard User `chsh -s /bin/bash`: Users can change their own shell, but they are restricted to shells explicitly defined in `/etc/shells` for security purpose
+
+### Deleting users: `userdel`
+
+- To delete a user in Linux, you use the `userdel` command.
+- Because modifying user accounts is a system-level action, you must execute these commands with `sudo`
+- Syntax: `userdel [option] username`
+- There are quite a few options
+  | Command | Description |
+  |-----------------------------|-----------------------------------------------------------------------------|
+  | `sudo userdel <username>` | Deletes the user account, but keeps the user's home directory and mail spool. |
+  | `sudo userdel -r <username>`| Deletes the user account and removes the user's home directory and mail spool. |
+  | `sudo userdel -f <username>`| A forceful removal; deletes the user even if they are currently logged in. Might also delete a group with the same name as this user (depending on system configuration)|
+
+```bash
+userdel max
+# max: username
+```
 
 # Linux Software Management
 
