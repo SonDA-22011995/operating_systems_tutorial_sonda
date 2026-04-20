@@ -68,6 +68,9 @@
     - [Managing Passwords: `passwd`](#managing-passwords-passwd)
     - [Modify user: `usermod`](#modify-user-usermod)
     - [Deleting users: `userdel`](#deleting-users-userdel)
+  - [How do groups work?](#how-do-groups-work)
+    - [Primary Group](#primary-group)
+    - [Secondary Groups](#secondary-groups)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1025,6 +1028,26 @@ sudo usermod -s /bin/bash -c 'Lauren M' lauren
 userdel max
 # max: username
 ```
+
+- Manual Cleanup: If you use `userdel` without the `-r` flag, the home directory remains on the system. You must manually delete it (e.g., `sudo rm -rf /home/<username>`) if you want to free up that space.
+
+- Mail Spool: The `-r` flag attempts to delete the user's mailbox. If your system is not configured to handle mail, you may see a warning indicating the mail spool could not be deleted; this is normal and safe to ignore
+
+## How do groups work?
+
+- Purpose: Groups enable resource sharing, collaboration, and simplified permission management (e.g., granting a group access to printers or log files rather than configuring each user individually).
+
+### Primary Group
+
+- Every user must have exactly one primary group.
+- It is defined in `/etc/passwd`.
+- It serves as the default group ownership for any new files created by that user.
+
+### Secondary Groups
+
+- A user can be a member of zero or many secondary groups.
+- These are defined in `/etc/group`.
+- They provide fine-grained control, allowing users to gain specific privileges (e.g., administrative access or hardware control)
 
 # Linux Software Management
 
