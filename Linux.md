@@ -75,6 +75,7 @@
     - [Existing groups in Ubuntu](#existing-groups-in-ubuntu)
   - [Managing groups](#managing-groups)
     - [Add a user to a group - `usermod`](#add-a-user-to-a-group---usermod)
+      - [`-G`: Change secondary groups](#-g-change-secondary-groups)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1078,6 +1079,25 @@ groups sonda
 ## Managing groups
 
 ### Add a user to a group - `usermod`
+
+- Syntax: `usermod [options] username`
+
+#### `-G`: Change secondary groups
+
+- `usermod -G` (Overwriting): Sets the secondary groups for a user. You must list all groups the user should belong to. If you omit an existing group from this list, the user will be removed from it.
+
+```bash
+groups vandtt
+# vandtt : vandtt
+sudo usermod -G adm,plugdev,lpadmin vandtt
+groups vandtt
+# vandtt : vandtt adm plugdev lpadmin
+sudo usermod -G adm vandtt
+groups vandtt
+# vandtt : vandtt adm
+```
+
+![Change secondary groups](static/images/image_0026.png)
 
 # Linux Software Management
 
