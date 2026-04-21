@@ -76,6 +76,7 @@
   - [Managing groups](#managing-groups)
     - [Add a user to a group - `usermod`](#add-a-user-to-a-group---usermod)
       - [`-G`: Change secondary groups](#-g-change-secondary-groups)
+      - [`-aG`: Add secondary group](#-ag-add-secondary-group)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1098,6 +1099,20 @@ groups vandtt
 ```
 
 ![Change secondary groups](static/images/image_0026.png)
+
+#### `-aG`: Add secondary group
+
+- Adds a user to a specific group without removing them from their existing secondary groups. The `-a` (append) flag is essential here.
+
+```bash
+groups vandtt
+# vandtt : vandtt adm lpadmin
+sudo usermod -aG docker vandtt
+groups vandtt
+# vandtt : vandtt adm docker lpadmin
+```
+
+![Add secondary group](static/images/image_0027.png)
 
 # Linux Software Management
 
