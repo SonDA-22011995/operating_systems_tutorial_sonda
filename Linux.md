@@ -78,6 +78,7 @@
       - [`-G`: Change secondary groups](#-g-change-secondary-groups)
       - [`-aG`: Add secondary group](#-ag-add-secondary-group)
       - [`adduser` / `deluser` (Debian/Ubuntu Specific):](#adduser--deluser-debianubuntu-specific)
+    - [Create own groups](#create-own-groups)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1069,6 +1070,16 @@ groups sonda
 # adm dialout cdrom floppy sudo audio dip video plugdev users netdev docker: This is primary secondary group
 ```
 
+- The `id` command in Linux is a utility used to display the real and effective user and group IDs. It is essential for troubleshooting permissions, verifying user identities, and managing group affiliations
+
+```bash
+# current user
+id
+# specific user
+id sonda
+# uid=1000(sonda) gid=1000(sonda) groups=1000(sonda),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(users),107(netdev),1001(docker),109(lpadmin)
+```
+
 ### Existing groups in Ubuntu
 
 - `root`: The superuser group with administrative privileges, allowing complete control over the system
@@ -1124,6 +1135,8 @@ groups vandtt
 ![Debian/Ubuntu Specific - deluser](static/images/image_0028.png)
 
 ![Debian/Ubuntu Specific - adduser](static/images/image_0029.png)
+
+### Create own groups
 
 # Linux Software Management
 
