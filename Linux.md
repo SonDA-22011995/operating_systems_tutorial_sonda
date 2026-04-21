@@ -77,6 +77,7 @@
     - [Add a user to a group - `usermod`](#add-a-user-to-a-group---usermod)
       - [`-G`: Change secondary groups](#-g-change-secondary-groups)
       - [`-aG`: Add secondary group](#-ag-add-secondary-group)
+      - [`adduser` / `deluser` (Debian/Ubuntu Specific):](#adduser--deluser-debianubuntu-specific)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1113,6 +1114,16 @@ groups vandtt
 ```
 
 ![Add secondary group](static/images/image_0027.png)
+
+#### `adduser` / `deluser` (Debian/Ubuntu Specific):
+
+- These tools offer a more intuitive, user-friendly way to modify group memberships without needing to re-specify the entire list of groups
+- Add: `sudo adduser username groupname`
+- Remove: `sudo deluser username groupname`
+
+![Debian/Ubuntu Specific - deluser](static/images/image_0028.png)
+
+![Debian/Ubuntu Specific - adduser](static/images/image_0029.png)
 
 # Linux Software Management
 
