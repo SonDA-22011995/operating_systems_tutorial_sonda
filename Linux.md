@@ -71,6 +71,10 @@
   - [How do groups work?](#how-do-groups-work)
     - [Primary Group](#primary-group)
     - [Secondary Groups](#secondary-groups)
+    - [Lists the group memberships for a specific user](#lists-the-group-memberships-for-a-specific-user)
+    - [Existing groups in Ubuntu](#existing-groups-in-ubuntu)
+  - [Managing groups](#managing-groups)
+    - [Add a user to a group - `usermod`](#add-a-user-to-a-group---usermod)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1048,6 +1052,30 @@ userdel max
 - A user can be a member of zero or many secondary groups.
 - These are defined in `/etc/group`.
 - They provide fine-grained control, allowing users to gain specific privileges (e.g., administrative access or hardware control)
+
+### Lists the group memberships for a specific user
+
+- `groups [username]`: Lists the group memberships for a specific user. If no username is provided, it lists the groups for the current user. (The first listed group is the primary group; the others are secondary)
+
+```bash
+groups sonda
+# sonda : sonda adm dialout cdrom floppy sudo audio dip video plugdev users netdev docker
+# sonda : sonda this is username and primary group
+# adm dialout cdrom floppy sudo audio dip video plugdev users netdev docker: This is primary secondary group
+```
+
+### Existing groups in Ubuntu
+
+- `root`: The superuser group with administrative privileges, allowing complete control over the system
+- `sudo` (or `wheel`): Members can use `sudo`. May also be called `wheel`. Grants members the ability to use the sudo command to perform administrative tasks.
+- `adm`: Allows members to read system log files (e.g., `tail /var/log/syslog`).
+- `lpadmin` / `lp`: Members may manage printers and print queues (CUPS). May also be called "lp"
+- `www-data`: A group for web server processes (such as Apache or Nginx), gives access to web content
+- `plugdev`: Allow this user to manage pluggable devices (USB sticks, external HDDs,...)
+
+## Managing groups
+
+### Add a user to a group - `usermod`
 
 # Linux Software Management
 
