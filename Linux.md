@@ -1047,6 +1047,8 @@ userdel max
 - It is defined in `/etc/passwd`.
 - It serves as the default group ownership for any new files created by that user.
 
+![Primary Group](static/images/image_0025.png)
+
 ### Secondary Groups
 
 - A user can be a member of zero or many secondary groups.
