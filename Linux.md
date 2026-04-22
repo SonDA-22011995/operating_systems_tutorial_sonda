@@ -80,6 +80,8 @@
       - [`-aG`: Add secondary group](#-ag-add-secondary-group)
     - [Create own groups - `groupadd`](#create-own-groups---groupadd)
     - [Modifying a Group: `groupmod`](#modifying-a-group-groupmod)
+    - [Deleting a Group: `groupdel`](#deleting-a-group-groupdel)
+  - [Switch user: `su`](#switch-user-su)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1169,6 +1171,17 @@ sudo groupmod -n my-app -g 5000 myapp
 # Check the group after the change
 cat /etc/group
 ```
+
+### Deleting a Group: `groupdel`
+
+- Syntax: `sudo groupdel [group_name]`
+- Removes the group from the system and updates the relevant configuration files.
+- **Important**:
+  - This command does not delete files owned by the group.
+  - This command will update `/etc/group` and `/etc/passwd`.
+- **Restriction**: You cannot delete a group if it is currently defined as the primary group for any user.
+
+## Switch user: `su`
 
 # Linux Software Management
 
