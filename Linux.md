@@ -1181,6 +1181,10 @@ cat /etc/group
   - This command will update `/etc/group` and `/etc/passwd`.
 - **Restriction**: You cannot delete a group if it is currently defined as the primary group for any user.
 
+```bash
+sudo groupdel my-app
+```
+
 ## Switch user: `su`
 
 # Linux Software Management
