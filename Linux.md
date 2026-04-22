@@ -79,6 +79,7 @@
       - [`-G`: Change secondary groups](#-g-change-secondary-groups)
       - [`-aG`: Add secondary group](#-ag-add-secondary-group)
     - [Create own groups - `groupadd`](#create-own-groups---groupadd)
+    - [Modifying a Group: `groupmod`](#modifying-a-group-groupmod)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1147,6 +1148,27 @@ groups vandtt
 - If no GID is provided, the system assigns one automatically.
 - GIDs must be unique; the command will fail if the ID is already in use
 - The group info is then stored in the `/etc/group` file
+
+```bash
+# create own group
+sudo groupadd -g 2500 myapp
+# Check the group after creation
+cat /etc/group
+```
+
+### Modifying a Group: `groupmod`
+
+- Syntax: `sudo groupmod -n [new_name] -g [new_GID] [old_group_name]`
+- `-n`: Change the name of the group
+- `-g`: Change the group Id (GID)
+- **Crucial Warning**: Files are linked to the group via the GID, not the name. If you change the GID after creating files, those files will lose their association with that group. Proceed with caution.
+
+```bash
+# Modifying myapp group
+sudo groupmod -n my-app -g 5000 myapp
+# Check the group after the change
+cat /etc/group
+```
 
 # Linux Software Management
 
