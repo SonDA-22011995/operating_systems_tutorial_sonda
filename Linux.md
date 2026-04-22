@@ -1189,6 +1189,40 @@ sudo groupdel my-app
 ```
 
 ## Switch user: `su`
+- We can switch the user with the `su` command. `su` stands for "switch user"
+- Basic Syntax: `su username`
+- Behavior: When you switch to another user, you remain in the current working directory. You will need to manually change directories (e.g., `cd`) to access the new user's home folder.
+- Exiting: To leave the switched session and return to your original user account, simply type `exit`.
+
+```bash
+su vandtt
+
+# return to your original user account
+exit
+```
+
+### Managing Root Access with `su`
+- By default, the root user often has its password locked for security reasons.
+- Setting a Password: To use `su` to become `root`, the `root`user must have a password. You can set this using `sudo passwd root`.
+- Locking the Account: If you have enabled root access and wish to disable it again
+
+```bash
+# login root user
+
+su
+# Password:
+# su: Authentication failure
+
+sudo passwd root
+# Setting a Password
+
+su root 
+# login root user
+
+sudo passwd -dl root
+# Locking the root account
+```
+
 
 # Linux Software Management
 
