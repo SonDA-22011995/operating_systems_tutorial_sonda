@@ -1013,6 +1013,7 @@ passwd -S
 | -g     | Group    | Change the user's primary group.                           |
 | -G     | Groups   | Change the user's supplementary (secondary) groups.        |
 | -aG    | Groups   | Add secondary group                                        |
+| -U     | Unlock   | unlock the user                                            |
 
 ```bash
 sudo usermod -s /bin/bash -c 'Lauren M' lauren
