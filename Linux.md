@@ -68,6 +68,7 @@
     - [Managing Passwords: `passwd`](#managing-passwords-passwd)
     - [Modify user: `usermod`](#modify-user-usermod)
     - [Deleting users: `userdel`](#deleting-users-userdel)
+    - [`adduser` / `deluser` (Debian/Ubuntu Specific):](#adduser--deluser-debianubuntu-specific)
   - [How do groups work?](#how-do-groups-work)
     - [Primary Group](#primary-group)
     - [Secondary Groups](#secondary-groups)
@@ -77,8 +78,7 @@
     - [Add a user to a group - `usermod`](#add-a-user-to-a-group---usermod)
       - [`-G`: Change secondary groups](#-g-change-secondary-groups)
       - [`-aG`: Add secondary group](#-ag-add-secondary-group)
-      - [`adduser` / `deluser` (Debian/Ubuntu Specific):](#adduser--deluser-debianubuntu-specific)
-    - [Create own groups](#create-own-groups)
+    - [Create own groups - `groupadd`](#create-own-groups---groupadd)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1044,6 +1044,16 @@ userdel max
 
 - Mail Spool: The `-r` flag attempts to delete the user's mailbox. If your system is not configured to handle mail, you may see a warning indicating the mail spool could not be deleted; this is normal and safe to ignore
 
+### `adduser` / `deluser` (Debian/Ubuntu Specific):
+
+- These tools offer a more intuitive, user-friendly way to modify group memberships without needing to re-specify the entire list of groups
+- Add: `sudo adduser username groupname`
+- Remove: `sudo deluser username groupname`
+
+![Debian/Ubuntu Specific - deluser](static/images/image_0028.png)
+
+![Debian/Ubuntu Specific - adduser](static/images/image_0029.png)
+
 ## How do groups work?
 
 - Purpose: Groups enable resource sharing, collaboration, and simplified permission management (e.g., granting a group access to printers or log files rather than configuring each user individually).
@@ -1129,17 +1139,14 @@ groups vandtt
 
 ![Add secondary group](static/images/image_0027.png)
 
-#### `adduser` / `deluser` (Debian/Ubuntu Specific):
+### Create own groups - `groupadd`
 
-- These tools offer a more intuitive, user-friendly way to modify group memberships without needing to re-specify the entire list of groups
-- Add: `sudo adduser username groupname`
-- Remove: `sudo deluser username groupname`
-
-![Debian/Ubuntu Specific - deluser](static/images/image_0028.png)
-
-![Debian/Ubuntu Specific - adduser](static/images/image_0029.png)
-
-### Create own groups
+- Syntax: `sudo groupadd -g [GID] [group_name]`
+- The `-g` option allows you to manually set a Group ID (GID).
+- Best practice: Use GIDs above 1000 for custom groups (or a specific range, e.g., 5000–10000, for organizational consistency).
+- If no GID is provided, the system assigns one automatically.
+- GIDs must be unique; the command will fail if the ID is already in use
+- The group info is then stored in the `/etc/group` file
 
 # Linux Software Management
 
