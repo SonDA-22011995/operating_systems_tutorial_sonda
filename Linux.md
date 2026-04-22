@@ -1205,6 +1205,7 @@ exit
 - By default, the root user often has its password locked for security reasons.
 - Setting a Password: To use `su` to become `root`, the `root`user must have a password. You can set this using `sudo passwd root`.
 - Locking the Account: If you have enabled root access and wish to disable it again
+- Verification: You can check the status of the root account by looking at the `/etc/shadow` file. An exclamation mark `!` or asterisk `*` in the password field indicates that the account is locked.
 
 ```bash
 # login root user
@@ -1221,6 +1222,10 @@ su root
 
 sudo passwd -dl root
 # Locking the root account
+
+sudo cat /etc/shadow
+# root:!:20565:0:99999:7:::
+# !: password is disable
 ```
 
 
