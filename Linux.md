@@ -981,6 +981,8 @@ sudo useradd -m -d /home/vandtt -s /bin/bash vandtt
 - We can also use it to lock / unlock the account:
   - `-l`: Lock user account
   - `-u`: Unlock user account
+- Changing Your Password: `passwd` without any option and username
+- Changing Password for other user: `sudo passwd username` without any option
 
 ```bash
 passwd -S
