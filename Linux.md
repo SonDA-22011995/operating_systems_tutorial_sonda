@@ -64,11 +64,12 @@
       - [Basic account info - `/etc/passwd`](#basic-account-info---etcpasswd)
       - [Encrypted passwords and aging info - `/etc/shadow`](#encrypted-passwords-and-aging-info---etcshadow)
       - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
-    - [Creating the User: `useradd`](#creating-the-user-useradd)
-    - [Managing Passwords: `passwd`](#managing-passwords-passwd)
-    - [Modify user: `usermod`](#modify-user-usermod)
-    - [Deleting users: `userdel`](#deleting-users-userdel)
-    - [`adduser` / `deluser` (Debian/Ubuntu Specific):](#adduser--deluser-debianubuntu-specific)
+    - [Managing user](#managing-user)
+      - [Creating the User: `useradd`](#creating-the-user-useradd)
+      - [Managing Passwords: `passwd`](#managing-passwords-passwd)
+      - [Modify user: `usermod`](#modify-user-usermod)
+      - [Deleting users: `userdel`](#deleting-users-userdel)
+      - [`adduser` / `deluser` (Debian/Ubuntu Specific):](#adduser--deluser-debianubuntu-specific)
   - [How do groups work?](#how-do-groups-work)
     - [Primary Group](#primary-group)
     - [Secondary Groups](#secondary-groups)
@@ -951,7 +952,9 @@ cat /etc/group
 
 ![/etc/shadow](static/images/image_0022.png)
 
-### Creating the User: `useradd`
+### Managing user
+
+#### Creating the User: `useradd`
 
 - Syntax: `useradd [options] username`
 - The most important options are:
@@ -972,7 +975,7 @@ sudo useradd -m -d /home/vandtt -s /bin/bash vandtt
 ![Creating the user](static/images/image_0023.png)
 ![Creating the user](static/images/image_0024.png)
 
-### Managing Passwords: `passwd`
+#### Managing Passwords: `passwd`
 
 - With the `passwd` command, we can set the password for users
 - Syntax: `passwd [options] [username]`
@@ -1000,7 +1003,7 @@ passwd -S
 # -1:	The period of inactivity (in days) after the password expires before the account is disabled. -1 means the account will never be disabled due to inactivity. If my password expires, I can still log in
 ```
 
-### Modify user: `usermod`
+#### Modify user: `usermod`
 
 - The `usermod` command allows administrators to modify user account details. Because these changes affect system-level configurations, **root/sudo** privileges are required
 - Syntax: `usermod [options] username`
@@ -1026,7 +1029,7 @@ sudo usermod -s /bin/bash -c 'Lauren M' lauren
   - Administrator `sudo usermod -s /bin/bash`: Has root power and can assign any binary as a shell, regardless of whether it is listed in `/etc/shells`
   - Standard User `chsh -s /bin/bash`: Users can change their own shell, but they are restricted to shells explicitly defined in `/etc/shells` for security purpose
 
-### Deleting users: `userdel`
+#### Deleting users: `userdel`
 
 - To delete a user in Linux, you use the `userdel` command.
 - Because modifying user accounts is a system-level action, you must execute these commands with `sudo`
@@ -1047,7 +1050,7 @@ userdel max
 
 - Mail Spool: The `-r` flag attempts to delete the user's mailbox. If your system is not configured to handle mail, you may see a warning indicating the mail spool could not be deleted; this is normal and safe to ignore
 
-### `adduser` / `deluser` (Debian/Ubuntu Specific):
+#### `adduser` / `deluser` (Debian/Ubuntu Specific):
 
 - These tools offer a more intuitive, user-friendly way to modify group memberships without needing to re-specify the entire list of groups
 - Add: `sudo adduser username groupname`
