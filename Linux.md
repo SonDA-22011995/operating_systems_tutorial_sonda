@@ -895,7 +895,11 @@ sudo cd vandtt
 - We should only use the `visudo` command to safely edit this file. `visudo` creates a temporary file and performs a syntax check before saving. If you make a mistake that would create a syntax error, the system will alert you and refuse to save the changes, preventing you from accidentally locking yourself out of administrative access
 - We can allow access for specific users or groups
 - A standard line in the `/etc/sudoers` file follows this structure: `[User] [Host] = ([RunAsUser]:[RunAsGroup]) [Options] [Command]`
-- We can also specify `NOPASSWD:`, to allow sudo without a password (potential security risk)
+- We can also specify `NOPASSWD:`, to allow sudo without a password (potential security risk). This might also be a security issue:
+  - I could also remove any program I want
+  - I could install any program I want
+  - Some of those programs might start a service that runs in the background... and executes files
+  - Those then might be executed with additional privileges
 
 | Component   | Description                                                                 |
 |------------|-----------------------------------------------------------------------------|
@@ -906,20 +910,39 @@ sudo cd vandtt
 | Command    | The specific binary path or `ALL` for every command.                        |
 
 ```bash
+jannis ALL= NOPASSWD: /usr/bin/apt-get 
+# Only allow to execute this command as the root user.
+# This would give jannis access to only the program apt-get
+```
+
+```bash
 # how to edit /etc/sudoers file
 sudo visudo /etc/sudoers
 
+# In the /etc/sudoers file, you can add the following command
 # Allow vandtt user to execute any command
 %vandtt   ALL=(ALL:ALL) ALL
 ```
+
+- Modular Configuration: Instead of bloating the main /etc/sudoers file, use the directory-based approach (`/etc/sudoers.d/`). You can create a file (e.g., `/etc/sudoers.d/yannis_rules`) to house specific overrides. This keeps your configuration organized and easier to audit.
+
+![Modular Configuration](static/images/image_0030.png)
+![Modular Configuration](static/images/image_0031.png)
+
+```bash
+sudo visudo /etc/sudoers.d/sonda
+
+# In the /etc/sudoers.d/sonda file, you can add the following command
+# Allow sonda user to execute any command without password
+sonda ALL= (ALL:ALL) NOPASSWD: ALL
+```
+
 
 #### Add user to the `sudo` group
 
 ```bash
 usermod -aG sudo vandtt
 ```
-
-
 
 ### How can we use sudo in the Terminal ?
 
