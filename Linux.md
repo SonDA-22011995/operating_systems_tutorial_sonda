@@ -1298,6 +1298,7 @@ sudo cat /etc/shadow
 # !: password is disable
 ```
 
+# Permissions
 
 # Linux Software Management
 
