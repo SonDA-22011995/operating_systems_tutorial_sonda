@@ -894,6 +894,16 @@ sudo cd vandtt
 #### Those are configured in the file `/etc/sudoers`
 - We should only use the `visudo` command to safely edit this file. `visudo` creates a temporary file and performs a syntax check before saving. If you make a mistake that would create a syntax error, the system will alert you and refuse to save the changes, preventing you from accidentally locking yourself out of administrative access
 - We can allow access for specific users or groups
+- A standard line in the `/etc/sudoers` file follows this structure: `[User] [Host] = ([RunAsUser]:[RunAsGroup]) [Options] [Command]`
+- We can also specify `NOPASSWD:`, to allow sudo without a password (potential security risk)
+
+| Component   | Description                                                                 |
+|------------|-----------------------------------------------------------------------------|
+| User       | The Unix username (or group with a `%` prefix).                            |
+| Host       | The hostname the rule applies to. Usually set to `ALL` to work everywhere.  |
+| RunAs      | (Optional) Defines which user/group the command runs as. Defaults to root.  If we don't specify this, we can only sudo into the root user|
+| Options    | Directives like `NOPASSWD:` to override password requirements.             |
+| Command    | The specific binary path or `ALL` for every command.                        |
 
 ```bash
 # how to edit /etc/sudoers file
@@ -908,6 +918,8 @@ sudo visudo /etc/sudoers
 ```bash
 usermod -aG sudo vandtt
 ```
+
+
 
 ### How can we use sudo in the Terminal ?
 
