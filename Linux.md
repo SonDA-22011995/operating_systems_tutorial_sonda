@@ -761,6 +761,11 @@ cat /dev/random >~/random.tx
     - `/dev/sda` (a hard drive)
     - `/dev/tty` (terminal devices)
     - `/dev/null` (a virtual "black hole" for data)
+    - `/dev/random` (Random Data Generators-The High-Security Version)
+    - `/dev/urandom` (Random Data Generators-The Faster Version)
+    - `/dev/stdin` (Where the program reads its input, usually the keyboard)
+    - `/dev/stdout` (Where the program sends its normal, data usually the terminal)
+    - `/dev/stderr` (Where the program sends error messages)
 - `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
   - These are typically plain text files that can be edited to change system behavior.
   - `/etc/shells`: the list of approved paths for shells on your system
