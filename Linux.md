@@ -784,6 +784,11 @@ cat /dev/random >~/random.tx
 - `/mnt`: Mount point for mounting a filesystem temporarily. Used for legacy systems.
 - `/opt`: Add-on application software packages. The place where optional software is installed.
 - `/proc`: Virtual filesystem managed by the kernel. a special directory structure that contains files essential for the system.
+  - `/proc/cpuinfo`
+  - `/proc/meminfo`
+  - `/proc/version` (Displays the Linux kernel version)
+  - `/proc/uptime`
+  - `/proc/loadavg`
 - `/run`: Run-time data
   - Files here will be removed / emptied during boot, or will be discarded on shutdown
 - `/sbin`: Essential system binaries. Vital programs for the system’s operation.
@@ -835,39 +840,10 @@ tree -L 1
 
 # Managing Users and Groups
 
-## Managing users
+## Understanding sudo - Elevating privileges: `sudo`
 
-- In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
-  user or user account is identified by a name and a unique identifier, known as a UID.
-
-### Linux has different kind of users
-
-- Linux categorizes users based on their role and level of access to the system:
-  - **System Accounts/ Service users**:
-    - These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
-    - Accounts like `sshd`, `www-data`, or `mysql`. They aren't meant for humans to log into; they exist so that if a web server is hacked, the attacker is "trapped" within that service user's limited permissions
-
-  - **Regular Users**:
-    - These are standard accounts created for people.
-    - They have a dedicated home directory for personal files.
-    - They are restricted from accessing other users' files or performing administrative tasks by default.
-    - Limited privileges
-    - We can allow regular users to temporarily get root access through `sudo` command
-
-  - **Superuser/Root** :
-    - This is the most powerful account on the system. Highest privileges
-    - It has unrestricted access to every file and setting.
-    - It can add/remove users, install software, and modify system configurations.
-    - It has the user ID: 0
-    - There can only be one root user on the system
-
-### Understanding sudo - Elevating privileges: `sudo`
-
-- The root user is the default superuser account in Linux, and it has the ability to do anything on a
-  system. Ideally, acting as root on a system should generally be avoided due to safety and security
-  reasons.
-- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser
-  privilege.
+- The root user is the default superuser account in Linux, and it has the ability to do anything on a system. Ideally, acting as root on a system should generally be avoided due to safety and security reasons.
+- With `sudo`, Linux provides a mechanism for promoting a regular user account to superuser privilege.
   - **Temporary Elevation**: It doesn't turn you into the root user permanently; it only elevates the specific command you are running.
 
   - **Authentication**: When using sudo, the system asks for your user password, not the root password.
@@ -899,6 +875,80 @@ sudo cd vandtt
   - The Aftermath: Upon rebooting, the system fails to load, showing multiple "Failed" messages.
 
   - Lesson: Always **double-check** commands before using sudo. In a real-world environment (not a Virtual Machine), this would result in catastrophic data loss and system failure.
+
+## Temporary change privileges: `sudo`
+
+### What does the sudo command do?
+
+- `sudo` stands for "superuser do"
+- It gives us temporarily privileges of another user - by default from the root user
+- It thus executes commands with elevated / changed permissions
+- Requires user authentication (with the user's password)
+- The user must be allowed to use `sudo`
+
+### Configuring sudo access
+
+- How do we allow a user to use sudo?
+- `sudo` group or the `wheel` group on some distributions
+
+#### Those are configured in the file `/etc/sudoers`
+- We should only use the `visudo` command to safely edit this file. `visudo` creates a temporary file and performs a syntax check before saving. If you make a mistake that would create a syntax error, the system will alert you and refuse to save the changes, preventing you from accidentally locking yourself out of administrative access
+- We can allow access for specific users or groups
+
+```bash
+# how to edit /etc/sudoers file
+sudo visudo /etc/sudoers
+
+# Allow vandtt user to execute any command
+%vandtt   ALL=(ALL:ALL) ALL
+```
+
+#### Add user to the `sudo` group
+
+```bash
+usermod -aG sudo vandtt
+```
+
+### How can we use sudo in the Terminal ?
+
+- We can just prefix the command with `sudo`. We then need to enter our user password
+- `sudo` will be stored in a session (by default: 15 minutes)
+- We can expire the session with the command `sudo -k` 
+- To start an interactive shell with elevated (root) privileges, use `sudo -s` or `sudo bash`
+
+```bash
+sudo apt-get update
+
+# elevated (root) privileges
+sudo -s
+# or sudo bash
+```
+
+## Managing users
+
+- In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
+  user or user account is identified by a name and a unique identifier, known as a UID.
+
+### Linux has different kind of users
+
+- Linux categorizes users based on their role and level of access to the system:
+  - **System Accounts/ Service users**:
+    - These are used to run background tasks and services (like web servers or databases). Notably, they usually do not have a home directory.
+    - Accounts like `sshd`, `www-data`, or `mysql`. They aren't meant for humans to log into; they exist so that if a web server is hacked, the attacker is "trapped" within that service user's limited permissions
+
+  - **Regular Users**:
+    - These are standard accounts created for people.
+    - They have a dedicated home directory for personal files.
+    - They are restricted from accessing other users' files or performing administrative tasks by default.
+    - Limited privileges
+    - We can allow regular users to temporarily get root access through `sudo` command
+
+  - **Superuser/Root** :
+    - This is the most powerful account on the system. Highest privileges
+    - It has unrestricted access to every file and setting.
+    - It can add/remove users, install software, and modify system configurations.
+    - It has the user ID: 0
+    - There can only be one root user on the system
 
 ### Groups
 
