@@ -924,6 +924,21 @@ sudo -s
 # or sudo bash
 ```
 
+### How to Use `sudo` to Switch Users
+- To execute a command or start a shell as a different user, you use the `-u` (user) flag
+- You generally do not need to use the `-g` (group) flag. When you switch users with `-u`, the system automatically assigns the user's primary group by default.
+- Syntax: `sudo -u [username] [command]`
+
+```bash
+# This creates a file owned by "lauren" in her home directory using your password, not hers.
+sudo -u lauren touch /home/lauren/file_sudo.txt
+```
+
+```bash
+# Starting a shell as that user. This drops you into a bash shell acting as "lauren," allowing you to browse her files or perform tasks as if you were logged in as h
+sudo -u lauren -s
+```
+
 ## Managing users
 
 - In this context, a user is anyone using a computer or a system resource. In its simplest form, a Linux
