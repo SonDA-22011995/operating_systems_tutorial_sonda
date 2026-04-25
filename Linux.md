@@ -772,6 +772,7 @@ cat /dev/random >~/random.tx
   - `/etc/passwd`: Contains basic user account information
   - `/etc/shadow`: Stores encrypted user passwords and password aging information
   - `/etc/group`: Contains information about the groups, and their members
+  - `/etc/sudoers`: Allow access for specific users or groups
 - `/home`: user Home directory. The place where the user’s files are stored.
   - Structure: Each user has their own subfolder (e.g., /home/username).
   - Permissions: For security, users typically cannot access each other's home folders.
