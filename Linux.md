@@ -1334,7 +1334,55 @@ sudo cat /etc/shadow
 # !: password is disable
 ```
 
-# Permissions
+# File Permissions
+
+## Why do we need file permissions?
+- Control access to files and directories
+- Determine who can read, write and execute those files
+
+## The Fundamentals of Permissions
+
+- Linux assigns permissions based on three ownership levels and three permission types.
+
+### Ownership Levels
+
+- **Owner (u)**: The user who created or currently owns the file.
+- **Group (g)**: A defined set of users who share access to the file.
+- **Others (o)**: All other users on the system.
+
+### Permission Types
+
+- **Read (r/4)**: Ability to view file contents or list directory contents.
+- **Write (w/2)**: Ability to modify file contents or create/delete files in a directory.
+- **Execute (x/1)**: Ability to run a file as a program or enter/traverse a directory.
+
+### Managing Permissions and Ownership
+
+- To view the current permissions of a file, use the command: `ls -l [file-path]`
+
+#### Changing Permissions - `chmod`
+
+- The `chmod` command modifies the access rights for the owner, group, or others using symbols (`+` to add, `-` to remove)
+- `chmod u+x file.txt`: Gives the owner execution rights.
+- `chmod g-w file.txt`: Removes write rights from the group.
+- `chmod o+r file.txt`: Grants read access to others.
+- Note: Changes to system files often require `sudo` for elevated privileges.
+
+### Changing Ownership `chown`
+
+- To change who owns a file or which group it belongs to, use the `chown` command.
+- Syntax `chown user:group filename`: Changes both the owner and the group.
+- This is useful for fine-grained access control, allowing you to restrict write access to a specific group rather than giving "others" access to the file.
+
+```bash
+ls -la
+# --w-r--r--  1 sonda sonda   13 Apr 25 10:52 permission.txt
+chown sonda:vandtt permission.txt
+# chown: changing ownership of 'permission.txt': Operation not permitted
+sudo chown sonda:vandtt permission.txt
+ls -la
+# --w-r--r--  1 sonda vandtt   13 Apr 25 10:52 permission.txt
+```
 
 # Linux Software Management
 
