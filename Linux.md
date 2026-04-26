@@ -98,7 +98,7 @@
     - [Permission Types](#permission-types)
     - [Managing Permissions and Ownership](#managing-permissions-and-ownership)
       - [Changing Permissions - `chmod`](#changing-permissions---chmod)
-    - [Changing Ownership `chown`](#changing-ownership-chown)
+      - [Changing Ownership `chown`](#changing-ownership-chown)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1385,7 +1385,7 @@ sudo cat /etc/shadow
 - `chmod o+r file.txt`: Grants read access to others.
 - Note: Changes to system files often require `sudo` for elevated privileges.
 
-### Changing Ownership `chown`
+#### Changing Ownership `chown`
 
 - To change who owns a file or which group it belongs to, use the `chown` command.
 - Syntax `chown user:group filename`: Changes both the owner and the group.
