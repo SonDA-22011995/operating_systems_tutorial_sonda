@@ -98,6 +98,7 @@
     - [Permission Types](#permission-types)
     - [Managing Permissions and Ownership](#managing-permissions-and-ownership)
       - [Changing Permissions - `chmod`](#changing-permissions---chmod)
+      - [`chmod` with numeric value](#chmod-with-numeric-value)
       - [Changing Ownership `chown`](#changing-ownership-chown)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
@@ -1377,6 +1378,24 @@ sudo cat /etc/shadow
 
 - To view the current permissions of a file, use the command: `ls -l [file-path]`
 
+```bash
+ls -l /etc/passwd
+
+# -rw-r--r-- 1 root root 2010 Mar  9 08:57 /etc/passwd
+```
+
+- `-rw-r--r--`: The file access permissions
+  - The first character (attribute) is reserved for the file type
+  - The next 9 characters represent a 9-bit field, defining the effective permissions as 3 sequences of 3 attributes (bits) each: **user owner permissions**, **group owner permissions**, and **all other users’ permissions**
+- `1`: The number of hard links
+- `root`: The user who is the owner of the file
+- `root`: The group that is the owner of the file
+- `2010`: The size of the file
+- `Mar`: The month the file was created
+- `9`: The day of the month the file was created
+- `08:57`: The time of day the file was created
+- `/etc/passwd`: The filename
+
 #### Changing Permissions - `chmod`
 
 - The `chmod` command modifies the access rights for the owner, group, or others using symbols (`+` to add, `-` to remove)
@@ -1384,6 +1403,16 @@ sudo cat /etc/shadow
 - `chmod g-w file.txt`: Removes write rights from the group.
 - `chmod o+r file.txt`: Grants read access to others.
 - Note: Changes to system files often require `sudo` for elevated privileges.
+
+```bash
+chmod u-r,ug-w,o-rwx myfile
+
+# Remove the read (r) permission for the owner (u)
+# Remove the write (w) permission for the owner (u) and group (g)
+# Remove the read (r), write (w), and execute (x) permissions for everyone else (o)
+```
+
+#### `chmod` with numeric value
 
 #### Changing Ownership `chown`
 
