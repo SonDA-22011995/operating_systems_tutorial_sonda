@@ -1424,6 +1424,19 @@ chmod u-r,ug-w,o-rwx myfile
 
 #### `chmod` with numeric value
 
+- Permission levels: Owner (u), group (g), others (o)
+- Type of permissions: Read (r / 4), write (w / 2), execute (x / 1)
+
+```bash
+sudo chmod 777 permissions.txt
+
+# Use sudo if the current user is not authorized to change file permissions.
+# 7: Owner permissions = 4 + 2 + 1 = rwx  
+# 7: Group permissions = 4 + 2 + 1 = rwx  
+# 7: Others permissions = 4 + 2 + 1 = rwx
+```
+
+
 #### Changing Ownership `chown`
 
 - To change who owns a file or which group it belongs to, use the `chown` command.
