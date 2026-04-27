@@ -1387,6 +1387,16 @@ ls -l /etc/passwd
 - `-rw-r--r--`: The file access permissions
   - The first character (attribute) is reserved for the file type
   - The next 9 characters represent a 9-bit field, defining the effective permissions as 3 sequences of 3 attributes (bits) each: **user owner permissions**, **group owner permissions**, and **all other users’ permissions**
+  - As previously noted, the access permissions are represented by a 9-bit field, a group of 3 sequences,
+each with 3 bits, defined as follows:
+    - Bits 1-3: User owner permissions
+    - Bits 4-6: Group owner permissions
+    - Bits 7-9: All other users’ (or world) permissions
+  - Here are the permission attributes with their respective octal values:
+    - `r`: Read permission; 2 ^ 2 = 4 (bit 2 set)
+    - `w`: Write permission: 2 ^ 1 = 2 (bit 1 set)
+    - `x`: Execute permission: 2 ^ 0 = 1 (bit 0 set)
+    - `-`: No permission: 0 (no bits set)
 - `1`: The number of hard links
 - `root`: The user who is the owner of the file
 - `root`: The group that is the owner of the file
