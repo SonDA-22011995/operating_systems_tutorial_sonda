@@ -1434,6 +1434,11 @@ sudo chmod 777 permissions.txt
 # 7: Owner permissions = 4 + 2 + 1 = rwx  
 # 7: Group permissions = 4 + 2 + 1 = rwx  
 # 7: Others permissions = 4 + 2 + 1 = rwx
+
+sudo chmod 754 permissions.txt
+# First Digit (7 = 4+2+1): Owner has read, write, and execute access.
+# Second Digit (5 = 4+0+1): Group has read and execute access (no write).
+# Third Digit (4 = 4+0+0): Others have read-only access.
 ```
 
 
