@@ -1555,6 +1555,21 @@ umask
 #0022
 ```
 
+- Temporary change: Use `umask [value]` (e.g., `umask 027`). This only affects the current session.
+
+```bash
+umask 026
+touch umask_025.txt
+ls -al .
+
+# -rw-r-----  1 sonda sonda    0 Apr 28 15:50 umask_025.txt
+# Default permissions for new files is 666. 666 - 026 = 640: rw-r-----
+```
+
+- Permanent change (Shell): Add the `umask` command to your shell startup file (e.g., `.bashrc`)
+
+
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
