@@ -1567,8 +1567,14 @@ ls -al .
 ```
 
 - Permanent change (Shell): Add the `umask` command to your shell startup file (e.g., `.bashrc`)
+- Permanently change it for all programs (System-wide change):
+  - Usually, we can edit this in the following file: `/etc/login.defs`
+  - This should then also affect new GUI sessions!
+  - Be aware:
+    - Changes `umask` command in a shell overwrite this for the current shell session
+    - Those changes should usually be applied automatically during startup - if a new shell doesn't pick them up, be sure to make sure the umask is not overwritten during startup of the shell
 
-
+![System-wide change /etc/login.defs](static/images/image_0032.png)
 
 # Linux Software Management
 
