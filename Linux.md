@@ -1373,9 +1373,9 @@ sudo cat /etc/shadow
 
 ### Permission Types
 
-- **Read (r/4)**: Ability to view file contents or list directory contents.
-- **Write (w/2)**: Ability to modify file contents or create/delete files in a directory.
-- **Execute (x/1)**: Ability to run a file as a program or enter/traverse a directory.
+- **Read (r/4)**: A read permission of a file allows users to view the content of the file. On a directory, the read permission allows users to list the content of the directory
+- **Write (w/2)**: A write permission of a file allows users to modify the content of the file. For a directory, the write permission allows users to modify the content of the directory by adding, deleting, or renaming files
+- **Execute (x/1)**: An execute or executable permission of a file allows users to run the related script, application, or service appointed by the file. For a directory, the execute permission allows users to enter the directory and make it the current working directory (using the cd command)
 
 ### Managing Permissions and Ownership
 
