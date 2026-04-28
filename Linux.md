@@ -100,6 +100,8 @@
       - [Changing Permissions - `chmod`](#changing-permissions---chmod)
       - [`chmod` with numeric value](#chmod-with-numeric-value)
       - [Changing Ownership `chown`](#changing-ownership-chown)
+      - [How do file permissions work for directories?](#how-do-file-permissions-work-for-directories)
+      - [Change permissions / ownership for a whole directory structure](#change-permissions--ownership-for-a-whole-directory-structure)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1377,6 +1379,7 @@ sudo cat /etc/shadow
 ### Managing Permissions and Ownership
 
 - To view the current permissions of a file, use the command: `ls -l [file-path]`
+- we can query the octal value with the stat command, as follows `stat --format '%a' [file-path]`
 
 ```bash
 ls -l /etc/passwd
@@ -1456,6 +1459,59 @@ chown sonda:vandtt permission.txt
 sudo chown sonda:vandtt permission.txt
 ls -la
 # --w-r--r--  1 sonda vandtt   13 Apr 25 10:52 permission.txt
+```
+
+```bash
+sudo chown :developers data.txt
+# Change group owner only
+
+sudo chown john data.txt
+# Change user owner only
+
+sudo chown john:developers data.txt
+# Change user and group owner 
+```
+
+#### How do file permissions work for directories?
+
+- File permissions for directories
+  - **Read (r)**: Access directory contents
+  - **Write (w)**: Add or remove files (we also need execute permissions for this though)
+  - **Execute (x)**: Enter and traverse directory
+- Permission Combinations for Directories
+  - Need `x` to enter: Without execute permissions, you cannot `cd` into a directory.
+  - Need `r` to list: Without read permissions, you cannot see the files inside with `ls`.
+  - Need `w + x` to write: To create or delete files, you must have both write (to modify) and execute (to enter/traverse) permissions.
+  - Edge Case: If you have `w + x` but no `r`, you can modify or delete known files if you have the path, but you **cannot list the directory contents or use tab-completion to see file names**
+
+#### Change permissions / ownership for a whole directory structure
+
+```bash
+ls -al ./file_permission/
+
+# total 16
+# dr-x------  2 sonda sonda  4096 Apr 28 08:53 .
+# drwxr-x--- 12 sonda sonda  4096 Apr 27 18:16 ..
+# -rw-r--r--  1 sonda sonda    31 Apr 28 09:09 index.html
+# -rw-r--r--  1 sonda vandtt   13 Apr 25 10:52 permission.txt
+
+chmod 777 -R ./file_permission/
+ls -al ./file_permission/
+
+# total 16
+# drwxrwxrwx  2 sonda sonda  4096 Apr 28 08:53 .
+# drwxr-x--- 12 sonda sonda  4096 Apr 27 18:16 ..
+# -rwxrwxrwx  1 sonda sonda    31 Apr 28 09:09 index.html
+# -rwxrwxrwx  1 sonda vandtt   13 Apr 25 10:52 permission.txt
+
+chown :sonda -R ./file_permission/
+ls -al ./file_permission/
+
+# total 16
+# drwxrwxrwx  2 sonda sonda 4096 Apr 28 08:53 .
+# drwxr-x--- 12 sonda sonda 4096 Apr 27 18:16 ..
+# -rwxrwxrwx  1 sonda sonda   31 Apr 28 09:09 index.html
+# -rwxrwxrwx  1 sonda sonda   13 Apr 25 10:52 permission.txt
 ```
 
 # Linux Software Management
