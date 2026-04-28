@@ -103,6 +103,9 @@
       - [How do file permissions work for directories?](#how-do-file-permissions-work-for-directories)
       - [Change permissions / ownership for a whole directory structure](#change-permissions--ownership-for-a-whole-directory-structure)
     - [Advanced file permissions: `umask`](#advanced-file-permissions-umask)
+      - [Why do we need a umask?](#why-do-we-need-a-umask)
+      - [How does it work?](#how-does-it-work)
+      - [Managing `umask`](#managing-umask)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1522,7 +1525,35 @@ ls -al ./file_permission/
 
 ### Advanced file permissions: `umask`
 
+#### Why do we need a umask?
 
+- The umask allows us to specify who should be able to access new files
+- Thus, this is an important security feature
+- If you're the sysadmin, you might want to evaluate this, and see which value is most appropriate for the umask in your organization
+- The idea: It thus determines the default permissions for new files / directories
+
+####  How does it work?
+
+- We have some base permissions. And from those, we subtract the umask value (technically: we apply a bitmask according to the binary representation of our umask value)
+- Base permissions (default permissions for new files and directorie) are usually:  
+  - **777 - rwxrwxrwx: Full access: read, write, execute for directories** 
+  - **666 - rw-rw-rw-: Read and write, but no execution for files**
+- If we set the umask to 022 
+  - Directories will have 755 **(777 - 022 = 755 : rwxr-xr-x)**
+    - Owner: read + write + execute
+    - Group and others: read + execute (but not write)
+  - And files will be 644: **(666 - 022 = 644 : rw-r--r--)**
+    - Owner: Read + Write
+    - Group and others: read (but not execute + write)
+
+#### Managing `umask`
+
+- View current mask: Type `umask` in your terminal.
+
+```bash
+umask
+#0022
+```
 
 # Linux Software Management
 
