@@ -102,6 +102,7 @@
       - [Changing Ownership `chown`](#changing-ownership-chown)
       - [How do file permissions work for directories?](#how-do-file-permissions-work-for-directories)
       - [Change permissions / ownership for a whole directory structure](#change-permissions--ownership-for-a-whole-directory-structure)
+    - [Advanced file permissions: `umask`](#advanced-file-permissions-umask)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1486,6 +1487,11 @@ sudo chown john:developers data.txt
 
 #### Change permissions / ownership for a whole directory structure
 
+- To apply permission or ownership changes to a directory and all of its subdirectories and files, use the recursive flag `-R`:
+- `chmod -R [mode] [directory]`: Recursively sets permissions for the entire structure.
+- `chown -R [user]:[group] [directory]`: Recursively changes ownership for the entire structure.
+- **Privileges**: Changing ownership (via chown) usually requires root privileges (`sudo`), whereas changing permissions (via `chmod`) depends on file ownership.
+
 ```bash
 ls -al ./file_permission/
 
@@ -1513,6 +1519,10 @@ ls -al ./file_permission/
 # -rwxrwxrwx  1 sonda sonda   31 Apr 28 09:09 index.html
 # -rwxrwxrwx  1 sonda sonda   13 Apr 25 10:52 permission.txt
 ```
+
+### Advanced file permissions: `umask`
+
+
 
 # Linux Software Management
 
