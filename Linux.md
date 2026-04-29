@@ -1620,6 +1620,7 @@ ls -al .
 - When you run `ls -ld <directory>`, look at the final character of the permission string
   - `t` (lowercase): The sticky bit is set, and the directory has "others" execute permissions.
   - `T` (uppercase): The sticky bit is set, but "others" do not have execute permissions.
+- When you run `stat --format '%a' <directory>,` look at the first character of the output. If it is 1, the sticky bit is active; if it is 0, it is not.
 
 # Linux Software Management
 
