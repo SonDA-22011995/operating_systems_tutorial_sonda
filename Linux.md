@@ -107,6 +107,11 @@
     - [How does it work?](#how-does-it-work)
     - [Managing `umask`](#managing-umask)
     - [Sticky bit](#sticky-bit)
+      - [For files](#for-files)
+      - [For directories](#for-directories)
+      - [How can we set the sticky bit?](#how-can-we-set-the-sticky-bit)
+      - [How it Works](#how-it-works-1)
+      - [Identifying the Sticky Bit](#identifying-the-sticky-bit)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -171,7 +176,7 @@
       - [Deleting Variables - `unset`](#deleting-variables---unset)
     - [`PATH` environment variable](#path-environment-variable)
       - [What is the `PATH` Variable?](#what-is-the-path-variable)
-      - [How It Works](#how-it-works-1)
+      - [How It Works](#how-it-works-2)
       - [Modiffy `PATH` variable](#modiffy-path-variable)
     - [Creating custom executable file](#creating-custom-executable-file)
       - [The Shebang - `#!`](#the-shebang---)
@@ -1583,7 +1588,38 @@ ls -al .
 
 ### Sticky bit
 
+- The sticky bit is an extra bit that we can set for all files or directories
+- The sticky bit is especially used for the `/tmp` folder
 
+#### For files
+
+- Obsolete, no longer used
+- It used to indicate that an executable file can remain in memory, to be loaded more quickly on next launch
+
+#### For directories
+
+- Without the sticky bit, any user with write and execute permissions on a directory can delete or rename any file within that directory, regardless of who owns the file. This creates a risk where users can maliciously or accidentally remove important files belonging to others
+- If the sticky bit is set, only the owner (and root) of a file or the directory owner can rename or delete a file
+
+#### How can we set the sticky bit?
+
+- Set sticky bit: `chmod +t [folder]` or in octal notation `chmod 1777 [folder]`
+- Unset sticky bit: `chmod 0777 [folder]`
+
+#### How it Works
+
+- When the sticky bit is set on a directory:
+  - Restricted Deletion: A file inside that directory can only be deleted or renamed by:
+    - The owner of the file.
+    - The owner of the directory.
+    - The root user (who always has full access).
+- Collaboration: Users can still create new files and modify their own files as normal, but they cannot interfere with the files of other users.
+
+#### Identifying the Sticky Bit
+
+- When you run `ls -ld <directory>`, look at the final character of the permission string
+  - `t` (lowercase): The sticky bit is set, and the directory has "others" execute permissions.
+  - `T` (uppercase): The sticky bit is set, but "others" do not have execute permissions.
 
 # Linux Software Management
 
