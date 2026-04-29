@@ -1622,6 +1622,19 @@ ls -al .
   - `T` (uppercase): The sticky bit is set, but "others" do not have execute permissions.
 - When you run `stat --format '%a' <directory>,` look at the first character of the output. If it is 1, the sticky bit is active; if it is 0, it is not.
 
+```bash
+sudo mkdir /permission
+ls -al /permission
+# drwxrwxrwx  2 sonda  sonda  4096 Apr 29 12:10 .
+chmod 1777 /permission
+ls -al /permission
+# drwxrwxrwt  2 sonda  sonda  4096 Apr 29 12:10 .
+chmod 1776 /permission
+ls -al /permission
+# drwxrwxrwT  2 sonda  sonda  4096 Apr 29 12:10 .
+```
+
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
