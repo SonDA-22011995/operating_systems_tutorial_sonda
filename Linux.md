@@ -113,6 +113,8 @@
     - [How it Works](#how-it-works-1)
     - [Identifying the Sticky Bit](#identifying-the-sticky-bit)
   - [Set user Id (SUID) \& Set group Id (SGID)](#set-user-id-suid--set-group-id-sgid)
+    - [Understanding SUID and SGID](#understanding-suid-and-sgid)
+    - [How to Inspect and Identify](#how-to-inspect-and-identify)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1637,6 +1639,29 @@ ls -al /permission
 
 ## Set user Id (SUID) & Set group Id (SGID)
 
+- The Set User ID (SUID) and Set Group ID (SGID) bits are advanced file permissions that allow a program to run with the privileges of its owner or its group, respectively, rather than the privileges of the user who is actually executing the file.
+
+### Understanding SUID and SGID
+
+- Normally, when you run a program, it inherits your user permissions. However, some system tasks (like changing your password or mounting a drive) require higher privileges than a standard user has.
+- SUID (Set User ID): When a file with the SUID bit set is executed, the process runs with the permissions of the file's owner.
+  - Example: The passwd command is owned by root and has the SUID bit. This allows a normal user to change their password (writing to /etc/shadow) even though they do not normally have permission to edit that file.
+- SGID (Set Group ID): When a file with the SGID bit set is executed, the process runs with the permissions of the file's group.
+
+![SUID](static/images/image_0034.png)
+
+### How to Inspect and Identify
+
+- You can see these bits using the `ls -l` command. They appear in the "owner" or "group" execution positions:
+- `s` (lowercase): The bit is set, and the execute (x) permission is also set.
+- `S` (uppercase): The bit is set, but the execute (x) permission is not set.
+
+| Permission Bit | Location in `ls -l`     | Meaning              |
+|----------------|------------------------|----------------------|
+| SUID           | Owner's execute (x)    | Run as file owner    |
+| SGID           | Group's execute (x)    | Run as file group    |
+
+![SGID](static/images/image_0035.png)
 
 # Linux Software Management
 
