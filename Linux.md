@@ -117,6 +117,19 @@
     - [How to Inspect and Identify](#how-to-inspect-and-identify)
     - [Managing the Bits](#managing-the-bits)
     - [Be careful](#be-careful)
+  - [Special permissions](#special-permissions)
+- [Linux Software Management](#linux-software-management)
+  - [The DEB package’s anatomy](#the-deb-packages-anatomy)
+    - [Updating the Package List](#updating-the-package-list)
+    - [Upgrading Software](#upgrading-software)
+    - [Managing Packages (Install/Remove)](#managing-packages-installremove)
+    - [`apt` vs. `apt-get`](#apt-vs-apt-get)
+  - [The RPM packages anatomy](#the-rpm-packages-anatomy)
+    - [Updating the System](#updating-the-system)
+    - [Managing Software (Install/Remove)](#managing-software-installremove)
+  - [Enabling Additional Repositories](#enabling-additional-repositories)
+- [Introducing the Linux shell](#introducing-the-linux-shell)
+  - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
     - [Shell command types - `type`](#shell-command-types---type)
     - [Display an Executable’s Location - `which`](#display-an-executables-location---which)
@@ -1658,7 +1671,14 @@ ls -al /permission
 
 - You can modify these bits using the `chmod` command
   - `chmod u+s <file>` (Sets SUID)
+  - `chmod u-s <file>` (Unsets SUID)
   - `chmod g+s <file>` (Sets SGID)
+  - `chmod g-s <file>` (Unsets SGID)
+-  Or in octal notation
+  - `chmod 4xxx <file>` (Sets SUID)
+  - `chmod 0xxx <file>` (Unsets SUID)
+  - `chmod 2xxx <file>` (Sets SGID)
+  - `chmod 0xxx <file>` (Unsets SGID)
 
 ### Be careful
 
@@ -1696,7 +1716,23 @@ ls -l ~
 import os
 print(os.listdir('/home/vandtt'))
 ['.profile', '.python_history', '.bash_history', '.bashrc', '.lesshst', '.bash_logout', '.local']
-``
+```
+
+## Special permissions
+
+- In Linux, all file access permissions are managed by binary sequences. The special bits (SUID, SGID, and Sticky Bit) are placed in a distinct position preceding the standard rwx permissions.
+
+| Feature     | Bit Position (Binary) | Calculation (2^n) | Octal Value |
+|------------|----------------------|-------------------|-------------|
+| SUID       | 100                  | 2^2               | 4           |
+| SGID       | 010                  | 2^1               | 2           |
+| Sticky Bit | 001                  | 2^0               | 1           |
+
+- Example 
+  - The setuid permission: **rwsrwxr-x  (4775)**
+  - The setgid permission: **-rwxrwsr-x (2775)**
+  - The sticky permission: **drwxrwxr-t (1775)**
+
 
 # Linux Software Management
 
