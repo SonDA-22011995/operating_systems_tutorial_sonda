@@ -1576,6 +1576,10 @@ ls -al .
 
 ![System-wide change /etc/login.defs](static/images/image_0032.png)
 
+- In many Linux distributions, if a user's username matches their primary group name, the system may automatically adjust the umask to be more permissive for the group (e.g., changing a mask of 027 to 007)
+
+![User Private Group Feature](static/images/image_0033.png)
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
