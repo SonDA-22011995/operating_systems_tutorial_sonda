@@ -115,18 +115,8 @@
   - [Set user Id (SUID) \& Set group Id (SGID)](#set-user-id-suid--set-group-id-sgid)
     - [Understanding SUID and SGID](#understanding-suid-and-sgid)
     - [How to Inspect and Identify](#how-to-inspect-and-identify)
-- [Linux Software Management](#linux-software-management)
-  - [The DEB package’s anatomy](#the-deb-packages-anatomy)
-    - [Updating the Package List](#updating-the-package-list)
-    - [Upgrading Software](#upgrading-software)
-    - [Managing Packages (Install/Remove)](#managing-packages-installremove)
-    - [`apt` vs. `apt-get`](#apt-vs-apt-get)
-  - [The RPM packages anatomy](#the-rpm-packages-anatomy)
-    - [Updating the System](#updating-the-system)
-    - [Managing Software (Install/Remove)](#managing-software-installremove)
-  - [Enabling Additional Repositories](#enabling-additional-repositories)
-- [Introducing the Linux shell](#introducing-the-linux-shell)
-  - [What is a shell?](#what-is-a-shell)
+    - [Managing the Bits](#managing-the-bits)
+    - [Be careful](#be-careful)
   - [Identifying Commands](#identifying-commands)
     - [Shell command types - `type`](#shell-command-types---type)
     - [Display an Executable’s Location - `which`](#display-an-executables-location---which)
@@ -1662,6 +1652,51 @@ ls -al /permission
 | SGID           | Group's execute (x)    | Run as file group    |
 
 ![SGID](static/images/image_0035.png)
+
+
+### Managing the Bits
+
+- You can modify these bits using the `chmod` command
+  - `chmod u+s <file>` (Sets SUID)
+  - `chmod g+s <file>` (Sets SGID)
+
+### Be careful
+
+- This can be a major security issue if used improperly
+- On most systems, the SUID bit is limited to executable binary files
+- It is usually not supported for executable scripts (.sh, .py,...)
+- If we set it on our own programs, we can easily create major security vulnerabilities. Be extremely careful!
+
+```bash
+# bash environment
+ls ~
+which python3
+# /usr/bin/python3
+sudo cp /usr/bin/python3 .
+ls -l ~
+-rwxr-xr-x 1 root root 8020928 Apr 29 16:03 python3
+./python3
+# python environment
+import os
+print(os.listdir('/home/vandtt'))
+# PermissionError: [Errno 13] Permission denied: '/home/vandtt'
+```
+
+```bash
+# bash environment
+ls ~
+which python3
+# /usr/bin/python3
+sudo cp /usr/bin/python3 .
+sudo chmod u+s python3
+ls -l ~
+# -rwsr-xr-x 1 root root 8020928 Apr 29 16:03 python3
+./python3
+# python environment
+import os
+print(os.listdir('/home/vandtt'))
+['.profile', '.python_history', '.bash_history', '.bashrc', '.lesshst', '.bash_logout', '.local']
+``
 
 # Linux Software Management
 
