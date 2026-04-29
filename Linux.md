@@ -1386,6 +1386,8 @@ sudo cat /etc/shadow
 - **Group (g)**: A defined set of users who share access to the file.
 - **Others (o)**: All other users on the system.
 
+![Ownership Levels](static/images/image_0036.png)
+
 ### Permission Types
 
 - **Read (r/4)**: A read permission of a file allows users to view the content of the file. On a directory, the read permission allows users to list the content of the directory
@@ -1729,10 +1731,12 @@ print(os.listdir('/home/vandtt'))
 | Sticky Bit | 001                  | 2^0               | 1           |
 
 - Example 
-  - The setuid permission: **rwsrwxr-x  (4775)**
+  - The setuid permission: **-rwsrwxr-x  (4775)**
   - The setgid permission: **-rwxrwsr-x (2775)**
   - The sticky permission: **drwxrwxr-t (1775)**
-
+  - The setuid and sticky permission: **-rwsrwxr-t  (5775)**
+  - The setgid and sticky permission: **-rwxrwsr-t (3775)**
+  - The setgid and sticky and setuid permission: **-rwsrwsr-t (7775)**
 
 # Linux Software Management
 
