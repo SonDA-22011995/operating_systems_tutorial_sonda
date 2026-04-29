@@ -102,10 +102,11 @@
       - [Changing Ownership `chown`](#changing-ownership-chown)
       - [How do file permissions work for directories?](#how-do-file-permissions-work-for-directories)
       - [Change permissions / ownership for a whole directory structure](#change-permissions--ownership-for-a-whole-directory-structure)
-    - [Advanced file permissions: `umask`](#advanced-file-permissions-umask)
-      - [Why do we need a umask?](#why-do-we-need-a-umask)
-      - [How does it work?](#how-does-it-work)
-      - [Managing `umask`](#managing-umask)
+  - [Advanced file permissions: `umask`](#advanced-file-permissions-umask)
+    - [Why do we need a umask?](#why-do-we-need-a-umask)
+    - [How does it work?](#how-does-it-work)
+    - [Managing `umask`](#managing-umask)
+    - [Sticky bit](#sticky-bit)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1523,16 +1524,16 @@ ls -al ./file_permission/
 # -rwxrwxrwx  1 sonda sonda   13 Apr 25 10:52 permission.txt
 ```
 
-### Advanced file permissions: `umask`
+## Advanced file permissions: `umask`
 
-#### Why do we need a umask?
+### Why do we need a umask?
 
 - The umask allows us to specify who should be able to access new files
 - Thus, this is an important security feature
 - If you're the sysadmin, you might want to evaluate this, and see which value is most appropriate for the umask in your organization
 - The idea: It thus determines the default permissions for new files / directories
 
-####  How does it work?
+###  How does it work?
 
 - We have some base permissions. And from those, we subtract the umask value (technically: we apply a bitmask according to the binary representation of our umask value)
 - Base permissions (default permissions for new files and directorie) are usually:  
@@ -1546,7 +1547,7 @@ ls -al ./file_permission/
     - Owner: Read + Write
     - Group and others: read (but not execute + write)
 
-#### Managing `umask`
+### Managing `umask`
 
 - View current mask: Type `umask` in your terminal.
 
@@ -1579,6 +1580,10 @@ ls -al .
 - In many Linux distributions, if a user's username matches their primary group name, the system may automatically adjust the umask to be more permissive for the group (e.g., changing a mask of 027 to 007)
 
 ![User Private Group Feature](static/images/image_0033.png)
+
+### Sticky bit
+
+
 
 # Linux Software Management
 
