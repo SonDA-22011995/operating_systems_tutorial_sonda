@@ -1386,6 +1386,7 @@ sudo cat /etc/shadow
 - **Group (g)**: A defined set of users who share access to the file.
 - **Others (o)**: All other users on the system.
 
+
 ![Ownership Levels](static/images/image_0036.png)
 
 ### Permission Types
@@ -1429,10 +1430,13 @@ each with 3 bits, defined as follows:
 
 #### Changing Permissions - `chmod`
 
+-  A  combination of the letters ugoa controls which users' access to the file will be changed: the user who owns
+it (u), other users in the file's group (g), other users not in the file's group (o), or all  users  (a). If none  of  these  are given, the effect is as if (a) were given, but bits that are set in the umask are not affected.
 - The `chmod` command modifies the access rights for the owner, group, or others using symbols (`+` to add, `-` to remove)
 - `chmod u+x file.txt`: Gives the owner execution rights.
 - `chmod g-w file.txt`: Removes write rights from the group.
 - `chmod o+r file.txt`: Grants read access to others.
+- `chmod a+r file.txt`: Grants read access to all user.
 - Note: Changes to system files often require `sudo` for elevated privileges.
 
 ```bash
