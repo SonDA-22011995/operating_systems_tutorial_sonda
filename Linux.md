@@ -8,6 +8,7 @@
 - [The Linux filesystem](#the-linux-filesystem)
   - [What is a File?](#what-is-a-file)
   - [Naming Files](#naming-files)
+  - [Understanding the File Commands](#understanding-the-file-commands)
   - [How Data is Stored: The Inode System](#how-data-is-stored-the-inode-system)
   - [The Unix Philosophy: "Everything is a File"](#the-unix-philosophy-everything-is-a-file)
     - [Identifying File Types in the Terminal](#identifying-file-types-in-the-terminal)
@@ -344,6 +345,10 @@
 - A few characters have special meaning and should never be used in filenames: asterisk `(*)`, question mark `(?)`, forward slash `(/)`, backslash `(\)`, quotation mark `(")`
 - In fact, filenames can begin with a dot. These so-called **dot files (hidden files)** are **hidden** from view by most utilities that display files, so they’re popular for storing configuration fi les in your home directory 
 - Be aware the Linux fi lenames are case sensitive. For example, Filename.txt is different from filename.txt or FILENAME.TXT. All three fi les can exist in a single Linux directory, and they are treated as completely different fi les
+
+## Understanding the File Commands
+
+- More detail in [Basic file operations](#basic-file-operations)
 
 ## How Data is Stored: The Inode System
 
