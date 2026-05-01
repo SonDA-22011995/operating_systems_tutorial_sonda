@@ -241,9 +241,9 @@
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
+  - [Basic file operations](#basic-file-operations)
   - [The `ls` Command](#the-ls-command)
   - [The `stat` command](#the-stat-command)
-  - [Basic file operations](#basic-file-operations)
     - [The `touch` command](#the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
     - [The `mv` Command](#the-mv-command)
@@ -3136,6 +3136,8 @@ pwd
 # /usr/bin
 ```
 
+## Basic file operations
+
 ## The `ls` Command
 
 - The `ls` command shows the contents of your current working directory.
@@ -3189,8 +3191,6 @@ ls -la
 - The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
 
 ![stat command](static/images/image_0019.png)
-
-## Basic file operations
 
 ### The `touch` command
 
