@@ -7,6 +7,7 @@
   - [Common Linux distributions](#common-linux-distributions)
 - [The Linux filesystem](#the-linux-filesystem)
   - [What is a File?](#what-is-a-file)
+  - [Naming Files](#naming-files)
   - [How Data is Stored: The Inode System](#how-data-is-stored-the-inode-system)
   - [The Unix Philosophy: "Everything is a File"](#the-unix-philosophy-everything-is-a-file)
     - [Identifying File Types in the Terminal](#identifying-file-types-in-the-terminal)
@@ -336,6 +337,13 @@
   - Permissions: Who can read, write, or execute the file
   - Ownership: Which user and group owns the file
   - Timestamps: When the file was created, last accessed, or modified
+
+## Naming Files
+
+- To avoid confusion, it is recommended that you restrict any non-alphanumeric symbols in your Linux fi lenames to the dot `(.)`, the dash `(-)`, and the underscore `(_)`
+- A few characters have special meaning and should never be used in filenames: asterisk `(*)`, question mark `(?)`, forward slash `(/)`, backslash `(\)`, quotation mark `(")`
+- In fact, filenames can begin with a dot. These so-called **dot files (hidden files)** are **hidden** from view by most utilities that display files, so they’re popular for storing configuration fi les in your home directory 
+- Be aware the Linux fi lenames are case sensitive. For example, Filename.txt is different from filename.txt or FILENAME.TXT. All three fi les can exist in a single Linux directory, and they are treated as completely different fi les
 
 ## How Data is Stored: The Inode System
 
