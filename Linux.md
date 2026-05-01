@@ -8,6 +8,7 @@
 - [The Linux filesystem](#the-linux-filesystem)
   - [What is a File?](#what-is-a-file)
   - [Naming Files](#naming-files)
+  - [File system hierachy](#file-system-hierachy)
   - [Understanding the File Commands](#understanding-the-file-commands)
   - [How Data is Stored: The Inode System](#how-data-is-stored-the-inode-system)
   - [The Unix Philosophy: "Everything is a File"](#the-unix-philosophy-everything-is-a-file)
@@ -54,8 +55,6 @@
     - [`/proc/version`](#procversion)
     - [`/proc/uptime`](#procuptime)
     - [`/proc/loadavg`](#procloadavg)
-  - [File system hierachy](#file-system-hierachy)
-  - [Important Facts About Filenames](#important-facts-about-filenames)
   - [Exploring the Linux filesystem from the command line](#exploring-the-linux-filesystem-from-the-command-line)
 - [Managing Users and Groups](#managing-users-and-groups)
   - [Understanding sudo - Elevating privileges: `sudo`](#understanding-sudo---elevating-privileges-sudo)
@@ -341,10 +340,75 @@
 
 ## Naming Files
 
-- To avoid confusion, it is recommended that you restrict any non-alphanumeric symbols in your Linux fi lenames to the dot `(.)`, the dash `(-)`, and the underscore `(_)`
+- To avoid confusion, it is recommended that you restrict any non-alphanumeric symbols in your Linux filenames to the dot `(.)`, the dash `(-)`, and the underscore `(_)`
 - A few characters have special meaning and should never be used in filenames: asterisk `(*)`, question mark `(?)`, forward slash `(/)`, backslash `(\)`, quotation mark `(")`
-- In fact, filenames can begin with a dot. These so-called **dot files (hidden files)** are **hidden** from view by most utilities that display files, so they’re popular for storing configuration fi les in your home directory 
-- Be aware the Linux fi lenames are case sensitive. For example, Filename.txt is different from filename.txt or FILENAME.TXT. All three fi les can exist in a single Linux directory, and they are treated as completely different fi les
+- In fact, filenames can begin with a dot. These so-called **dot files (hidden files)** are **hidden** from view by most utilities that display files, so they’re popular for storing configuration files in your home directory 
+  - Example: `.index.html`, this only means that `ls` will not list them unless you say `ls -a`
+- Be aware the Linux filenames are case sensitive. For example, Filename.txt is different from filename.txt or FILENAME.TXT. All three fi les can exist in a single Linux directory, and they are treated as completely different fi les
+- Linux has no concept of a “file extension” like some other operating systems. You may name files any way you like. The contents or purpose of a file is determined by other means. Although Unix-like operating systems don’t use file extensions to determine the contents/purpose of files, many application programs do.
+
+## File system hierachy
+
+- Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout the filesystem.
+- `/`: Root directory. The root for all other directories.
+- `/bin`: Essential command binaries. The place where binary programs are stored.
+  - Many modern distributions (like Ubuntu) are merging `/bin` into `/usr/bin`
+  - In these cases, `/bin` is no longer a physical folder but a symbolic link (symlink) pointing to `/usr/bin` to simplify the structure
+- `/boot`: Static files of the boot loader. The place where the kernel bootloader, and initramfs are stored
+- `/dev`: Device files. Nodes to the device equipment, a kernel device list.
+  - Examples:
+    - `/dev/sda` (a hard drive)
+    - `/dev/tty` (terminal devices)
+    - `/dev/null` (a virtual "black hole" for data)
+    - `/dev/random` (Random Data Generators-The High-Security Version)
+    - `/dev/urandom` (Random Data Generators-The Faster Version)
+    - `/dev/stdin` (Where the program reads its input, usually the keyboard)
+    - `/dev/stdout` (Where the program sends its normal, data usually the terminal)
+    - `/dev/stderr` (Where the program sends error messages)
+- `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
+  - These are typically plain text files that can be edited to change system behavior.
+  - `/etc/shells`: the list of approved paths for shells on your system
+  - `/etc/passwd`: Contains basic user account information
+  - `/etc/shadow`: Stores encrypted user passwords and password aging information
+  - `/etc/group`: Contains information about the groups, and their members
+  - `/etc/sudoers`: Allow access for specific users or groups
+- `/home`: user Home directory. The place where the user’s files are stored.
+  - Structure: Each user has their own subfolder (e.g., /home/username).
+  - Permissions: For security, users typically cannot access each other's home folders.
+  - Content: Contains personal documents, downloads, and user-specific configuration files.
+- `/lib`: Essential shared libraries and kernel modules. Shared libraries are similar to Dynamic Link Library (DLL) files in Windows.
+  - Contains library files that supports the binaries located under `/bin` and `/sbin`
+  - Depending on the system, we might also have additional lib folders for additional architectures. Example Example: `/lib32`, `/lib64`
+  - Similar to `/bin`, these are increasingly becoming symbolic links to `/usr/lib` in modern distributions.
+- `/media`: Mount point for removable media. For external devices and USB external media.
+- `/mnt`: Mount point for mounting a filesystem temporarily. Used for legacy systems.
+- `/opt`: Add-on application software packages. The place where optional software is installed.
+- `/proc`: Virtual filesystem managed by the kernel. a special directory structure that contains files essential for the system.
+  - `/proc/cpuinfo`
+  - `/proc/meminfo`
+  - `/proc/version` (Displays the Linux kernel version)
+  - `/proc/uptime`
+  - `/proc/loadavg`
+- `/run`: Run-time data
+  - Files here will be removed / emptied during boot, or will be discarded on shutdown
+- `/sbin`: Essential system binaries. Vital programs for the system’s operation.
+- `/srv`: Data for services provided by this system.
+- `/sys`: Information about devices, drivers and kernel features
+- `/tmp`: Temporary files.
+  - Contains temporary files created by system and users
+  - These files are typically deleted on reboot
+  - To prevent apps from snooping on each other, modern Linux uses "private" temporary folders (often via systemd). While an app thinks it’s writing to `/tmp`, it is actually writing to a isolated sub-folde
+- `/usr`: Despite the name, it doesn’t hold "user files" (those are in /home). Instead, it holds shareable, read-only system resources. In theory, if you lost this folder, your personal data would be safe, but the OS wouldn't function until you reinstalled the software packages.
+- `/usr/bin` – system-executable files
+- `/usr/lib` – shared libraries from `/usr/bin`
+- `/usr/local` – source compiled programs not included in the distribution
+- `/usr/sbin` – specific system administration programs
+- `/usr/share` – data shared by the programs in /usr/bin such as config files, icons, wallpapers or sound files
+- `/usr/share/doc` – documentation for the system-wide files
+- `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others. Backup Priority: This is arguably the most important folder to back up because it contains your unique data (databases, emails, web content).
+  - `/var/log` – contains log files that register system activity
+  - `/var/www` - Website files (for servers like Apache or Nginx).
+  - `/var/lib` - Databases (like MySQL or PostgreSQL).
 
 ## Understanding the File Commands
 
@@ -797,77 +861,6 @@ cat /dev/random >~/random.tx
 
 - Monitors system load over the last 1, 5, and 15 minutes (number of currently running processes /number of threads) and shows the number of currently running processes and the last Process ID (PID) created.
 
-## File system hierachy
-
-- Linux uses a hierarchical filesystem structure. It is similar to an upside-down tree, with the root (`/`) at the base of the filesystem. From that point, all the branches (directories) spread throughout the filesystem.
-- `/`: Root directory. The root for all other directories.
-- `/bin`: Essential command binaries. The place where binary programs are stored.
-  - Many modern distributions (like Ubuntu) are merging `/bin` into `/usr/bin`
-  - In these cases, `/bin` is no longer a physical folder but a symbolic link (symlink) pointing to `/usr/bin` to simplify the structure
-- `/boot`: Static files of the boot loader. The place where the kernel bootloader, and initramfs are stored
-- `/dev`: Device files. Nodes to the device equipment, a kernel device list.
-  - Examples:
-    - `/dev/sda` (a hard drive)
-    - `/dev/tty` (terminal devices)
-    - `/dev/null` (a virtual "black hole" for data)
-    - `/dev/random` (Random Data Generators-The High-Security Version)
-    - `/dev/urandom` (Random Data Generators-The Faster Version)
-    - `/dev/stdin` (Where the program reads its input, usually the keyboard)
-    - `/dev/stdout` (Where the program sends its normal, data usually the terminal)
-    - `/dev/stderr` (Where the program sends error messages)
-- `/etc`: Host-specific system configuration. Essential config files for the system, boot time loading scripts, crontab, fstab device storage tables, passwd user accounts file.
-  - These are typically plain text files that can be edited to change system behavior.
-  - `/etc/shells`: the list of approved paths for shells on your system
-  - `/etc/passwd`: Contains basic user account information
-  - `/etc/shadow`: Stores encrypted user passwords and password aging information
-  - `/etc/group`: Contains information about the groups, and their members
-  - `/etc/sudoers`: Allow access for specific users or groups
-- `/home`: user Home directory. The place where the user’s files are stored.
-  - Structure: Each user has their own subfolder (e.g., /home/username).
-  - Permissions: For security, users typically cannot access each other's home folders.
-  - Content: Contains personal documents, downloads, and user-specific configuration files.
-- `/lib`: Essential shared libraries and kernel modules. Shared libraries are similar to Dynamic Link Library (DLL) files in Windows.
-  - Contains library files that supports the binaries located under `/bin` and `/sbin`
-  - Depending on the system, we might also have additional lib folders for additional architectures. Example Example: `/lib32`, `/lib64`
-  - Similar to `/bin`, these are increasingly becoming symbolic links to `/usr/lib` in modern distributions.
-- `/media`: Mount point for removable media. For external devices and USB external media.
-- `/mnt`: Mount point for mounting a filesystem temporarily. Used for legacy systems.
-- `/opt`: Add-on application software packages. The place where optional software is installed.
-- `/proc`: Virtual filesystem managed by the kernel. a special directory structure that contains files essential for the system.
-  - `/proc/cpuinfo`
-  - `/proc/meminfo`
-  - `/proc/version` (Displays the Linux kernel version)
-  - `/proc/uptime`
-  - `/proc/loadavg`
-- `/run`: Run-time data
-  - Files here will be removed / emptied during boot, or will be discarded on shutdown
-- `/sbin`: Essential system binaries. Vital programs for the system’s operation.
-- `/srv`: Data for services provided by this system.
-- `/sys`: Information about devices, drivers and kernel features
-- `/tmp`: Temporary files.
-  - Contains temporary files created by system and users
-  - These files are typically deleted on reboot
-  - To prevent apps from snooping on each other, modern Linux uses "private" temporary folders (often via systemd). While an app thinks it’s writing to `/tmp`, it is actually writing to a isolated sub-folde
-- `/usr`: Despite the name, it doesn’t hold "user files" (those are in /home). Instead, it holds shareable, read-only system resources. In theory, if you lost this folder, your personal data would be safe, but the OS wouldn't function until you reinstalled the software packages.
-- `/usr/bin` – system-executable files
-- `/usr/lib` – shared libraries from `/usr/bin`
-- `/usr/local` – source compiled programs not included in the distribution
-- `/usr/sbin` – specific system administration programs
-- `/usr/share` – data shared by the programs in /usr/bin such as config files, icons, wallpapers or sound files
-- `/usr/share/doc` – documentation for the system-wide files
-- `/var`: Variable data. Only data that is modifiable by the user is stored here, such as databases, printing spool files, user mail, and others. Backup Priority: This is arguably the most important folder to back up because it contains your unique data (databases, emails, web content).
-  - `/var/log` – contains log files that register system activity
-  - `/var/www` - Website files (for servers like Apache or Nginx).
-  - `/var/lib` - Databases (like MySQL or PostgreSQL).
-
-## Important Facts About Filenames
-
-- On Linux systems, files are named in a manner similar to that of other systems such as Windows, but there are some important differences.
-- Filenames that begin with a period character are hidden (Example `.index.html`). This only means that ls will not list them unless you say `ls -a`. When your account was created, several hidden files were placed in your home directory to configure things for your account. In Chapter 11 we will take a closer look at some of these files to see how you can customize your environment. In addition, some applications place their configuration and settings files in your home directory as hidden files.
-- Filenames and commands in Linux, like Unix, are case sensitive. The filenames `File1` and `file1` refer to different files.
-- Though Linux supports long filenames that may contain embedded spaces and punctuation characters, limit the punctuation characters in the names of files you create to period, dash, and underscore. Most important, do not
-  embed spaces in filenames. If you want to represent spaces between words in a filename, use underscore characters. You will thank yourself later.
-- Linux has no concept of a “file extension” like some other operating systems. You may name files any way you like. The contents or purpose of a file is determined by other means. Although Unix-like operating systems don’t use file extensions to determine the contents/purpose of files, many application programs do.
 
 ## Exploring the Linux filesystem from the command line
 
@@ -3141,7 +3134,8 @@ pwd
 ## The `ls` Command
 
 - The `ls` command shows the contents of your current working directory.
-  - Context: By default, it operates on your Present Working Directory (PWD), but it can be pointed at any path.
+- Context: By default, it operates on your Present Working Directory (PWD), but it can be pointed at any path.
+- Syntax: `ls [option] [file path]`
 
 - Command Options (Flags)
 
