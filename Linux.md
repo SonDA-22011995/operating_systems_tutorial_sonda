@@ -9,13 +9,13 @@
   - [What is a File?](#what-is-a-file)
   - [Naming Files](#naming-files)
   - [File system hierachy](#file-system-hierachy)
+  - [Understanding file paths](#understanding-file-paths)
+    - [Absolute Paths](#absolute-paths)
+    - [Relative Paths](#relative-paths)
   - [Understanding the File Commands](#understanding-the-file-commands)
   - [How Data is Stored: The Inode System](#how-data-is-stored-the-inode-system)
   - [The Unix Philosophy: "Everything is a File"](#the-unix-philosophy-everything-is-a-file)
     - [Identifying File Types in the Terminal](#identifying-file-types-in-the-terminal)
-  - [Understanding file paths](#understanding-file-paths)
-    - [Absolute Paths](#absolute-paths)
-    - [Relative Paths](#relative-paths)
   - [Symbolic Links](#symbolic-links)
     - [Working with Symlinks via CLI](#working-with-symlinks-via-cli)
     - [Why use Symbolic Links:](#why-use-symbolic-links)
@@ -410,6 +410,40 @@
   - `/var/www` - Website files (for servers like Apache or Nginx).
   - `/var/lib` - Databases (like MySQL or PostgreSQL).
 
+
+
+## Understanding file paths
+
+### Absolute Paths
+
+- Absolute paths define the complete address of a file or folder starting from the root of the system.
+  - **Starting Point**: They always start with a forward slash (/), representing the root directory.
+
+  - **Consistency**: They work from anywhere in the system, regardless of your current working directory.
+
+  - **Special Shortcut**: The tilde (`~`) is also treated as an absolute path because the shell (Bash) automatically expands it to the full path of your home directory (e.g., /home/username) before running the command.
+
+Examples:
+
+- `/home/giannis/Desktop`
+- `~/Desktop`
+- `/etc/network`
+
+### Relative Paths
+
+- Relative paths define a location relative to your Current Working Directory (PWD).
+  - Starting Point: They do not start with a slash. They start with a folder name or a special dot notation.
+
+  - Dependency: Their success depends entirely on where you are currently "standing" in the terminal.
+
+- Common Notations:
+  - `Desktop/` or `./Desktop/`: Look for a folder named "Desktop" inside the current folder.
+
+  - `../`: Move one level up to the parent directory.
+
+  - `../Documents`: Move one level up, then look for a folder named "Documents".
+
+
 ## Understanding the File Commands
 
 - More detail in [Basic file operations](#basic-file-operations)
@@ -451,37 +485,6 @@
 - Hidden Files: Any file or folder starting with a dot (e.g., `.bashrc`) is hidden by default. To view them, use the `ls -la` command.
 
 ![Identifying File Types](static/images/image_0005.png)
-
-## Understanding file paths
-
-### Absolute Paths
-
-- Absolute paths define the complete address of a file or folder starting from the root of the system.
-  - **Starting Point**: They always start with a forward slash (/), representing the root directory.
-
-  - **Consistency**: They work from anywhere in the system, regardless of your current working directory.
-
-  - **Special Shortcut**: The tilde (`~`) is also treated as an absolute path because the shell (Bash) automatically expands it to the full path of your home directory (e.g., /home/username) before running the command.
-
-Examples:
-
-- `/home/giannis/Desktop`
-- `~/Desktop`
-- `/etc/network`
-
-### Relative Paths
-
-- Relative paths define a location relative to your Current Working Directory (PWD).
-  - Starting Point: They do not start with a slash. They start with a folder name or a special dot notation.
-
-  - Dependency: Their success depends entirely on where you are currently "standing" in the terminal.
-
-- Common Notations:
-  - `Desktop/` or `./Desktop/`: Look for a folder named "Desktop" inside the current folder.
-
-  - `../`: Move one level up to the parent directory.
-
-  - `../Documents`: Move one level up, then look for a folder named "Documents".
 
 ## Symbolic Links
 
