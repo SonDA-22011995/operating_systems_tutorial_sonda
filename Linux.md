@@ -3199,6 +3199,14 @@ ls -l --time-style=full-iso
 # -rw-rw-r-- 1 sonda sonda 0 2026-05-03 17:35:30.000000000 +0700 sonda.txt
 ```
 
+- Display file type: `/` Directory, `*` Executable, `|` Named pipe, `=` Socket, `@` Symbolic link
+```bash
+ls -F /etc/
+```
+
+![Display file type](static/images/image_0037.png)
+
+
 - Linux `ls -l` Output Breakdown
 
 | Component                   | Example        | Description                                                                                                                                                                                                |
