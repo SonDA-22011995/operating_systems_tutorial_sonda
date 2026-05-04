@@ -248,8 +248,8 @@
     - [Create files - The `touch` command](#create-files---the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
     - [Moving files - The `mv` Command](#moving-files---the-mv-command)
-    - [Copying files - The `cp` Command](#copying-files---the-cp-command)
-    - [The `rm` Command](#the-rm-command)
+    - [Copying and moving files - The `cp` Command](#copying-and-moving-files---the-cp-command)
+    - [Deleting files - The `rm` Command](#deleting-files---the-rm-command)
     - [The `rmdir` Command](#the-rmdir-command)
     - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
       - [The `cat` Command](#the-cat-command)
@@ -3304,7 +3304,7 @@ mv maximilian.txt ready/max.txt
 
 - Pro Tip: Instead of using `cd` to check if a move worked, use `ls [folder_name]` to peek into a directory without leaving your current one.
 
-### Copying files - The `cp` Command
+### Copying and moving files - The `cp` Command
 
 - The cp command creates duplicates of files or directories.
 
@@ -3345,7 +3345,7 @@ all the attributes and links
 | Cross-Platform Scripts | cp -R              | More reliable for scripts that need to run on different Unix-like systems (Solaris, BSD, Linux) due to POSIX standards. |
 | Copying Symlink        | cp -a              | Prevents the command from following links and copying the actual large data; it just copies the "shortcut" itself. |
 
-### The `rm` Command
+### Deleting files - The `rm` Command
 
 - The `rm` command is the standard way to delete files, but it comes with a major warning.
 
