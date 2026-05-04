@@ -243,7 +243,7 @@
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
   - [Basic file operations](#basic-file-operations)
-    - [The `ls` Command](#the-ls-command)
+    - [Listing files - The `ls` Command](#listing-files---the-ls-command)
     - [The `stat` command](#the-stat-command)
     - [Create files - The `touch` command](#create-files---the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
@@ -3152,7 +3152,7 @@ pwd
 
 ## Basic file operations
 
-### The `ls` Command
+### Listing files - The `ls` Command
 
 - The `ls` command shows the contents of your current working directory.
 - Context: By default, it operates on your Present Working Directory (PWD), but it can be pointed at any path.
