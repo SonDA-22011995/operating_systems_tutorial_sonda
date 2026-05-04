@@ -3273,7 +3273,7 @@ mkdir ready
 
 - If you want to create more directories and sub-directories at once, you will need to use the `-p` option (p from the parent)
 ```bash
-mkdir -p 
+mkdir -p sonda/reports/months
 ```
 
 ![create more directories and sub-directories at once](static/images/image_0038.png)
