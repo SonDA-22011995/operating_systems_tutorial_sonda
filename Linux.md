@@ -3193,6 +3193,7 @@ ls -la
 # -rw-r--r--  1 user user   220 Mar 10 09:00 .bashrc
 ```
 
+- Display full time (ISO format)
 ```bash
 ls -l --time-style=full-iso
 # -rw-rw-r-- 1 sonda sonda 0 2026-05-03 17:35:30.000000000 +0700 sonda.txt
