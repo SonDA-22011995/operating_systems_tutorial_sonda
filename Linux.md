@@ -247,8 +247,8 @@
     - [The `stat` command](#the-stat-command)
     - [Create files - The `touch` command](#create-files---the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
-    - [The `mv` Command](#the-mv-command)
-    - [The `cp` Command](#the-cp-command)
+    - [Moving files - The `mv` Command](#moving-files---the-mv-command)
+    - [Copying files - The `cp` Command](#copying-files---the-cp-command)
     - [The `rm` Command](#the-rm-command)
     - [The `rmdir` Command](#the-rmdir-command)
     - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
@@ -3266,7 +3266,7 @@ mkdir ready
 - Distinguishing Files vs. Folders: `*` In a standard terminal, they might look identical in plain text.
   - Colors: You can use `ls --color` to visually differentiate them (folders are typically blue, while files are white/grey). Most modern terminals support this by default.
 
-### The `mv` Command
+### Moving files - The `mv` Command
 
 - The `mv` command is versatile because it handles both moving and renaming in a single utility.
 
@@ -3296,7 +3296,7 @@ mv maximilian.txt ready/max.txt
 
 - Pro Tip: Instead of using `cd` to check if a move worked, use `ls [folder_name]` to peek into a directory without leaving your current one.
 
-### The `cp` Command
+### Copying files - The `cp` Command
 
 - The cp command creates duplicates of files or directories.
 
