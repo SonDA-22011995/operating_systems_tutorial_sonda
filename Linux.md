@@ -237,6 +237,8 @@
 - [Bash Shell](#bash-shell)
   - [Shell autocompletion](#shell-autocompletion)
   - [How to execute several commands](#how-to-execute-several-commands)
+  - [Ending a Terminal Session](#ending-a-terminal-session)
+  - [Searching History](#searching-history)
   - [The `echo` command](#the-echo-command)
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
@@ -409,8 +411,6 @@
   - `/var/log` – contains log files that register system activity
   - `/var/www` - Website files (for servers like Apache or Nginx).
   - `/var/lib` - Databases (like MySQL or PostgreSQL).
-
-
 
 ## Understanding file paths
 
@@ -3053,6 +3053,24 @@ echo "test" > >(cat)
 - Trailing Semicolon: You can put a semicolon at the very end of the line, but it is optional and usually omitted.
 
 -Example: `echo -n "Hello " ; echo "World"`
+
+## Ending a Terminal Session
+
+- We can end a terminal session by closing the terminal emulator window, by entering the `exit` command at the shell prompt, or by pressing **ctrl-D**
+
+```bash
+exit
+```
+
+## Searching History
+
+- At any time, we can view the contents of the command history list by doing the following:
+
+```bash
+history | less
+```
+
+- By default, bash stores the last 500 commands we have entered, though most modern distributions set this value to 1,000.
 
 ## The `echo` command
 
