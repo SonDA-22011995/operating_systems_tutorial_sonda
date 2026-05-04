@@ -3173,6 +3173,8 @@ pwd
 | **`ls -h`**            | the -h option shows the size of the file in a human-readable format, with the size in kilobytes or megabytes rather than bytes.|
 | **`ls -R`**            |The -R option shows the contents of the current or specified directory in recursive mode.|
 | **`ls –S`**            |The -S option sorts the files by their size, with the largest file first.|
+| **`ls --time-style=TIME_STYLE`**|The TIME_STYLE argument can be full-iso, long-iso, iso, locale|
+`
 
 - Directory Arguments
   - You can provide a specific path as an argument to see what is inside a different folder without leaving your current location.
@@ -3190,6 +3192,11 @@ ls -la
 
 # drwxr-xr-x  2 user user  4096 Mar 10 10:00 Desktop
 # -rw-r--r--  1 user user   220 Mar 10 09:00 .bashrc
+```
+
+```bash
+ls -l --time-style=full-iso
+# -rw-rw-r-- 1 sonda sonda 0 2026-05-03 17:35:30.000000000 +0700 sonda.txt
 ```
 
 - Linux `ls -l` Output Breakdown
@@ -3227,6 +3234,21 @@ touch file1 file2
   - If the file does not exist, touch creates it.
 
   - If the file already exists, touch updates its "last modified" timestamp to the current time without changing the file's content.
+
+- Change Only the Access Time The `-a` or `--time=atime` option causes touch to change the access time alone, not the modifi cation time.
+- Change Only the Modification Time The `-m` or `--time=mtime` option causes touch to change the modifi cation time alone, not the access time.
+- Do Not Create File If you don’t want touch to create any files that don’t already exist, pass it the `-c` or `--no-create` option.
+- Set the Time as Specified The `-t timestamp` option sets the time to the value specified by timestamp. This value is given in the form `-t [[CC]YY]MMDDhhmm[.ss]`
+  - MM is the month
+  - DD is the day
+  - hh is the hour (on a 24-hour clock), 
+  - mm is the minute 
+  - [CC]YY is the year (such as 2012 or 12, which are equivalent)
+  - ss is the second
+
+```bash
+touch -t 202605031735.30 sonda.txt
+```
 
 ### The `mkdir` Command
 
