@@ -245,7 +245,7 @@
   - [Basic file operations](#basic-file-operations)
     - [The `ls` Command](#the-ls-command)
     - [The `stat` command](#the-stat-command)
-    - [The `touch` command](#the-touch-command)
+    - [Create files - The `touch` command](#create-files---the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
     - [The `mv` Command](#the-mv-command)
     - [The `cp` Command](#the-cp-command)
@@ -3207,7 +3207,7 @@ ls -la
 
 ![stat command](static/images/image_0019.png)
 
-### The `touch` command
+### Create files - The `touch` command
 
 - While commonly used to create new files, its primary technical purpose is different.
 
