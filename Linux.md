@@ -3164,12 +3164,15 @@ pwd
 | :--------------------- | :------------------------------------------------------------------ |
 | **`ls`**               | List files/folders in the current directory.                        |
 | **`ls -a`**            | List **all** files (including hidden files starting with `.`).      |
-| **`ls -t`**            | Sort contents by **time** (newest first).                           |
+| **`ls -t`**            | The -t option sorts files by their modification time,  showing the newest first|
 | **`ls -r`**            | **Reverse** the sorting order.                                      |
 | **`ls -rt`**           | Sort by time in reverse (useful to see newest files at the bottom). |
 | **`ls [path]`**        | List contents of a **specific folder** (e.g., `ls /etc`).           |
 | **`ls --color=never`** | Disable colorized output.                                           |
 | **`ls -l`**            | Display results in long format                                      |
+| **`ls -h`**            | the -h option shows the size of the file in a human-readable format, with the size in kilobytes or megabytes rather than bytes.|
+| **`ls -R`**            |The -R option shows the contents of the current or specified directory in recursive mode.|
+| **`ls –S`**            |The -S option sorts the files by their size, with the largest file first.|
 
 - Directory Arguments
   - You can provide a specific path as an argument to see what is inside a different folder without leaving your current location.
