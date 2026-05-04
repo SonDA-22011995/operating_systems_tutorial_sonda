@@ -250,7 +250,7 @@
     - [Moving files - The `mv` Command](#moving-files---the-mv-command)
     - [Copying and moving files - The `cp` Command](#copying-and-moving-files---the-cp-command)
     - [Deleting files - The `rm` Command](#deleting-files---the-rm-command)
-    - [The `rmdir` Command](#the-rmdir-command)
+    - [Deleting directories - The `rmdir` Command](#deleting-directories---the-rmdir-command)
     - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
       - [The `cat` Command](#the-cat-command)
       - [`head` and `tail` Commands](#head-and-tail-commands)
@@ -3384,7 +3384,7 @@ rm -i output.txt
 
 - `rm -f` : The `-f` option deletes the file by force, without any interaction from the user
 
-### The `rmdir` Command
+### Deleting directories - The `rmdir` Command
 
 - Because rm -r is so powerful and risky, rmdir serves as a "safety first" alternative.
 
