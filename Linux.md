@@ -243,8 +243,8 @@
   - [The `pwd` command](#the-pwd-command)
   - [The `cd` command](#the-cd-command)
   - [Basic file operations](#basic-file-operations)
-  - [The `ls` Command](#the-ls-command)
-  - [The `stat` command](#the-stat-command)
+    - [The `ls` Command](#the-ls-command)
+    - [The `stat` command](#the-stat-command)
     - [The `touch` command](#the-touch-command)
     - [The `mkdir` Command](#the-mkdir-command)
     - [The `mv` Command](#the-mv-command)
@@ -3152,7 +3152,7 @@ pwd
 
 ## Basic file operations
 
-## The `ls` Command
+### The `ls` Command
 
 - The `ls` command shows the contents of your current working directory.
 - Context: By default, it operates on your Present Working Directory (PWD), but it can be pointed at any path.
@@ -3201,7 +3201,7 @@ ls -la
 | **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
 | **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
 
-## The `stat` command
+### The `stat` command
 
 - The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
 
