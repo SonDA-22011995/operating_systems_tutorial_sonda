@@ -3235,8 +3235,8 @@ touch file1 file2
 
   - If the file already exists, touch updates its "last modified" timestamp to the current time without changing the file's content.
 
-- Change Only the Access Time The `-a` or `--time=atime` option causes touch to change the access time alone, not the modifi cation time.
-- Change Only the Modification Time The `-m` or `--time=mtime` option causes touch to change the modifi cation time alone, not the access time.
+- Change Only the Access Time The `-a` or `--time=atime` option causes touch to change the access time alone, not the modification time.
+- Change Only the Modification Time The `-m` or `--time=mtime` option causes touch to change the modification time alone, not the access time.
 - Do Not Create File If you don’t want touch to create any files that don’t already exist, pass it the `-c` or `--no-create` option.
 - Set the Time as Specified The `-t timestamp` option sets the time to the value specified by timestamp. This value is given in the form `-t [[CC]YY]MMDDhhmm[.ss]`
   - MM is the month
