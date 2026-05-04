@@ -246,7 +246,7 @@
     - [Listing files - The `ls` Command](#listing-files---the-ls-command)
     - [The `stat` command](#the-stat-command)
     - [Create files - The `touch` command](#create-files---the-touch-command)
-    - [The `mkdir` Command](#the-mkdir-command)
+    - [Creating directories - The `mkdir` Command](#creating-directories---the-mkdir-command)
     - [Moving files - The `mv` Command](#moving-files---the-mv-command)
     - [Copying and moving files - The `cp` Command](#copying-and-moving-files---the-cp-command)
     - [Deleting files - The `rm` Command](#deleting-files---the-rm-command)
@@ -3258,7 +3258,7 @@ touch file1 file2
 touch -t 202605031735.30 sonda.txt
 ```
 
-### The `mkdir` Command
+### Creating directories - The `mkdir` Command
 
 - This command stands for "make directory."
 
@@ -3270,6 +3270,13 @@ touch -t 202605031735.30 sonda.txt
 # creates a folder named "ready" in the current location.
 mkdir ready
 ```
+
+- If you want to create more directories and sub-directories at once, you will need to use the `-p` option (p from the parent)
+```bash
+mkdir -p 
+```
+
+![create more directories and sub-directories at once](static/images/image_0038.png)
 
 - Distinguishing Files vs. Folders: `*` In a standard terminal, they might look identical in plain text.
   - Colors: You can use `ls --color` to visually differentiate them (folders are typically blue, while files are white/grey). Most modern terminals support this by default.
