@@ -3054,6 +3054,14 @@ echo "test" > >(cat)
 
 -Example: `echo -n "Hello " ; echo "World"`
 
+| Escape Sequence | Meaning                                                                 |
+|----------------|-------------------------------------------------------------------------|
+| `\a`           | Bell (an alert that causes the computer to beep)                        |
+| `\b`           | Backspace                                                               |
+| `\n`           | Newline; on Unix-like systems, this produces a line feed                |
+| `\r`           | Carriage return                                                         |
+| `\t`           | Tab                                                                     |
+
 ## Ending a Terminal Session
 
 - We can end a terminal session by closing the terminal emulator window, by entering the `exit` command at the shell prompt, or by pressing **ctrl-D**
