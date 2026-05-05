@@ -244,7 +244,6 @@
   - [The `cd` command](#the-cd-command)
   - [Basic file operations](#basic-file-operations)
     - [Listing files - The `ls` Command](#listing-files---the-ls-command)
-    - [The `stat` command](#the-stat-command)
     - [Create files - The `touch` command](#create-files---the-touch-command)
     - [Creating directories - The `mkdir` Command](#creating-directories---the-mkdir-command)
     - [Moving files - The `mv` Command](#moving-files---the-mv-command)
@@ -257,6 +256,8 @@
       - [The `less` command](#the-less-command)
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
+    - [Commands for file properties](#commands-for-file-properties)
+    - [The `stat` command](#the-stat-command)
     - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
@@ -3229,12 +3230,6 @@ ls -F /etc/
 | **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
 | **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
 
-### The `stat` command
-
-- The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
-
-![stat command](static/images/image_0019.png)
-
 ### Create files - The `touch` command
 
 - While commonly used to create new files, its primary technical purpose is different.
@@ -3464,6 +3459,14 @@ rm -i output.txt
   - `du filename.txt` shows the size of a specific file.
   - `-s`: Provides a total summary of a directory rather than listing every subfolder.
   - To avoid confusion over block sizes, use the `-h` flag. This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
+
+### Commands for file properties
+
+### The `stat` command
+
+- The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
+
+![stat command](static/images/image_0019.png)
 
 ### How to edit files
 
