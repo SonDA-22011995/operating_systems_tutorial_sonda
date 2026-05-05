@@ -3183,6 +3183,7 @@ pwd
 | **`ls -R`**            |The -R option shows the contents of the current or specified directory in recursive mode.|
 | **`ls –S`**            |The -S option sorts the files by their size, with the largest file first.|
 | **`ls --time-style=TIME_STYLE`**|The TIME_STYLE argument can be full-iso, long-iso, iso, locale|
+| **`ls -F`**            |Display file type|
 
 - Directory Arguments
   - You can provide a specific path as an argument to see what is inside a different folder without leaving your current location.
