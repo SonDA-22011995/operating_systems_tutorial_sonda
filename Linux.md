@@ -262,7 +262,8 @@
     - [The `which` command](#the-which-command)
     - [The `find` Command](#the-find-command)
       - [Find file types](#find-file-types)
-      - [Search by file size and filename](#search-by-file-size-and-filename)
+      - [Search by filename](#search-by-filename)
+      - [Find Size Units](#find-size-units)
       - [Find Tests](#find-tests)
       - [Predefined Actions](#predefined-actions)
       - [Operators](#operators)
@@ -3496,6 +3497,8 @@ which cd
 
 #### Find file types
 
+- Syntax: `find filepath  -type file_type_option`
+
 | File Type | Description                   | Example Command     |
 | --------- | ----------------------------- | ------------------- |
 | b         | Block special device file     | `find /dev -type b` |
@@ -3504,18 +3507,64 @@ which cd
 | f         | Regular file                  | `find . -type f`    |
 | l         | Symbolic link                 | `find . -type l`    |
 
-#### Search by file size and filename
+```bash
+find ./Desktop/CompanyShare/ -type d
+
+# ./Desktop/CompanyShare/
+# ./Desktop/CompanyShare/Purchasing
+# ./Desktop/CompanyShare/Purchasing/01 - January
+# ./Desktop/CompanyShare/Purchasing/03 - March
+# ./Desktop/CompanyShare/Purchasing/02 - February
+# ./Desktop/CompanyShare/Sales
+# ./Desktop/CompanyShare/Sales/01 - January
+# ./Desktop/CompanyShare/Sales/03 - March
+# ./Desktop/CompanyShare/Sales/02 - February
+# ./Desktop/CompanyShare/sonda
+# ./Desktop/CompanyShare/sonda/reports
+# ./Desktop/CompanyShare/sonda/reports/months
+```
+
+#### Search by filename
 
 ```bash
 find ~ -type f -name "*.JPG" -size +1M
 ```
 
 - In this example
-  - We add the `-name` test followed by the wildcard pattern
+  - We add the `-name` test followed by the wildcard pattern - For morde detail: [Wildcards (File name expansion - Globbing)](#wildcards-file-name-expansion---globbing)
   - Notice how we enclose it in quotes to prevent pathname expansion by the shell
   - We add the `-size` test followed by the string `+1M`. The leading plus `+` sign indicates that we are looking for files larger than the specified number. A leading minus `-` sign would change the meaning of the string to be smaller than the specified number. Using no sign means **“match the value exactly”**. The trailing letter `M` indicates that the unit of measurement is megabytes
 
-- Find Size Units
+- Find, inside the root directory, all the files that have the e100 string in the name and print them to the standard output:
+
+```bash
+sudo find / -name e100 -print
+```
+
+- Find, inside the root directory, all the files that have the file string in their name and are of type file, and print the results to the standard output:
+
+```bash
+sudo find / -name file -type f -print
+```
+- Find all the files that have the print string in their name, by looking only inside the `/opt`, `/usr`, and `/var` directories:
+
+```bash
+sudo find /opt /usr /var -name print -type f -print
+```
+
+- Find all the files in the root directory that have the .conf extension: 
+
+```bash
+sudo find / type f -name "*.conf"
+```
+
+- Find all the files in the root directory that have the file string in their name and no extension:
+
+```bash
+sudo find / -type f -name "file*.*"
+```
+
+#### Find Size Units
 
   | Character | Unit                                       | Example             |
   | --------- | ------------------------------------------ | ------------------- |
