@@ -257,7 +257,7 @@
       - [The `less` command](#the-less-command)
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
-      - [How to edit files](#how-to-edit-files)
+    - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
     - [The `grep` Command](#the-grep-command)
@@ -3455,7 +3455,7 @@ rm -i output.txt
   - `-s`: Provides a total summary of a directory rather than listing every subfolder.
   - To avoid confusion over block sizes, use the `-h` flag. This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
 
-#### How to edit files
+### How to edit files
 
 - There's no build-in text editor for bash
 - We have to install additional software for that
