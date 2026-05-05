@@ -3229,6 +3229,7 @@ ls -F /etc/
 | **Size**                    | `4096`         | The file size in bytes. (Tip: Use `ls -lh` to see this in "human-readable" format like KB or MB).                                                                                                          |
 | **Timestamp**               | `Mar 10 10:00` | The date and time the file was last modified.                                                                                                                                                              |
 | **Name**                    | `Desktop`      | The actual name of the file or directory.                                                                                                                                                                  |
+- Pro Tip: Instead of using `cd` to check if a move worked, use `ls [folder_name]` to peek into a directory without leaving your current one.
 
 ### Create files - The `touch` command
 
@@ -3313,8 +3314,6 @@ Example:
 ```bash
 mv maximilian.txt ready/max.txt
 ```
-
-- Pro Tip: Instead of using `cd` to check if a move worked, use `ls [folder_name]` to peek into a directory without leaving your current one.
 
 ### Copying and moving files - The `cp` Command
 
