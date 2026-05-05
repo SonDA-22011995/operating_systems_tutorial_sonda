@@ -257,7 +257,7 @@
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
     - [Commands for file properties](#commands-for-file-properties)
-    - [The `stat` command](#the-stat-command)
+      - [The `stat` command](#the-stat-command)
     - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
@@ -3462,7 +3462,7 @@ rm -i output.txt
 
 ### Commands for file properties
 
-### The `stat` command
+#### The `stat` command
 
 - The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
 
