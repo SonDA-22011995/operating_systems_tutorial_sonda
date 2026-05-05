@@ -256,8 +256,16 @@
       - [The `less` command](#the-less-command)
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
       - [Disk Usage (`du` command)](#disk-usage-du-command)
-    - [Commands for file properties](#commands-for-file-properties)
-      - [The `stat` command](#the-stat-command)
+  - [Commands for file properties](#commands-for-file-properties)
+    - [The `stat` command](#the-stat-command)
+  - [Commands for locating files](#commands-for-locating-files)
+    - [The `which` command](#the-which-command)
+    - [The `find` Command](#the-find-command)
+      - [Find file types](#find-file-types)
+      - [Search by file size and filename](#search-by-file-size-and-filename)
+      - [Find Tests](#find-tests)
+      - [Predefined Actions](#predefined-actions)
+      - [Operators](#operators)
     - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
@@ -276,12 +284,6 @@
       - [Cutting by Fields (-f)](#cutting-by-fields--f)
     - [The `sed` command](#the-sed-command)
       - [s (substitute) command.](#s-substitute-command)
-  - [The `find` Command](#the-find-command)
-      - [Find file types](#find-file-types)
-      - [Search by file size and filename](#search-by-file-size-and-filename)
-      - [Find Tests](#find-tests)
-      - [Predefined Actions](#predefined-actions)
-      - [Operators](#operators)
 
 
 # Introducing the Linux operating system
@@ -3459,13 +3461,148 @@ rm -i output.txt
   - `-s`: Provides a total summary of a directory rather than listing every subfolder.
   - To avoid confusion over block sizes, use the `-h` flag. This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
 
-### Commands for file properties
+## Commands for file properties
 
-#### The `stat` command
+### The `stat` command
 
 - The stat command gives you more information about the name, size, number of blocks, type of file, inode, number of links, permissions, UID and GID, and atime, mtime, and ctime
 
 ![stat command](static/images/image_0019.png)
+
+## Commands for locating files
+
+### The `which` command
+
+- This command locates an executable file (program or command) in the shell’s search path
+
+```bash
+which python3
+# /usr/bin/python3
+```
+
+- `which` works only for executable programs, not builtins or aliases that are substitutes for actual executable programs. When we try to use which on a shell builtin—for example, cd—we either get no response or get an error message
+
+```bash
+which cd
+# no response
+```
+
+### The `find` Command
+
+- The `find` program searches **a given directory (and its subdirectories)** for files based on a variety of attributes
+- Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
+- The basic syntax requires the command followed by the starting path: `find [path]`
+  - Performance Note: Searching large directories (like the root directory) can take a long time. You can terminate a hanging or long-running process by pressing **Ctrl + C**.
+
+#### Find file types
+
+| File Type | Description                   | Example Command     |
+| --------- | ----------------------------- | ------------------- |
+| b         | Block special device file     | `find /dev -type b` |
+| c         | Character special device file | `find /dev -type c` |
+| d         | Directory                     | `find . -type d`    |
+| f         | Regular file                  | `find . -type f`    |
+| l         | Symbolic link                 | `find . -type l`    |
+
+#### Search by file size and filename
+
+```bash
+find ~ -type f -name "*.JPG" -size +1M
+```
+
+- In this example
+  - We add the `-name` test followed by the wildcard pattern
+  - Notice how we enclose it in quotes to prevent pathname expansion by the shell
+  - We add the `-size` test followed by the string `+1M`. The leading plus `+` sign indicates that we are looking for files larger than the specified number. A leading minus `-` sign would change the meaning of the string to be smaller than the specified number. Using no sign means **“match the value exactly”**. The trailing letter `M` indicates that the unit of measurement is megabytes
+
+- Find Size Units
+
+  | Character | Unit                                       | Example             |
+  | --------- | ------------------------------------------ | ------------------- |
+  | b         | 512-byte blocks (default if no unit given) | `find . -size 10b`  |
+  | c         | Bytes                                      | `find . -size 100c` |
+  | w         | 2-byte words                               | `find . -size 50w`  |
+  | k         | Kilobytes (1,024 bytes)                    | `find . -size 10k`  |
+  | M         | Megabytes (1,048,576 bytes)                | `find . -size 5M`   |
+  | G         | Gigabytes (1,073,741,824 bytes)            | `find . -size 1G`   |
+
+#### Find Tests
+
+- Note that in cases where a numeric argument is required, the same `+` and `-` notation discussed previously can be applied
+
+| Test           | Description                                                                                                                                                         | Example Command                |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| -cmin n        | Match files or directories whose content or attributes were last modified exactly n minutes ago. Use `-n` for less than n minutes and `+n` for more than n minutes. | `find . -cmin -10`             |
+| -cnewer file   | Match files or directories whose contents or attributes were modified more recently than the specified file.                                                        | `find . -cnewer reference.txt` |
+| -ctime n       | Match files or directories whose contents or attributes were last modified `n*24` hours ago.                                                                        | `find . -ctime 2`              |
+| -empty         | Match empty files and directories.                                                                                                                                  | `find . -empty`                |
+| -group name    | Match files or directories belonging to group `name` (group name or numeric GID).                                                                                   | `find . -group developers`     |
+| -iname pattern | Same as `-name` but case-insensitive.                                                                                                                               | `find . -iname "*.txt"`        |
+| -inum n        | Match files with inode number `n`. Useful for finding hard links.                                                                                                   | `find / -inum 12345`           |
+| -mmin n        | Match files or directories whose contents were last modified `n` minutes ago.                                                                                       | `find . -mmin -30`             |
+| -mtime n       | Match files or directories whose contents were last modified `n*24` hours ago.                                                                                      | `find . -mtime -1`             |
+| -name pattern  | Match files and directories with the specified wildcard pattern.                                                                                                    | `find . -name "*.log"`         |
+| -newer file    | Match files and directories modified more recently than the specified file.                                                                                         | `find . -newer backup.log`     |
+| -nouser        | Match files and directories that do not belong to a valid user.                                                                                                     | `find / -nouser`               |
+| -nogroup       | Match files and directories that do not belong to a valid group.                                                                                                    | `find / -nogroup`              |
+| -perm mode     | Match files or directories whose permissions match the specified mode (octal or symbolic).                                                                          | `find . -perm 644`             |
+| -samefile name | Match files that share the same inode number as `name`.                                                                                                             | `find . -samefile file.txt`    |
+| -size n        | Match files of size `n`.                                                                                                                                            | `find . -size 100M`            |
+| -type c        | Match files of type `c`.                                                                                                                                            | `find . -type f`               |
+| -user name     | Match files or directories belonging to `user`.                                                                                                                     | `find /home -user john`        |
+
+#### Predefined Actions
+
+- Having a list of results from our `find` command is useful, but what we really want to do is act on the items on the list. Fortunately, find allows actions to be performed based on the search results.
+
+| Action  | Description                                                                                                                   | Example Command                          |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| -delete | Delete the currently matching file.                                                                                           | `find . -name "*.tmp" -delete`           |
+| -ls     | Perform the equivalent of `ls -dils` on the matching file. Output is sent to standard output.                                 | `find . -type f -ls`                     |
+| -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
+| -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
+
+#### Operators
+
+- For example, what if we needed to determine whether all the files and subdirectories in a directoryhad secure permissions? We would look for all the files with permissions that are not 0600 and the directories with permissions that are not 0700. Fortunately, find provides a way to combine tests using logical operators to create more complex logical relationships. To express the aforementioned test, we could do this
+
+```bash
+find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
+```
+
+- Explain example above
+
+| Component         | Description                                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `find ~`          | Starts the search from the current user's Home directory.                                                                        |
+| `\( ... \)`       | Escaped parentheses used to group conditions together (similar to mathematical grouping) so that the logic is applied correctly. |
+| `-type f`         | Filters the search to include only regular files.                                                                                |
+| `-not -perm 0600` | Finds files that **do NOT** have `0600` permissions (Owner: Read/Write; Group/Others: None).                                     |
+| `-or`             | Logical OR operator: returns results if either the file condition group **OR** the directory condition group is met.             |
+| `-type d`         | Filters the search to include only directories.                                                                                  |
+| `-not -perm 0700` | Finds directories that **do NOT** have `0700` permissions (Owner: Full Access; Group/Others: None).                              |
+
+- Logical Operators
+
+| Operator | Description                                                                                                                                                                                                                                                                       |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-and`   | Match if the tests on both sides of the operator are true. When no operator is specified, `-and` is implied by default. This can be shortened to `-a `                                                                                                                            |
+| `-or`    | Match if a test on either side of the operator is true. This can be shortened to `-o`                                                                                                                                                                                             |
+| `-not`   | Match if the test following the operator is false. This can be abbreviated with an exclamation point `!`                                                                                                                                                                          |
+| `( )`    | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
+
+- Let’s say that we have two expressions separated by a logical operator.In all cases, expr1 will always be performed; however, the operator will determine whether expr2 is performed
+
+```bash
+expr1 -operator expr2
+```
+
+| Result of `expr1` | Operator | `expr2` is...    |
+| ----------------- | -------- | ---------------- |
+| True              | `-and`   | Always performed |
+| False             | `-and`   | Never performed  |
+| True              | `-or`    | Never performed  |
+| False             | `-or`    | Always performed |
 
 ### How to edit files
 
@@ -3778,119 +3915,4 @@ echo 'hello world' | sed 's/world/bash/g'
 # hello bash
 ```
 
-## The `find` Command
 
-- The `find` program searches **a given directory (and its subdirectories)** for files based on a variety of attributes
-- Unlike basic bash globbing (using wildcards like `*`), find allows for highly specific search queries based on file attributes
-- The basic syntax requires the command followed by the starting path: `find [path]`
-  - Performance Note: Searching large directories (like the root directory) can take a long time. You can terminate a hanging or long-running process by pressing **Ctrl + C**.
-
-#### Find file types
-
-| File Type | Description                   | Example Command     |
-| --------- | ----------------------------- | ------------------- |
-| b         | Block special device file     | `find /dev -type b` |
-| c         | Character special device file | `find /dev -type c` |
-| d         | Directory                     | `find . -type d`    |
-| f         | Regular file                  | `find . -type f`    |
-| l         | Symbolic link                 | `find . -type l`    |
-
-#### Search by file size and filename
-
-```bash
-find ~ -type f -name "*.JPG" -size +1M
-```
-
-- In this example
-  - We add the `-name` test followed by the wildcard pattern
-  - Notice how we enclose it in quotes to prevent pathname expansion by the shell
-  - We add the `-size` test followed by the string `+1M`. The leading plus `+` sign indicates that we are looking for files larger than the specified number. A leading minus `-` sign would change the meaning of the string to be smaller than the specified number. Using no sign means **“match the value exactly”**. The trailing letter `M` indicates that the unit of measurement is megabytes
-
-- Find Size Units
-
-  | Character | Unit                                       | Example             |
-  | --------- | ------------------------------------------ | ------------------- |
-  | b         | 512-byte blocks (default if no unit given) | `find . -size 10b`  |
-  | c         | Bytes                                      | `find . -size 100c` |
-  | w         | 2-byte words                               | `find . -size 50w`  |
-  | k         | Kilobytes (1,024 bytes)                    | `find . -size 10k`  |
-  | M         | Megabytes (1,048,576 bytes)                | `find . -size 5M`   |
-  | G         | Gigabytes (1,073,741,824 bytes)            | `find . -size 1G`   |
-
-#### Find Tests
-
-- Note that in cases where a numeric argument is required, the same `+` and `-` notation discussed previously can be applied
-
-| Test           | Description                                                                                                                                                         | Example Command                |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| -cmin n        | Match files or directories whose content or attributes were last modified exactly n minutes ago. Use `-n` for less than n minutes and `+n` for more than n minutes. | `find . -cmin -10`             |
-| -cnewer file   | Match files or directories whose contents or attributes were modified more recently than the specified file.                                                        | `find . -cnewer reference.txt` |
-| -ctime n       | Match files or directories whose contents or attributes were last modified `n*24` hours ago.                                                                        | `find . -ctime 2`              |
-| -empty         | Match empty files and directories.                                                                                                                                  | `find . -empty`                |
-| -group name    | Match files or directories belonging to group `name` (group name or numeric GID).                                                                                   | `find . -group developers`     |
-| -iname pattern | Same as `-name` but case-insensitive.                                                                                                                               | `find . -iname "*.txt"`        |
-| -inum n        | Match files with inode number `n`. Useful for finding hard links.                                                                                                   | `find / -inum 12345`           |
-| -mmin n        | Match files or directories whose contents were last modified `n` minutes ago.                                                                                       | `find . -mmin -30`             |
-| -mtime n       | Match files or directories whose contents were last modified `n*24` hours ago.                                                                                      | `find . -mtime -1`             |
-| -name pattern  | Match files and directories with the specified wildcard pattern.                                                                                                    | `find . -name "*.log"`         |
-| -newer file    | Match files and directories modified more recently than the specified file.                                                                                         | `find . -newer backup.log`     |
-| -nouser        | Match files and directories that do not belong to a valid user.                                                                                                     | `find / -nouser`               |
-| -nogroup       | Match files and directories that do not belong to a valid group.                                                                                                    | `find / -nogroup`              |
-| -perm mode     | Match files or directories whose permissions match the specified mode (octal or symbolic).                                                                          | `find . -perm 644`             |
-| -samefile name | Match files that share the same inode number as `name`.                                                                                                             | `find . -samefile file.txt`    |
-| -size n        | Match files of size `n`.                                                                                                                                            | `find . -size 100M`            |
-| -type c        | Match files of type `c`.                                                                                                                                            | `find . -type f`               |
-| -user name     | Match files or directories belonging to `user`.                                                                                                                     | `find /home -user john`        |
-
-#### Predefined Actions
-
-- Having a list of results from our `find` command is useful, but what we really want to do is act on the items on the list. Fortunately, find allows actions to be performed based on the search results.
-
-| Action  | Description                                                                                                                   | Example Command                          |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| -delete | Delete the currently matching file.                                                                                           | `find . -name "*.tmp" -delete`           |
-| -ls     | Perform the equivalent of `ls -dils` on the matching file. Output is sent to standard output.                                 | `find . -type f -ls`                     |
-| -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
-| -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
-
-#### Operators
-
-- For example, what if we needed to determine whether all the files and subdirectories in a directoryhad secure permissions? We would look for all the files with permissions that are not 0600 and the directories with permissions that are not 0700. Fortunately, find provides a way to combine tests using logical operators to create more complex logical relationships. To express the aforementioned test, we could do this
-
-```bash
-find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
-```
-
-- Explain example above
-
-| Component         | Description                                                                                                                      |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `find ~`          | Starts the search from the current user's Home directory.                                                                        |
-| `\( ... \)`       | Escaped parentheses used to group conditions together (similar to mathematical grouping) so that the logic is applied correctly. |
-| `-type f`         | Filters the search to include only regular files.                                                                                |
-| `-not -perm 0600` | Finds files that **do NOT** have `0600` permissions (Owner: Read/Write; Group/Others: None).                                     |
-| `-or`             | Logical OR operator: returns results if either the file condition group **OR** the directory condition group is met.             |
-| `-type d`         | Filters the search to include only directories.                                                                                  |
-| `-not -perm 0700` | Finds directories that **do NOT** have `0700` permissions (Owner: Full Access; Group/Others: None).                              |
-
-- Logical Operators
-
-| Operator | Description                                                                                                                                                                                                                                                                       |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-and`   | Match if the tests on both sides of the operator are true. When no operator is specified, `-and` is implied by default. This can be shortened to `-a `                                                                                                                            |
-| `-or`    | Match if a test on either side of the operator is true. This can be shortened to `-o`                                                                                                                                                                                             |
-| `-not`   | Match if the test following the operator is false. This can be abbreviated with an exclamation point `!`                                                                                                                                                                          |
-| `( )`    | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
-
-- Let’s say that we have two expressions separated by a logical operator.In all cases, expr1 will always be performed; however, the operator will determine whether expr2 is performed
-
-```bash
-expr1 -operator expr2
-```
-
-| Result of `expr1` | Operator | `expr2` is...    |
-| ----------------- | -------- | ---------------- |
-| True              | `-and`   | Always performed |
-| False             | `-and`   | Never performed  |
-| True              | `-or`    | Never performed  |
-| False             | `-or`    | Always performed |
