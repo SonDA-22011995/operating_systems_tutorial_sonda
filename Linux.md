@@ -246,7 +246,7 @@
     - [Listing files - The `ls` Command](#listing-files---the-ls-command)
     - [Create files - The `touch` command](#create-files---the-touch-command)
     - [Creating directories - The `mkdir` Command](#creating-directories---the-mkdir-command)
-    - [Moving files - The `mv` Command](#moving-files---the-mv-command)
+    - [Moving and renaming files - The `mv` Command](#moving-and-renaming-files---the-mv-command)
     - [Copying and moving files - The `cp` Command](#copying-and-moving-files---the-cp-command)
     - [Deleting files - The `rm` Command](#deleting-files---the-rm-command)
     - [Deleting directories - The `rmdir` Command](#deleting-directories---the-rmdir-command)
@@ -3286,7 +3286,7 @@ mkdir -p sonda/reports/months
 - Distinguishing Files vs. Folders: `*` In a standard terminal, they might look identical in plain text.
   - Colors: You can use `ls --color` to visually differentiate them (folders are typically blue, while files are white/grey). Most modern terminals support this by default.
 
-### Moving files - The `mv` Command
+### Moving and renaming files - The `mv` Command
 
 - The `mv` command is versatile because it handles both moving and renaming in a single utility.
 
