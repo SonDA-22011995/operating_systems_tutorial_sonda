@@ -3182,7 +3182,7 @@ pwd
 | **`ls -h`**            | the -h option shows the size of the file in a human-readable format, with the size in kilobytes or megabytes rather than bytes.|
 | **`ls -R`**            |The -R option shows the contents of the current or specified directory in recursive mode.|
 | **`ls –S`**            |The -S option sorts the files by their size, with the largest file first.|
-| **`ls --time-style=TIME_STYLE`**|The TIME_STYLE argument can be full-iso, long-iso, iso, locale|
+| **`ls -l --time-style=TIME_STYLE`**|The TIME_STYLE argument can be full-iso, long-iso, iso, locale|
 | **`ls -F`**            |Display file type|
 
 - Directory Arguments
