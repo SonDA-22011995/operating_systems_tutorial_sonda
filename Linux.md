@@ -264,8 +264,11 @@
     - [The `find` Command](#the-find-command)
       - [Operators](#operators)
       - [Predefined Actions](#predefined-actions)
+      - [User-Defined Actions](#user-defined-actions)
+      - [xargs](#xargs)
       - [Find file types](#find-file-types)
       - [Search by filename](#search-by-filename)
+      - [Find Permission Mode](#find-permission-mode)
       - [Find Size Units](#find-size-units)
       - [Find Tests](#find-tests)
     - [How to edit files](#how-to-edit-files)
@@ -3576,6 +3579,57 @@ find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
 | -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
 | -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
 
+#### User-Defined Actions
+
+- In addition to the predefined actions, we can also invoke arbitrary commands. The traditional way of doing this is with the `-exec` action
+- Syntax: `find filepath -exec command '{}' ';'` or `find filepath -exec command \{\} \;`
+  - `{}` is a symbolic representation of the current pathnames of the search results
+  - The semicolon is a required delimiter indicating the end of the command
+  - Again, because the brace and semicolon characters have special meaning to the shell, they must be quoted or escaped
+
+```bash
+find ~ -type f -name "123.*"
+# /home/sonda/Desktop/CompanyShare/123.txt
+
+find ~ -type f -name "123.*" -exec cp '{}' '{}'.copy ';'
+# or find ~ -type f -name "123.*" -exec cp \{\} \{\}.copy \;
+# {} is /home/sonda/Desktop/CompanyShare/123.txt
+```
+
+- Improving Efficiency: When the -exec action is used, it launches a new instance of the specified command each time a matching file is found. There are times when we might prefer to combine all of the search results and launch a single instance of the command. For example, rather than executing the commands like this:
+
+```bash
+ls -l file1
+ls -l file2
+```
+
+- We may prefer to execute them this way:
+
+```bash
+ls -l file1 file2
+```
+
+- This causes the command to be executed only one time rather than multiple times. There are two ways we can do this: the traditional way, using the external command `xargs`, and the alternate way, using a new feature in `find` itself. We’ll talk about the alternate way first
+- By changing the trailing semicolon character to a plus sign, we activate the capability of find to combine the results of the search into an argument list for a single execution of the desired command. Returning to our example, this will execute ls each time a matching file is found
+
+```bash
+find ~ -type f -name 'foo*' -exec ls -l '{}' ';'
+```
+
+- By changing the command to the following:
+```bash
+find ~ -type f -name 'foo*' -exec ls -l '{}' +
+```
+
+#### xargs
+
+- The xargs command performs an interesting function. It accepts input from standard input and converts it into an argument list for a specified command. With our example, we would use it like this:
+
+```bash
+find ~ -type f -name 'foo*' -print | xargs ls -l
+
+find ~ -type f -name 'foo*' -print | xargs cp -t /path/to/destination/
+```
 
 #### Find file types
 
@@ -3645,6 +3699,29 @@ sudo find / type f -name "*.conf"
 ```bash
 sudo find / -type f -name "file*.*"
 ```
+
+- Find, in the root directory, all the files with the following extensions: .c, .sh, and .py, and
+add the list to a file named findfile
+```bash
+sudo find / -type f \( -name "*.c" -o -name "*.sh" -o -name "*.py" \) > findfile
+```
+
+- Find, in the root directory, all the files with the .c extension, sort them, and add them to a file:
+```bash
+sudo find / -type f -name "*.c" -print | sort > findfile2
+```
+
+#### Find Permission Mode
+
+- `-perm mode`: File's permission bits are exactly mode (octal or symbolic).  Since an exact match is required, if you  want  to  use  this form  for  symbolic  modes,  you may have to specify a rather complex mode string.  
+  - For example -perm g=w will only match files which have mode 0020 (that is, ones for which group write permission is the only permission set).  
+  - It is more  likely that  you  will want to use the `/` or `-` forms, for example -perm -g=w, which matches any file with group write permission.
+- `-perm -mode`: All of the permission bits mode are set for the file.  Symbolic modes are accepted this form, and this  is  usually  the way  in  which  you would want to use them. 
+- `-perm /mode`: Any of the permission bits mode are set for the file. 
+- `-perm +mode`: Any of the specifi ed permission bits are set. This is no longer supported (and has been deprecated since 2005).  Use `-perm /mode` instead.
+
+
+
 
 #### Find Size Units
 
