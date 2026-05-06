@@ -1402,6 +1402,7 @@ sudo cat /etc/shadow
 - **Owner (u)**: The user who created or currently owns the file.
 - **Group (g)**: A defined set of users who share access to the file.
 - **Others (o)**: All other users on the system.
+- **All users(a)**: Owner + Group + Others
 
 
 ![Ownership Levels](static/images/image_0036.png)
@@ -1482,7 +1483,6 @@ sudo chmod 754 permissions.txt
 # Second Digit (5 = 4+0+1): Group has read and execute access (no write).
 # Third Digit (4 = 4+0+0): Others have read-only access.
 ```
-
 
 #### Changing Ownership `chown`
 
@@ -3714,14 +3714,25 @@ sudo find / -type f -name "*.c" -print | sort > findfile2
 #### Find Permission Mode
 
 - `-perm mode`: File's permission bits are exactly mode (octal or symbolic).  Since an exact match is required, if you  want  to  use  this form  for  symbolic  modes,  you may have to specify a rather complex mode string.  
+  - Octal mode: `0777`
+  - Symbolic mode: `o` other,`u` user,`g` group,`a` other + user + group
   - For example -perm g=w will only match files which have mode 0020 (that is, ones for which group write permission is the only permission set).  
   - It is more  likely that  you  will want to use the `/` or `-` forms, for example -perm -g=w, which matches any file with group write permission.
 - `-perm -mode`: All of the permission bits mode are set for the file.  Symbolic modes are accepted this form, and this  is  usually  the way  in  which  you would want to use them. 
 - `-perm /mode`: Any of the permission bits mode are set for the file. 
 - `-perm +mode`: Any of the specifi ed permission bits are set. This is no longer supported (and has been deprecated since 2005).  Use `-perm /mode` instead.
-
-
-
+- Find all the files in the root directory, with the permission set to 0664:
+```bash
+sudo find / -type f -perm 0664
+```
+- Find all the files in the root directory that are read-only (have read-only permission) for their owner:
+```bash
+sudo find / -type f -perm /u=r
+```
+- Find all the files in the root directory that are executable:
+```bash
+sudo find / -type f -perm /a=x
+```
 
 #### Find Size Units
 
