@@ -269,6 +269,8 @@
       - [Find file types](#find-file-types)
       - [Search by filename](#search-by-filename)
       - [Find Permission Mode](#find-permission-mode)
+      - [Search by Group](#search-by-group)
+      - [Search by User ID](#search-by-user-id)
       - [Find Size Units](#find-size-units)
       - [Find Tests](#find-tests)
     - [How to edit files](#how-to-edit-files)
@@ -3732,6 +3734,21 @@ sudo find / -type f -perm /u=r
 - Find all the files in the root directory that are executable:
 ```bash
 sudo find / -type f -perm /a=x
+```
+
+#### Search by Group 
+- The `-gid` GID expression searches for fi les whose group ID (GID) is set to GID. 
+- The `-group` name option locates fi les whose group name is name. The former can be handy if the GID has been orphaned and has no name, but the latter is generally easier
+to use.
+
+#### Search by User ID 
+
+- The -uid UID expression searches for fi les owned by the user whose user ID (UID) is UID. 
+- The -user name option searches for fi les owned by name. Searching
+by UID is useful if the UID has been orphaned and has no name, but searching by username is generally easier.
+
+```bash
+find ~/Desktop/ -group 'sonda'
 ```
 
 #### Find Size Units
