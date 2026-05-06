@@ -261,12 +261,12 @@
   - [Commands for locating files](#commands-for-locating-files)
     - [The `which` command](#the-which-command)
     - [The `find` Command](#the-find-command)
+      - [Operators](#operators)
       - [Find file types](#find-file-types)
       - [Search by filename](#search-by-filename)
       - [Find Size Units](#find-size-units)
       - [Find Tests](#find-tests)
       - [Predefined Actions](#predefined-actions)
-      - [Operators](#operators)
     - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
@@ -3495,6 +3495,50 @@ which cd
 - The basic syntax requires the command followed by the starting path: `find [path]`
   - Performance Note: Searching large directories (like the root directory) can take a long time. You can terminate a hanging or long-running process by pressing **Ctrl + C**.
 
+
+#### Operators
+
+- For example, what if we needed to determine whether all the files and subdirectories in a directoryhad secure permissions? We would look for all the files with permissions that are not 0600 and the directories with permissions that are not 0700. Fortunately, find provides a way to combine tests using logical operators to create more complex logical relationships. To express the aforementioned test, we could do this
+
+```bash
+find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
+```
+
+- Explain example above
+
+| Component         | Description                                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `find ~`          | Starts the search from the current user's Home directory.                                                                        |
+| `\( ... \)`       | Escaped parentheses used to group conditions together (similar to mathematical grouping) so that the logic is applied correctly. |
+| `-type f`         | Filters the search to include only regular files.                                                                                |
+| `-not -perm 0600` | Finds files that **do NOT** have `0600` permissions (Owner: Read/Write; Group/Others: None).                                     |
+| `-or`             | Logical OR operator: returns results if either the file condition group **OR** the directory condition group is met.             |
+| `-type d`         | Filters the search to include only directories.                                                                                  |
+| `-not -perm 0700` | Finds directories that **do NOT** have `0700` permissions (Owner: Full Access; Group/Others: None).                              |
+
+- Logical Operators
+
+| Operator | Description                                                                                                                                                                                                                                                                       |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-and`   | Match if the tests on both sides of the operator are true. When no operator is specified, `-and` is implied by default. This can be shortened to `-a `                                                                                                                            |
+| `-or`    | Match if a test on either side of the operator is true. This can be shortened to `-o`                                                                                                                                                                                             |
+| `-not`   | Match if the test following the operator is false. This can be abbreviated with an exclamation point `!`                                                                                                                                                                          |
+| `( )`    | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
+
+- Let’s say that we have two expressions separated by a logical operator.In all cases, expr1 will always be performed; however, the operator will determine whether expr2 is performed
+
+```bash
+expr1 -operator expr2
+```
+
+| Result of `expr1` | Operator | `expr2` is...    |
+| ----------------- | -------- | ---------------- |
+| True              | `-and`   | Always performed |
+| False             | `-and`   | Never performed  |
+| True              | `-or`    | Never performed  |
+| False             | `-or`    | Always performed |
+
+
 #### Find file types
 
 - Syntax: `find filepath  -type file_type_option`
@@ -3611,47 +3655,6 @@ sudo find / -type f -name "file*.*"
 | -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
 | -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
 
-#### Operators
-
-- For example, what if we needed to determine whether all the files and subdirectories in a directoryhad secure permissions? We would look for all the files with permissions that are not 0600 and the directories with permissions that are not 0700. Fortunately, find provides a way to combine tests using logical operators to create more complex logical relationships. To express the aforementioned test, we could do this
-
-```bash
-find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
-```
-
-- Explain example above
-
-| Component         | Description                                                                                                                      |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `find ~`          | Starts the search from the current user's Home directory.                                                                        |
-| `\( ... \)`       | Escaped parentheses used to group conditions together (similar to mathematical grouping) so that the logic is applied correctly. |
-| `-type f`         | Filters the search to include only regular files.                                                                                |
-| `-not -perm 0600` | Finds files that **do NOT** have `0600` permissions (Owner: Read/Write; Group/Others: None).                                     |
-| `-or`             | Logical OR operator: returns results if either the file condition group **OR** the directory condition group is met.             |
-| `-type d`         | Filters the search to include only directories.                                                                                  |
-| `-not -perm 0700` | Finds directories that **do NOT** have `0700` permissions (Owner: Full Access; Group/Others: None).                              |
-
-- Logical Operators
-
-| Operator | Description                                                                                                                                                                                                                                                                       |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-and`   | Match if the tests on both sides of the operator are true. When no operator is specified, `-and` is implied by default. This can be shortened to `-a `                                                                                                                            |
-| `-or`    | Match if a test on either side of the operator is true. This can be shortened to `-o`                                                                                                                                                                                             |
-| `-not`   | Match if the test following the operator is false. This can be abbreviated with an exclamation point `!`                                                                                                                                                                          |
-| `( )`    | Group tests and operators together to form larger expressions. This controls the precedence of logical evaluations. By default, `find` evaluates expressions from left to right. Parentheses often need to be escaped (`\(` `\)`) because they have special meaning to the shell. |
-
-- Let’s say that we have two expressions separated by a logical operator.In all cases, expr1 will always be performed; however, the operator will determine whether expr2 is performed
-
-```bash
-expr1 -operator expr2
-```
-
-| Result of `expr1` | Operator | `expr2` is...    |
-| ----------------- | -------- | ---------------- |
-| True              | `-and`   | Always performed |
-| False             | `-and`   | Never performed  |
-| True              | `-or`    | Never performed  |
-| False             | `-or`    | Always performed |
 
 ### How to edit files
 
