@@ -3557,6 +3557,13 @@ expr1 -operator expr2
 | True              | `-or`    | Never performed  |
 | False             | `-or`    | Always performed |
 
+- When no operator is specified, `-and` is implied by default
+```bash
+# -type f and -not -perms 0600 to -type f -not -perms 0600
+# -type d and -not -perms 0700 to -type d -not -perms 0700
+
+find ~ ( -type f -not -perms 0600 ) -or ( -type d -not -perms 0700 )
+```
 
 #### Find file types
 
