@@ -263,11 +263,11 @@
     - [The `which` command](#the-which-command)
     - [The `find` Command](#the-find-command)
       - [Operators](#operators)
+      - [Predefined Actions](#predefined-actions)
       - [Find file types](#find-file-types)
       - [Search by filename](#search-by-filename)
       - [Find Size Units](#find-size-units)
       - [Find Tests](#find-tests)
-      - [Predefined Actions](#predefined-actions)
     - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
@@ -3559,11 +3559,23 @@ expr1 -operator expr2
 
 - When no operator is specified, `-and` is implied by default
 ```bash
-# -type f and -not -perms 0600 to -type f -not -perms 0600
-# -type d and -not -perms 0700 to -type d -not -perms 0700
+# -type f and -not -perm 0600 to -type f -not -perm 0600
+# -type d and -not -perm 0700 to -type d -not -perm 0700
 
-find ~ ( -type f -not -perms 0600 ) -or ( -type d -not -perms 0700 )
+find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \)
 ```
+
+#### Predefined Actions
+
+- Having a list of results from our `find` command is useful, but what we really want to do is act on the items on the list. Fortunately, find allows actions to be performed based on the search results.
+
+| Action  | Description                                                                                                                   | Example Command                          |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| -delete | Delete the currently matching file.                                                                                           | `find . -name "*.tmp" -delete`           |
+| -ls     | Perform the equivalent of `ls -dils` on the matching file. Output is sent to standard output.                                 | `find . -type f -ls`                     |
+| -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
+| -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
+
 
 #### Find file types
 
@@ -3669,17 +3681,6 @@ sudo find / -type f -name "file*.*"
 | -size n        | Match files of size `n`.                                                                                                                                            | `find . -size 100M`            |
 | -type c        | Match files of type `c`.                                                                                                                                            | `find . -type f`               |
 | -user name     | Match files or directories belonging to `user`.                                                                                                                     | `find /home -user john`        |
-
-#### Predefined Actions
-
-- Having a list of results from our `find` command is useful, but what we really want to do is act on the items on the list. Fortunately, find allows actions to be performed based on the search results.
-
-| Action  | Description                                                                                                                   | Example Command                          |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| -delete | Delete the currently matching file.                                                                                           | `find . -name "*.tmp" -delete`           |
-| -ls     | Perform the equivalent of `ls -dils` on the matching file. Output is sent to standard output.                                 | `find . -type f -ls`                     |
-| -print  | Output the full pathname of the matching file to standard output. This is the default action if no other action is specified. | `find . -name "*.txt" -print`            |
-| -quit   | Quit immediately once a match has been made.                                                                                  | `find / -name "config.php" -print -quit` |
 
 
 ### How to edit files
