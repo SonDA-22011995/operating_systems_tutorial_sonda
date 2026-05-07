@@ -272,6 +272,7 @@
       - [Search by Group](#search-by-group)
       - [Search by User ID](#search-by-user-id)
       - [Find Size Units](#find-size-units)
+      - [Search by modified or accessed or created time](#search-by-modified-or-accessed-or-created-time)
       - [Find Tests](#find-tests)
     - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
@@ -3662,6 +3663,13 @@ find ./Desktop/CompanyShare/ -type d
 # ./Desktop/CompanyShare/sonda/reports/months
 ```
 
+- Find all the empty files and empty directories:
+
+```bash
+sudo find / -type f -empty
+sudo find / -type d -empty
+```
+
 #### Search by filename
 
 ```bash
@@ -3741,15 +3749,15 @@ sudo find / -type f -perm /a=x
 - The `-group` name option locates fi les whose group name is name. The former can be handy if the GID has been orphaned and has no name, but the latter is generally easier
 to use.
 
+```bash
+find ~/Desktop/ -group 'sonda'
+```
+
 #### Search by User ID 
 
 - The -uid UID expression searches for fi les owned by the user whose user ID (UID) is UID. 
 - The -user name option searches for fi les owned by name. Searching
 by UID is useful if the UID has been orphaned and has no name, but searching by username is generally easier.
-
-```bash
-find ~/Desktop/ -group 'sonda'
-```
 
 #### Find Size Units
 
@@ -3761,6 +3769,51 @@ find ~/Desktop/ -group 'sonda'
   | k         | Kilobytes (1,024 bytes)                    | `find . -size 10k`  |
   | M         | Megabytes (1,048,576 bytes)                | `find . -size 5M`   |
   | G         | Gigabytes (1,073,741,824 bytes)            | `find . -size 1G`   |
+
+- Find all the files that are 5 MB in size:
+
+```bash
+sudo find / -type f -size 5M
+```
+
+- Find all the files that have a size between 5 and 10 MB:
+
+```bash
+sudo find / -type f -size +5M -size -10M
+```
+
+#### Search by modified or accessed or created time
+
+- Find all the files inside the root directory that were modified two days ago:
+
+```bash
+sudo find / -type f -mtime 2
+```
+
+- Find all the files that have been modified in the last two to five days:
+
+```bash
+sudo find / -type f -mtime +2 -mtime -5
+```
+
+- Find all the files that have been modified in the last 10 minutes:
+
+```bash
+sudo find / -type f -mmin -10
+```
+
+- Find all the files in the root directory that have been accessed in the last two days:
+
+```bash
+sudo find / -type f -atime 2
+```
+
+- Find all the files that have been accessed in the last 10 minutes:
+
+```bash
+sudo find / -type f -amin -10
+```
+
 
 #### Find Tests
 
