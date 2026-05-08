@@ -286,7 +286,7 @@
       - [Practical Use Case - Sorts the file and removes duplicates in a single step](#practical-use-case---sorts-the-file-and-removes-duplicates-in-a-single-step)
       - [Practical Use Case - Sorts by a specific column](#practical-use-case---sorts-by-a-specific-column)
       - [Multiple sort keys](#multiple-sort-keys)
-      - [Offsets in `--key`](#offsets-in---key)
+      - [Offsets in `--key` or `k`](#offsets-in---key-or-k)
       - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
     - [The `uniq` command](#the-uniq-command)
     - [The `tr` command](#the-tr-command)
@@ -4050,12 +4050,23 @@ Fedora         5         03/20/2006
   - n (numeric sort)
   - r (reverse sort)
 
-#### Offsets in `--key`
+#### Offsets in `--key` or `k`
+
+- Syntax: `-k=KEYDEF` or `--key=KEYDEF`
+- KEYDEF  is  `F[.C][OPTS][,F[.C][OPTS]]`  for  start  and  stop position, where F is a field number and C a character position in the field; both are origin 1, and the stop position defaults to the line's end.  If neither -t nor -b is in effect,  characters  in  a field  are  counted from the beginning of the preceding whitespace.  OPTS is one or more single-letter ordering options [bdfgiMhnRrV], which override global ordering options for that key.  If no key is given, use the entire line as the key.   Use  `--debug`  to diagnose incorrect key usage.
+
 
 - The key option allows specification of **offsets** within fields, so we can define keys within fields
-  `sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt` or `sort --key 3.7nbr -k 3.1nbr --key 3.4nbr distros.txt`
   - By specifying `-k 3.7`, we instruct sort to use a sort key that begins at the seventh character within the third field, which corresponds to the start of the year
   - Likewise, we specify `-k 3.1` and `-k 3.4` to isolate the month and day portions of the date
+
+```bash
+sort -k 3.7nbr -k 3.1nbr -k 3.4nbr distros.txt` 
+# or 
+sort --key 3.7nbr -k 3.1nbr --key 3.4nbr distros.txt
+# or recommended command line
+sort -t ' ' -k 3.7,3.10nbr -k 3.1,3.2nbr -k 3.4,3.5nbr distros.txt
+```
 
 #### Some files don’t use tabs and spaces as field delimiters
 
