@@ -283,6 +283,7 @@
       - [Practical Use Case - Standard:](#practical-use-case---standard)
       - [Practical Use Case - Using Pipes:](#practical-use-case---using-pipes)
       - [Practical Use Case - Check a file is already sorted](#practical-use-case---check-a-file-is-already-sorted)
+      - [Practical Use Case - Sorts the file and removes duplicates in a single step](#practical-use-case---sorts-the-file-and-removes-duplicates-in-a-single-step)
       - [Practical Use Case - Sorts by a specific column](#practical-use-case---sorts-by-a-specific-column)
       - [Multiple sort keys](#multiple-sort-keys)
       - [Offsets in `--key`](#offsets-in---key)
@@ -3949,6 +3950,36 @@ du -s /usr/share/* | sort -nr | head
 ```bash
 sort -c data.txt
 # sort: data.txt:3: disorder: b
+```
+
+#### Practical Use Case - Sorts the file and removes duplicates in a single step
+
+```bash
+cat data.txt
+
+# a
+# f
+# b
+# c
+# e
+# f
+# g
+# h
+# t
+# a
+# e
+# c
+
+sort -u data.txt
+
+# a
+# b
+# c
+# e
+# f
+# g
+# h
+# t
 ```
 
 #### Practical Use Case - Sorts by a specific column
