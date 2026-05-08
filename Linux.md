@@ -3904,7 +3904,7 @@ sudo find / -type f -amin -10
 
 - The sort program sorts the contents of standard input, or one or more files specified on the command line, and sends the results to standard output
 - By default, it sorts lines in alphabetical order and prints the result to the screen (stdout) without modifying the original file
-- Syntax: `sort [option] [file_path | stdin(0)]`
+- Syntax: `sort [option] [file_path_1] [file_path_2] [file_path_3]` or `sort [option] [stdin(0)]`
 - Key Parameters:
   - `-r` (Reverse): Sorts the data in descending order (Z to A).
 
