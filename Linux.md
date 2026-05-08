@@ -280,6 +280,10 @@
     - [The `grep` Command](#the-grep-command)
   - [Text Processing](#text-processing)
     - [The `sort` command](#the-sort-command)
+      - [Practical Use Case - Standard:](#practical-use-case---standard)
+      - [Practical Use Case - Using Pipes:](#practical-use-case---using-pipes)
+      - [Practical Use Case - Check a file is already sorted](#practical-use-case---check-a-file-is-already-sorted)
+      - [Practical Use Case - Sorts by a specific column](#practical-use-case---sorts-by-a-specific-column)
       - [Multiple sort keys](#multiple-sort-keys)
       - [Offsets in `--key`](#offsets-in---key)
       - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
@@ -3910,17 +3914,46 @@ sudo find / -type f -amin -10
 
   - `-n` (Numerical): Sorts based on numerical value rather than just the first digit (e.g., ensuring "10" comes after "2").
 
-  - `-k` (Column/Key): Sorts by a specific column (e.g., -k 2 to sort by last names).
+  - `-k` (Column/Key): Sorts by a specific column (e.g., -k 2 to sort by last names). Syntax: `-k=field1[,field2]`
+  
+  - `-t` (field separator): Define the field-separator character. By default fields are separated by spaces or tabs. Syntax: `-t=char`
 
   - `-c` (Check): Checks if a file is already sorted.
 
   - `-u` (Unique): Sorts the file and removes duplicates in a single step.
 
-- Practical Use Case:
-  - Standard: `sort users.txt`
-  - Using Pipes: `cat users.txt | sort`
-  - We pipe the results into `head` to limit the results to the first 10 lines. We can produce a numerically sorted list to show the 10 largest consumers of space this way `du -s /usr/share/* | sort -nr | head`
-  - **William Shotts** By default, `sort` sees this line as having two fields. The first field contains these characters: "William". The second field contains these characters: "Shotts". This means that whitespace characters (spaces and tabs) are used as delimiters between fields
+  - `b` (Ignore leading blanks): By default, sorting is performed on the entire line, starting with the first character in the line. This option causes sort to ignore leading spaces in lines and calculates sorting based on the first non-whitespace character on the line.
+
+  - `-o` (output) Send sorted output to file rather than standard output. Syntax: `-o=file`
+
+#### Practical Use Case - Standard:
+ 
+```bash
+sort users.txt
+```
+
+#### Practical Use Case - Using Pipes: 
+
+```bash
+cat users.txt | sort
+```
+  
+- We pipe the results into `head` to limit the results to the first 10 lines. We can produce a numerically sorted list to show the 10 largest consumers of space this way 
+
+```bash
+du -s /usr/share/* | sort -nr | head
+```
+
+#### Practical Use Case - Check a file is already sorted
+
+```bash
+sort -c data.txt
+# sort: data.txt:3: disorder: b
+```
+
+#### Practical Use Case - Sorts by a specific column
+
+- **William Shotts** By default, `sort` sees this line as having two fields. The first field contains these characters: "William". The second field contains these characters: "Shotts". This means that whitespace characters (spaces and tabs) are used as delimiters between fields
 
 ```bash
 du -s /usr/share/* | sort -nr | head
