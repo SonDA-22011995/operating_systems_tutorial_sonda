@@ -3915,9 +3915,9 @@ sudo find / -type f -amin -10
 
   - `-n` (Numerical): Sorts based on numerical value rather than just the first digit (e.g., ensuring "10" comes after "2").
 
-  - `-k` (Column/Key): Sorts by a specific column (e.g., -k 2 to sort by last names). Syntax: `-k=field1[,field2]`
+  - `-k` (Column/Key): Sorts by a specific column (e.g., -k 2 to sort by last names). Syntax: `-k field1[,field2]`
   
-  - `-t` (field separator): Define the field-separator character. By default fields are separated by spaces or tabs. Syntax: `-t=char`
+  - `-t` (field separator): Define the field-separator character. By default fields are separated by spaces or tabs. Syntax: `-t char`
 
   - `-c` (Check): Checks if a file is already sorted.
 
@@ -3925,7 +3925,7 @@ sudo find / -type f -amin -10
 
   - `b` (Ignore leading blanks): By default, sorting is performed on the entire line, starting with the first character in the line. This option causes sort to ignore leading spaces in lines and calculates sorting based on the first non-whitespace character on the line.
 
-  - `-o` (output) Send sorted output to file rather than standard output. Syntax: `-o=file`
+  - `-o` (output) Send sorted output to file rather than standard output. Syntax: `-o file`
 
 #### Practical Use Case - Standard:
  
@@ -4052,7 +4052,7 @@ Fedora         5         03/20/2006
 
 #### Offsets in `--key` or `-k`
 
-- Syntax: `-k=KEYDEF` or `--key=KEYDEF`
+- Syntax: `-k KEYDEF` or `--key KEYDEF`
 - KEYDEF  is  `F[.C][OPTS][,F[.C][OPTS]]`  for  start  and  stop position, where F is a field number and C a character position in the field; both are origin 1, and the stop position defaults to the line's end.  If neither -t nor -b is in effect,  characters  in  a field  are  counted from the beginning of the preceding whitespace.  OPTS is one or more single-letter ordering options [bdfgiMhnRrV], which override global ordering options for that key.  If no key is given, use the entire line as the key.   Use  `--debug`  to diagnose incorrect key usage.
 
 
