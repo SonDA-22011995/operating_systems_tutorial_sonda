@@ -286,7 +286,7 @@
       - [Practical Use Case - Sorts the file and removes duplicates in a single step](#practical-use-case---sorts-the-file-and-removes-duplicates-in-a-single-step)
       - [Practical Use Case - Sorts by a specific column](#practical-use-case---sorts-by-a-specific-column)
       - [Multiple sort keys](#multiple-sort-keys)
-      - [Offsets in `--key` or `k`](#offsets-in---key-or-k)
+      - [Offsets in `--key` or `-k`](#offsets-in---key-or--k)
       - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
     - [The `uniq` command](#the-uniq-command)
     - [The `tr` command](#the-tr-command)
@@ -4050,7 +4050,7 @@ Fedora         5         03/20/2006
   - n (numeric sort)
   - r (reverse sort)
 
-#### Offsets in `--key` or `k`
+#### Offsets in `--key` or `-k`
 
 - Syntax: `-k=KEYDEF` or `--key=KEYDEF`
 - KEYDEF  is  `F[.C][OPTS][,F[.C][OPTS]]`  for  start  and  stop position, where F is a field number and C a character position in the field; both are origin 1, and the stop position defaults to the line's end.  If neither -t nor -b is in effect,  characters  in  a field  are  counted from the beginning of the preceding whitespace.  OPTS is one or more single-letter ordering options [bdfgiMhnRrV], which override global ordering options for that key.  If no key is given, use the entire line as the key.   Use  `--debug`  to diagnose incorrect key usage.
