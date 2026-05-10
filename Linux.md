@@ -119,6 +119,10 @@
     - [Managing the Bits](#managing-the-bits)
     - [Be careful](#be-careful)
   - [Special permissions](#special-permissions)
+- [Linux Processes](#linux-processes)
+  - [What are processes?](#what-are-processes)
+    - [Key Process Attributes](#key-process-attributes)
+  - [The Role of the Kernel](#the-role-of-the-kernel)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1766,6 +1770,44 @@ print(os.listdir('/home/vandtt'))
   - The setuid and sticky permission: **-rwsrwxr-t  (5775)**
   - The setgid and sticky permission: **-rwxrwsr-t (3775)**
   - The setgid and sticky and setuid permission: **-rwsrwsr-t (7775)**
+
+# Linux Processes
+
+## What are processes?
+
+- At its core, a process is an instance of a running program.
+
+- It can be a visible application (like Firefox) or a background task helping other programs.
+
+- It acts as an **independent execution unit** with its own dedicated resources and not shared, including:
+
+  - CPU Time: Assigned by the operating system.
+
+  - Memory: Private space for computations (not shared with others).
+
+  - System Resources: Open files, network connections, and identifiers.
+
+### Key Process Attributes
+
+- Every process is defined by specific metadata:
+
+  - Process ID (PID): A unique numerical identifier.
+
+  - User: The account owner of the process, which determines its permissions.
+
+  - State: The current status of the process (e.g., Running, Waiting, Stopped, or Zombie).
+
+  - Parent ID (PPID): The identifier of the process that started it.
+
+## The Role of the Kernel
+
+- The Kernel is the lowest level of the operating system, sitting between application code and hardware. It manages processes by:
+
+  - Allocating and managing resources (CPU/RAM).
+
+  - Deciding whether to grant or deny requests for more memory.
+
+  - Managing "resource hygiene" (e.g., killing background apps to free up space, a common practice in mobile OSs).
 
 # Linux Software Management
 
