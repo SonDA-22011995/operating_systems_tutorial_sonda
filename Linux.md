@@ -122,6 +122,7 @@
 - [Linux Processes](#linux-processes)
   - [What are processes?](#what-are-processes)
     - [Key Process Attributes](#key-process-attributes)
+    - [Process Hierarchy \& Dependencies](#process-hierarchy--dependencies)
   - [The Role of the Kernel](#the-role-of-the-kernel)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
@@ -1798,6 +1799,13 @@ print(os.listdir('/home/vandtt'))
   - State: The current status of the process (e.g., Running, Waiting, Stopped, or Zombie).
 
   - Parent ID (PPID): The identifier of the process that started it.
+
+### Process Hierarchy & Dependencies
+
+- Processes are organized in a **tree structure** (hierarchy).
+- Applications often start "child" processes to handle specific tasks (e.g., Firefox starting a "Web Content" process).
+- In a GUI (like the System Monitor), this is often viewed through a "Show Dependencies" or "Tree View" setting.
+  - Example Chain: `Gnome Shell $\rightarrow$ Terminal Server $\rightarrow$ Bash $\rightarrow$ Ping Command`
 
 ## The Role of the Kernel
 
