@@ -124,6 +124,12 @@
     - [Key Process Attributes](#key-process-attributes)
     - [Process Hierarchy \& Dependencies](#process-hierarchy--dependencies)
   - [The Role of the Kernel](#the-role-of-the-kernel)
+  - [Viewing Processes - `ps` command](#viewing-processes---ps-command)
+    - [The Basics of `ps`](#the-basics-of-ps)
+    - [Viewing All Processes](#viewing-all-processes)
+    - [Formatting and Detail](#formatting-and-detail)
+    - [Hierarchy and Trees](#hierarchy-and-trees)
+    - [Filtering and Navigation](#filtering-and-navigation)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1816,6 +1822,102 @@ print(os.listdir('/home/vandtt'))
   - Deciding whether to grant or deny requests for more memory.
 
   - Managing "resource hygiene" (e.g., killing background apps to free up space, a common practice in mobile OSs).
+
+## Viewing Processes - `ps` command
+
+### The Basics of `ps`
+
+- By default, running the `ps` (Process Status) command without any arguments provides a snapshot of processes running in your current terminal (TTY)
+- If you start a new shell inside your current one (running bash within bash), ps will show both instances and the ps command itself.
+- Limitation: It won't show processes running in other tabs, windows, or background system tasks.
+
+```bash
+ps
+
+#   PID TTY          TIME CMD
+#   5333 pts/0    00:00:00 bash
+#   5369 pts/0    00:00:00 ps
+
+/bin/bash
+ps
+
+#    PID TTY          TIME CMD
+#   5333 pts/0    00:00:00 bash
+#   5373 pts/0    00:00:00 bash
+#   5379 pts/0    00:00:00 ps
+
+/bin/bash
+ps
+
+#    PID TTY          TIME CMD
+#   5333 pts/0    00:00:00 bash
+#   5373 pts/0    00:00:00 bash
+#   5382 pts/0    00:00:00 bash
+#   5388 pts/0    00:00:00 ps
+
+exit
+ps
+
+#    PID TTY          TIME CMD
+#   5333 pts/0    00:00:00 bash
+#   5373 pts/0    00:00:00 bash
+#   5393 pts/0    00:00:00 ps
+```
+
+### Viewing All Processes
+
+- `-e` or `-A`: Displays every process running on the system, regardless of the user or session.
+
+```bash
+ps -e
+
+#    PID TTY          TIME CMD
+#      1 ?        00:00:02 systemd
+#      2 ?        00:00:00 kthreadd
+#      3 ?        00:00:00 pool_workqueue_release
+```
+
+### Formatting and Detail
+
+- Standard output is often too brief. These flags add the context needed for troubleshooting:
+
+| Flag | Name | Description |
+|------|------|-------------|
+| `-f` | Full Format | Adds columns for UID (User ID), PID (Process ID), and PPID (Parent Process ID). |
+| `-l` | Long Format | Provides even more technical details, such as the Process State. |
+| `-ef` | Combined | The most common way to see all processes with full command paths and ownership. |
+
+```bash
+ps -efl
+
+# F S UID          PID    PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+# 4 S root           1       0  0  80   0 -  5854 -      14:16 ?        00:00:02 /sbin/init splash
+# 1 S root           2       0  0  80   0 -     0 -      14:16 ?        00:00:00 [kthreadd]
+# 1 S root           3       2  0  80   0 -     0 -      14:16 ?        00:00:0 [pool_workqueue_release]
+```
+
+### Hierarchy and Trees
+
+- Understanding which process spawned another is crucial for system administration
+
+```bash
+ps -elf --forest
+
+# F S UID          PID    PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+# 0 S sonda       2418    2205  0  80   0 - 185542 poll_s 14:17 ?       00:00:00  \_ /usr/libexec/gnome-session-binary --systemd-service --sess
+# 0 S sonda       2459    2418  0  80   0 - 95737 poll_s 14:17 ?        00:00:00  |   \_ /usr/libexec/at-spi-bus-launcher --launch-immediately
+# 0 S sonda       2473    2459  0  80   0 -  2373 ep_pol 14:17 ?        00:00:00  |   |   \_ /usr/bin/dbus-daemon --config-file=/usr/share/defa
+# 0 S sonda       2610    2418  0  80   0 - 76408 poll_s 14:17 ?        00:00:00  |   \_ /usr/libexec/gsd-disk-utility-notify
+# 0 S sonda       2683    2418  0  80   0 - 208752 poll_s 14:17 ?       00:00:00  |   \_ /usr/libexec/evolution-data-server/evolution-alarm-not
+```
+
+### Filtering and Navigation
+
+- Because the output of ps -ef can be massive, the lecture suggests two main ways to handle the data:
+
+- Filtering with grep: Pipe the output to search for specific terms: `ps -ef | grep firefox`
+
+- Scrolling with less: If you want to browse the entire list manually without it disappearing off the top of your terminal: `ps -ef | less`
 
 # Linux Software Management
 
