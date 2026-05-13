@@ -129,6 +129,7 @@
     - [Viewing All Processes](#viewing-all-processes)
     - [Formatting and Detail](#formatting-and-detail)
     - [Hierarchy and Trees](#hierarchy-and-trees)
+    - [Select by PID](#select-by-pid)
     - [Filtering and Navigation](#filtering-and-navigation)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
@@ -1811,7 +1812,7 @@ print(os.listdir('/home/vandtt'))
 - Processes are organized in a **tree structure** (hierarchy).
 - Applications often start "child" processes to handle specific tasks (e.g., Firefox starting a "Web Content" process).
 - In a GUI (like the System Monitor), this is often viewed through a "Show Dependencies" or "Tree View" setting.
-  - Example Chain: `Gnome Shell $\rightarrow$ Terminal Server $\rightarrow$ Bash $\rightarrow$ Ping Command`
+  - Example Chain: `Gnome Shell -> Terminal Server -> Bash -> Ping Command`
 
 ## The Role of the Kernel
 
@@ -1909,6 +1910,14 @@ ps -elf --forest
 # 0 S sonda       2473    2459  0  80   0 -  2373 ep_pol 14:17 ?        00:00:00  |   |   \_ /usr/bin/dbus-daemon --config-file=/usr/share/defa
 # 0 S sonda       2610    2418  0  80   0 - 76408 poll_s 14:17 ?        00:00:00  |   \_ /usr/libexec/gsd-disk-utility-notify
 # 0 S sonda       2683    2418  0  80   0 - 208752 poll_s 14:17 ?       00:00:00  |   \_ /usr/libexec/evolution-data-server/evolution-alarm-not
+```
+
+### Select by PID
+
+```bash
+ps -lf -p 194
+# F S UID          PID    PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+# 4 S syslog       194       1  0  80   0 - 55627 -      17:30 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
 ```
 
 ### Filtering and Navigation
