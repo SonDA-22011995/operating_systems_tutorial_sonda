@@ -1938,7 +1938,7 @@ ps -lf -p 194
 | Multitasking         | The illusion of running multiple programs simultaneously on a single CPU core.  | Achieved by switching between processes so rapidly that it appears concurrent to the user. |
 | Scheduling           | The OS mechanism that decides which program runs and for how long.              | Handled by the CPU Scheduler; essential for system stability and responsiveness.           |
 | Context Switch       | The process of the CPU stopping one task and starting another.                  | Occurs when the OS saves the state of a process so it can be resumed later.                |
-| `/proc/[PID]/status` | A virtual file providing real-time status information about a specific process. | Accessible via the `cat` or `grep` commands; not stored on the physical disk. `cat /proc/[process ID]/status | grep ctxt` or `cat /proc/12345/status | grep ctxt`           |
+| `/proc/[PID]/status` | A virtual file providing real-time status information about a specific process. | Accessible via the `cat` or `grep` commands; not stored on the physical disk. `cat /proc/[process ID]/status \| grep ctxt` or `cat /proc/12345/status \| grep ctxt`           |
 | `watch`              | A utility used to execute a program periodically, showing output in real-time.  | Example: `watch -n 0.5 grep ctxt /proc/12345/status` refreshes every half-second.                             |
 
 
