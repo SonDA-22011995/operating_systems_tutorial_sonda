@@ -1941,7 +1941,9 @@ ps -lf -p 194
 | `/proc/[PID]/status` | A virtual file providing real-time status information about a specific process. | Accessible via the `cat` or `grep` commands; not stored on the physical disk. `cat /proc/[process ID]/status \| grep ctxt` or `cat /proc/12345/status \| grep ctxt`           |
 | `watch`              | A utility used to execute a program periodically, showing output in real-time.  | Example: `watch -n 0.5 grep ctxt /proc/12345/status` refreshes every half-second.                             |
 
+- Voluntary Context Switches: These occur when the program "gives up" its turn. Usually, this happens because the program is waiting for an external event, such as reading a file from disk, a network response, or user input.
 
+- Nonvoluntary Context Switches: These occur when the OS forcibly interrupts a program. This happens because the program's "time slice" has expired, and the scheduler needs to give another process a turn.
 
 # Linux Software Management
 
