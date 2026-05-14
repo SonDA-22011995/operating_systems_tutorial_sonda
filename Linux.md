@@ -132,6 +132,7 @@
     - [Select by PID](#select-by-pid)
     - [Filtering and Navigation](#filtering-and-navigation)
   - [How does multitasking work?](#how-does-multitasking-work)
+  - [The priority of a process](#the-priority-of-a-process)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1832,6 +1833,21 @@ print(os.listdir('/home/vandtt'))
 - By default, running the `ps` (Process Status) command without any arguments provides a snapshot of processes running in your current terminal (TTY)
 - If you start a new shell inside your current one (running bash within bash), ps will show both instances and the ps command itself.
 - Limitation: It won't show processes running in other tabs, windows, or background system tasks.
+- Explain each field in the top (header) row:
+  - **PID**: Each process in Linux has a PID value automatically assigned by the kernel when the
+process is created. The PID value is a positive integer and is always guaranteed to be unique.
+  - **TTY** is short for teletype, more popularly known as a controlling Terminal or device
+for interacting with a system. In the context of a Linux process, the TTY attribute denotes the
+type of Terminal the process interacts with. In our example, the bash process representing
+the Terminal session has pts/0 as its TTY type. PTS or pts stands for pseudo terminal
+slave and indicates the input type – a Terminal console – controlling the process. /0 indicates
+the ordinal sequence of the related Terminal session. For example, an additional SSH session
+would have pts/1, and so on
+  -  **TIME**: The TIME field represents the cumulative CPU utilization (or time) spent by the
+process (in [DD-]hh:mm:ss format)
+  - **CMD**: The CMD field stands for command and indicates the name or full path of the command
+(including the arguments) that created the process. For well-known system commands (for
+example, bash), CMD displays the command’s name, including its arguments.
 
 ```bash
 ps
@@ -1889,6 +1905,15 @@ ps -e
 | `-l` | Long Format | Provides even more technical details, such as the Process State. |
 | `-ef` | Combined | The most common way to see all processes with full command paths and ownership. |
 
+- Explain each field in the top (header) row:
+  - F: Process flags (for example, 0 – none, 1 – forked, and 4 – superuser privileges)
+  - S: Process status code (for example, R – running, S – interruptible sleep, and so on)
+  - UID: The username or owner of the process (the user ID)
+  - PID: The process ID
+  - PPID: The process ID of the parent process
+  - PRI: The priority of the process (a higher number means lower priority)
+  - SZ: The virtual memory usage
+
 ```bash
 ps -efl
 
@@ -1944,6 +1969,10 @@ ps -lf -p 194
 - Voluntary Context Switches: These occur when the program "gives up" its turn. Usually, this happens because the program is waiting for an external event, such as reading a file from disk, a network response, or user input.
 
 - Nonvoluntary Context Switches: These occur when the OS forcibly interrupts a program. This happens because the program's "time slice" has expired, and the scheduler needs to give another process a turn.
+
+## The priority of a process
+
+
 
 # Linux Software Management
 
