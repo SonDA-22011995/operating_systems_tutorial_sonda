@@ -130,6 +130,7 @@
     - [Formatting and Detail](#formatting-and-detail)
     - [Hierarchy and Trees](#hierarchy-and-trees)
     - [Select by PID](#select-by-pid)
+    - [Viewing real-time process - `top` command](#viewing-real-time-process---top-command)
     - [Filtering and Navigation](#filtering-and-navigation)
   - [How does multitasking work?](#how-does-multitasking-work)
   - [The priority of a process](#the-priority-of-a-process)
@@ -1945,6 +1946,45 @@ ps -lf -p 194
 # F S UID          PID    PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 # 4 S syslog       194       1  0  80   0 - 55627 -      17:30 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
 ```
+
+### Viewing real-time process - `top` command
+
+- Syntax: `top [OPTIONS]`
+- The top program displays a continuously updating (by default, every three seconds) display of the system processes listed in order of process activity
+- The name top comes from the fact that the top program is used to see the “top” processes on the system
+- The top display consists of two parts: a system summary at the top of the display, followed by a table of processes sorted by CPU activit
+- Explain each field in the system summary:
+  - `top - 14:59:20 up 6:30, 2 users, load average: 0.07, 0.02, 0.00`
+    - top: This is the name of the program
+    - 14:59:20 This is the current time of day
+    - 2 users There are two users logged in
+    - Load average refers to the number of processes that are waiting to run; that is, the number of processes that are in a runnable state and are sharing the CPU. Three values are shown, each for a different period of time. The first is the average for the last 60 seconds, the next the previous 5 minutes, and finally the previous 15 minutes. Values less than 1.0 indicate that the machine is not busy
+  - `Tasks: 109 total, 1 running, 106 sleeping, 0 stopped, 2 zombie`
+    - This summarizes the number of processes and their various process states
+  - `Cpu(s): 0.7%us, 1.0%sy, 0.0%ni, 98.3%id, 0.0%wa, 0.0%hi, 0.0%si`
+    - 0.7%us 0.7 percent of the CPU is being used for user processes. This means processes outside the kernel.
+    - 1.0%sy 1.0 percent of the CPU is being used for system (kernel) processes.
+    - 0.0%ni 0.0 percent of the CPU is being used by “nice” (low-priority) processes.
+    - 98.3%id 98.3 percent of the CPU is idle
+    - 0.0%wa 0.0 percent of the CPU is waiting for I/O
+  - `Mem: 319496k total, 314860k used, 4636k free, 19392k buff`
+    - This shows how physical RAM is being used.
+  - `Swap: 875500k total, 149128k used, 726372k free, 114676k cach`
+    - This shows how swap space (virtual memory) is being used.
+- Explain each field in the top (header) row:
+  - USER: The username or owner of the process
+  - PR: The priority of the process (a lower number means higher priority)
+  - NI: The nice value of the process (a sort of dynamic/adaptive priority)
+  - VIRT: The virtual memory size (in KB) – the total memory used by the process
+  - RES: The resident memory size (in KB) – the physical (non-swapped) memory used by the process
+  - SHR: The shared memory size (in KB) – a subset of the process memory shared with other processes
+  - S: The process’ status (for example, R – running, S – interruptible sleep, I – idle, and so on)
+  - %CPU: CPU usage (percentage)
+  - %MEM: RES memory usage (percentage)
+  - COMMAND: Command name or command line
+
+
+![top command](static/images/image_0039.png)
 
 ### Filtering and Navigation
 
