@@ -2052,6 +2052,15 @@ sudo nice -n -10 gedit
   - Full Name Search `pgrep -f [program]`: The `-f` flag checks the full command line. This is useful for catching all sub-processes associated with an application that might have different internal names
 - Example  
   - `pgrep firefox`: this typically only returns the main Firefox process.
+- Practical Integration: The true power of `pgrep` comes from its ability to integrate with other commands via Bash Expansion (Command Substitution). This allows you to pass the output of `pgrep` directly into `renice` to change process priorities on the fly
+
+```bash
+renice -n 19 $(pgrep firefox)
+
+# How it works: Bash executes the command inside the parentheses first, gets the PIDs, and then "plugs" them into the renice command
+# Result: All Firefox processes are immediately set to the lowest priority (niceness 19), effectively moving them to the background.
+# A Note on Quotes: When using expansions like $(pgrep ...), do not wrap the expression in double quotes. Using quotes would cause Bash to treat the entire list of PIDs as a single string
+```
 
 
 # Linux Software Management
