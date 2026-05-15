@@ -136,6 +136,7 @@
   - [The Priority of a Process](#the-priority-of-a-process)
     - [What is Niceness?](#what-is-niceness)
     - [Setting Priority with `nice` and `renice`](#setting-priority-with-nice-and-renice)
+  - [Getting the process Id for a program - `pgrep`](#getting-the-process-id-for-a-program---pgrep)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2042,6 +2043,16 @@ sudo nice -n -10 gedit
 - Change the priority of an existing process
   - If a process is already running and hogging your CPU, you don't have to kill it. You can "re-nice" it using its PID (Process ID).
   - Syntax: `renice -n [niceness] [process ID]`
+
+## Getting the process Id for a program - `pgrep`
+
+- The `pgrep` command simplifies this by searching through running processes and returning only the PIDs.
+- Syntax: 
+  - Standard Usage `pgrep [program]`: This searches by the process name. 
+  - Full Name Search `pgrep -f [program]`: The `-f` flag checks the full command line. This is useful for catching all sub-processes associated with an application that might have different internal names
+- Example  
+  - `pgrep firefox`: this typically only returns the main Firefox process.
+
 
 # Linux Software Management
 
