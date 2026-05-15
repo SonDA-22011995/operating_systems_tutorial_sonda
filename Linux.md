@@ -137,6 +137,11 @@
     - [What is Niceness?](#what-is-niceness)
     - [Setting Priority with `nice` and `renice`](#setting-priority-with-nice-and-renice)
   - [Getting the process Id for a program - `pgrep`](#getting-the-process-id-for-a-program---pgrep)
+  - [Signal](#signal)
+    - [What are Signals?](#what-are-signals)
+    - [The Operating System Role](#the-operating-system-role)
+    - [What kind of messages do signals deliver?](#what-kind-of-messages-do-signals-deliver)
+    - [Practical Example: SIGINT and Ctrl+C](#practical-example-sigint-and-ctrlc)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2062,6 +2067,40 @@ renice -n 19 $(pgrep firefox)
 # A Note on Quotes: When using expansions like $(pgrep ...), do not wrap the expression in double quotes. Using quotes would cause Bash to treat the entire list of PIDs as a single string
 ```
 
+## Signal
+
+### What are Signals?
+
+- Signals can be sent to processes, and they will interrupt the process flow at a **convenient time**
+- It's a mechanism to asynchronously notify a process of an event
+- The **Convenient Time** Nuance: While signals feel immediate (usually under 0.1 seconds), they technically interrupt the process during specific kernel events, such as a context switch or a system call (like reading a file).
+
+### The Operating System Role
+
+- Is responsible for delivering the signal to the process
+- Maintains a signal queue, so we can send a signal to every process (even to one that is not active right now)
+
+### What kind of messages do signals deliver?
+
+| Signal Name | Common Source | Purpose |
+|---|---|---|
+| SIGINT | Terminal (`Ctrl+C`) | Interrupts the process (request to stop). |
+| SIGHUP | Shell | "Hangup" - sent when a terminal window is closed. |
+| SIGTERM | Other processes | A request to terminate gracefully. |
+| SIGWINCH | User Interface | Notifies the process that the window size has changed. |
+| SIGILL | CPU | Sent when a process tries to execute an illegal instruction. |
+
+### Practical Example: SIGINT and Ctrl+C
+
+- The most common way users interact with signals is by pressing Ctrl+C in a terminal.
+
+- Trigger: When you press Ctrl+C, the terminal driver sends a SIGINT (Signal Interrupt) to the foreground process.
+
+- Default Action: Most programs will stop immediately and return control to the shell.
+
+- Custom Handling: Programs can be written to "catch" or "listen" for this signal.
+
+- Example: When wget receives SIGINT, it doesn't just crash. It catches the signal, closes the network connection, saves the data it has already downloaded, and then exits gracefully.
 
 # Linux Software Management
 
