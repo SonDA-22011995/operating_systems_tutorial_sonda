@@ -133,7 +133,9 @@
     - [Viewing real-time process - `top` command](#viewing-real-time-process---top-command)
     - [Filtering and Navigation](#filtering-and-navigation)
   - [How does multitasking work?](#how-does-multitasking-work)
-  - [The priority of a process](#the-priority-of-a-process)
+  - [The Priority of a Process](#the-priority-of-a-process)
+    - [What is Niceness?](#what-is-niceness)
+    - [Setting Priority with `nice` and `renice`](#setting-priority-with-nice-and-renice)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2010,9 +2012,36 @@ ps -lf -p 194
 
 - Nonvoluntary Context Switches: These occur when the OS forcibly interrupts a program. This happens because the program's "time slice" has expired, and the scheduler needs to give another process a turn.
 
-## The priority of a process
+## The Priority of a Process
 
+### What is Niceness?
 
+- In Linux, Niceness is a value that tells the kernel how "nice" a process should be to other processes.
+
+- It ranges from -20 to +19.
+
+- **High Niceness (e.g., +19)**: The process is "very nice." it stands back and lets everyone else go first. Result: Low Priority.
+
+- **Low/Negative Niceness (e.g., -20)**: The process is "not nice." It pushes to the front of the line. Result: High Priority.
+
+- **The Default**: New processes typically start with a niceness of 0.
+
+### Setting Priority with `nice` and `renice`
+
+- We need administrative privileges to lower the niceness / increase the priority of a process
+- We don't need any privileges to increase the niceness / lower the priority of a process
+- Set the niceness for a program - Starting a New Process
+  - You use nice when you want to launch a program with a specific priority right out of the gate
+  - Syntax: `nice -n [niceness] [program]`
+  - Example: 
+```bash
+nice -n 19 grdit
+sudo nice -n -10 gedit
+```
+
+- Change the priority of an existing process
+  - If a process is already running and hogging your CPU, you don't have to kill it. You can "re-nice" it using its PID (Process ID).
+  - Syntax: `renice -n [niceness] [process ID]`
 
 # Linux Software Management
 
