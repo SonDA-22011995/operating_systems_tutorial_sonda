@@ -142,6 +142,7 @@
     - [The Operating System Role](#the-operating-system-role)
     - [What kind of messages do signals deliver?](#what-kind-of-messages-do-signals-deliver)
     - [Practical Example: SIGINT and Ctrl+C](#practical-example-sigint-and-ctrlc)
+  - [The `kill` command](#the-kill-command)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -1991,7 +1992,6 @@ ps -lf -p 194
   - %MEM: RES memory usage (percentage)
   - COMMAND: Command name or command line
 
-
 ![top command](static/images/image_0039.png)
 
 ### Filtering and Navigation
@@ -2090,6 +2090,8 @@ renice -n 19 $(pgrep firefox)
 | SIGWINCH | User Interface | Notifies the process that the window size has changed. |
 | SIGILL | CPU | Sent when a process tries to execute an illegal instruction. |
 
+![signal](static/images/image_0040.png)
+
 ### Practical Example: SIGINT and Ctrl+C
 
 - The most common way users interact with signals is by pressing Ctrl+C in a terminal.
@@ -2101,6 +2103,8 @@ renice -n 19 $(pgrep firefox)
 - Custom Handling: Programs can be written to "catch" or "listen" for this signal.
 
 - Example: When wget receives SIGINT, it doesn't just crash. It catches the signal, closes the network connection, saves the data it has already downloaded, and then exits gracefully.
+
+## The `kill` command
 
 # Linux Software Management
 
