@@ -2106,6 +2106,26 @@ renice -n 19 $(pgrep firefox)
 
 ## The `kill` command
 
+- Despite its intimidating name, the `kill` command doesn’t actually kill programs directly. Instead, its primary job is to send signals to running processes, leaving the final action up to the program or the operating system kernel.
+
+- Key Concepts
+  - Signals Beyond the Keyboard: While Ctrl+C sends a SIGINT (Signal Interrupt) to a program from within its own terminal, the kill command allows you to send that exact same signal from a completely different terminal window or tab.
+
+  - The Workflow: To target a process from another terminal, you must first locate its unique Process ID (PID).
+
+  - Dynamic PIDs: Every time a program restarts, it is assigned a brand-new PID.
+
+- Command Syntax
+  - Standard Syntax (Recommended): `kill -s <SIGNAL_NAME> <PID>`. 
+    - Example: `kill -s SIGINT 1234`
+  - Alternative Syntax: `kill -<SIGNAL_NAME> <PID>`
+
+- Pro Tip: Command Expansion: Instead of manually looking up the PID every time it changes, you can combine both steps into a single line using command expansion:
+
+```bash
+kill -s SIGINT $(pgrep [program])
+```
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
