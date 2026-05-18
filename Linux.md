@@ -143,6 +143,11 @@
     - [What kind of messages do signals deliver?](#what-kind-of-messages-do-signals-deliver)
     - [Practical Example: SIGINT and Ctrl+C](#practical-example-sigint-and-ctrlc)
   - [The `kill` command](#the-kill-command)
+  - [More signals we can send to a program](#more-signals-we-can-send-to-a-program)
+    - [View all available signals on your system](#view-all-available-signals-on-your-system)
+    - [The signal: SIGTERM](#the-signal-sigterm)
+    - [The signal: SIGKILL](#the-signal-sigkill)
+    - [SIGTERM vs. SIGINT](#sigterm-vs-sigint)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2125,6 +2130,51 @@ renice -n 19 $(pgrep firefox)
 ```bash
 kill -s SIGINT $(pgrep [program])
 ```
+
+## More signals we can send to a program
+
+### View all available signals on your system
+
+```bash
+kill -l
+```
+
+![View all available signals on your system](static/images/image_0041.png)
+
+### The signal: SIGTERM
+
+- SIGTERM is the default signal sent by the kill command. It tells a process to terminate, but acts as a polite request rather than a forced eviction
+- Syntax
+
+```bash
+kill [PID] # Recommended default
+
+kill -s SIGTERM [PID] # Explicit name
+kill  SIGTERM [PID] 
+
+kill -s -15 [PID] # Using the signal ID, because SIGTERM has the ID 15 in the kill -l command.
+kill -15 [PID]
+```
+
+### The signal: SIGKILL
+
+- When a process becomes unresponsive or ignores a SIGTERM, SIGKILL is used to terminate it immediately.
+- Behavior: This signal completely bypasses the program and is handled directly by the operating system kernel. The program is not given any warning or time to clean up.
+- Risks: Because it shuts down the process instantly, it can cause data loss or leave files and databases in an inconsistent/corrupted state.
+- Uncatchable: A process cannot ignore, catch, or block a SIGKILL signal.
+- Syntax
+
+```bash
+kill -s SIGKILL [PID]
+kill -9 [PID]
+```
+
+### SIGTERM vs. SIGINT
+
+- SIGINT (Ctrl+C): Sent from the terminal to ask a process to stop because the user wants to regain control of the shell.
+
+- SIGTERM: Sent to tell a process to terminate generally, independent of direct user terminal control.
+
 
 # Linux Software Management
 
