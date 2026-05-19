@@ -157,6 +157,9 @@
     - [Locating the System Executable](#locating-the-system-executable)
     - [Comparing `kill -l` (Built-in) vs. `usr/bin/kill -l` (Executable)](#comparing-kill--l-built-in-vs-usrbinkill--l-executable)
     - [Cross-Shell Variations](#cross-shell-variations)
+  - [The killall command](#the-killall-command)
+    - [Overview of the killall Command](#overview-of-the-killall-command)
+    - [Sending Specific Signals](#sending-specific-signals)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2316,6 +2319,19 @@ where kill # in Zsh
 - Running `kill -l` in **Bash** produces a different visual format than running `kill -l` in **Zsh**.
 
 - Key Takeaway: If you notice a change in command output or behavior when switching systems or terminals, it is likely not a system error; it is simply a reflection of different shell implementations.
+
+## The killall command
+
+### Overview of the killall Command
+
+- The primary advantage of the `killall` command over the standard `kill` command is its ability to target processes by name rather than by Process ID (PID).
+- Default Behavior: If no specific signal is specified, `killall` defaults to sending a SIGTERM (terminate) signal.
+
+### Sending Specific Signals
+
+- Just like kill, killall can be used to send custom signals (such as SIGINT, SIGHUP, or SIGSTOP) to a group of processes matching a name. However, the syntax varies depending on your platform.
+
+- Syntax: `killall -s SIGINT [program name]`
 
 # Linux Software Management
 
