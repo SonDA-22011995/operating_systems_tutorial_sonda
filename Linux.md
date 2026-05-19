@@ -147,6 +147,7 @@
     - [View all available signals on your system](#view-all-available-signals-on-your-system)
     - [The signal: SIGTERM](#the-signal-sigterm)
     - [The signal: SIGKILL](#the-signal-sigkill)
+    - [The signal: SIGHUP (Signal Hangup)](#the-signal-sighup-signal-hangup)
     - [SIGTERM vs. SIGINT](#sigterm-vs-sigint)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
@@ -2168,6 +2169,33 @@ kill -15 [PID]
 kill -s SIGKILL [PID]
 kill -9 [PID]
 ```
+
+### The signal: SIGHUP (Signal Hangup)
+
+- The SIGHUP signal behaves differently depending on the type of process receiving it:
+  
+  - Interactive/Terminal Programs: Used to communicate that the controlling terminal has been closed. When a terminal closes, it automatically sends a SIGHUP to its running child processes (e.g., a text editor like gEdit), causing them to terminate.
+
+  - Daemons (Background Processes): Since daemons do not have a controlling terminal, they often repurpose SIGHUP as a command to reload their configuration files without needing a full restart.
+
+  - Handling: This signal can be captured or ignored by programs, though standard tools usually account for it natively.
+
+- Syntax: `kill -s SIGHUP [process ID]`
+
+```bash
+# terminal 1
+gedit
+```
+
+```bash
+# terminal 2
+kill -s SIGHUB $(pgrep gedit)
+
+# After that, on the terminal 1
+# gedit
+# Hangup
+```
+
 
 ### SIGTERM vs. SIGINT
 
