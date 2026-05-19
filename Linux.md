@@ -148,6 +148,9 @@
     - [The signal: SIGTERM](#the-signal-sigterm)
     - [The signal: SIGKILL](#the-signal-sigkill)
     - [The signal: SIGHUP (Signal Hangup)](#the-signal-sighup-signal-hangup)
+    - [The signal: SIGSTOP (Signal Stop)](#the-signal-sigstop-signal-stop)
+    - [The signal: SIGCONT (Signal Continue)](#the-signal-sigcont-signal-continue)
+      - [Practical Case Study: Network Behavior with wget](#practical-case-study-network-behavior-with-wget)
     - [SIGTERM vs. SIGINT](#sigterm-vs-sigint)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
@@ -2196,6 +2199,67 @@ kill -s SIGHUB $(pgrep gedit)
 # Hangup
 ```
 
+### The signal: SIGSTOP (Signal Stop)
+
+- The SIGSTOP signal pauses a process rather than terminating it.
+
+  - Behavior: It places a process into a paused ("stopped") state, freezing its execution instantly.
+
+  - Crucial Characteristic: It is non-catchable and cannot be ignored. The operating system intercepts and handles it directly, ensuring the process cannot override the command.
+
+  - Demonstration (CMatrix): Sending SIGSTOP to a visual terminal tool like cmatrix freezes the flowing text animations on screen and returns control of the shell back to the user.
+
+- Syntax: `kill -s SIGSTOP [process Id]`
+
+```bash
+# Demonstration (CMatrix)
+sudo apt update
+sudo apt upgrade
+sudo instal cmatrix
+cmatrix
+
+# open new window
+kill -s SIGSTOP $(pgrep cmatrix)
+```
+
+### The signal: SIGCONT (Signal Continue)
+
+- The SIGCONT signal resumes a process that was previously paused by SIGSTOP.
+
+  - Behavior: It unfreezes the process, allowing it to pick up exactly where it left off.
+
+  - Handling: Unlike SIGSTOP, SIGCONT can be captured by the program, allowing the software to alter its behavior upon waking up.
+
+- Syntax: `kill -s SIGCONT [process Id]`
+
+```bash
+# Following the CMatrix example demonstrated above
+
+kill -s SIGCONT $(pgrep cmatrix)
+```
+
+#### Practical Case Study: Network Behavior with wget
+
+- The lecture highlights how SIGSTOP and SIGCONT interact with network connections using the wget file download tool:
+
+- Scenario A: Short Interruption
+  - wget is actively downloading a file.
+
+  - A SIGSTOP is sent, freezing the download.
+
+  - A SIGCONT is sent shortly after.
+
+  - Result: Because SIGCONT can be captured, wget notices it was paused and redirects its output to a log file instead of cluttering the terminal. By checking the log with tail -f, the user sees that wget successfully reused the still-open network connection to finish the download.
+
+- Scenario B: Long Interruption
+
+  - wget is actively downloading a file.
+
+  - A SIGSTOP is sent, freezing the download.
+
+  - The process remains paused for an extended period.
+
+  - Result: The remote server times out because it hasn't heard from wget. It forcefully closes the network connection. When SIGCONT is finally sent, wget realizes the connection is dead. Depending on the remote server's capabilities, wget will either attempt to resume the partial download or be forced to restart the entire download from scratch.
 
 ### SIGTERM vs. SIGINT
 
