@@ -152,6 +152,11 @@
     - [The signal: SIGCONT (Signal Continue)](#the-signal-sigcont-signal-continue)
       - [Practical Case Study: Network Behavior with wget](#practical-case-study-network-behavior-with-wget)
     - [SIGTERM vs. SIGINT](#sigterm-vs-sigint)
+  - [kill vs. /usr/bin/kill vs. /bin/kill (kill command vs kill program)](#kill-vs-usrbinkill-vs-binkill-kill-command-vs-kill-program)
+    - [Shell Built-ins vs. System Executables](#shell-built-ins-vs-system-executables)
+    - [Locating the System Executable](#locating-the-system-executable)
+    - [Comparing `kill -l` (Built-in) vs. `usr/bin/kill -l` (Executable)](#comparing-kill--l-built-in-vs-usrbinkill--l-executable)
+    - [Cross-Shell Variations](#cross-shell-variations)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2267,6 +2272,50 @@ kill -s SIGCONT $(pgrep cmatrix)
 
 - SIGTERM: Sent to tell a process to terminate generally, independent of direct user terminal control.
 
+## kill vs. /usr/bin/kill vs. /bin/kill (kill command vs kill program)
+
+### Shell Built-ins vs. System Executables
+
+- In Linux/Unix shells (like Bash), many commands exist in two distinct versions:
+
+  - Shell Built-in: The functionality is compiled directly into the shell itself. No external program is launched.
+
+  - System Executable: An actual binary file located on the hard drive that the operating system runs as a separate process.
+
+- Checking Command Types
+  - You can determine how a command is being executed by using the type command:
+  - `type kill` => Returns: kill is a shell built-in
+  - `type echo` => Returns: echo is a shell built-in
+  - `type cut` => Returns: cut is /usr/bin/cut (indicating it is an external program)
+
+### Locating the System Executable
+
+- Even if a command is a shell built-in, an executable file usually still exists in the system directory to remain compliant with the POSIX standard.
+
+- Because type defaults to showing the built-in version, you can locate the physical path of the standalone executable using:
+
+```bash
+which kill # in Bash
+
+where kill # in Zsh
+```
+
+### Comparing `kill -l` (Built-in) vs. `usr/bin/kill -l` (Executable)
+
+| Feature | Bash Built-in (`kill -l`) | System Executable (`/bin/kill -l`) |
+|---|---|---|
+| Formatting | Clean layout, lists both signal numbers and full names (e.g., `1) SIGHUP`) | Different layout, often omits the `SIG` prefix (e.g., `HUP` instead of `SIGHUP`) |
+| Signal Availability | Includes a comprehensive list of standard and real-time signals | May exclude certain advanced or system-specific signals |
+
+![kill -l vs usr/bin/kill -l](static/images/image_0042.png)
+
+### Cross-Shell Variations
+
+- Because built-ins are written by shell developers, the output of the exact same command can vary drastically if you switch shells:
+
+- Running `kill -l` in **Bash** produces a different visual format than running `kill -l` in **Zsh**.
+
+- Key Takeaway: If you notice a change in command output or behavior when switching systems or terminals, it is likely not a system error; it is simply a reflection of different shell implementations.
 
 # Linux Software Management
 
