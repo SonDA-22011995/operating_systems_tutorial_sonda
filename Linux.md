@@ -168,6 +168,8 @@
     - [The Danger of Zombie Processes](#the-danger-of-zombie-processes)
     - [Identifying and Resolving Zombies](#identifying-and-resolving-zombies)
   - [Process states](#process-states)
+    - [Running State - R](#running-state---r)
+    - [Sleeping / Interruptible Sleep State - S](#sleeping--interruptible-sleep-state---s)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2445,6 +2447,22 @@ ps -elf | grep "[Z] "
 | `Z`   | A defunct or “zombie” process. This is a child process that has terminated but has not been cleaned up by its parent. |
 | `<`   | A high-priority process. It’s possible to grant more importance to a process, giving it more time on the CPU. This property of a process is called niceness. A process with high priority is said to be less nice because it’s taking more of the CPU’s time, which leaves less for everybody else. |
 | `N`   | A low-priority process. A process with low priority (a nice process) will get processor time only after other processes with higher priority have been serviced. |
+
+### Running State - R
+
+- The process is actively executing code on a CPU core.
+
+- Common Misconception: A program being "open" visually on your desktop does not mean it is in the R state from a kernel perspective.
+
+- Behavior: Most modern applications (like Firefox or an idle terminal) spend the vast majority of their time idling. They only spike into the R state for fractions of a millisecond when executing an action—such as calculating a blinking text cursor or rendering a new webpage layout—before instantly returning to a restful state.
+
+### Sleeping / Interruptible Sleep State - S
+
+- This is the default resting state for almost all active programs on your machine.
+
+- Behavior: The process is entirely idle and consuming zero CPU resources, waiting for an outside event or trigger to wake it up (e.g., a keyboard keystroke, a timer expiration, or an incoming network packet).
+
+- Handling: It is fully responsive to system signals. If you send a signal to a sleeping process, it instantly wakes up to process the command.
 
 # Linux Software Management
 
