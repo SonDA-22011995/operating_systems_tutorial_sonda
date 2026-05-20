@@ -167,6 +167,7 @@
     - [Why Do Zombies Happen?](#why-do-zombies-happen)
     - [The Danger of Zombie Processes](#the-danger-of-zombie-processes)
     - [Identifying and Resolving Zombies](#identifying-and-resolving-zombies)
+  - [Process states](#process-states)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2432,6 +2433,18 @@ ps -elf | grep "[Z] "
 - Resolving Zombies
   - Resolution Method 1 (Manual Reaping): You can manually send a SIGCHLD signal to the parent process to remind it to check its children. However, if the parent is frozen or poorly programmed, it will likely continue ignoring the signal.
   - Resolution Method 2 (Killing the Parent): The most effective way to eliminate a zombie process is to kill its parent process. Once the parent dies, the zombie becomes an orphan and is adopted by the init or systemd process. init immediately recognizes the zombie state, reads its exit status, and cleans it out of the process table cleanly.
+
+## Process states
+
+| State | Meaning                                                                               |
+|-------|---------------------------------------------------------------------------------------|
+| `R`   | Running. This means the process is running or ready to run. |
+| `S`   | Sleeping. The process is not running; rather, it is waiting for an event, such as a keystroke or network packet. |
+| `D`   | Uninterruptible sleep. The process is waiting for I/O such as a disk drive. |
+| `T`   | Stopped. The process has been instructed to stop. |
+| `Z`   | A defunct or “zombie” process. This is a child process that has terminated but has not been cleaned up by its parent. |
+| `<`   | A high-priority process. It’s possible to grant more importance to a process, giving it more time on the CPU. This property of a process is called niceness. A process with high priority is said to be less nice because it’s taking more of the CPU’s time, which leaves less for everybody else. |
+| `N`   | A low-priority process. A process with low priority (a nice process) will get processor time only after other processes with higher priority have been serviced. |
 
 # Linux Software Management
 
