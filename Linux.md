@@ -163,6 +163,10 @@
   - [What Happens When a Process Exits?](#what-happens-when-a-process-exits)
     - [Understanding Exit Codes](#understanding-exit-codes)
   - [Orphan Processes](#orphan-processes)
+  - [Zombie Processes](#zombie-processes)
+    - [Why Do Zombies Happen?](#why-do-zombies-happen)
+    - [The Danger of Zombie Processes](#the-danger-of-zombie-processes)
+    - [Identifying and Resolving Zombies](#identifying-and-resolving-zombies)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2396,6 +2400,38 @@ ps -elf | grep $(pgrep firefox)
 # The parent firefox process id: 4 S sonda       2251       1  0  80   0 -  5448 -      11:08 ?        00:00:01 /usr/lib/systemd/systemd --user
 
 ```
+
+## Zombie Processes
+
+- A **zombie process** is a process that has completed execution but still occupies an active entry in the operating system's process table.
+
+### Why Do Zombies Happen?
+
+- A zombie is created when a child terminates, but its parent process fails to execute the wait system call to read the child's exit status. For a brief millisecond, every finished process is a zombie; it only becomes a problem if it remains stuck in that state permanently.
+
+### The Danger of Zombie Processes
+
+- Resource Usage: Zombies do not consume memory or CPU power.
+- Process Table Overflow: Their critical threat is that they permanently consume an entry in the system's process table. Operating systems have a rigid upper limit on total concurrent process IDs (viewable via specific kernel limits, which can be up to ~4 million). An excessive breakout of zombie processes can exhaust available PIDs, preventing the system from launching any new applications.
+
+```bash
+# get the maximun number of processes
+cat /proc/sys/kernel/pid_max
+
+# 4194304
+```
+
+### Identifying and Resolving Zombies
+
+- Identification: In the process utility ps (such as `ps -efl`), zombie processes are explicitly marked under the status column with a `Z`.
+
+```bash
+ps -elf | grep "[Z] "
+```
+
+- Resolving Zombies
+  - Resolution Method 1 (Manual Reaping): You can manually send a SIGCHLD signal to the parent process to remind it to check its children. However, if the parent is frozen or poorly programmed, it will likely continue ignoring the signal.
+  - Resolution Method 2 (Killing the Parent): The most effective way to eliminate a zombie process is to kill its parent process. Once the parent dies, the zombie becomes an orphan and is adopted by the init or systemd process. init immediately recognizes the zombie state, reads its exit status, and cleans it out of the process table cleanly.
 
 # Linux Software Management
 
