@@ -160,6 +160,8 @@
   - [The killall command](#the-killall-command)
     - [Overview of the killall Command](#overview-of-the-killall-command)
     - [Sending Specific Signals](#sending-specific-signals)
+  - [What Happens When a Process Exits?](#what-happens-when-a-process-exits)
+    - [Understanding Exit Codes](#understanding-exit-codes)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2332,6 +2334,38 @@ where kill # in Zsh
 - Just like kill, killall can be used to send custom signals (such as SIGINT, SIGHUP, or SIGSTOP) to a group of processes matching a name. However, the syntax varies depending on your platform.
 
 - Syntax: `killall -s SIGINT [program name]`
+
+## What Happens When a Process Exits?
+
+- When a process finishes executing, the operating system goes through a specific cleanup lifecycle to free up resources and inform the parent process.
+
+- The Standard Exit Process:
+  
+  - Resource Release: Most of the process's allocated resources (such as RAM chunks and CPU allocations) are instantly freed back to the kernel for other applications to use.
+
+  - Parent Notification (SIGCHLD): The process cannot be immediately deleted from the system because it must preserve its exit status (or exit code) for its parent. The Linux kernel sends a SIGCHLD signal to the parent process to inform it that its child has terminated.
+
+  - Process Reaping: The parent process triggers a system call (wait or waitpid) to read the child's exit status. Once collected, the process is considered "reaped," and the operating system completely erases its entry from the system's process table.
+
+### Understanding Exit Codes
+
+- You can access the exit status of the most recently executed foreground process in Bash using the special variable `$?`.
+
+  - 0: Indicates success. The program completed normally without errors (e.g., closing Firefox normally).
+
+  - 1 to 255: Indicates an error. A specific non-zero number usually matches a distinct failure mode (e.g., using cat on a non-existent file returns 1).
+
+```bash
+# open terminal
+firefox
+
+# close firefox
+echo $? # output 0
+
+cat axcdf.txt # axcdf.txt doesn't exits
+echo $? # output 1
+
+```
 
 # Linux Software Management
 
