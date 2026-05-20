@@ -172,6 +172,7 @@
     - [Sleeping / Interruptible Sleep State - S](#sleeping--interruptible-sleep-state---s)
     - [Uninterruptible Sleep State - D](#uninterruptible-sleep-state---d)
     - [Traced / Stopped State (T)](#traced--stopped-state-t)
+    - [Zombie State - Z](#zombie-state---z)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2499,6 +2500,16 @@ ps -elf | grep $(pgrep ping)
 
 # 4 T sonda       8532    4498  0  80   0 -  4743 -      17:21 pts/1    00:00:00 ping google.com
 ```
+
+### Zombie State - Z
+
+- The final phase of a process's lifespan before it is completely erased from existence.
+
+- Behavior: The process has successfully finished executing and all of its RAM and CPU shares have been returned to the system. However, its structural metadata shell remains stuck inside the system's process table until its parent reads its final exit status code.
+
+- Catching a Zombie: Because healthy parent applications read exit codes within fractions of a millisecond, catching a normal process in the Z state manually is almost impossible without automation.
+
+- The Sleeping Parent Exception: If a parent process is temporarily blocked in an Uninterruptible Sleep (D) state, it cannot respond to the kernel's SIGCHLD notification. During this specific window, the deceased child process will safely remain a visible zombie (Z) until the parent wakes up and cleans the process table entry.
 
 # Linux Software Management
 
