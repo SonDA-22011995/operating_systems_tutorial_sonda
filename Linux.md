@@ -141,7 +141,7 @@
     - [What are Signals?](#what-are-signals)
     - [The Operating System Role](#the-operating-system-role)
     - [What kind of messages do signals deliver?](#what-kind-of-messages-do-signals-deliver)
-    - [Practical Example: SIGINT and Ctrl+C](#practical-example-sigint-and-ctrlc)
+    - [The signal: SIGINT (Ctrl+C)](#the-signal-sigint-ctrlc)
   - [The `kill` command](#the-kill-command)
   - [More signals we can send to a program](#more-signals-we-can-send-to-a-program)
     - [View all available signals on your system](#view-all-available-signals-on-your-system)
@@ -2116,7 +2116,7 @@ renice -n 19 $(pgrep firefox)
 
 ![signal](static/images/image_0040.png)
 
-### Practical Example: SIGINT and Ctrl+C
+### The signal: SIGINT (Ctrl+C)
 
 - The most common way users interact with signals is by pressing Ctrl+C in a terminal.
 
