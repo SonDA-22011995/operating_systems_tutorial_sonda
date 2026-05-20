@@ -2485,6 +2485,21 @@ ps -elf | grep "[Z] "
 
 - Resuming: Sending a SIGCONT (Continue) signal instantly wakes the process up, transitioning it back out of T to pick up execution exactly where it left off.
 
+```bash
+ping google.com
+
+# open the new terminal
+ps -elf | grep $(pgrep ping)
+
+# 4 S sonda       8532    4498  0  80   0 -  4743 -      17:21 pts/1    00:00:00 ping google.com
+# 0 R sonda       8576    8549  0  80   0 -   884 -      17:22 pts/0    00:00:00 grep --color=auto 8532
+
+kill -s SIGSTOP 8532
+ps -elf | grep $(pgrep ping)
+
+# 4 T sonda       8532    4498  0  80   0 -  4743 -      17:21 pts/1    00:00:00 ping google.com
+```
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
