@@ -171,6 +171,7 @@
     - [Running State - R](#running-state---r)
     - [Sleeping / Interruptible Sleep State - S](#sleeping--interruptible-sleep-state---s)
     - [Uninterruptible Sleep State - D](#uninterruptible-sleep-state---d)
+    - [Traced / Stopped State (T)](#traced--stopped-state-t)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2472,6 +2473,17 @@ ps -elf | grep "[Z] "
 - Behavior: The process is frozen while waiting for hardware/driver data to return. During this brief window, it cannot be interrupted by any standard signals (including SIGINT or SIGTERM).
 
 - The Kernel Safety Valve: Normally, this state lasts for mere milliseconds. However, if a buggy hardware driver hangs indefinitely, the process can become permanently stuck in the D state. In this scenario, even a forceful kill -9 (SIGKILL) may fail to remove it instantly, as the kernel itself must first finish processing or breaking the blocked system call.
+
+
+### Traced / Stopped State (T)
+
+- The process has been completely suspended or paused by user intervention or a developer utility.
+
+- Triggers: You can manually push a process into this state by sending a SIGSTOP signal (or by pausing it through a code debugger like ptrace).
+
+- Demonstration (Ping Utility): Running an active command like ping google.com initially leaves the process toggling primarily between S and R. Sending a SIGSTOP forcefully halts its execution, printing a suspended status to the shell and altering its process table state letter to T.
+
+- Resuming: Sending a SIGCONT (Continue) signal instantly wakes the process up, transitioning it back out of T to pick up execution exactly where it left off.
 
 # Linux Software Management
 
