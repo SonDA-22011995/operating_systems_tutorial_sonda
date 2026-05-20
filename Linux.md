@@ -162,6 +162,7 @@
     - [Sending Specific Signals](#sending-specific-signals)
   - [What Happens When a Process Exits?](#what-happens-when-a-process-exits)
     - [Understanding Exit Codes](#understanding-exit-codes)
+  - [Orphan Processes](#orphan-processes)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2364,6 +2365,35 @@ echo $? # output 0
 
 cat axcdf.txt # axcdf.txt doesn't exits
 echo $? # output 1
+
+```
+
+## Orphan Processes
+
+- An orphan process is a child process that continues running after its parent process has already terminated.
+
+- Adoption: To ensure every process has a parent to listen for its exit code, orphans are automatically "adopted" by an initialization process.
+
+- The Adoptive Parent: Historically, this is the main init process (PID 1). However, modern Linux systems using systemd often spin up user-specific systemd processes to manage user interface sessions.
+
+- Demonstration: If you launch Firefox from a terminal using nohup firefox (which prevents the terminal from passing its closure signal down to the browser) and close the terminal, Firefox's parent ID changes from the Bash shell's PID to the user-specific systemd process PID.
+
+```bash
+nohup firefox
+
+# open the new window and search the parent process id of firefox
+ps -elf | grep $(pgrep firefox)
+
+# Result is: 
+# The firefox process: 4 S sonda       3534    3515  8  80   0 - 825606 poll_s 11:17 pts/0   00:00:11 /snap/firefox/8306/usr/lib/firefox/firefox
+# The parent firefox process id: 0 S sonda       3515    3508  0  80   0 -  4985 do_wai 11:17 pts/0    00:00:00 bash
+
+# closing the terminal
+ps -elf | grep $(pgrep firefox)
+
+# Result is: 
+# The firefox process: 4 S sonda       3534    2251  8  80   0 - 825606 poll_s 11:17 pts/0   00:00:11 /snap/firefox/8306/usr/lib/firefox/firefox
+# The parent firefox process id: 4 S sonda       2251       1  0  80   0 -  5448 -      11:08 ?        00:00:01 /usr/lib/systemd/systemd --user
 
 ```
 
