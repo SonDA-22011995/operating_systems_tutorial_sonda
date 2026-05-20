@@ -170,6 +170,7 @@
   - [Process states](#process-states)
     - [Running State - R](#running-state---r)
     - [Sleeping / Interruptible Sleep State - S](#sleeping--interruptible-sleep-state---s)
+    - [Uninterruptible Sleep State - D](#uninterruptible-sleep-state---d)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2463,6 +2464,14 @@ ps -elf | grep "[Z] "
 - Behavior: The process is entirely idle and consuming zero CPU resources, waiting for an outside event or trigger to wake it up (e.g., a keyboard keystroke, a timer expiration, or an incoming network packet).
 
 - Handling: It is fully responsive to system signals. If you send a signal to a sleeping process, it instantly wakes up to process the command.
+
+### Uninterruptible Sleep State - D
+
+- A specialized and protected state typically triggered when a process makes a System Call to communicate directly with hardware via the kernel (most commonly during heavy Input/Output storage or network actions).
+
+- Behavior: The process is frozen while waiting for hardware/driver data to return. During this brief window, it cannot be interrupted by any standard signals (including SIGINT or SIGTERM).
+
+- The Kernel Safety Valve: Normally, this state lasts for mere milliseconds. However, if a buggy hardware driver hangs indefinitely, the process can become permanently stuck in the D state. In this scenario, even a forceful kill -9 (SIGKILL) may fail to remove it instantly, as the kernel itself must first finish processing or breaking the blocked system call.
 
 # Linux Software Management
 
