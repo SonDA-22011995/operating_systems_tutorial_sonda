@@ -2376,7 +2376,7 @@ echo $? # output 1
 
 - The Adoptive Parent: Historically, this is the main init process (PID 1). However, modern Linux systems using systemd often spin up user-specific systemd processes to manage user interface sessions.
 
-- Demonstration: If you launch Firefox from a terminal using nohup firefox (which prevents the terminal from passing its closure signal down to the browser) and close the terminal, Firefox's parent ID changes from the Bash shell's PID to the user-specific systemd process PID.
+- Demonstration: If you launch Firefox from a terminal using `nohup firefox` (which prevents the terminal from passing its closure signal down to the browser) and close the terminal, Firefox's parent ID changes from the Bash shell's PID to the user-specific systemd process PID.
 
 ```bash
 nohup firefox
