@@ -2017,8 +2017,7 @@ ps -lf -p 194
 | `-d [seconds]` | Adjusts the refresh delay interval (default is `3.0` seconds). Supports sub-second intervals. | `top -d 0.1` (Refreshes 10x per second) |
 | `-i` | Hides idle processes; displays only tasks actively utilizing CPU resources. | `top -i` |
 | `-c` | Toggles the command column to display the full command line/path instead of just the process name. | `top -c` |
-| `-o` | The alternative to interactive mode sorting
-is invoking the `-o` option parameter of the top command, which specifies the sorting field | `top -o %CPU` |
+| `-o` | The alternative to interactive mode sorting is invoking the `-o` option parameter of the top command, which specifies the sorting field | `top -o %CPU` |
 | `-b` | Starts  top in Batch mode, which could be useful for sending output from top to other programs or to a file | `top -b -o +%MEM \| head -n 17` |
 
 ### Interface & Display Management
