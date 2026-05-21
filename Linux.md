@@ -2006,6 +2006,8 @@ ps -lf -p 194
 - The top program displays a continuously updating (by default, every three seconds) display of the system processes listed in order of process activity
 - The name top comes from the fact that the top program is used to see the “top” processes on the system
 - The top display consists of two parts: a system summary at the top of the display, followed by a table of processes sorted by CPU activit
+- Alternative Tool:	`htop` (More user-friendly, features interactive sorting/signals, but requires manual installation).
+  - Installation on Debian-based distributions:: `sudo apt install htop`
 
 ### Using the `top` command
 
@@ -2028,7 +2030,8 @@ ps -lf -p 194
   - Press **s** on a highlighted field to set it as the primary sorting criteria (e.g., sorting by Memory usage instead of %CPU).
   - Press **q** or **Esc** to return to the main monitor.
 - **z** (Color Mode): Toggles color mapping on/off.
-- **Z** (Color Configuration): Opens the color customization scheme. Select a target zone (e.g., T for task info, H for column headers), pick a color code using the arrow keys, and press Enter to commit.
+- **Z** (Color Configuration): Opens the color customization scheme. 
+  - Select a target zone (e.g., T for task info, H for column headers), pick a color code using the arrow keys, and press Enter to commit.
 
 ![Interface & Display Management](static/images/image_0043.png)
 
