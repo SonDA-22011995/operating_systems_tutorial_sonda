@@ -2024,7 +2024,7 @@ ps -lf -p 194
 
 - **f** (Field Management): Opens the column management screen. 
   - Use **Arrow Keys** to navigate.
-  - Press **Space** o **d** to toggle a column's visibility (e.g., enabling Parent Process ID—PPID).
+  - Press **Space** or **d** to toggle a column's visibility (e.g., enabling Parent Process ID—PPID).
   - Press **s** on a highlighted field to set it as the primary sorting criteria (e.g., sorting by Memory usage instead of %CPU).
   - Press **q** or **Esc** to return to the main monitor.
 - **z** (Color Mode): Toggles color mapping on/off.
