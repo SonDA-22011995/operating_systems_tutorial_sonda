@@ -2022,10 +2022,11 @@ ps -lf -p 194
 
 ### Interface & Display Management
 
-- **f** (Field Management): Opens the column management screen. Use **Arrow Keys** to navigate.
-- Press **Space** to toggle a column's visibility (e.g., enabling Parent Process ID—PPID).
-- Press **s** on a highlighted field to set it as the primary sorting criteria (e.g., sorting by Memory usage instead of %CPU).
-- Press **q** or **Esc** to return to the main monitor.
+- **f** (Field Management): Opens the column management screen. 
+  - Use **Arrow Keys** to navigate.
+  - Press **Space** to toggle a column's visibility (e.g., enabling Parent Process ID—PPID).
+  - Press **s** on a highlighted field to set it as the primary sorting criteria (e.g., sorting by Memory usage instead of %CPU).
+  - Press **q** or **Esc** to return to the main monitor.
 - **z** (Color Mode): Toggles color mapping on/off.
 - **Z** (Color Configuration): Opens the color customization scheme. Select a target zone (e.g., T for task info, H for column headers), pick a color code using the arrow keys, and press Enter to commit.
 
