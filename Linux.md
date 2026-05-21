@@ -132,6 +132,10 @@
     - [Select by PID](#select-by-pid)
     - [Filtering and Navigation](#filtering-and-navigation)
   - [Monitoring system activity - `top` command](#monitoring-system-activity---top-command)
+    - [Overview](#overview)
+    - [Using the `top` command](#using-the-top-command)
+    - [Interface \& Display Management](#interface--display-management)
+    - [`top` information Fields](#top-information-fields)
   - [How does multitasking work?](#how-does-multitasking-work)
   - [The Priority of a Process](#the-priority-of-a-process)
     - [What is Niceness?](#what-is-niceness)
@@ -1997,10 +2001,44 @@ ps -lf -p 194
 
 ## Monitoring system activity - `top` command
 
-- Syntax: `top [OPTIONS]`
+### Overview
+
 - The top program displays a continuously updating (by default, every three seconds) display of the system processes listed in order of process activity
 - The name top comes from the fact that the top program is used to see the “top” processes on the system
 - The top display consists of two parts: a system summary at the top of the display, followed by a table of processes sorted by CPU activit
+
+### Using the `top` command
+
+- Syntax: `top [OPTIONS]`
+
+| Flag | Purpose | Example / Behavior |
+|------|---------|---------------------|
+| `-u [username]` | Filters the process list to only display tasks owned by a specific user. | `top -u nginx` |
+| `-d [seconds]` | Adjusts the refresh delay interval (default is `3.0` seconds). Supports sub-second intervals. | `top -d 0.1` (Refreshes 10x per second) |
+| `-i` | Hides idle processes; displays only tasks actively utilizing CPU resources. | `top -i` |
+| `-c` | Toggles the command column to display the full command line/path instead of just the process name. | `top -c` |
+| `-o` | The alternative to interactive mode sorting
+is invoking the `-o` option parameter of the top command, which specifies the sorting field | `top -o %CPU` |
+| `-b` | Starts  top in Batch mode, which could be useful for sending output from top to other programs or to a file | `top -b -o +%MEM \| head -n 17` |
+
+### Interface & Display Management
+
+- **f** (Field Management): Opens the column management screen.
+
+- Use **Arrow Keys** to navigate.
+
+  - Press **Space** to toggle a column's visibility (e.g., enabling Parent Process ID—PPID).
+
+  - Press **s** on a highlighted field to set it as the primary sorting criteria (e.g., sorting by Memory usage instead of %CPU).
+
+  - Press **q** or **Esc** to return to the main monitor.
+
+  - **z** (Color Mode): Toggles color mapping on/off.
+
+  - **Z** (Color Configuration): Opens the color customization scheme. Select a target zone (e.g., T for task info, H for column headers), pick a color code using the arrow keys, and press Enter to commit.
+
+### `top` information Fields
+
 - Explain each field in the system summary:
   - `top - 14:59:20 up 6:30, 2 users, load average: 0.07, 0.02, 0.00`
     - top: This is the name of the program
