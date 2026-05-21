@@ -136,7 +136,11 @@
     - [Using the `top` command](#using-the-top-command)
     - [Interface \& Display Management](#interface--display-management)
     - [Process Management](#process-management)
+    - [Configuration Persistence](#configuration-persistence)
     - [`top` information Fields](#top-information-fields)
+  - [Monitoring system activity - `htop` command](#monitoring-system-activity---htop-command)
+    - [Installation across Distributions](#installation-across-distributions)
+    - [Function Key Shortcuts (The Lower Menu Bar)](#function-key-shortcuts-the-lower-menu-bar)
   - [How does multitasking work?](#how-does-multitasking-work)
   - [The Priority of a Process](#the-priority-of-a-process)
     - [What is Niceness?](#what-is-niceness)
@@ -2048,6 +2052,14 @@ ps -lf -p 194
   - Prompt asks for the PID.
   - Prompt asks for the nice value (positive values lower priority, negative values raise priority—requires root/sudo).
 
+### Configuration Persistence
+
+- By default, any modifications made during an interactive session (colors, custom columns, sort order) are lost upon exiting.
+
+- Saving Layouts (Shift + W): Pressing W writes the current configuration to a dotfile in the user's home directory (~/.toprc).
+
+- Privilege Boundary: Configurations are user-dependent. Saving a layout while running sudo top writes to the root user's profile (/root/.toprc). Running top as a standard user afterwards will still load the factory defaults until saved separately.
+
 ### `top` information Fields
 
 - Explain each field in the system summary:
@@ -2082,6 +2094,37 @@ ps -lf -p 194
 
 ![top command](static/images/image_0039.png)
 
+
+## Monitoring system activity - `htop` command
+
+### Installation across Distributions
+
+- Unlike top, which is universally pre-installed, htop generally requires explicit installation via your distribution's package manager:
+
+- Ubuntu / Debian:
+
+```bash
+sudo apt install htop   # or apt-get install htop
+```
+
+- CentOS / RHEL / Fedora:
+
+```bash
+sudo dnf install htop
+```
+
+### Function Key Shortcuts (The Lower Menu Bar)
+
+- The bottom of the htop screen displays an interactive menu driven by the keyboard's Function keys (F1 through F10):
+
+| Key | Action | Functionality |
+|---|---|---|
+| `F2` | Setup | Opens a comprehensive customization dashboard. You can add metric widgets (like a system clock or CPU temperature), alter color themes, and toggle display variables. |
+| `F5` | Tree View | Toggles between a flat process list and an indented parent-child hierarchy tree to track which process launched another. |
+| `F7` | Nice - | Decreases the niceness value (raises process scheduling priority). Requires root/sudo privileges. |
+| `F8` | Nice + | Increases the niceness value (lowers process scheduling priority, letting it yield to other tasks). |
+| `F9` | Kill | Opens a sidebar listing all available Linux kernel signals (e.g., `SIGTERM`, `SIGKILL`). Allows safe signal dispatching without typing PIDs. |
+| `F10` | Quit | Gracefully exits the application and saves any UI modifications made during the session to the user's home configuration file. |
 
 ## How does multitasking work?
 
