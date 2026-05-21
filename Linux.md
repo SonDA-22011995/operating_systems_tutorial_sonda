@@ -130,7 +130,7 @@
     - [Formatting and Detail](#formatting-and-detail)
     - [Hierarchy and Trees](#hierarchy-and-trees)
     - [Select by PID](#select-by-pid)
-    - [Viewing real-time process - `top` command](#viewing-real-time-process---top-command)
+  - [Monitoring system activity - `top` command](#monitoring-system-activity---top-command)
     - [Filtering and Navigation](#filtering-and-navigation)
   - [How does multitasking work?](#how-does-multitasking-work)
   - [The Priority of a Process](#the-priority-of-a-process)
@@ -1986,7 +1986,7 @@ ps -lf -p 194
 # 4 S syslog       194       1  0  80   0 - 55627 -      17:30 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
 ```
 
-### Viewing real-time process - `top` command
+## Monitoring system activity - `top` command
 
 - Syntax: `top [OPTIONS]`
 - The top program displays a continuously updating (by default, every three seconds) display of the system processes listed in order of process activity
