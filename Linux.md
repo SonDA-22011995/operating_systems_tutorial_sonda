@@ -2030,6 +2030,10 @@ ps -lf -p 194
 - **z** (Color Mode): Toggles color mapping on/off.
 - **Z** (Color Configuration): Opens the color customization scheme. Select a target zone (e.g., T for task info, H for column headers), pick a color code using the arrow keys, and press Enter to commit.
 
+![Interface & Display Management](static/images/image_0043.png)
+
+![Interface & Display Management](static/images/image_0044.png)
+
 ### `top` information Fields
 
 - Explain each field in the system summary:
