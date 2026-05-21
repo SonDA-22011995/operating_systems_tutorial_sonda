@@ -2042,7 +2042,7 @@ ps -lf -p 194
 
 - k (Kill Process): Sends an operating system signal to a targeted process.
   - Prompt asks for the PID (Process ID).
-  - Prompt asks for the signal type (defaults to 15 / SIGTERM for a clean exit; use 9 / SIGKILL to force-terminate unresponsive processes).
+  - Prompt asks for the signal type (defaults to 15 / SIGTERM for a clean exit; use 9 / SIGKILL to force-terminate unresponsive processes, type `kill -l` command to see signal index).
 
 - r (Renice Process): Alters the scheduling priority (niceness) of an active process.
   - Prompt asks for the PID.
