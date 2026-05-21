@@ -130,8 +130,8 @@
     - [Formatting and Detail](#formatting-and-detail)
     - [Hierarchy and Trees](#hierarchy-and-trees)
     - [Select by PID](#select-by-pid)
-  - [Monitoring system activity - `top` command](#monitoring-system-activity---top-command)
     - [Filtering and Navigation](#filtering-and-navigation)
+  - [Monitoring system activity - `top` command](#monitoring-system-activity---top-command)
   - [How does multitasking work?](#how-does-multitasking-work)
   - [The Priority of a Process](#the-priority-of-a-process)
     - [What is Niceness?](#what-is-niceness)
@@ -1986,6 +1986,15 @@ ps -lf -p 194
 # 4 S syslog       194       1  0  80   0 - 55627 -      17:30 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
 ```
 
+### Filtering and Navigation
+
+- Because the output of ps -ef can be massive, the lecture suggests two main ways to handle the data:
+
+- Filtering with grep: Pipe the output to search for specific terms: `ps -ef | grep firefox`
+
+- Scrolling with less: If you want to browse the entire list manually without it disappearing off the top of your terminal: `ps -ef | less`
+
+
 ## Monitoring system activity - `top` command
 
 - Syntax: `top [OPTIONS]`
@@ -2024,13 +2033,6 @@ ps -lf -p 194
 
 ![top command](static/images/image_0039.png)
 
-### Filtering and Navigation
-
-- Because the output of ps -ef can be massive, the lecture suggests two main ways to handle the data:
-
-- Filtering with grep: Pipe the output to search for specific terms: `ps -ef | grep firefox`
-
-- Scrolling with less: If you want to browse the entire list manually without it disappearing off the top of your terminal: `ps -ef | less`
 
 ## How does multitasking work?
 
