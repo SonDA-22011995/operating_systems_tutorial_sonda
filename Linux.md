@@ -135,6 +135,7 @@
     - [Overview](#overview)
     - [Using the `top` command](#using-the-top-command)
     - [Interface \& Display Management](#interface--display-management)
+    - [Process Management](#process-management)
     - [`top` information Fields](#top-information-fields)
   - [How does multitasking work?](#how-does-multitasking-work)
   - [The Priority of a Process](#the-priority-of-a-process)
@@ -2036,6 +2037,16 @@ ps -lf -p 194
 ![Interface & Display Management](static/images/image_0043.png)
 
 ![Interface & Display Management](static/images/image_0044.png)
+
+### Process Management
+
+- k (Kill Process): Sends an operating system signal to a targeted process.
+  - Prompt asks for the PID (Process ID).
+  - Prompt asks for the signal type (defaults to 15 / SIGTERM for a clean exit; use 9 / SIGKILL to force-terminate unresponsive processes).
+
+- r (Renice Process): Alters the scheduling priority (niceness) of an active process.
+  - Prompt asks for the PID.
+  - Prompt asks for the nice value (positive values lower priority, negative values raise priority—requires root/sudo).
 
 ### `top` information Fields
 
