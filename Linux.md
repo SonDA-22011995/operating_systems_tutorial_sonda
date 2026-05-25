@@ -2649,19 +2649,6 @@ ping google.com
 ping -c 10 google.com &
 ```
 
-- Best Practices: Redirecting Output: To keep your terminal clean, it is highly recommended to redirect the output of a background job to a file:
-
-```bash
-ping -c 10 google.com > ping.txt &
-```
-
-![Background Jobs](static/images/image_0045.png)
-
-- Status Updates: 
-  - Bash does not always alert you the exact millisecond a background job finishes. Instead, it checks the status and prints a Done notification right after you execute your next command in the terminal.
-
-
-
 ### Key Behaviors of Background Jobs:
 
 - Terminal Control: The shell immediately gives you back control so you can type and execute other commands while the background job runs.
@@ -2672,6 +2659,16 @@ ping -c 10 google.com > ping.txt &
 
 - Terminal Output: By default, a background job will still print its standard output directly to your terminal screen, which can become messy and confusing.
 
+- Status Updates: 
+  - Bash does not always alert you the exact millisecond a background job finishes. Instead, it checks the status and prints a Done notification right after you execute your next command in the terminal.
+
+- Best Practices: Redirecting Output: To keep your terminal clean, it is highly recommended to redirect the output of a background job to a file:
+
+```bash
+ping -c 10 google.com > ping.txt &
+```
+
+![Background Jobs](static/images/image_0045.png)
 
 # Linux Software Management
 
