@@ -2632,7 +2632,7 @@ ps -elf | grep $(pgrep ping)
 
 - You can only run one foreground job at a time per terminal session.
 
-- If a foreground job gets stuck or runs indefinitely (like a standard ping command), you can interrupt and terminate it by pressing Ctrl + C.
+- If a foreground job gets stuck or runs indefinitely (like a standard ping command), you can interrupt and terminate it by pressing **Ctrl + C**.
 
 ## Background Jobs
 
