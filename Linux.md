@@ -198,6 +198,7 @@
     - [Resume in the Foreground - `fg`](#resume-in-the-foreground---fg)
     - [How can we kill a job (Terminating Jobs)?- `kill`](#how-can-we-kill-a-job-terminating-jobs--kill)
       - [The Critical Role of the Percentage Sign (%)](#the-critical-role-of-the-percentage-sign-)
+      - [Bash Built-in kill vs. System kill](#bash-built-in-kill-vs-system-kill)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2803,6 +2804,16 @@ kill -s SIGINT %1
 |----------|-----------------------------|-----------------------------------------------------------|
 | `kill 2` | A system process with PID 2 | No such process (usually fails because PID 2 is a protected system process or doesn't exist). |
 | `kill %2` | Bash Job ID `[2]` | Successfully terminates the background/stopped job running in your current shell. |
+
+#### Bash Built-in kill vs. System kill
+
+- Jobs are strictly a shell feature managed internally by Bash, not by the global operating system. Because of this, you must rely on Bash's internal tools to manage them.
+
+- The Bash Built-in: When you type just kill, Bash uses its own built-in command, which perfectly understands the % job syntax.
+
+- The OS Binary (/bin/kill or /usr/bin/kill): If you accidentally call the external operating system executable by providing a path, it will fail. The global OS binary completely lacks the code to read Bash's internal job table and will throw a syntax error.
+
+- Rule of Thumb: Always use the plain kill command without any absolute paths when trying to terminate job IDs.
 
 # Linux Software Management
 
