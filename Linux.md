@@ -2736,7 +2736,7 @@ fg 1 # or fg %1
 
 - If a job is currently running in the foreground and occupying your terminal, you can temporarily pause it and regain control of your shell.
 
-  - The Suspend Shortcut: Pressing **Ctrl + Z** will suspend the active foreground job.
+  - The Suspend Shortcut: Pressing **Ctrl + Z** will suspend the active **foreground job**.
 
   - Under the Hood (**SIGTSTP**): This keyboard shortcut sends a **SIGTSTP (Signal Terminal Stop)** to the program. Think of it as a polite request asking the program to pause execution and hand control back to the terminal. (Unlike **SIGSTOP**, a program can technically choose to ignore **SIGTSTP**, though most obey it).
 
@@ -2755,6 +2755,8 @@ jobs
 ### Resuming a Suspended Job
 
 - Once a job is stopped, you have two choices for how to wake it up and resume its execution
+- Signal Notification (**SIGCONT**): Whenever you resume a job (using either `fg` or `bg`), Bash sends a **SIGCONT** (Signal Continue) to the process. This lets the program know it has been awoken, allowing it to perform necessary tasks like reconnecting to a server or refreshing its state.
+- The `fg` and `bg` command only pulls background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running `fg` or `bg` will do nothing
 
 ### Resume in the Background - `bg`
 
