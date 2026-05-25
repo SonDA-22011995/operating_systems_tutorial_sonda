@@ -2703,9 +2703,21 @@ jobs
 - Once a job is brought back to the foreground, it behaves as if you typed it without the `&` ampersand—occupying the shell and pausing terminal input until it finishes or is canceled.
 - The `fg` command only pulls background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running fg will do nothing
 
-- Usage Syntax:
+- Usage Syntax:  `fg [%job-ID]`
   - `fg`: Brings the current default job (marked with the `+` sign) to the foreground.
   - `fg %1` or `fg 1`: Directly targets and brings a specific job to the foreground by referencing its Job ID.
+
+```bash
+ping google.com >/dev/null &
+# [1] 901
+ping google.com >/dev/null &
+# [2] 902
+jobs
+# [1]-  Running                 ping google.com > /dev/null &
+# [2]+  Running                 ping google.com > /dev/null &
+
+fg 1 # or fg %1
+```
 
 # Linux Software Management
 
