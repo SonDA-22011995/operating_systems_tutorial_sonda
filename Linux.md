@@ -188,6 +188,8 @@
   - [Foreground Jobs](#foreground-jobs)
   - [Background Jobs](#background-jobs)
     - [Key Behaviors of Background Jobs:](#key-behaviors-of-background-jobs)
+  - [Background Job management in Bash](#background-job-management-in-bash)
+    - [Listing Background Jobs](#listing-background-jobs)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2669,6 +2671,31 @@ ping -c 10 google.com > ping.txt &
 ```
 
 ![Background Jobs](static/images/image_0045.png)
+
+## Background Job management in Bash
+
+### Listing Background Jobs
+
+- The `jobs` Command: When running multiple tasks simultaneously in the background, typing jobs in the terminal provides a complete status overview.
+
+- The jobs command only displays background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running jobs will show nothing
+
+- **Tracking Status**: It displays the sequential Job ID (e.g., [1], [2]) along with the current state (Running or Done) and the exact command being executed.
+
+- **The Plus** (`+`) **Symbol**: In the jobs output, the most recently modified or interacted-with job is marked with a `+` symbol, designating it as the current default job.
+
+![Listing Background Jobs](static/images/image_0046.png)
+
+```bash
+ping google.com >/dev/null &
+# [1] 901
+ping google.com >/dev/null &
+# [2] 902
+jobs
+# [1]-  Running                 ping google.com > /dev/null &
+# [2]+  Running                 ping google.com > /dev/null &
+```
+
 
 # Linux Software Management
 
