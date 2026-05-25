@@ -196,6 +196,8 @@
     - [Resuming a Suspended Job](#resuming-a-suspended-job)
     - [Resume in the Background - `bg`](#resume-in-the-background---bg)
     - [Resume in the Foreground - `fg`](#resume-in-the-foreground---fg)
+    - [How can we kill a job (Terminating Jobs)?- `kill`](#how-can-we-kill-a-job-terminating-jobs--kill)
+      - [The Critical Role of the Percentage Sign (%)](#the-critical-role-of-the-percentage-sign-)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2773,6 +2775,34 @@ jobs
 - Syntax: `fg %<job_id>` (e.g., `fg %1`)
 
 - Behavior: The job wakes up, takes over your terminal screen again, and will continue running until it finishes or you press **Ctrl + Z/Ctrl + C** again.
+
+### How can we kill a job (Terminating Jobs)?- `kill`
+
+- Just like you can terminate a system process using its Process ID (PID), you can use the built-in kill command to terminate a Bash job using its Job ID.
+
+- Default Behavior (**SIGTERM**): Running `kill %<job_id>` sends a **SIGTERM** (Signal 15 / Terminate) to the job. This politely asks the program to clean up and shut itself down.
+
+- Forced Termination (**SIGKILL**): If a job is frozen and refuses to close, you can force-kill it by specifying the absolute kill signal: 
+
+```bash
+kill -9 %2`
+```
+
+- The `kill %<job_id>` command only pulls background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running `kill %<job_id>` will do nothing
+
+```bash
+kill -s SIGINT %1
+# -bash: kill: %1: no such job
+```
+
+#### The Critical Role of the Percentage Sign (%)
+
+- The most important takeaway for syntax is the % prefix. Bash needs to know whether you are referring to a system-wide Process ID or a shell-specific Job ID.
+
+| Command Syntax | What Bash Looks For | Result if Incorrect |
+|----------|-----------------------------|-----------------------------------------------------------|
+| `kill 2` | A system process with PID 2 | No such process (usually fails because PID 2 is a protected system process or doesn't exist). |
+| `kill %2` | Bash Job ID `[2]` | Successfully terminates the background/stopped job running in your current shell. |
 
 # Linux Software Management
 
