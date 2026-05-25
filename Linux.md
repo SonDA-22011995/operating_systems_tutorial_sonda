@@ -2621,7 +2621,8 @@ ps -elf | grep $(pgrep ping)
 
 ### Job vs. Process
 
-- A single job can consist of multiple programs/processes. For example, when you pipe two commands together (`command1 | command2`), both programs run simultaneously as two separate processes, but they are managed as a single job because they were initiated by one command.
+- A single job can consist of multiple programs/processes. 
+- For example, when you pipe two commands together (`command1 | command2`), both programs run simultaneously as two separate processes, but they are managed as a single job because they were initiated by one command.
 
 ## Foreground Jobs
 
