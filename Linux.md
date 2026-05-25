@@ -190,6 +190,7 @@
     - [Key Behaviors of Background Jobs:](#key-behaviors-of-background-jobs)
   - [Background Job management in Bash](#background-job-management-in-bash)
     - [Listing Background Jobs](#listing-background-jobs)
+    - [Bringing Jobs to the Foreground](#bringing-jobs-to-the-foreground)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2678,7 +2679,7 @@ ping -c 10 google.com > ping.txt &
 
 - The `jobs` Command: When running multiple tasks simultaneously in the background, typing jobs in the terminal provides a complete status overview.
 
-- The jobs command only displays background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running jobs will show nothing
+- The `jobs` command only displays background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running jobs will show nothing
 
 - **Tracking Status**: It displays the sequential Job ID (e.g., [1], [2]) along with the current state (Running or Done) and the exact command being executed.
 
@@ -2696,6 +2697,15 @@ jobs
 # [2]+  Running                 ping google.com > /dev/null &
 ```
 
+### Bringing Jobs to the Foreground
+
+- If you need to check on a background task or take control of it, you can pull it back to the foreground using the fg (foreground) command.
+- Once a job is brought back to the foreground, it behaves as if you typed it without the `&` ampersand—occupying the shell and pausing terminal input until it finishes or is canceled.
+- The `fg` command only pulls background tasks that were started within that specific Terminal window (or shell session). If you open a new Terminal, even as the same user, running fg will do nothing
+
+- Usage Syntax:
+  - `fg`: Brings the current default job (marked with the `+` sign) to the foreground.
+  - `fg %1` or `fg 1`: Directly targets and brings a specific job to the foreground by referencing its Job ID.
 
 # Linux Software Management
 
