@@ -2615,6 +2615,9 @@ ps -elf | grep $(pgrep ping)
 ## What is a Job?
 
 - Definition: In Bash, a job is simply a command that is currently being executed.
+- A job can consist out of mutiple programs: `cat file.txt | wc`
+  - In this case, we have 2 programs that are being executed at the same time: cat and wc
+  - Both of those programs are bundled into one job that is being executed
 
 ### Job vs. Process
 
