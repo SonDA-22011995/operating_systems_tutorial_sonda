@@ -187,6 +187,7 @@
     - [Job vs. Process](#job-vs-process)
   - [Foreground Jobs](#foreground-jobs)
   - [Background Jobs](#background-jobs)
+    - [Keyboard Inputs](#keyboard-inputs)
     - [Key Behaviors of Background Jobs:](#key-behaviors-of-background-jobs)
   - [Background Job management in Bash](#background-job-management-in-bash)
     - [Listing Background Jobs](#listing-background-jobs)
@@ -2651,6 +2652,14 @@ ping google.com
 ```bash
 ping -c 10 google.com &
 ```
+
+### Keyboard Inputs
+
+- A critical rule of thumb for shell interaction: **Only foreground jobs can receive keyboard input**.
+
+- No Keyboard Access: As long as a job remains in the background, any text you type to send are completely disconnected from it.
+
+Sending Signals (e.g., Ctrl + C): Pressing Ctrl + C sends a SIGINT (Interrupt) signal. This will only cancel a job if you use `fg` to bring it to the foreground first.
 
 ### Key Behaviors of Background Jobs:
 
