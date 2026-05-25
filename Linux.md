@@ -182,6 +182,11 @@
     - [Uninterruptible Sleep State - D](#uninterruptible-sleep-state---d)
     - [Traced / Stopped State (T)](#traced--stopped-state-t)
     - [Zombie State - Z](#zombie-state---z)
+- [Job control (Navigate Background and foreground operations)](#job-control-navigate-background-and-foreground-operations)
+  - [What is a Job?](#what-is-a-job)
+    - [Job vs. Process](#job-vs-process)
+  - [Foreground Jobs](#foreground-jobs)
+  - [Background Jobs](#background-jobs)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2604,6 +2609,28 @@ ps -elf | grep $(pgrep ping)
 - Catching a Zombie: Because healthy parent applications read exit codes within fractions of a millisecond, catching a normal process in the Z state manually is almost impossible without automation.
 
 - The Sleeping Parent Exception: If a parent process is temporarily blocked in an Uninterruptible Sleep (D) state, it cannot respond to the kernel's SIGCHLD notification. During this specific window, the deceased child process will safely remain a visible zombie (Z) until the parent wakes up and cleans the process table entry.
+
+# Job control (Navigate Background and foreground operations)
+
+## What is a Job?
+
+- Definition: In Bash, a job is simply a command that is currently being executed.
+
+### Job vs. Process
+
+- A single job can consist of multiple programs/processes. For example, when you pipe two commands together (`command1 | command2`), both programs run simultaneously as two separate processes, but they are managed as a single job because they were initiated by one command.
+
+## Foreground Jobs
+
+- These jobs occupy your terminal shell.
+
+- Bash will wait for a foreground job to finish completely before it accepts or executes any new commands.
+
+- You can only run one foreground job at a time per terminal session.
+
+- If a foreground job gets stuck or runs indefinitely (like a standard ping command), you can interrupt and terminate it by pressing Ctrl + C.
+
+## Background Jobs
 
 # Linux Software Management
 
