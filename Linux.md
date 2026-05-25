@@ -2655,6 +2655,8 @@ ping -c 10 google.com &
 ping -c 10 google.com > ping.txt &
 ```
 
+![Background Jobs](static/images/image_0045.png)
+
 - Status Updates: 
   - Bash does not always alert you the exact millisecond a background job finishes. Instead, it checks the status and prints a Done notification right after you execute your next command in the terminal.
 
