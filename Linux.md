@@ -187,6 +187,7 @@
     - [Job vs. Process](#job-vs-process)
   - [Foreground Jobs](#foreground-jobs)
   - [Background Jobs](#background-jobs)
+    - [Key Behaviors of Background Jobs:](#key-behaviors-of-background-jobs)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2634,7 +2635,42 @@ ps -elf | grep $(pgrep ping)
 
 - If a foreground job gets stuck or runs indefinitely (like a standard ping command), you can interrupt and terminate it by pressing **Ctrl + C**.
 
+```bash
+ping google.com
+```
+
 ## Background Jobs
+
+- To run a command without locking up your terminal, you can send it to the background by adding a space and an ampersand (&) to the end of your command.
+- Syntax: `[command] &`
+- Example:
+
+```bash
+ping -c 10 google.com &
+```
+
+- Best Practices: Redirecting Output: To keep your terminal clean, it is highly recommended to redirect the output of a background job to a file:
+
+```bash
+ping -c 10 google.com > ping.txt &
+```
+
+- Status Updates: 
+  - Bash does not always alert you the exact millisecond a background job finishes. Instead, it checks the status and prints a Done notification right after you execute your next command in the terminal.
+
+![Background Jobs](static/images/image_0045.png)
+
+
+### Key Behaviors of Background Jobs:
+
+- Terminal Control: The shell immediately gives you back control so you can type and execute other commands while the background job runs.
+
+- Job & Process IDs: When you start a background job, Bash prints a line containing the Job ID (in brackets, e.g., [1]) and the Process ID (PID).
+
+- Pipes in Bash: If your background job contains a pipe, Bash will only display the PID of the last process in the pipeline (unlike other shells like zsh, which display all PIDs).
+
+- Terminal Output: By default, a background job will still print its standard output directly to your terminal screen, which can become messy and confusing.
+
 
 # Linux Software Management
 
