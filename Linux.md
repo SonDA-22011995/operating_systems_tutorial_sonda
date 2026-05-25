@@ -189,9 +189,13 @@
   - [Background Jobs](#background-jobs)
     - [Keyboard Inputs](#keyboard-inputs)
     - [Key Behaviors of Background Jobs:](#key-behaviors-of-background-jobs)
-  - [Background Job management in Bash](#background-job-management-in-bash)
+  - [Job management in Bash](#job-management-in-bash)
     - [Listing Background Jobs](#listing-background-jobs)
     - [Bringing Jobs to the Foreground](#bringing-jobs-to-the-foreground)
+    - [Send a job to the background or Suspending a Foreground Job](#send-a-job-to-the-background-or-suspending-a-foreground-job)
+    - [Resuming a Suspended Job](#resuming-a-suspended-job)
+    - [Resume in the Background - `bg`](#resume-in-the-background---bg)
+    - [Resume in the Foreground - `fg`](#resume-in-the-foreground---fg)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2682,7 +2686,7 @@ ping -c 10 google.com > ping.txt &
 
 ![Background Jobs](static/images/image_0045.png)
 
-## Background Job management in Bash
+## Job management in Bash
 
 ### Listing Background Jobs
 
@@ -2727,6 +2731,46 @@ jobs
 
 fg 1 # or fg %1
 ```
+
+### Send a job to the background or Suspending a Foreground Job
+
+- If a job is currently running in the foreground and occupying your terminal, you can temporarily pause it and regain control of your shell.
+
+  - The Suspend Shortcut: Pressing **Ctrl + Z** will suspend the active foreground job.
+
+  - Under the Hood (**SIGTSTP**): This keyboard shortcut sends a **SIGTSTP (Signal Terminal Stop)** to the program. Think of it as a polite request asking the program to pause execution and hand control back to the terminal. (Unlike **SIGSTOP**, a program can technically choose to ignore **SIGTSTP**, though most obey it).
+
+  - The "Stopped" State: When you run the `jobs` command after suspending a process, its status will be listed as Stopped. This means it is paused in memory—not terminated or dead.
+
+```bash
+ping google.com >/dev/null &
+# [1] 1773
+jobs
+# [1]+  Running                 ping google.com > /dev/null &
+kill -s SIGTSTP 1773
+jobs
+# [1]+  Stopped                 ping google.com > /dev/null
+```
+
+### Resuming a Suspended Job
+
+- Once a job is stopped, you have two choices for how to wake it up and resume its execution
+
+### Resume in the Background - `bg`
+
+- To make the paused job start running again without locking up your terminal, use the `bg` command:
+
+- Syntax: `bg %<job_id>` (e.g., `bg %1`)
+
+- Behavior: The job's status changes from Stopped to Running, but it stays in the background so you can keep typing other commands.
+
+### Resume in the Foreground - `fg`
+
+- To bring the paused job right back to the front of your terminal, use the fg command:
+
+- Syntax: `fg %<job_id>` (e.g., `fg %1`)
+
+- Behavior: The job wakes up, takes over your terminal screen again, and will continue running until it finishes or you press **Ctrl + Z/Ctrl + C** again.
 
 # Linux Software Management
 
