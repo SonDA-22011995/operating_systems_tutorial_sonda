@@ -214,6 +214,7 @@
       - [No Ampersand: `nohup ping google.com`](#no-ampersand-nohup-ping-googlecom)
       - [Ampersand Only: `ping google.com &`](#ampersand-only-ping-googlecom-)
       - [The Combined Approach: `nohup ping google.com &`](#the-combined-approach-nohup-ping-googlecom-)
+    - [Under the Hood: Process Parenting and Orphan Adoption](#under-the-hood-process-parenting-and-orphan-adoption)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2962,6 +2963,18 @@ wait ; tput bel ; echo "Downloads complete!"
 - What happens:
   -  nohup disconnects the program from the **SIGHUP** signal, thus it will keep running if we close our terminal
   - It's a background process, so it will run in the background of our current terminal 
+
+### Under the Hood: Process Parenting and Orphan Adoption
+
+- A fascinating mechanical change occurs within the operating system when a nohup background process outlives its terminal:
+
+  - While the terminal is open: The parent of your background task is the active Bash shell (bash).
+
+  - When the terminal closes: The bash process dies. This leaves your running command as an "orphan."
+
+  - The Adoption: To maintain stability, the operating system automatically re-parents the orphan process by shifting its Parent Process ID (PPID) to PID 1 (managed by systemd/init on Linux, or launchd on macOS).
+
+- More detail in: [Orphan Processes](#orphan-processes)
 
 # Linux Software Management
 
