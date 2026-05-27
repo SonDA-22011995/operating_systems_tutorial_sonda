@@ -202,6 +202,11 @@
     - [Stop jobs with output](#stop-jobs-with-output)
       - [The Problem: The Background Output Dilemma](#the-problem-the-background-output-dilemma)
       - [The Solution: The `stty` tostop Feature](#the-solution-the-stty-tostop-feature)
+  - [Waiting for background jobs - `wait`](#waiting-for-background-jobs---wait)
+    - [The Purpose of the `wait` Command](#the-purpose-of-the-wait-command)
+    - [`wait` Command Syntax and Variations](#wait-command-syntax-and-variations)
+    - [How to use `wait` command. Chaining Commands with Semicolons](#how-to-use-wait-command-chaining-commands-with-semicolons)
+  - [Keep a program running - `nohup`](#keep-a-program-running---nohup)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2861,6 +2866,36 @@ bg %1
 # 64 bytes from nchkgb-aj-in-f14.1e100.net (142.250.198.142): icmp_seq=3 ttl=116 time=61.5 ms
 # 64 bytes from nchkgb-aj-in-f14.1e100.net (142.250.198.142): icmp_seq=4 ttl=116 time=56.0 ms
 ```
+
+## Waiting for background jobs - `wait`
+
+### The Purpose of the `wait` Command
+
+- When you run multiple time-consuming processes in the background (such as concurrent file downloads or long-running scripts), you often need a way to pause your terminal workflow until those tasks finish. 
+- The `wait` command serves as a synchronization checkpoint. It runs in the foreground and forces Bash to hold off on executing subsequent commands until the specified background tasks complete.
+
+### `wait` Command Syntax and Variations
+
+- The `wait` command is highly versatile and can be used in several ways depending on what you want to track:
+
+| Command      | Behavior |
+|---------------|-----------|
+| `wait`        | Suspends the shell and waits for all currently active background jobs to finish. |
+| `wait %1`     | Waits for a specific Job ID (e.g., job `[1]`) to complete. |
+| `wait 28453`  | Waits for a specific system Process ID (PID) to complete. |
+| `wait -n`     | Waits for any single background job to finish. As soon as the first one completes, the wait ends. |
+
+### How to use `wait` command. Chaining Commands with Semicolons
+
+- To effectively utilize `wait`, you can chain multiple commands together on a single line using a semicolon (;). Bash executes these sequential commands from left to right:
+
+```bash
+ping -c 5 google.com > /dev/null &   # Background Job 1
+ping -c 5 bing.com > /dev/null &     # Background Job 2
+wait ; echo "All pings finished!"    # Wait for both, then print message
+```
+
+## Keep a program running - `nohup`
 
 # Linux Software Management
 
