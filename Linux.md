@@ -2895,6 +2895,15 @@ ping -c 5 bing.com > /dev/null &     # Background Job 2
 wait ; echo "All pings finished!"    # Wait for both, then print message
 ```
 
+```bash
+# Start multiple parallel background tasks
+ping -c 5 google.com > /dev/null & 
+ping -c 5 google.com > /dev/null &
+
+# Wait for them to finish, trigger an audio/visual cue, and print a status update
+wait ; tput bel ; echo "Downloads complete!"
+```
+
 ## Keep a program running - `nohup`
 
 # Linux Software Management
