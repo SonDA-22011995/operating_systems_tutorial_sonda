@@ -2746,11 +2746,14 @@ fg 1 # or fg %1
   - The "Stopped" State: When you run the `jobs` command after suspending a process, its status will be listed as Stopped. This means it is paused in memory—not terminated or dead.
 
 ```bash
-ping google.com >/dev/null &
+ping google.com >/dev/null
 # [1] 1773
 jobs
 # [1]+  Running                 ping google.com > /dev/null &
-kill -s SIGTSTP 1773
+
+# Press Ctrl + Z
+# or in another terminal, run the command below
+# kill -s SIGTSTP 1773
 jobs
 # [1]+  Stopped                 ping google.com > /dev/null
 ```
