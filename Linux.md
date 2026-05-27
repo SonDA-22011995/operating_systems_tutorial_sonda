@@ -207,6 +207,13 @@
     - [`wait` Command Syntax and Variations](#wait-command-syntax-and-variations)
     - [How to use `wait` command: Chaining Commands with Semicolons](#how-to-use-wait-command-chaining-commands-with-semicolons)
   - [Keep a program running - `nohup`](#keep-a-program-running---nohup)
+    - [The Problem: The **SIGHUP** Signal](#the-problem-the-sighup-signal)
+    - [The Solution: The `nohup` Command](#the-solution-the-nohup-command)
+    - [Core Behaviors of `nohup`](#core-behaviors-of-nohup)
+    - [The Anatomy of the Ultimate Background Command](#the-anatomy-of-the-ultimate-background-command)
+      - [No Ampersand: `nohup ping google.com`](#no-ampersand-nohup-ping-googlecom)
+      - [Ampersand Only: `ping google.com &`](#ampersand-only-ping-googlecom-)
+      - [The Combined Approach: `nohup ping google.com &`](#the-combined-approach-nohup-ping-googlecom-)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2908,6 +2915,49 @@ wait ; tput bel ; echo "Downloads complete!"
 ```
 
 ## Keep a program running - `nohup`
+
+### The Problem: The **SIGHUP** Signal
+
+- When you close a terminal window or log out of a remote server session, the operating system automatically sends a **SIGHUP** (Signal Hang Up) to all processes managed by that terminal shell. 
+- By default, receiving a **SIGHUP** forces those processes to terminate immediately—meaning long downloads or automation scripts will fail if your session disconnects
+
+### The Solution: The `nohup` Command
+
+- The `nohup` (No Hang Up) utility interceptively runs a command and blocks it from receiving the SIGHUP signal.
+
+### Core Behaviors of `nohup`
+
+- **Persistent Execution**: It allows a program to keep executing safely even if you close your terminal or log out completely.
+
+- **Automatic Output Redirection**: Because a closed terminal can no longer display output, nohup automatically redirects standard output (stdout) and standard error (stderr).
+  - It attempts to write this to a file named nohup.out in your current directory.
+  - If the current directory is not writable, it falls back to creating nohup.out inside your home directory (~).
+
+### The Anatomy of the Ultimate Background Command
+
+#### No Ampersand: `nohup ping google.com`
+
+- What happens:
+  - nohup disconnects the ping program from the SIGHUP signal. Ping is still a foreground process
+  - ping will remain running, even after the terminal has been closed
+- The Catch: 
+  - Your terminal is completely locked up. 
+  - You cannot type any other commands. 
+  - While it will survive if you close the window, you are forced to wait or close the terminal to do other work. You can still kill it using **Ctrl + C** because keyboard interrupts (SIGINT) are not blocked.
+
+![No Ampersand](static/images/image_0047.png)
+
+![nohup.out](static/images/image_0048.png)
+
+#### Ampersand Only: `ping google.com &`
+
+- What happens: The command runs in the background.
+
+- The Catch: 
+  - Your terminal is instantly freed up for other work, and keyboard interrupts (Ctrl + C) won't impact it. 
+  - However, because it is still tethered to the active terminal, it will die immediately the moment you close the window or log out due to the SIGHUP signal.
+
+#### The Combined Approach: `nohup ping google.com &`
 
 # Linux Software Management
 
