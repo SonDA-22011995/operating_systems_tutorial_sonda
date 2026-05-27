@@ -205,7 +205,7 @@
   - [Waiting for background jobs - `wait`](#waiting-for-background-jobs---wait)
     - [The Purpose of the `wait` Command](#the-purpose-of-the-wait-command)
     - [`wait` Command Syntax and Variations](#wait-command-syntax-and-variations)
-    - [How to use `wait` command. Chaining Commands with Semicolons](#how-to-use-wait-command-chaining-commands-with-semicolons)
+    - [How to use `wait` command: Chaining Commands with Semicolons](#how-to-use-wait-command-chaining-commands-with-semicolons)
   - [Keep a program running - `nohup`](#keep-a-program-running---nohup)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
@@ -2885,7 +2885,7 @@ bg %1
 | `wait 28453`  | Waits for a specific system Process ID (PID) to complete. |
 | `wait -n`     | Waits for any single background job to finish. As soon as the first one completes, the wait ends. |
 
-### How to use `wait` command. Chaining Commands with Semicolons
+### How to use `wait` command: Chaining Commands with Semicolons
 
 - To effectively utilize `wait`, you can chain multiple commands together on a single line using a semicolon (;). Bash executes these sequential commands from left to right:
 
@@ -2894,6 +2894,9 @@ ping -c 5 google.com > /dev/null &   # Background Job 1
 ping -c 5 bing.com > /dev/null &     # Background Job 2
 wait ; echo "All pings finished!"    # Wait for both, then print message
 ```
+
+- Alerting yourself when long background tasks finish by using the system Bell (bel) escape sequence: `tput bel`
+- Executing `tput bel` will either play a subtle alert sound, flash your terminal window, or do nothing at all if the feature is disabled or unsupported
 
 ```bash
 # Start multiple parallel background tasks
