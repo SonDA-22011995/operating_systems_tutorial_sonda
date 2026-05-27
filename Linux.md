@@ -2959,6 +2959,10 @@ wait ; tput bel ; echo "Downloads complete!"
 
 #### The Combined Approach: `nohup ping google.com &`
 
+- What happens:
+  -  nohup disconnects the program from the **SIGHUP** signal, thus it will keep running if we close our terminal
+  - It's a background process, so it will run in the background of our current terminal 
+
 # Linux Software Management
 
 - In Linux, applications come bundled into **repositories**. A **repository** is a centrally managed location that consists of software packages maintained by developers
