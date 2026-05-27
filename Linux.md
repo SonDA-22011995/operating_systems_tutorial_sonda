@@ -199,6 +199,9 @@
     - [How can we kill a job (Terminating Jobs)?- `kill`](#how-can-we-kill-a-job-terminating-jobs--kill)
       - [The Critical Role of the Percentage Sign (%)](#the-critical-role-of-the-percentage-sign-)
       - [Bash Built-in kill vs. System kill](#bash-built-in-kill-vs-system-kill)
+    - [Stop jobs with output](#stop-jobs-with-output)
+      - [The Problem: The Background Output Dilemma](#the-problem-the-background-output-dilemma)
+      - [The Solution: The `stty` tostop Feature](#the-solution-the-stty-tostop-feature)
 - [Linux Software Management](#linux-software-management)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [Updating the Package List](#updating-the-package-list)
@@ -2817,6 +2820,47 @@ kill -s SIGINT %1
 - The OS Binary (/bin/kill or /usr/bin/kill): If you accidentally call the external operating system executable by providing a path, it will fail. The global OS binary completely lacks the code to read Bash's internal job table and will throw a syntax error.
 
 - Rule of Thumb: Always use the plain kill command without any absolute paths when trying to terminate job IDs.
+
+### Stop jobs with output
+
+#### The Problem: The Background Output Dilemma
+
+- Up to this point, you had two extreme choices when handling background jobs:
+
+  - Let it print: Leave output unredirected, which results in text cluttering your screen while you try to type other commands.
+
+  - Discard it entirely: Redirect the output to **`/dev/null` or a file**, meaning you completely lose the ability to see what the program is doing in real-time.
+
+#### The Solution: The `stty` tostop Feature
+
+- The `stty` (Set Teletype) utility allows you to modify terminal line settings. By using its tostop option, you can achieve a middle ground: allowing a background job to run seamlessly until it attempts to write to the terminal, at which point it pauses automatically
+- Enabling the Feature: `stty tostop`
+- Disabling the Feature: `stty -tostop`
+
+```bash
+stty tostop
+ping google.com &
+# [1] 2089
+
+jobs
+# [1]+  Stopped                 ping google.com
+
+bg %1; jobs
+# [1]+ ping google.com &
+# [1]+  Running                 ping google.com &
+
+jobs
+# [1]+  Stopped                 ping google.com
+
+stty -tostop
+bg %1
+# [1]+ ping google.com &
+#  PING google.com (142.250.198.142) 56(84) bytes of data.
+# 64 bytes from nchkgb-aj-in-f14.1e100.net (142.250.198.142): icmp_seq=1 ttl=116 time=60.0 ms
+# 64 bytes from nchkgb-aj-in-f14.1e100.net (142.250.198.142): icmp_seq=2 ttl=116 time=59.8 ms
+# 64 bytes from nchkgb-aj-in-f14.1e100.net (142.250.198.142): icmp_seq=3 ttl=116 time=61.5 ms
+# 64 bytes from nchkgb-aj-in-f14.1e100.net (142.250.198.142): icmp_seq=4 ttl=116 time=56.0 ms
+```
 
 # Linux Software Management
 
