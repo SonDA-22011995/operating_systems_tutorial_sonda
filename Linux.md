@@ -220,6 +220,9 @@
   - [Why Package Management is Crucial](#why-package-management-is-crucial)
   - [The DEB package’s anatomy](#the-deb-packages-anatomy)
     - [The Ubuntu \& Debian Relationship](#the-ubuntu--debian-relationship)
+    - [dpkg: Debian Package Manager](#dpkg-debian-package-manager)
+      - [What is dpkg?](#what-is-dpkg)
+      - [Manual Installation](#manual-installation)
     - [Updating the Package List](#updating-the-package-list)
     - [Upgrading Software](#upgrading-software)
     - [Managing Packages (Install/Remove)](#managing-packages-installremove)
@@ -3011,6 +3014,71 @@ wait ; tput bel ; echo "Downloads complete!"
 - The "Usually" Rule: While you can technically force a package explicitly built for Debian onto an Ubuntu system (and vice versa), doing so is risky. It can cause future update friction or break system upgrade pathways. Stick to packages explicitly designated for your specific distribution.
 
 - Universal Tools: Mastering package management on Ubuntu means you simultaneously master it for Debian. Both utilize identical terminal utilities, such as apt, apt-get, and dpkg.
+
+- For Ubuntu, we can find the repository here: https://packages.ubuntu.com/
+
+### dpkg: Debian Package Manager
+
+#### What is dpkg?
+
+- **Definition**: 
+  - dpkg stands for Debian Package Manager. 
+  - It is the low-level tool used to install software packages in Debian-based Linux distributions, including Ubuntu.
+  - And we can install them through dpkg: `dpkg -i package.deb`. A .deb file is a compressed archive (ar file format) with all the files needed for the program, and its installation on the system
+
+- **Scope**: It handles the installation and removal of individual .deb files directly, but it does not automatically resolve or manage dependencies.
+
+#### Manual Installation
+
+- Before downloading a package manually, you must verify your system's architecture and Ubuntu version to ensure compatibility.
+  - Alternatively, check the Settings => About window in the GUI
+
+```bash
+# Check Ubuntu Version & Codename:
+lsb_release -a
+
+# No LSB modules are available.
+# Distributor ID:	Ubuntu
+# Description:	Ubuntu 24.04.4 LTS
+# Release:	24.04
+# Codename:	noble
+```
+
+- Navigate to the official repository at packages.ubuntu.com
+- Search for the package (e.g., neofetch) matching **your distribution's codename**
+
+![Search for the package](static/images/image_0049.png)
+
+- Select an appropriate download mirror and save the .deb archive.
+  - Understand Processor Architecture:
+    - all: Independent of architecture (e.g., Python or Bash scripts like neofetch).
+    - amd64: Standard 64-bit architecture for Intel and AMD processors.
+    - arm64: Used for modern Apple Silicon Macs (in VMs) or Raspberry Pi devices
+
+![Download the package](static/images/image_0050.png)
+![Download the package](static/images/image_0051.png)
+
+- Navigate to the Downloads folder
+
+```bash
+cd ~/Downloads
+ls
+# neofetch_7.1.0-4_all.deb
+```
+
+- Install via dpkg: run dpkg with administrative privileges (sudo)
+
+```bash
+sudo dpkg -i neofetch_7.1.0-4_all.deb
+```
+
+![Install via dpkg](static/images/image_0052.png)
+
+- Remove/Uninstall via dpkg: To remove the package, you only need the package name, not the original .deb file
+
+```bash
+sudo dpkg -r neofetch
+```
 
 ### Updating the Package List
 
