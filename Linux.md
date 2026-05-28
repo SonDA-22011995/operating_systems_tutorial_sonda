@@ -223,10 +223,11 @@
     - [dpkg: Debian Package Manager](#dpkg-debian-package-manager)
       - [What is dpkg?](#what-is-dpkg)
       - [Manual Installation](#manual-installation)
-    - [Updating the Package List](#updating-the-package-list)
-    - [Upgrading Software](#upgrading-software)
-    - [Managing Packages (Install/Remove)](#managing-packages-installremove)
-    - [`apt` vs. `apt-get`](#apt-vs-apt-get)
+    - [Dependency management: `apt` / `apt-get`](#dependency-management-apt--apt-get)
+      - [Updating the Package List](#updating-the-package-list)
+      - [Upgrading Software](#upgrading-software)
+      - [Managing Packages (Install/Remove)](#managing-packages-installremove)
+      - [`apt` vs. `apt-get`](#apt-vs-apt-get)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3080,7 +3081,9 @@ sudo dpkg -i neofetch_7.1.0-4_all.deb
 sudo dpkg -r neofetch
 ```
 
-### Updating the Package List
+### Dependency management: `apt` / `apt-get`
+
+#### Updating the Package List
 
 - Before installing or upgrading software, you must synchronize your local database with the online repositories.
 
@@ -3090,7 +3093,7 @@ sudo dpkg -r neofetch
 
 - Note: This requires sudo (root privileges) because it accesses protected system files.
 
-### Upgrading Software
+#### Upgrading Software
 
 - Once the list is updated, you can move to the actual upgrade process.
 - Command
@@ -3100,7 +3103,7 @@ sudo dpkg -r neofetch
 
 - Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
 
-### Managing Packages (Install/Remove)
+#### Managing Packages (Install/Remove)
 
 - The lecture demonstrates how to add or take away specific tools:
 
@@ -3110,7 +3113,7 @@ sudo dpkg -r neofetch
 
 - Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
 
-### `apt` vs. `apt-get`
+#### `apt` vs. `apt-get`
 
 - The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
 
