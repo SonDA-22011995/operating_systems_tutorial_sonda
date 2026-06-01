@@ -224,10 +224,12 @@
       - [What is dpkg?](#what-is-dpkg)
       - [Manual Installation](#manual-installation)
     - [Dependency management: `apt` / `apt-get`](#dependency-management-apt--apt-get)
+      - [dpkg vs. apt / apt-get](#dpkg-vs-apt--apt-get)
+      - [A package source / repository in apt](#a-package-source--repository-in-apt)
       - [Updating the Package List](#updating-the-package-list)
-      - [Upgrading Software](#upgrading-software)
       - [Managing Packages (Install/Remove)](#managing-packages-installremove)
       - [`apt` vs. `apt-get`](#apt-vs-apt-get)
+      - [Upgrading Software](#upgrading-software)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3083,15 +3085,65 @@ sudo dpkg -r neofetch
 
 ### Dependency management: `apt` / `apt-get`
 
+#### dpkg vs. apt / apt-get
+
+- While dpkg is a low-level tool that only installs individual software packages without resolving dependencies, higher-level tools like apt and apt-get build on top of it to manage dependencies automatically.
+
+- apt-get: Has a stable, rigid API. It is the preferred choice for writing automation and shell scripts.
+
+- apt: A newer, streamlined rewrite designed for human interaction in the terminal. Its parameters can adapt over time, making it less ideal for strict scripts.
+
+- Note: Both systems are fully compatible, share the same underlying configuration directories, and track manually requested packages versus automatic dependencies
+
+#### A package source / repository in apt
+
+- `apt-get` / `apt` needs to know which packages are available, and where it can download them from
+- We thus need to connect to central repositories, which provide our packages
+- Those central repositories are stored in the following files:
+  - Repositories from the system: `/etc/apt/sources.list`
+  - Additional (third party) repositories: `/etc/apt/sources.list.d/*` (`*`: Added as individual files inside the folder `/etc/apt/sources.list.d`)
+
 #### Updating the Package List
 
-- Before installing or upgrading software, you must synchronize your local database with the online repositories.
+- Once we have our repositories, we need to update the "package definitions"
+- This means, that we fetch the latest list of available packages from the repositories
 
-- Command: `sudo apt update`
+- Command: `sudo apt update` or `sudo apt-get update`
 
 - Purpose: This does not install new software. It only refreshes the list of available packages and their versions.
 
 - Note: This requires sudo (root privileges) because it accesses protected system files.
+
+#### Managing Packages (Install/Remove)
+
+- The lecture demonstrates how to add or take away specific tools:
+
+- Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
+
+- Suggested/Recommended Packages
+  - By default, Ubuntu configures APT to pull in recommended packages alongside the core application. These are not strictly required for the software to run, but they unlock enhanced features.
+  - Example: neofetch recommends imagemagick. While neofetch runs fine in pure text mode without it, imagemagick is required if you want to display an actual image file instead of the default ASCII distribution logo.
+- Skipping Recommendations
+  - If you want to keep your system minimal and install only the core application and its hard dependencies, use the --no-install-recommends flag: `sudo apt install --no-install-recommends neofetch`
+
+- Remove: `sudo apt remove <package_name>`.
+
+- Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
+
+![sudo apt install](static/images/image_0053.png)
+
+![sudo apt install --no-install-recommends](static/images/image_0054.png)
+
+![sudo apt remove](static/images/image_0055.png)
+
+#### `apt` vs. `apt-get`
+
+- The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
+
+- `apt upgrade` will install new dependencies if needed.
+
+- `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
+
 
 #### Upgrading Software
 
@@ -3103,23 +3155,7 @@ sudo dpkg -r neofetch
 
 - Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
 
-#### Managing Packages (Install/Remove)
 
-- The lecture demonstrates how to add or take away specific tools:
-
-- Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
-
-- Remove: `sudo apt remove <package_name>`.
-
-- Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
-
-#### `apt` vs. `apt-get`
-
-- The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
-
-- `apt upgrade` will install new dependencies if needed.
-
-- `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
 
 ## The RPM packages anatomy
 
