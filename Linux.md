@@ -230,6 +230,7 @@
       - [Managing Packages (Install/Remove)](#managing-packages-installremove)
       - [Managing upgrades (Upgrading Software)](#managing-upgrades-upgrading-software)
         - [`apt` vs. `apt-get`](#apt-vs-apt-get)
+      - [Auto-removing packages](#auto-removing-packages)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3126,9 +3127,7 @@ sudo dpkg -r neofetch
 - Skipping Recommendations
   - If you want to keep your system minimal and install only the core application and its hard dependencies, use the --no-install-recommends flag: `sudo apt install --no-install-recommends neofetch`
 
-- Remove: `sudo apt remove <package_name>`.
-
-- Cleanup: `sudo apt autoremove` deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
+- Remove: `sudo apt remove <package_name>`
 
 ![sudo apt install](static/images/image_0053.png)
 
@@ -3142,11 +3141,17 @@ sudo dpkg -r neofetch
 - Once the list is updated, you can move to the actual upgrade process.
 - We want to keep our system up to date. We thus want to install available updates on our system
 - Command
-  - Standard Upgrade: `sudo apt upgrade` or `sudo apt-get upgrade --with-new-pkgs`: 
+  - Standard Upgrade: `sudo apt upgrade` or `sudo apt-get upgrade --with-new-pkgs`
     - This will install all available and possible updates - and even install additional dependencies (if they become necessary)
     - It will never remove any packages from our system, even if they're no longer needed
+    - Safety Rule: This command never removes any packages from the system, making it inherently less risky.
 
-  - `sudo apt full-upgrade` (or dist-upgrade): Performs a "large" upgrade. It can install new packages or remove existing ones if they conflict with the upgrade. It is more thorough but carries a slightly higher risk of changing system behavior.
+  - Full Upgrade: `sudo apt full-upgrade` or `sudo apt-get dist-upgrade`
+    - Performs a "large" upgrade. 
+    - It can install new packages or remove existing ones if they conflict with the upgrade. 
+    - It is more thorough but carries a slightly higher risk of changing system behavior.
+    - Example: If Package A updates and now requires Package C, but Package C conflicts with an old Package B, a full upgrade will actively uninstall Package B to let the update pass. It can even downgrade packages if the repository deems a version unstable
+    - Risk Level: Much higher. Because it has the authority to delete packages to resolve conflicts, it has a higher probability of breaking things
 
 - Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
 
@@ -3157,6 +3162,19 @@ sudo dpkg -r neofetch
 - `apt upgrade` will install new dependencies if needed.
 
 - `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
+
+#### Auto-removing packages
+
+- Why Unused Packages Are Left Behind?
+  - full-upgrade / dist-upgrade only uninstalls dependencies, if they're exclusive and need to be  uninstalled
+  - All other dependencies will remain installed, even if they're no longer needed
+- To uninstall those, we need to execute the following command
+  - `sudo apt autoremove` or `sudo apt-get autoremove`
+  - How it Works: APT scans the system for packages that were originally installed automatically (as a dependency for something else) but are no longer required by any currently installed program.
+- Best Practices Summary
+  - Frequency: You should run sudo apt autoremove every now and then, particularly right after running larger system updates or upgrades.
+  - Cleanup: Deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
+  - Safeguard: This command will only target dependencies. It will not automatically delete software packages that you intentionally and manually installed yourself.
 
 ## The RPM packages anatomy
 
