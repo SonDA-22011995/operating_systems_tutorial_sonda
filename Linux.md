@@ -231,6 +231,9 @@
       - [Managing upgrades (Upgrading Software)](#managing-upgrades-upgrading-software)
         - [`apt` vs. `apt-get`](#apt-vs-apt-get)
       - [Auto-removing packages](#auto-removing-packages)
+    - [How does the sources.list work?](#how-does-the-sourceslist-work)
+      - [What is sources.list?](#what-is-sourceslist)
+      - [Anatomy of a Repository Line](#anatomy-of-a-repository-line)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3175,6 +3178,49 @@ sudo dpkg -r neofetch
   - Frequency: You should run sudo apt autoremove every now and then, particularly right after running larger system updates or upgrades.
   - Cleanup: Deletes packages that were installed as dependencies but are no longer needed by any current software. This is a common troubleshooting step for resolving upgrade conflicts.
   - Safeguard: This command will only target dependencies. It will not automatically delete software packages that you intentionally and manually installed yourself.
+
+### How does the sources.list work?
+
+#### What is sources.list?
+
+- When you run `sudo apt update`, the system reads specific configuration files to know where to check for software updates.
+
+  - The Main File: Located at `/etc/apt/sources.list`
+
+  - The Directory: Located at `/etc/apt/sources.list.d/` (used for adding modular, third-party repository files individually).
+
+  - Under the hood, these files simply point to an online directory structure (accessible via HTTP, HTTPS, or FTP) hosting package indexes that APT fetches
+
+#### Anatomy of a Repository Line
+
+- Component 1: Type
+  - deb: This repository contains binary packages. These are pre-compiled software packages that APT can download, unpack, and install immediately
+  - deb-src: This repository contains source packages. This is used if you intend to compile the software yourself. In production systems, these lines are typically commented out (#) to save bandwidth and index size
+
+- Component 2: URL / URIs
+  - The address of the repository. The web address pointing to the mirror server
+  - Security Note: Because package indexes are cryptographically signed by the upstream maintainers, mirrors cannot maliciously alter packages without breaking the signature, making mirrors safe to use.
+  
+- Component 3: Distribution / Suite
+  - The ubuntu version, we want to download the packages for
+  - On Ubuntu, this uses code names (e.g., jammy for Ubuntu 22.04 LTS, noble for Ubuntu 24.04 LTS).
+  - On Debian, you might see stages like stable, testing, or unstable.
+  - Variations: You will also see suffixes added to the codename, such as:
+    - jammy-updates: For major bug fixes released after the initial distribution release.
+    - jammy-backports: Provides newer versions of specific software brought back to older operating system releases.
+    - noble-security: This designates this as the repository for critical security patches for this version.
+
+- Component 4: Component Domains
+  - These tags define the licensing and support structures of the software you want to allow on your system. Canonical splits these into four domains:
+
+| Domain      | Type of Software                                              | Supported By                 |
+|-------------|---------------------------------------------------------------|------------------------------|
+| `main`      | Officially supported, Open Source                             | Canonical                    |
+| `restricted`| Officially supported, Closed Source / Proprietary (e.g., drivers) | Canonical                |
+| `universe`  | Community-maintained, Open Source                             | Community / Third-Party      |
+| `multiverse`| Non-free / Proprietary, potentially legally restricted        | Community / Third-Party      |
+
+![Anatomy of a Repository Line](static/images/image_0056.png)
 
 ## The RPM packages anatomy
 
