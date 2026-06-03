@@ -3222,6 +3222,9 @@ sudo dpkg -r neofetch
 
 ![Anatomy of a Repository Line](static/images/image_0056.png)
 
+- Component 5: Signed-By 
+  - Shows the path to the keyring that is used to verify the repository’s authenticity.
+
 ## The RPM packages anatomy
 
 ### Updating the System
