@@ -228,8 +228,8 @@
       - [A package source / repository in apt](#a-package-source--repository-in-apt)
       - [Updating the Package List](#updating-the-package-list)
       - [Managing Packages (Install/Remove)](#managing-packages-installremove)
-      - [`apt` vs. `apt-get`](#apt-vs-apt-get)
-      - [Upgrading Software](#upgrading-software)
+      - [Managing upgrades (Upgrading Software)](#managing-upgrades-upgrading-software)
+        - [`apt` vs. `apt-get`](#apt-vs-apt-get)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3136,26 +3136,27 @@ sudo dpkg -r neofetch
 
 ![sudo apt remove](static/images/image_0055.png)
 
-#### `apt` vs. `apt-get`
+
+#### Managing upgrades (Upgrading Software)
+
+- Once the list is updated, you can move to the actual upgrade process.
+- We want to keep our system up to date. We thus want to install available updates on our system
+- Command
+  - Standard Upgrade: `sudo apt upgrade` or `sudo apt-get upgrade --with-new-pkgs`: 
+    - This will install all available and possible updates - and even install additional dependencies (if they become necessary)
+    - It will never remove any packages from our system, even if they're no longer needed
+
+  - `sudo apt full-upgrade` (or dist-upgrade): Performs a "large" upgrade. It can install new packages or remove existing ones if they conflict with the upgrade. It is more thorough but carries a slightly higher risk of changing system behavior.
+
+- Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
+
+##### `apt` vs. `apt-get`
 
 - The instructor notes that while apt and apt-get are often used interchangeably, there is a subtle difference:
 
 - `apt upgrade` will install new dependencies if needed.
 
 - `apt-get upgrade` generally will not install new dependencies; it only updates what is already there.
-
-
-#### Upgrading Software
-
-- Once the list is updated, you can move to the actual upgrade process.
-- Command
-  - `sudo apt upgrade`: Performs a "small" upgrade. It updates existing packages and, in the apt version, will install new dependencies if required.
-
-  - `sudo apt full-upgrade` (or dist-upgrade): Performs a "large" upgrade. It can install new packages or remove existing ones if they conflict with the upgrade. It is more thorough but carries a slightly higher risk of changing system behavior.
-
-- Kernel Updates: If the system upgrades the kernel (the core of the OS), a reboot is usually required.
-
-
 
 ## The RPM packages anatomy
 
