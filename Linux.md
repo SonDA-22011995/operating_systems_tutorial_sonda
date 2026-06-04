@@ -234,6 +234,9 @@
     - [How does the sources.list work?](#how-does-the-sourceslist-work)
       - [What is sources.list?](#what-is-sourceslist)
       - [Anatomy of a Repository Line](#anatomy-of-a-repository-line)
+    - [Custom repositories](#custom-repositories)
+      - [How Custom Repositories](#how-custom-repositories)
+      - [The Practical Example: Installing Wine](#the-practical-example-installing-wine)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3224,6 +3227,21 @@ sudo dpkg -r neofetch
 
 - Component 5: Signed-By 
   - Shows the path to the keyring that is used to verify the repository’s authenticity.
+
+### Custom repositories
+
+#### How Custom Repositories
+
+- We can add additional repositories to our apt sources
+  - Centralized Configuration: Both `apt` and `apt-get` share the same configuration files.
+- If we were to do this manual
+  - We create a new file in `/etc/apt/sources.list.d`
+  - Usually: We need to add the GPG key to our system for this repository
+    - The Role of GPG Keys: A GPG key acts as a digital signature
+    - Developers sign their packages with a **private key**
+    - Users download the corresponding public key to verify that the software genuinely comes from that trusted developer and has not been tampered with
+
+#### The Practical Example: Installing Wine
 
 ## The RPM packages anatomy
 
