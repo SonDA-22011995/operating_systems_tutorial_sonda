@@ -237,6 +237,7 @@
     - [Custom repositories](#custom-repositories)
       - [How Custom Repositories](#how-custom-repositories)
       - [The Practical Example: Installing Wine](#the-practical-example-installing-wine)
+    - [Third party packages: Personal Package Archive](#third-party-packages-personal-package-archive)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3309,6 +3310,39 @@ WINEPREFIX=~/.wine32 wine blobby.exe
 ![Download Blobby Volley](static/images/image_0057.png)
 
 ![Wine stable version](static/images/image_0058.png)
+
+### Third party packages: Personal Package Archive
+
+- Definition: PPA stands for Personal Package Archive. It is a concept created by Canonical (the company behind Ubuntu)
+- This will usually work only on Ubuntu, not on Debian systems
+-  It's a website where users can easily provide repositories for others: `https://launchpad.net/ubuntu/+ppas`
+-  For example, for the latest php version, we could just add a ppa
+
+```bash
+# Check Default Version: Running on a Ubuntu 22.04 system shows PHP
+apt show php 
+
+# Choose the php version you want from the https://launchpad.net/ubuntu/+ppas
+# Finding PPA to your system
+
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+```
+
+- To remove a ppa
+
+```bash
+sudo add-apt-repository --remove ppa:ondrej/php
+sudo apt remove php
+sudo apt autoremove
+```
+
+- The Trust Trade-off: Companies and administrators must weigh the benefits of getting the latest software/security patches against the risk of losing complete control over what is installed on their machines.
+
+- Evaluating Maintainers: Because PPAs are hosted by individuals rather than official teams, you must verify the maintainer's track record.
+  - Example: The popular ppa:ondrej/php repo is maintained by Ondřej Surý. While it is not an official Ubuntu repository, checking his Launchpad profile reveals he has been a trusted community member since 2005.
+
+- Malicious Code Risks: A PPA has the power to overwrite system packages (like upgrading bash or coreutils to a malicious version) during a system upgrade. While Canonical/Launchpad monitors and takes down malicious PPAs, there is always a window of vulnerability before a threat is detected.
 
 ## The RPM packages anatomy
 
