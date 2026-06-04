@@ -3243,6 +3243,73 @@ sudo dpkg -r neofetch
 
 #### The Practical Example: Installing Wine
 
+- Wine is a compatibility layer used to run Windows software on Linux
+- Install wine: `sudo apt install wine`
+- I want to to launch the sample Windows game Blobby Volley on Ubuntu machine. So I downloaded the zip file, not the installer file, and I unzip that here on my machine
+
+```bash
+wine /home/sonda/Downloads/blobby2-win32-1.1.1/blobby-1.1.1/blobby.exe 
+# wine: could not load kernel32.dll, status c0000135
+```
+
+- The Problem with Default Packages: The native Ubuntu repository version of Wine was older (version 6.0.3), which failed to launch the sample Windows game Blobby Volley, throwing a runtime error.
+
+```bash
+wine --version
+# wine-9.0 (Ubuntu 9.0~repack-4build3)
+```
+
+- The Solution: Upgrading to the latest stable version (version 8.0.1) available directly via the official WineHQ third-party repository.
+
+```bash
+# Download and add the repository key
+sudo mkdir -pm755 /etc/apt/keyrings
+wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key -
+
+# Check distribution name to add the repository
+# Look for the line with either UBUNTU_CODENAME or VERSION_CODENAME
+cat /etc/os-release
+
+# PRETTY_NAME="Ubuntu 24.04.4 LTS"
+# NAME="Ubuntu"
+# VERSION_ID="24.04"
+# VERSION="24.04.4 LTS (Noble Numbat)"
+# VERSION_CODENAME=noble
+# ID=ubuntu
+# ID_LIKE=debian
+# HOME_URL="https://www.ubuntu.com/"
+# SUPPORT_URL="https://help.ubuntu.com/"
+# BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+# PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+# UBUNTU_CODENAME=noble
+# LOGO=ubuntu-logo
+
+# add the repository that corresponds to noble distribution
+
+# Enable the 32-bit repository:
+sudo dpkg --add-architecture i386
+
+# Add the sources file:
+sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
+
+# Uninstall wine if installed wine before
+sudo apt remove wine
+
+# Update the package information
+sudo apt update
+
+# Install Wine Stable branch
+sudo apt install --install-recommends winehq-stable
+
+WINEPREFIX=~/.wine32 WINEARCH=win32 winecfg
+cd /home/sonda/Downloads/blobby2-win32-1.1.1/blobby-1.1.1
+WINEPREFIX=~/.wine32 wine blobby.exe
+```
+
+![Download Blobby Volley](static/images/image_0057.png)
+
+![Wine stable version](static/images/image_0058.png)
+
 ## The RPM packages anatomy
 
 ### Updating the System
