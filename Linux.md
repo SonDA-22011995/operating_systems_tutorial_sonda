@@ -170,7 +170,7 @@
     - [Overview of the killall Command](#overview-of-the-killall-command)
     - [Sending Specific Signals](#sending-specific-signals)
   - [What Happens When a Process Exits?](#what-happens-when-a-process-exits)
-    - [Understanding Exit Codes](#understanding-exit-codes)
+    - [Understanding Exit Codes - `$?`](#understanding-exit-codes---)
   - [Orphan Processes](#orphan-processes)
   - [Zombie Processes](#zombie-processes)
     - [Why Do Zombies Happen?](#why-do-zombies-happen)
@@ -2502,7 +2502,7 @@ where kill # in Zsh
 
   - Process Reaping: The parent process triggers a system call (wait or waitpid) to read the child's exit status. Once collected, the process is considered "reaped," and the operating system completely erases its entry from the system's process table.
 
-### Understanding Exit Codes
+### Understanding Exit Codes - `$?`
 
 - You can access the exit status of the most recently executed foreground process in Bash using the special variable `$?`.
 
