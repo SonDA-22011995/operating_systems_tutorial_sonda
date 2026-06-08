@@ -3429,10 +3429,10 @@ sudo apt-cache show bash
 
 | Field         | Severity Level | What It Means                                                                                                                    | Example from Text         |
 |---------------|----------------|----------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| Pre-Depends   | Critical       | Must be completely installed, configured, and have its installation scripts fully executed before the target package is even unpacked. | Core system utilities     |
-| Depends       | High           | Critical requirements. These must be on the system for the application to function, though their installation scripts can run concurrently with the target package. | libc6                     |
+| Pre-Depends   | Critical       | Must be completely installed, configured, and have its installation scripts fully executed before the target package is even unpacked. | Core system utilities such as libc6    |
+| Depends       | High           | Critical requirements. These must be on the system for the application to function, though their installation scripts can run concurrently with the target package. | base-files                     |
 | Recommends    | Medium         | Strongly recommended. Technically, the package can run without it, but it is included in 99.9% of standard installations because it provides essential everyday features. | bash-completion           |
-| Suggests      | Low            | Optional. Enhances functionality but is completely reasonable to omit to save space.                                             | Documentation / Man pages |
+| Suggests      | Low            | Optional. Enhances functionality but is completely reasonable to omit to save space.                                             | Documentation / Man pages such as bash-doc|
 | Conflicts     | Blocker        | Packages that cannot co-exist on the system at the same time. Installing one will remove the other.                             | Outdated software         |
 
 ![Show dependencies](static/images/image_0061.png)
