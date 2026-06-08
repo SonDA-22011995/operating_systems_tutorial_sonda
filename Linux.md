@@ -242,6 +242,9 @@
     - [Verifying installation: `debsums`](#verifying-installation-debsums)
       - [What is the Tool?](#what-is-the-tool)
       - [Installation and Core Commands](#installation-and-core-commands)
+    - [Dependency management](#dependency-management)
+      - [How APT Manages Dependencies](#how-apt-manages-dependencies)
+      - [Show dependencies](#show-dependencies)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3397,9 +3400,44 @@ sudo debsums -a -s apache2 apache2-data apache2-bin
 
   - Note: `debsums` installs a background trigger. Once installed, any new software you download will automatically generate checksums. However, for older packages that lack them, you might need to reinstall them to generate a baseline
 
+- `debsums` only checks files that were explicitly installed by a Debian package. It does not monitor the whole filesystem for new, unauthorized files.
+
 ![debsums command](static/images/image_0059.png)
 
 ![debsums command](static/images/image_0060.png)
+
+### Dependency management
+
+#### How APT Manages Dependencies
+
+- Dependency management ensures that when you install a piece of software, all the other software libraries it needs to function are also installed and compatible.
+- APT is designed to resolve most version constraints automatically. For example:
+  - Package A (Bash) requires libc6 version 2.35.
+  - Package B requires libc6 version >= 2.36.
+  - APT's Solution: It will automatically upgrade libc6 to version 2.36. Because Bash is compatible with version 2.36, both packages will work smoothly without breaking the system
+
+#### Show dependencies
+
+-  We can show the dependencies of packages with the following commands:
+
+```bash
+sudo apt show bash
+sudo apt-cache show bash
+```
+
+- Understanding the Metadata Fields
+
+| Field         | Severity Level | What It Means                                                                                                                    | Example from Text         |
+|---------------|----------------|----------------------------------------------------------------------------------------------------------------------------------|---------------------------|
+| Pre-Depends   | Critical       | Must be completely installed, configured, and have its installation scripts fully executed before the target package is even unpacked. | Core system utilities     |
+| Depends       | High           | Critical requirements. These must be on the system for the application to function, though their installation scripts can run concurrently with the target package. | libc6                     |
+| Recommends    | Medium         | Strongly recommended. Technically, the package can run without it, but it is included in 99.9% of standard installations because it provides essential everyday features. | bash-completion           |
+| Suggests      | Low            | Optional. Enhances functionality but is completely reasonable to omit to save space.                                             | Documentation / Man pages |
+| Conflicts     | Blocker        | Packages that cannot co-exist on the system at the same time. Installing one will remove the other.                             | Outdated software         |
+
+![Show dependencies](static/images/image_0061.png)
+
+![Show dependencies](static/images/image_0062.png)
 
 ## The RPM packages anatomy
 
