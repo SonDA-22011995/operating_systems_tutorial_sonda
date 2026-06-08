@@ -245,6 +245,10 @@
     - [Dependency management](#dependency-management)
       - [How APT Manages Dependencies](#how-apt-manages-dependencies)
       - [Show dependencies](#show-dependencies)
+      - [Conflict resolution](#conflict-resolution)
+        - [What is a Dependency Conflict?](#what-is-a-dependency-conflict)
+        - [Resolution](#resolution)
+        - [Best Practices to Avoid Dependency Conflict](#best-practices-to-avoid-dependency-conflict)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3438,6 +3442,52 @@ sudo apt-cache show bash
 ![Show dependencies](static/images/image_0061.png)
 
 ![Show dependencies](static/images/image_0062.png)
+
+#### Conflict resolution
+
+##### What is a Dependency Conflict?
+
+- The Problem: If Package A strictly requires an older version of a library (e.g., libc6 <= 2.35) and Package B requires a newer version (e.g., libc6 >= 2.36), APT cannot satisfy both constraints simultaneously.
+
+- The Impact: When a dependency conflict occurs, APT locks down and refuses to install or upgrade any software (even completely unrelated packages like a Python data science library) until the baseline conflict is resolved.
+
+##### Resolution
+
+- Fix Broken Dependencies (The 75%+ Solution): `sudo apt install -f` 
+  - `-f` stands for **"--fix-broken"**
+  - How it works: `apt` will analyze the current package state, identify inconsistencies, and solve them by installing, upgrading or removing packages
+  - It will not randomly delete the primary packages you are trying to use. Instead, it will safely upgrade conflicting files to their proper repository versions or remove orphaned, unneeded dependencies to restore structural integrity
+  - In 75%+ of the cases, this should resolve the problem (for packages from the default repositories)
+
+- We run an update / upgrade of our system: 
+  - This works especially well before we try to install additional software
+
+```bash
+sudo apt update
+sudo apt full-upgrade # or sudo apt-get dist-upgrade
+```
+
+- If update / upgrade of our system this doesn't work: 
+  - Let's automatically uninstall all packages that are no longer needed
+  - This also sometimes solves the problem
+
+```bash
+sudo apt autoremove #or sudo apt-get autoremove
+```
+
+##### Best Practices to Avoid Dependency Conflict
+
+- Avoid third-party repositories (if possible)
+  - Stick to Default Repositories: Rely almost exclusively on the official OS sources found in /etc/apt/sources.list. Avoid adding unchecked third-party repositories, which often lag behind on critical ecosystem updates.
+- Avoid installing software with .deb files (if possible)
+  - Avoid Manual .deb Installs: Do not download random .deb files from the internet. Doing so bypasses APT's intelligent safety checks and risks forcing manual flags like dpkg --force-all, which destabilizes system paths
+- Regularly install all normal software updates (always)
+- Before upgrading to a new Ubuntu version:
+  - Plan some extra time for dependency issues
+  - Wait a month or two after release of new Ubuntu version (especially when using third-party repositories)
+  - Create a complete backup for your system
+- Use LTS (=Long Term Support) versions of Ubuntu for servers - less upgrades, less problems
+- Consider using tools like docker to containerize your application
 
 ## The RPM packages anatomy
 
