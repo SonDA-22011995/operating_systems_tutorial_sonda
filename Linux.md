@@ -238,6 +238,9 @@
       - [How Custom Repositories](#how-custom-repositories)
       - [The Practical Example: Installing Wine](#the-practical-example-installing-wine)
     - [Third party packages: Personal Package Archive](#third-party-packages-personal-package-archive)
+    - [Verifying installation: `debsums`](#verifying-installation-debsums)
+      - [What is the Tool?](#what-is-the-tool)
+      - [Installation and Core Commands](#installation-and-core-commands)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3343,6 +3346,48 @@ sudo apt autoremove
   - Example: The popular ppa:ondrej/php repo is maintained by Ondřej Surý. While it is not an official Ubuntu repository, checking his Launchpad profile reveals he has been a trusted community member since 2005.
 
 - Malicious Code Risks: A PPA has the power to overwrite system packages (like upgrading bash or coreutils to a malicious version) during a system upgrade. While Canonical/Launchpad monitors and takes down malicious PPAs, there is always a window of vulnerability before a threat is detected.
+
+### Verifying installation: `debsums`
+
+#### What is the Tool?
+
+- It is an official tool available in Debian and Ubuntu repositories used to verify the integrity of installed packages. It works by comparing the MD5 checksums of the files currently on your computer against the original checksums provided by the Debian package when it was first created.
+- Important:
+  - md5 is considered insecure
+  - A malicious actor might be able to generate an executable, that does something different, but still yields the same checksum
+  - Still, it's enough for a 99%+ exact overview
+
+#### Installation and Core Commands
+
+- `debsums` is not always installed by default, but it can be installed easily using the Advanced Package Tool (APT)
+
+```bash
+sudo apt install debsums
+```
+
+-  We can verify all packages that contain an md5 sum with the command debsums:
+
+```bash
+debsums [package / .deb file]
+```
+
+```bash
+sudo debsums -a -s apache2 apache2-data apache2-bin
+```
+
+- Key Parameters:
+
+  - `debsums -a`: Checks all files, including configuration files (e.g., those located in the /etc directory). By default, configuration files are skipped because users frequently modify them intentionally.
+
+  - `debsums -s` (Silent Mode): Suppresses successful matches and only outputs errors or changed files.
+
+  - `debsums -l`: Lists packages that do not currently have an MD5 checksum list attached.
+
+  - Note: `debsums` installs a background trigger. Once installed, any new software you download will automatically generate checksums. However, for older packages that lack them, you might need to reinstall them to generate a baseline
+
+![debsums command](static/images/image_0059.png)
+
+![debsums command](static/images/image_0060.png)
 
 ## The RPM packages anatomy
 
