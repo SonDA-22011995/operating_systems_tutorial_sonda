@@ -103,6 +103,7 @@
       - [Changing Ownership `chown`](#changing-ownership-chown)
       - [How do file permissions work for directories?](#how-do-file-permissions-work-for-directories)
       - [Change permissions / ownership for a whole directory structure](#change-permissions--ownership-for-a-whole-directory-structure)
+      - [Use case](#use-case)
   - [Advanced file permissions: `umask`](#advanced-file-permissions-umask)
     - [Why do we need a umask?](#why-do-we-need-a-umask)
     - [How does it work?](#how-does-it-work)
@@ -1681,6 +1682,17 @@ ls -al ./file_permission/
 # -rwxrwxrwx  1 sonda sonda   31 Apr 28 09:09 index.html
 # -rwxrwxrwx  1 sonda sonda   13 Apr 25 10:52 permission.txt
 ```
+
+#### Use case
+
+- Which command ensures new files created within the directory sales are owned by the group sales? (Choose two.)
+  - `chmod g+s sales` or `chmod 2775 sales`
+
+```bash
+ls -l
+# drwxrwxr-x 2 root sales 4096 Jan 1 15:21 sales
+```
+
 
 ## Advanced file permissions: `umask`
 
