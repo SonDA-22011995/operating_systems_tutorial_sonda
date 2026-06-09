@@ -249,6 +249,8 @@
         - [What is a Dependency Conflict?](#what-is-a-dependency-conflict)
         - [Resolution](#resolution)
         - [Best Practices to Avoid Dependency Conflict](#best-practices-to-avoid-dependency-conflict)
+    - [Reconfiguring packages](#reconfiguring-packages)
+      - [Practical Example: Managing Locales](#practical-example-managing-locales)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3488,6 +3490,60 @@ sudo apt autoremove #or sudo apt-get autoremove
   - Create a complete backup for your system
 - Use LTS (=Long Term Support) versions of Ubuntu for servers - less upgrades, less problems
 - Consider using tools like docker to containerize your application
+
+### Reconfiguring packages
+
+- When you install certain Linux packages using APT, they often execute background configuration scripts or ask you interactive setup questions. 
+- This is necessary for tasks like setting up a main bootloader, creating specific system users/groups for web servers, or choosing a default graphical login manager
+- If you ever need to rerun these setup scripts to modify your system configurations later, you can use the following command
+
+```bash
+sudo dpkg-reconfigure <package_name>
+```
+
+#### Practical Example: Managing Locales
+
+- What is a locale?
+  - It defines how numbers and dates should be displayed
+  - A lot of programing languages rely on the operating system to provide this functionality
+  - For example, if we want to have a website (for example programmed in PHP), and we want to use the build-in functions to format dates
+  - The corresponding locale must be generated
+- The Problem: 
+  - By default, a system might only have its primary language locale active (e.g., English). If you change the system environment variable (LC_ALL) to a different language, like German (de_DE.UTF-8), the system will ignore it or throw an error if that locale hasn't been generated yet.
+
+```bash
+locale -a
+
+# C
+# C.utf8
+# POSIX
+
+LC_ALL=vi_VN.UTF-8 date +%A
+# Tuesday
+```
+
+- The Solution: Running sudo dpkg-reconfigure locales opens an interactive terminal menu where you can scroll through, select new locales using the Spacebar, and confirm using the Enter keys.
+
+```bash
+sudo dpkg-reconfigure locales
+
+# select new locales using the Spacebar, and confirm using the Enter keys
+
+locale -a
+
+# C
+# C.utf8
+# POSIX
+# vi_VN
+# vi_VN.utf8
+
+LC_ALL=vi_VN.UTF-8 date +%A
+# Thứ ba
+```
+
+![reconfiguring packages](static/images/image_0063.png)
+
+- The Result: Once dpkg finishes generating the new locale scripts, any application (like a PHP website or the Bash date command) will immediately be able to format outputs correctly for that specific region once restarted.
 
 ## The RPM packages anatomy
 
