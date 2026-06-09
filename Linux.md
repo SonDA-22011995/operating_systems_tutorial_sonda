@@ -251,6 +251,11 @@
         - [Best Practices to Avoid Dependency Conflict](#best-practices-to-avoid-dependency-conflict)
     - [Reconfiguring packages](#reconfiguring-packages)
       - [Practical Example: Managing Locales](#practical-example-managing-locales)
+    - [Package management with snap](#package-management-with-snap)
+      - [The Problem with APT (Traditional Package Management)](#the-problem-with-apt-traditional-package-management)
+      - [What is SNAP?](#what-is-snap)
+      - [The Trade-off](#the-trade-off)
+      - [How to Find and Install Snaps](#how-to-find-and-install-snaps)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
@@ -3544,6 +3549,40 @@ LC_ALL=vi_VN.UTF-8 date +%A
 ![reconfiguring packages](static/images/image_0063.png)
 
 - The Result: Once dpkg finishes generating the new locale scripts, any application (like a PHP website or the Bash date command) will immediately be able to format outputs correctly for that specific region once restarted.
+
+### Package management with snap
+
+#### The Problem with APT (Traditional Package Management)
+
+- Dependency Conflicts: Traditional package managers like APT can be delicate. If one dependency fails or has a version mismatch, APT can fail to install or update the software.
+
+- Global Installation: All dependencies are installed globally. This means multiple applications are forced to share the same version of a library, which can lead to system-wide instability if an update breaks compatibility.
+
+#### What is SNAP?
+
+- Snap is an alternative package format designed to solve dependency issues and improve application compatibility across different Linux distributions.
+
+- Key Advantages:
+
+  - Bundled Dependencies: Snaps package the application together with almost all its required libraries and dependencies.
+
+  - Isolation: Because dependencies are bundled inside the application package, they are not installed globally. Different applications can run completely different versions of the same library without conflict.
+
+  - Automatic Background Updates: A background system service ensures that Snap packages update automatically.
+
+  - Distro Independent: Since they do not rely on specific system-level host libraries, Snaps can run seamlessly across various Linux distributions.
+
+#### The Trade-off
+
+- Disk Space: Because apps don't share libraries, you might have the same dependency installed multiple times on your disk, resulting in larger download sizes and more storage usage. However, modern systems prioritize the enhanced stability and reliability over saving a small amount of disk space.
+
+#### How to Find and Install Snaps
+
+- Snap is a centralized repository for complete applications:
+  - People can publish their applications to that repository
+  - If we install a snap application, we should make sure that we trust the authors!
+  - We can have a look at the available packages here: https://snapcraft.io/
+  - We can install an application: `snap install <package_name>`
 
 ## The RPM packages anatomy
 
