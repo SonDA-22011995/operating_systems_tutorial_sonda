@@ -257,6 +257,11 @@
       - [The Trade-off](#the-trade-off)
       - [How to Find and Install Snaps](#how-to-find-and-install-snaps)
   - [The RPM packages anatomy](#the-rpm-packages-anatomy)
+    - [Manual Package Management via rpm](#manual-package-management-via-rpm)
+      - [What is an RPM Package?](#what-is-an-rpm-package)
+      - [Official CentOS Stream Repositories](#official-centos-stream-repositories)
+      - [The Core Limitation: Dependency Hell](#the-core-limitation-dependency-hell)
+      - [Manual Installation](#manual-installation-1)
     - [Updating the System](#updating-the-system)
     - [Managing Software (Install/Remove)](#managing-software-installremove)
   - [Enabling Additional Repositories](#enabling-additional-repositories)
@@ -3568,7 +3573,7 @@ LC_ALL=vi_VN.UTF-8 date +%A
 
   - Isolation: Because dependencies are bundled inside the application package, they are not installed globally. Different applications can run completely different versions of the same library without conflict.
 
-  - Automatic Background Updates: A background system service ensures that Snap packages update automatically.
+  - Automatic Background Updates: A background system service ensures that Snap packages update automatically. Otherwise we can trigger it: `snap refresh`
 
   - Distro Independent: Since they do not rely on specific system-level host libraries, Snaps can run seamlessly across various Linux distributions.
 
@@ -3585,6 +3590,68 @@ LC_ALL=vi_VN.UTF-8 date +%A
   - We can install an application: `snap install <package_name>`
 
 ## The RPM packages anatomy
+
+### Manual Package Management via rpm
+
+#### What is an RPM Package?
+
+- Definition: An RPM file is an archive containing all the binaries, configuration files, and metadata required to install a specific piece of software.
+
+- Dependencies: Software often relies on other programs to run. While a single RPM contains its own files, it does not embed its dependencies; those must be provided by separate RPM files.
+
+#### Official CentOS Stream Repositories
+
+- When manually browsing official mirrors (such as **https://mirror.stream.centos.org** for CentOS Stream 9), the system architecture is split into specific streams:
+
+  - BaseOS: Contains the core, essential functionality of the operating system.
+
+  - AppStream: Contains the application-level software and tools that run on top of the core OS.
+
+  - Repo Data (repodata/): A directory containing metadata files. Package managers download these files to understand what software is available and to keep the system up to date.
+
+#### The Core Limitation: Dependency Hell
+
+- Manually managing software directly via rpm has a major drawback: it cannot automatically resolve dependencies.
+
+- If you attempt to install an RPM package that requires a library you do not have, the `rpm -i` command will simply fail and output an error. You would then be forced to hunt down, download, and install those dependency RPMs manually.
+
+- Looking Ahead: To solve this limitation, Linux administrators use DNF, an abstraction layer built on top of RPM. DNF automatically communicates with online repositories, calculates required dependencies, and installs them seamlessly. DNF will be covered in the next lecture.
+
+#### Manual Installation
+
+- Before downloading a package manually, you must verify your system's architecture and Ubuntu version to ensure compatibility
+
+```bash
+cat /etc/centos-release
+```
+
+- Navigate to the official mirrors **https://mirror.stream.centos.org** and download zsh-5.9-15.el10.x86_64.rpm package
+
+- To inspect an uninstalled .rpm file archive, use the rpm command with specific query flags `rpm -qpl zsh-version.rpm`
+
+```bash
+cd ~/Downloads
+rpm -qpl zsh-5.9-15.el10.x86_64.rpm
+
+# -q : Query the package.
+# -p : Target a package file (used for local, uninstalled RPMs).
+# -l : List all files contained within the package that will be installed onto the system.
+```
+
+- Installing an RPM File: `sudo rpm -i zsh-5.9-15.el10.x86_64.rpm`
+- Uninstalling an RPM Package: `sudo rpm -e zsh`
+
+![rpm package management](static/images/image_0069.png)
+
+![rpm package management](static/images/image_0064.png)
+
+![rpm package management](static/images/image_0065.png)
+
+![rpm package management](static/images/image_0066.png)
+
+![rpm package management](static/images/image_0067.png)
+
+![rpm package management](static/images/image_0068.png)
 
 ### Updating the System
 
