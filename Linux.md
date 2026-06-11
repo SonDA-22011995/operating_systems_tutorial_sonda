@@ -263,9 +263,11 @@
       - [The Core Limitation: Dependency Hell](#the-core-limitation-dependency-hell)
       - [Manual Installation](#manual-installation-1)
     - [Managing sofware packages: dnf](#managing-sofware-packages-dnf)
+      - [Understanding Package Management \& Formats](#understanding-package-management--formats)
+      - [Setting Up Repositories](#setting-up-repositories)
+      - [Searching for Package](#searching-for-package)
       - [Updating the System](#updating-the-system)
       - [Managing Software (Install/Remove)](#managing-software-installremove)
-  - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3656,6 +3658,40 @@ rpm -qpl zsh-5.9-15.el10.x86_64.rpm
 
 ### Managing sofware packages: dnf
 
+#### Understanding Package Management & Formats
+
+- RPM Packages: CentOS uses the RPM package format. However, just because a package is an .rpm file does not mean it is compatible with your system. Avoid installing RPMs explicitly built for other distributions (like Fedora or openSUSE) to prevent system issues.
+
+- DNF vs. YUM: DNF (Dandified YUM) is the modern, faster, and more streamlined package manager that replaced the older YUM.
+
+- Command Compatibility: In the terminal, running yum and dnf yields identical results because both commands are symlinks pointing to the same underlying dnf-3 executable.
+
+![Command Compatibility](static/images/image_0070.png)
+
+#### Setting Up Repositories
+
+- If a package cannot be found in command `sudo dnf search <package_name>`, it is usually because the required software repositories are not enabled.
+-  To expand the available software catalog, you need to enable the CRB (Code Ready Builder) repository and install the EPEL (Extra Packages for Enterprise Linux) release package using the following steps:
+
+```bash
+sudo dnf config-manager --set-enabled crb
+
+sudo dnf install epel-release
+
+sudo dnf update # to refresh the package database
+```
+
+- CRB stands for Code Ready Builder. It is an official package repository provided by Red Hat, but it is disabled by default upon a fresh installation of the operating system
+- EPEL (Extra Packages for Enterprise Linux) is a community-maintained repository created by the Fedora Project that provides additional high-quality software packages for Enterprise Linux distributions
+
+#### Searching for Package
+
+- Syntax: `sudo dnf search <package_name>`
+
+```bash
+sudo dnf search links
+```
+
 #### Updating the System
 
 - In CentOS, keeping the system current is straightforward because the package manager automatically handles list refreshes.
@@ -3673,18 +3709,6 @@ rpm -qpl zsh-5.9-15.el10.x86_64.rpm
 - Remove: `sudo dnf remove <package_name>`
 
 - Legacy Support: The older command `yum` still works as an alias for `dnf` for those familiar with older versions of CentOS.
-
-## Enabling Additional Repositories
-
-- Additional repositories are third-party or non-standard software sources added to a Linux system to install specific applications not available in default repositories
-- Example on CentOS
-  - Install EPEL: `sudo dnf install epel-release` (This adds new "servers" or sources for software).
-
-  - Enable CodeReady Builder (CRB): Many EPEL packages require the CRB power tools. This is enabled via `sudo crb enable`.
-
-  - Refresh: Run `sudo dnf update` again to sync the newly added lists.
-
-  - Security: You may be asked to confirm GPG keys (digital signatures) during installation to ensure the software is authentic.
 
 # Introducing the Linux shell
 
