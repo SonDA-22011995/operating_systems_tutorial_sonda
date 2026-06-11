@@ -268,6 +268,10 @@
       - [Searching for Package](#searching-for-package)
       - [Updating the System](#updating-the-system)
       - [Managing Software (Install/Remove)](#managing-software-installremove)
+- [The System Boot Process and systemd](#the-system-boot-process-and-systemd)
+  - [What is Boot?](#what-is-boot)
+  - [The Bootloader](#the-bootloader)
+    - [What is a Bootloader?](#what-is-a-bootloader)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3709,6 +3713,38 @@ sudo dnf search links
 - Remove: `sudo dnf remove <package_name>`
 
 - Legacy Support: The older command `yum` still works as an alias for `dnf` for those familiar with older versions of CentOS.
+
+# The System Boot Process and systemd
+
+## What is Boot?
+
+- Boot (or booting) is the process by which a computer starts from a powered-off state until the operating system is fully loaded into memory and ready for use.
+- The boot process typically consists of the following steps:
+  - Power on the computer.
+  - The BIOS or UEFI performs a hardware check (POST – Power-On Self-Test).
+  - The BIOS/UEFI locates a bootable device (such as a hard drive, SSD, or USB drive).
+  - The bootloader is loaded.
+  - The bootloader loads the operating system kernel.
+  - The kernel initializes the operating system and required services.
+  - The login screen or desktop is displayed.
+- In short, booting is the entire startup sequence that takes a computer from power-on to a fully operational operating system.
+
+## The Bootloader
+
+### What is a Bootloader?
+
+- A bootloader is a small program responsible for loading the operating system into memory and transferring control to the kernel.
+
+- It acts as a bridge between the system firmware (BIOS/UEFI) and the operating system.
+
+- Common bootloaders on Linux include:
+
+  - GRUB (GNU GRand Unified Bootloader)
+  - systemd-boot
+
+- On Windows, the standard bootloader is: Windows Boot Manager
+
+- In short, the bootloader is responsible for locating and loading the operating system kernel, allowing the operating system to start running.
 
 # Introducing the Linux shell
 
