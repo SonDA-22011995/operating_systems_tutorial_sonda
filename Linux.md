@@ -224,7 +224,7 @@
     - [dpkg: Debian Package Manager](#dpkg-debian-package-manager)
       - [What is dpkg?](#what-is-dpkg)
       - [Manual Installation](#manual-installation)
-    - [Dependency management: `apt` / `apt-get`](#dependency-management-apt--apt-get)
+    - [Managing sofware packages: `apt` / `apt-get`](#managing-sofware-packages-apt--apt-get)
       - [dpkg vs. apt / apt-get](#dpkg-vs-apt--apt-get)
       - [A package source / repository in apt](#a-package-source--repository-in-apt)
       - [Updating the Package List](#updating-the-package-list)
@@ -262,8 +262,9 @@
       - [Official CentOS Stream Repositories](#official-centos-stream-repositories)
       - [The Core Limitation: Dependency Hell](#the-core-limitation-dependency-hell)
       - [Manual Installation](#manual-installation-1)
-    - [Updating the System](#updating-the-system)
-    - [Managing Software (Install/Remove)](#managing-software-installremove)
+    - [Managing sofware packages: dnf](#managing-sofware-packages-dnf)
+      - [Updating the System](#updating-the-system)
+      - [Managing Software (Install/Remove)](#managing-software-installremove)
   - [Enabling Additional Repositories](#enabling-additional-repositories)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
@@ -3125,7 +3126,7 @@ sudo dpkg -i neofetch_7.1.0-4_all.deb
 sudo dpkg -r neofetch
 ```
 
-### Dependency management: `apt` / `apt-get`
+### Managing sofware packages: `apt` / `apt-get`
 
 #### dpkg vs. apt / apt-get
 
@@ -3653,7 +3654,9 @@ rpm -qpl zsh-5.9-15.el10.x86_64.rpm
 
 ![rpm package management](static/images/image_0068.png)
 
-### Updating the System
+### Managing sofware packages: dnf
+
+#### Updating the System
 
 - In CentOS, keeping the system current is straightforward because the package manager automatically handles list refreshes.
 
@@ -3663,7 +3666,7 @@ rpm -qpl zsh-5.9-15.el10.x86_64.rpm
 
 - Rebooting: If the kernel is updated, a system restart is strongly recommended to apply the changes.
 
-### Managing Software (Install/Remove)
+#### Managing Software (Install/Remove)
 
 - Install: `sudo dnf install <package_name>`
 
