@@ -273,6 +273,7 @@
   - [The Bootloader](#the-bootloader)
     - [What is a Bootloader?](#what-is-a-bootloader)
     - [Configuring GRUB2](#configuring-grub2)
+    - [GRUB Features and System Recovery](#grub-features-and-system-recovery)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3750,7 +3751,7 @@ sudo dnf search links
 ### Configuring GRUB2
 
 - Depending on your distribution and system configuration (e.g., whether you are dual-booting), the GRUB menu might be hidden by default to speed up boot times. To change this behavior, you must modify the configuration
-- Step-by-Step Configuration
+- Step-by-Step Configuration to open GRUB menu
   - Edit the source file: Open `/etc/default/grub` using a text editor with root privileges (e.g., `sudo nano /etc/default/grub`)
   - Modify variables: To make the menu visible, comment out or remove hidden timeout styles **GRUB_TIMEOUT_STYLE=hidden** and set **GRUB_TIMEOUT=5** (giving you 5 seconds to press a key at boot)
   - Regenerate the main file: This step differs strictly by distribution. Command to Apply Changes
@@ -3760,6 +3761,16 @@ sudo dnf search links
   - Never edit the main configuration file (`/boot/grub/grub.cfg` or `/boot/grub2/grub.cfg`) directly. It is automatically overwritten every time the system updates a kernel. Instead, always edit the source file and regenerate the configuration
 
 ![/etc/default/grub](static/images/image_0071.png)
+
+### GRUB Features and System Recovery
+
+- When the GRUB menu is enabled, it grants access to critical recovery utilities:
+
+  - Older Kernels: If a recent system or driver update breaks your current environment, you can use the GRUB menu to boot into a previously working kernel version.
+
+  - Recovery Mode: Booting into recovery mode can grant direct root shell access without requiring a password. This is incredibly helpful for fixing broken configurations or resetting lost passwords.
+
+![Recovery Mode](static/images/image_0072.png)
 
 # Introducing the Linux shell
 
