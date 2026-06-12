@@ -228,7 +228,7 @@
       - [dpkg vs. apt / apt-get](#dpkg-vs-apt--apt-get)
       - [A package source / repository in apt](#a-package-source--repository-in-apt)
       - [Updating the Package List](#updating-the-package-list)
-      - [Managing Packages (Install/Remove)](#managing-packages-installremove)
+      - [Managing Packages (Search/Install/Remove)](#managing-packages-searchinstallremove)
       - [Managing upgrades (Upgrading Software)](#managing-upgrades-upgrading-software)
         - [`apt` vs. `apt-get`](#apt-vs-apt-get)
       - [Auto-removing packages](#auto-removing-packages)
@@ -277,6 +277,12 @@
       - [Security Trade-offs: Accessibility vs. Hardening](#security-trade-offs-accessibility-vs-hardening)
   - [The Kernel](#the-kernel)
     - [What is the Linux Kernel?](#what-is-the-linux-kernel)
+    - [Kernel Modules](#kernel-modules)
+      - [What are kernel modules?](#what-are-kernel-modules)
+      - [Guarding Updates: Locking the Kernel Version](#guarding-updates-locking-the-kernel-version)
+        - [How to Lock the Kernel on Ubuntu (APT)](#how-to-lock-the-kernel-on-ubuntu-apt)
+        - [How to Lock the Kernel on CentOS / RHEL (DNF)](#how-to-lock-the-kernel-on-centos--rhel-dnf)
+      - [How do we communicate with the hardware?](#how-do-we-communicate-with-the-hardware)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3168,9 +3174,11 @@ sudo dpkg -r neofetch
 
 - Note: This requires sudo (root privileges) because it accesses protected system files.
 
-#### Managing Packages (Install/Remove)
+#### Managing Packages (Search/Install/Remove)
 
-- The lecture demonstrates how to add or take away specific tools:
+- The lecture demonstrates how to search or add or take away specific tools:
+
+- To search for a specific package: `sudo apt search <package_name>`
 
 - Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
 
@@ -3180,7 +3188,21 @@ sudo dpkg -r neofetch
 - Skipping Recommendations
   - If you want to keep your system minimal and install only the core application and its hard dependencies, use the --no-install-recommends flag: `sudo apt install --no-install-recommends neofetch`
 
-- Remove: `sudo apt remove <package_name>`
+- Removes the installed packages and all their dependencies installed by the apt install command: 
+
+```bash
+sudo apt remove <package_name>
+```
+
+- The latter will uninstall the packages, just like apt remove, but also deletes any configuration files
+created by the applications
+
+
+```bash
+sudo apt purge <package_name>
+
+sudo apt remove --purge [packagename]
+```
 
 ![sudo apt install](static/images/image_0053.png)
 
@@ -3807,6 +3829,64 @@ sudo dnf search links
   - Networking Stack: Implements fundamental network protocols (like TCP/IP and Ethernet) and manages firewall rules.
 
   - Hardware abstraction layer (HAL): Enables applications to communicate with various devices
+
+### Kernel Modules
+
+- The core Linux kernel file (often found in the `/boot` directory as vmlinuz) is surprisingly lightweight—frequently only around 15MB in size. To avoid being massive, it relies on Kernel Modules.
+
+![The core Linux kernel file](static/images/image_0073.png)
+
+#### What are kernel modules?
+
+- On-Demand Loading: Modules are pieces of code that can be dynamically loaded into or unloaded from the kernel at runtime without needing to reboot the computer.
+
+- Proprietary Drivers: Because the Linux kernel is open-source, companies can pack proprietary, closed-source drivers (like Nvidia graphics drivers, specific Wi-Fi chip drivers, or advanced file systems like ZFS) into kernel modules to optimize performance legally.
+
+- Inspection: You can see which kernel modules are currently active on your machine by running the command: 
+
+```bash
+sudo lsmod
+```
+
+#### Guarding Updates: Locking the Kernel Version
+
+- While major package managers (like APT or DNF) handle standard system upgrades seamlessly, custom or third-party kernel modules can break if the core kernel updates to a version they don't support yet.
+
+- If you are a system administrator running specialized hardware or hypervisor tools (like VirtualBox Guest Additions or GPU passthrough), you may want to "lock" or "hold" your working kernel version to prevent automated updates from breaking your system.
+
+##### How to Lock the Kernel on Ubuntu (APT)
+
+- Lock: `sudo apt-mark hold <package_name>`
+- Unlock: `sudo apt-mark unhold <package_name>`
+
+##### How to Lock the Kernel on CentOS / RHEL (DNF)
+
+- CentOS uses a dedicated plugin to lock package versions. You must install the plugin before running the lock command
+
+```bash
+# 1. Install the version-lock plugin
+sudo dnf install dnf-command(versionlock)
+
+# 2. Lock the kernel package
+sudo dnf versionlock <package_name>
+```
+
+- To unlock
+
+```bash
+sudo dnf versionlock delete <package_name>
+```
+
+#### How do we communicate with the hardware?
+
+- User Space (User Mode): Where user applications (like Firefox, Systemd, or the graphical interface) run. Software here has restricted permissions and cannot directly tamper with the hardware.
+
+- Kernel Space (Kernel Mode): Where the core kernel resides with absolute control over the CPU, memory, and hardware.
+
+- System Calls (Syscalls)
+  - When an application in User Space wants to do something hardware-related (e.g., saving a file), it executes a System Call (such as open, read, write, or close). The CPU momentarily switches into Kernel Mode, the kernel securely performs the action on the physical hardware, and control is handed back to the application in user mode
+
+![How do we communicate with the hardware?](static/images/image_0074.png)
 
 # Introducing the Linux shell
 
