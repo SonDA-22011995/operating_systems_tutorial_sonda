@@ -272,7 +272,7 @@
   - [What is Boot?](#what-is-boot)
   - [The Bootloader](#the-bootloader)
     - [What is a Bootloader?](#what-is-a-bootloader)
-    - [Configuring GRUB2: CentOS vs. Ubuntu](#configuring-grub2-centos-vs-ubuntu)
+    - [Configuring GRUB2](#configuring-grub2)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3747,7 +3747,7 @@ sudo dnf search links
 
 - In short, the bootloader is responsible for locating and loading the operating system kernel, allowing the operating system to start running.
 
-### Configuring GRUB2: CentOS vs. Ubuntu
+### Configuring GRUB2
 
 - Depending on your distribution and system configuration (e.g., whether you are dual-booting), the GRUB menu might be hidden by default to speed up boot times. To change this behavior, you must modify the configuration
 - Step-by-Step Configuration
