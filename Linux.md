@@ -274,6 +274,7 @@
     - [What is a Bootloader?](#what-is-a-bootloader)
     - [Configuring GRUB2](#configuring-grub2)
     - [GRUB Features and System Recovery](#grub-features-and-system-recovery)
+      - [Security Trade-offs: Accessibility vs. Hardening](#security-trade-offs-accessibility-vs-hardening)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3769,6 +3770,22 @@ sudo dnf search links
   - Older Kernels: If a recent system or driver update breaks your current environment, you can use the GRUB menu to boot into a previously working kernel version.
 
   - Recovery Mode: Booting into recovery mode can grant direct root shell access without requiring a password. This is incredibly helpful for fixing broken configurations or resetting lost passwords.
+
+#### Security Trade-offs: Accessibility vs. Hardening
+
+- Because the recovery mode provides unauthenticated root access, an accessible bootloader poses a physical security risk.
+
+- The Risk: Anyone with physical access to the machine (or virtual access to the hypervisor) can reboot the computer, enter GRUB, and completely hijack the system via the root shell.
+
+- The Fix (System Hardening): To lock down a production environment, you should:
+
+  - Hide the GRUB menu and disable boot keystrokes.
+
+  - Password-protect the GRUB bootloader itself.
+
+  - Lock down the motherboard BIOS/UEFI firmware with a password and disable booting from external media (like USB drives).
+
+- The Catch: Hardening your system makes emergency troubleshooting significantly more difficult if a kernel update ever fails, creating a direct trade-off between security and convenience.
 
 ![Recovery Mode](static/images/image_0072.png)
 
