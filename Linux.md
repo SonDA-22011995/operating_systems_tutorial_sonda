@@ -283,6 +283,9 @@
         - [How to Lock the Kernel on Ubuntu (APT)](#how-to-lock-the-kernel-on-ubuntu-apt)
         - [How to Lock the Kernel on CentOS / RHEL (DNF)](#how-to-lock-the-kernel-on-centos--rhel-dnf)
       - [How do we communicate with the hardware?](#how-do-we-communicate-with-the-hardware)
+  - [The systemd](#the-systemd)
+    - [What is systemd?](#what-is-systemd)
+    - [The Historical "init" Link](#the-historical-init-link)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3887,6 +3890,33 @@ sudo dnf versionlock delete <package_name>
   - When an application in User Space wants to do something hardware-related (e.g., saving a file), it executes a System Call (such as open, read, write, or close). The CPU momentarily switches into Kernel Mode, the kernel securely performs the action on the physical hardware, and control is handed back to the application in user mode
 
 ![How do we communicate with the hardware?](static/images/image_0074.png)
+
+## The systemd
+
+### What is systemd?
+
+- Once the bootloader hands control to the kernel and the kernel initializes the computer's hardware, it needs to start the actual software environment. The kernel does this by launching the very first process on the system, which always receives Process ID 1 (PID 1). On almost all modern Linux distributions, this process is systemd.
+
+  - Operating System Manager: systemd sits right above the kernel in user space. It does not talk to the hardware directly; instead, it uses the kernel to manage the rest of the operating system.
+
+  - The Master Parent Process: Every single background service, login screen, graphical interface, or application that runs on your computer is ultimately started and managed by systemd.
+
+### The Historical "init" Link
+
+```bash
+ps 1
+
+# PID TTY      STAT   TIME COMMAND
+  # 1 ?        Ss     0:01 /sbin/init splash
+
+ls -l /sbin/init
+
+# lrwxrwxrwx 1 root root 22 Jun  5 22:36 /sbin/init -> ../lib/systemd/systemd
+```
+
+- This is kept strictly for historical compatibility. Before **systemd** existed, Linux systems used an older initialization software system called SysV init. To prevent breaking legacy scripts and software that expect an init file to exist at boot, modern Linux distributions create a symbolic link (symlink) from `/sbin/init` pointing directly to the actual systemd executable.
+
+![The Historical "init" Link](static/images/image_0075.png)
 
 # Introducing the Linux shell
 
