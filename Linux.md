@@ -294,6 +294,7 @@
     - [System Mode vs. User Mode](#system-mode-vs-user-mode)
     - [Basic Building Blocks: Units \& Services](#basic-building-blocks-units--services)
     - [Systemd manages "Units"](#systemd-manages-units)
+    - [Useful Commands Introduced](#useful-commands-introduced)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3977,9 +3978,16 @@ ls -l /sbin/init
 
 | Path | Purpose | Behavior |
 |------|---------|----------|
-| `/lib/systemd/system` (or `/usr/lib/systemd/system`) |  System configuration | This is the "default" place for configuration from the maintainer (=authors of our Linux distribution / packages). Do not modify directly. |
+| `/lib/systemd/system` (or `/usr/lib/systemd/system`) |  System configuration | This is the "default" place for configuration from the maintainer (=authors of our Linux distribution / packages). Do not modify directly. The idea is that we can just upgrade that folder without that anything breaks|
 | `/run/systemd/system` | Runtime config | Non-persistent; dynamically generated and lost on reboot. |
 | `/etc/systemd/system` | System Administrator config | Used for custom units or overrides. Files here take precedence over other locations. |
+
+
+### Useful Commands Introduced
+
+- `systemd-analyze --system unit-paths`: Displays all the paths systemd searches for unit files.
+
+- `systemctl cat <unit_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
 
 # Introducing the Linux shell
 
