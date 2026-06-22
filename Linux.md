@@ -286,6 +286,14 @@
   - [The systemd](#the-systemd)
     - [What is systemd?](#what-is-systemd)
     - [The Historical "init" Link](#the-historical-init-link)
+    - [`systemd` is an extensive set of tools](#systemd-is-an-extensive-set-of-tools)
+      - [Practical Automation Problems systemd Solves](#practical-automation-problems-systemd-solves)
+  - [General structure - `systemd`](#general-structure---systemd)
+    - [System mode](#system-mode)
+    - [User Mode](#user-mode)
+    - [System Mode vs. User Mode](#system-mode-vs-user-mode)
+    - [Basic Building Blocks: Units \& Services](#basic-building-blocks-units--services)
+    - [Systemd manages "Units"](#systemd-manages-units)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3917,6 +3925,61 @@ ls -l /sbin/init
 - This is kept strictly for historical compatibility. Before **systemd** existed, Linux systems used an older initialization software system called SysV init. To prevent breaking legacy scripts and software that expect an init file to exist at boot, modern Linux distributions create a symbolic link (symlink) from `/sbin/init` pointing directly to the actual systemd executable.
 
 ![The Historical "init" Link](static/images/image_0075.png)
+
+### `systemd` is an extensive set of tools
+
+- `systemd` is not just a single program
+- It is an entire ecosystem of built-in system utilities designed to handle different background tasks cleanly
+- While the core systemd process (PID 1) orchestrates the boot process and manages services, you will find many specialized systemd processes running in the background, such as:
+
+  - `systemd-timesyncd`: Automatically synchronizes your local system clock with network time servers.
+  - `systemd-logind`: Manages user logins, sessions, and seat access.
+  - `systemd-resolved`: Handles network name resolution (DNS tracking) for applications.
+
+#### Practical Automation Problems systemd Solves
+
+- To truly understand systemd, it helps to look at the common, real-world administration problems it solves. Instead of just running individual applications manually, systemd allows you to configure automated background actions:
+
+  - Persistent Web Servers: Ensuring a web server launches automatically every single time the machine boots up, and automatically restarts if it crashes.
+
+  - Custom Boot Commands: Triggering custom startup scripts, like writing a specific timestamp into a system log file immediately upon boot.
+
+  - Recurring Background Tasks: Running maintenance tasks (like transcoding user-uploaded videos or cleaning up temporary databases) every few minutes or hours perfectly in the background—even if no users are actively logged into the server. (Note: This functionally replaces older utility tools 
+  like cron).
+
+## General structure - `systemd`
+
+### System mode
+
+- systemd manages the boot process and starts all services required for this (in parallel)
+- It reads in configuration files (unit files), builds the dependency graph, and then executes all commands necessary to get to the result
+
+### User Mode
+
+- The same as system mode, but for user services (after the user logins)
+- We will focus on system mode in this course
+
+### System Mode vs. User Mode
+
+- System Mode (Core Focus): systemd manages the entire boot process, handles executable dependencies (building a dependency graph), and starts required system services in the correct order to reach the final state (e.g., a graphical user interface).
+
+- User Mode: Runs in parallel for individual users upon login to manage specific user-level background tasks and services.
+
+### Basic Building Blocks: Units & Services
+
+- Unit: The most basic building block in systemd. Units declare dependencies on each other. Common types include `service`, `target`, and `timer` (others include `mount` and `socket`).
+
+- Service: A special type of unit (identified by the `.service` file extension) that represents an executable process or script. Services can be started, stopped, restarted, reloaded, enabled, or disabled.
+
+### Systemd manages "Units"
+
+- systemd searches for unit files across multiple paths, ordered by priority:
+
+| Path | Purpose | Behavior |
+|------|---------|----------|
+| `/lib/systemd/system` (or `/usr/lib/systemd/system`) |  System configuration | This is the "default" place for configuration from the maintainer (=authors of our Linux distribution / packages). Do not modify directly. |
+| `/run/systemd/system` | Runtime config | Non-persistent; dynamically generated and lost on reboot. |
+| `/etc/systemd/system` | System Administrator config | Used for custom units or overrides. Files here take precedence over other locations. |
 
 # Introducing the Linux shell
 
