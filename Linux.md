@@ -296,6 +296,8 @@
     - [Systemd manages "Units"](#systemd-manages-units)
     - [Useful Commands Introduced](#useful-commands-introduced)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
+    - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
+    - [Command Reference Table](#command-reference-table)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3992,6 +3994,35 @@ ls -l /sbin/init
 
 ## How do we manage a unit? - `systemd`
 
+- List units `systemctl list-units`
+- Get the status of a unit `systemctl status [unit]`
+- Change the status of a unit `systemctl {start, stop, restart, reload} [unit]`
+  - start: starts a unit
+  - stop: stops a unit
+  - restart: restarts a unit
+  - reload: asks the unit to reload its configuration (important: this is not the systemd configuration of this unit)
+
+```bash
+sudo systemctl stop  apache2.service
+
+sudo systemctl start  apache2.service
+
+systemctl status apache2.service
+```
+
+### Inspecting `systemctl status` Metadata
+
+- When executing `systemctl status apache2`, `systemd` provides comprehensive telemetry:
+
+  - Active State: Displays a green indicator if the service is running (active (running)), or white/grey if it is stopped (inactive (dead)).
+
+  - Cgroup (Control Group): Shows the hierarchical tree of all subprocesses spawned by the main daemon. If the service is stopped, systemd uses this cgroup to guarantee that all rogue subprocesses are safely tracked and terminated together.
+
+  - Logs: Displays the most recent stdout/stderr log outputs generated during the service's startup initialization phase.
+
+![Inspecting systemctl status Metadata](static/images/image_0076.png)
+
+### Command Reference Table
 
 | Command | Description | Notes / Best Practices |
 |----------|-------------|------------------------|
