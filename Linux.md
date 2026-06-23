@@ -295,6 +295,7 @@
     - [Basic Building Blocks: Units \& Services](#basic-building-blocks-units--services)
     - [Systemd manages "Units"](#systemd-manages-units)
     - [Useful Commands Introduced](#useful-commands-introduced)
+  - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -3988,6 +3989,19 @@ ls -l /sbin/init
 - `systemd-analyze --system unit-paths`: Displays all the paths systemd searches for unit files.
 
 - `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
+
+## How do we manage a unit? - `systemd`
+
+
+| Command | Description | Notes / Best Practices |
+|----------|-------------|------------------------|
+| `systemctl list-units` | Lists all currently active or loaded units. | Generates a long output; use arrow keys to navigate. |
+| `systemctl list-units \| grep apache2` | Filters the unit list specifically for Apache. | Used to quickly identify the exact unit name (`apache2.service`). |
+| `systemctl status apache2` | Displays the current runtime state, uptime, PID, Control Group (cgroup), and recent log entries. | The `.service` extension can be omitted for standard service units. Press `q` to exit the status view. |
+| `sudo systemctl start apache2` | Starts a stopped service unit. | Requires `sudo` privileges. |
+| `sudo systemctl stop apache2` | Stops a running service unit. | Requires `sudo` privileges. Halts the main process and all related subprocesses. |
+| `sudo systemctl restart apache2` | Stops and then immediately starts the service. | Drops active connections during the reset. |
+| `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
 
 # Introducing the Linux shell
 
