@@ -3987,7 +3987,7 @@ ls -l /sbin/init
 
 - `systemd-analyze --system unit-paths`: Displays all the paths systemd searches for unit files.
 
-- `systemctl cat <unit_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
+- `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
 
 # Introducing the Linux shell
 
