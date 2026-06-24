@@ -297,6 +297,7 @@
     - [Useful Commands Introduced](#useful-commands-introduced)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
+    - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
@@ -4021,6 +4022,21 @@ systemctl status apache2.service
   - Logs: Displays the most recent stdout/stderr log outputs generated during the service's startup initialization phase.
 
 ![Inspecting systemctl status Metadata](static/images/image_0076.png)
+
+### Key Takeaway
+
+- Stopping a service using `sudo systemctl stop apache2` only affects the current runtime session.
+  - If the host machine is rebooted, Apache2 will automatically spin back up. This persistent behavior occurs because the package manager configures the service to trigger during specific system boot sequences by default.
+  -  Managing this boot behavior requires configuring systemd Targets (boot modes), which dictates how to permanently enable or disable services across system power cycles.
+- For standard service units, you can completely drop the suffix extension
+  - If you are interacting with other systemd unit types (such as `.timer`, `.mount`, or `.socket`), you must explicitly append the extension.
+  
+```bash
+# These two commands are functionally identical:
+systemctl status apache2.service
+systemctl status apache2
+```
+
 
 ### Command Reference Table
 
