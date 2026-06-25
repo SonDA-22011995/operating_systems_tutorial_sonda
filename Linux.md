@@ -4098,7 +4098,7 @@ systemctl status apache2
 - `user.slice`: The container space holding interactive user sessions.
   - Nested inside, you will find user IDs (e.g., `user-1000.slice`), which track all processes initiated by that specific user account (such as terminal terminals, desktop environments, and user-level shells).
 
-![Structural Concepts inside ](static/images/image_0076.png)
+![Structural Concepts inside ](static/images/image_0077.png)
 
 ### Command Reference Table
 
