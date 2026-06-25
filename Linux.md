@@ -299,6 +299,13 @@
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
+  - [What is a cgroup?](#what-is-a-cgroup)
+    - [Core Concepts \& Overview](#core-concepts--overview)
+    - [Key Advantages](#key-advantages)
+    - [Core Features of Cgroups](#core-features-of-cgroups)
+    - [Structural Concepts inside cgroup](#structural-concepts-inside-cgroup)
+    - [Command Reference Table](#command-reference-table-1)
+    - [Cgroup example: Limit Firefox to 100MB RAM](#cgroup-example-limit-firefox-to-100mb-ram)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4049,6 +4056,59 @@ systemctl status apache2
 | `sudo systemctl stop apache2` | Stops a running service unit. | Requires `sudo` privileges. Halts the main process and all related subprocesses. |
 | `sudo systemctl restart apache2` | Stops and then immediately starts the service. | Drops active connections during the reset. |
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
+
+## What is a cgroup?
+
+### Core Concepts & Overview
+
+- Control groups (cgroups) are a feature of the Linux kernel
+- It organizes processes hierarchically
+- And allows us to more evenly distribute system resources
+- Systemd heavily relies on cgroups to manage processes
+
+### Key Advantages
+
+- **Hierarchical Inheritance:** 
+  - A cgroup can contain multiple processes and nested sub-cgroups. 
+  - If we start a sub-process, it will automatically be in the same cgroup as the parent
+- **Collective Management:**
+  - For complex applications that scale out with subprocesses (e.g., an Apache web server spinning up multiple PHP workers, or a Firefox browser launching isolated rendering processes), cgroups ensure that resource controls apply to the entire group rather than a single process ID (PID).
+
+### Core Features of Cgroups
+
+- **Resource Limiting**
+  - We can configure a cgroup to not exceed a specific memory limit
+  - We can define how much % of CPU resources this cgroup may occupy
+  - Example: Capping a group at a maximum of 100 MB of RAM or a fixed percentage of total CPU cycles
+- **Resource Prioritization/Scheduling**
+  - Distributing CPU scheduling shares evenly or preferentially between distinct groups of processes when the host system is under high load.
+- **Resource Accounting & Measurement**
+  - Monitoring the real-time resource consumption (CPU utilization, memory footprints, and I/O throughput) of entire application stacks or individual user sessions.
+- **Process Control**
+  - Freezing or checkpointing all bundled processes simultaneously within a single group configuration step
+
+### Structural Concepts inside cgroup 
+
+- Command: `systemctl status`
+
+- `/`: The root cgroup representing the entire operating system.
+
+- `system.slice`: The default container space holding system infrastructure daemons and background services managed by systemd.
+
+- `user.slice`: The container space holding interactive user sessions.
+  - Nested inside, you will find user IDs (e.g., `user-1000.slice`), which track all processes initiated by that specific user account (such as terminal terminals, desktop environments, and user-level shells).
+
+![Structural Concepts inside ](static/images/image_0076.png)
+
+### Command Reference Table
+
+| Command / Flags | Description | Notes |
+|----------------|-------------|-------|
+| `systemctl status` | Running the base command without specifying a unit prints the entire host system's real-time process tree structured by its active nested cgroups. | Use the arrow keys to scroll through long lists; press `q` to exit. |
+| `systemd-cgtop` | Displays a real-time, top-like view of active cgroups sorted by resource consumption (Tasks, CPU%, Memory, Input/Output). | Press `q` to exit the live monitoring screen. |
+| `systemd-cgtop --depth=5` | Adjusts the tracking depth parameter to print deeply nested subsystems. | By default, `systemd-cgtop` only lists the first 3 levels of cgroups. Adjusting `--depth` reveals isolated sub-components (e.g., individual terminal TTY sessions). |
+
+### Cgroup example: Limit Firefox to 100MB RAM
 
 # Introducing the Linux shell
 
