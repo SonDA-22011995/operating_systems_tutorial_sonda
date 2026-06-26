@@ -306,6 +306,9 @@
     - [Structural Concepts inside cgroup](#structural-concepts-inside-cgroup)
     - [Command Reference Table](#command-reference-table-1)
     - [Cgroup example: Limit Firefox to 100MB RAM](#cgroup-example-limit-firefox-to-100mb-ram)
+      - [Configuration Paths](#configuration-paths)
+    - [Step-by-Step Configuration Guide](#step-by-step-configuration-guide)
+      - [REHL/CentOS/RockyLinux](#rehlcentosrockylinux)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4109,6 +4112,49 @@ systemctl status apache2
 | `systemd-cgtop --depth=5` | Adjusts the tracking depth parameter to print deeply nested subsystems. | By default, `systemd-cgtop` only lists the first 3 levels of cgroups. Adjusting `--depth` reveals isolated sub-components (e.g., individual terminal TTY sessions). |
 
 ### Cgroup example: Limit Firefox to 100MB RAM
+
+#### Configuration Paths
+
+- System-wide Slices (Root): `/etc/systemd/system/`
+
+- User-level Slices (Non-root): `~/.config/systemd/user/`
+  - By defining a slice at the user level, you can manage application sandboxing entirely within your home environment.
+
+### Step-by-Step Configuration Guide
+
+#### REHL/CentOS/RockyLinux
+
+- Step 1: Create the Nested User Directories
+
+```bash
+mkdir -p ~/.config/systemd/user
+```
+
+Step 2: Define the Slice Unit File
+
+```bash
+nano ~/.config/systemd/user/browser.slice
+```
+
+```ini
+[Slice]
+MemoryHigh=100M
+```
+
+- Step 3: Launching Applications within a Slice
+
+```bash
+# find the the Firefox executable path
+which firefox
+
+# /usr/bin/firefox
+
+# launch Firefox
+systemd-run --user --slice=browser.slice /usr/bin/firefox
+```
+
+![Step-by-Step Configuration Guide](static/images/image_0078.png)
+
 
 # Introducing the Linux shell
 
