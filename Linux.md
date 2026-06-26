@@ -313,6 +313,7 @@
       - [Step 3: Reload the User Daemon](#step-3-reload-the-user-daemon)
       - [Step 4: Launching Applications within a Slice](#step-4-launching-applications-within-a-slice)
       - [Step 5: Troubleshooting Package Wrappers: Native vs. Snap](#step-5-troubleshooting-package-wrappers-native-vs-snap)
+      - [How to Find and Target the Real Binary](#how-to-find-and-target-the-real-binary)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4147,6 +4148,8 @@ nano ~/.config/systemd/user/browser.slice
 MemoryHigh=100M
 ```
 
+![Step-by-Step Configuration Guide](static/images/image_0078.png)
+
 #### Step 3: Reload the User Daemon
 
 - Whenever you create or modify a user unit file, you must force systemd to parse the new configurations:
@@ -4171,10 +4174,38 @@ systemd-run --user --slice=browser.slice /usr/bin/firefox
 
 #### Step 5: Troubleshooting Package Wrappers: Native vs. Snap
 
-- 
+- Running a command like `systemd-run --user --slice=browser.slice /usr/bin/firefox` will fail to restrict resource footprints on Ubuntu
 
-![Step-by-Step Configuration Guide](static/images/image_0078.png)
+- Why it Fails with Snap
+  - In this case Firefox is installed through snap
+  - `usr/bin/firefox` under Snap is not a binary program (is not a Firefox executable). It is an intermediate shell script launcher that redirects to a symlink at `/snap/bin/firefox`
+  - `/snap/bin/firefox` is a symbolic link to `/usr/bin/snap`. When we call `/snap/bin/firefox` in the background, it will call `/usr/bin/snap`. `/usr/bin/snap` is the actual file that is being executed 
+  
+![Step-by-Step Configuration Guide](static/images/image_0080.png)
 
+![Step-by-Step Configuration Guide](static/images/image_0079.png)
+
+![Step-by-Step Configuration Guide](static/images/image_0081.png)
+
+#### How to Find and Target the Real Binary
+
+- Find the actual runtime binary location while Firefox is open
+
+```bash
+ps -ef | grep firefox
+
+# /snap/firefox/current/usr/lib/firefox/firefox
+```
+
+- Execute the direct path within the slice
+
+```bash
+systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/firefox
+```
+
+![Step-by-Step Configuration Guide](static/images/image_0082.png)
+
+![Step-by-Step Configuration Guide](static/images/image_0083.png)
 
 # Introducing the Linux shell
 
