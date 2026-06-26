@@ -308,7 +308,11 @@
     - [Cgroup example: Limit Firefox to 100MB RAM](#cgroup-example-limit-firefox-to-100mb-ram)
       - [Configuration Paths](#configuration-paths)
     - [Step-by-Step Configuration Guide](#step-by-step-configuration-guide)
-      - [REHL/CentOS/RockyLinux](#rehlcentosrockylinux)
+      - [Step 1: Create the Nested User Directories](#step-1-create-the-nested-user-directories)
+      - [Step 2: Define the Slice Unit File](#step-2-define-the-slice-unit-file)
+      - [Step 3: Reload the User Daemon](#step-3-reload-the-user-daemon)
+      - [Step 4: Launching Applications within a Slice](#step-4-launching-applications-within-a-slice)
+      - [Step 5: Troubleshooting Package Wrappers: Native vs. Snap](#step-5-troubleshooting-package-wrappers-native-vs-snap)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4122,15 +4126,17 @@ systemctl status apache2
 
 ### Step-by-Step Configuration Guide
 
-#### REHL/CentOS/RockyLinux
+#### Step 1: Create the Nested User Directories
 
-- Step 1: Create the Nested User Directories
+- If the systemd user directory structure does not yet exist in your home directory, create it using the `-p` (parents) flag:
 
 ```bash
 mkdir -p ~/.config/systemd/user
 ```
 
-Step 2: Define the Slice Unit File
+#### Step 2: Define the Slice Unit File
+
+- Create a new slice file named browser.slice using a text editor:
 
 ```bash
 nano ~/.config/systemd/user/browser.slice
@@ -4141,7 +4147,17 @@ nano ~/.config/systemd/user/browser.slice
 MemoryHigh=100M
 ```
 
-- Step 3: Launching Applications within a Slice
+#### Step 3: Reload the User Daemon
+
+- Whenever you create or modify a user unit file, you must force systemd to parse the new configurations:
+
+```bash
+systemctl --user daemon-reload
+```
+
+#### Step 4: Launching Applications within a Slice
+
+- To execute a process inside a designated slice, use the `systemd-run` command paired with the `--user` flag:
 
 ```bash
 # find the the Firefox executable path
@@ -4152,6 +4168,10 @@ which firefox
 # launch Firefox
 systemd-run --user --slice=browser.slice /usr/bin/firefox
 ```
+
+#### Step 5: Troubleshooting Package Wrappers: Native vs. Snap
+
+- 
 
 ![Step-by-Step Configuration Guide](static/images/image_0078.png)
 
