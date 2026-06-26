@@ -3842,6 +3842,8 @@ sudo dnf search links
 
 - The Catch: Hardening your system makes emergency troubleshooting significantly more difficult if a kernel update ever fails, creating a direct trade-off between security and convenience.
 
+![Recovery Mode](static/images/image_0084.png)
+
 ![Recovery Mode](static/images/image_0072.png)
 
 ## The Kernel
