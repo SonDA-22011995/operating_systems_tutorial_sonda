@@ -3993,6 +3993,20 @@ ls -l /sbin/init
 
 - Service: A special type of unit (identified by the `.service` file extension) that represents an executable process or script. Services can be started, stopped, restarted, reloaded, enabled, or disabled.
 
+| Unit Type (Extension) | Function | Real-world Example |
+|------------------------|----------|--------------------|
+| `.service` | Manages background daemons, services, or programs. | `nginx.service`, `sshd.service` |
+| `.socket` | Encapsulates network, IPC, or POSIX sockets for socket-based activation. | `docker.socket`, `cups.socket` |
+| `.device` | Represents a hardware device exposed by the kernel (via `udev`). | `dev-sda1.device` |
+| `.mount` | Manages file system mount points (similar to `/etc/fstab`). | `mnt-data.mount` |
+| `.automount` | Configures automatic, on-demand file system mounting upon access. | `proc-sys-fs-binfmt_misc.automount` |
+| `.swap` | Manages memory swap space partitions or files. | `dev-sdb2.swap` |
+| `.target` | Groups other units or defines boot synchronization points (like runlevels). | `multi-user.target`, `graphical.target` |
+| `.path` | Monitors a file/directory and triggers a service when changes occur. | `systemd-networkd.path` |
+| `.timer` | Manages time-based activation for scheduling tasks (alternative to `cron`). | `certbot.timer`, `logrotate.timer` |
+| `.slice` | Manages resource allocation (CPU, RAM, I/O) via the `cgroups` hierarchy. | `browser.slice`, `system.slice` |
+| `.scope` | Manages resource limits for externally created processes. | `session-1.scope` |
+
 ### Systemd manages "Units"
 
 - systemd searches for unit files across multiple paths, ordered by priority:
