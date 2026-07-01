@@ -301,8 +301,9 @@
       - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
       - [Key Takeaway](#key-takeaway)
       - [Command Reference Table](#command-reference-table)
-    - [What is a systemd Target?](#what-is-a-systemd-target)
-      - [View current default target](#view-current-default-target)
+  - [What is a systemd Target?](#what-is-a-systemd-target)
+    - [View current default target](#view-current-default-target)
+    - [Change default target](#change-default-target)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4090,7 +4091,7 @@ systemctl status apache2
 | `sudo systemctl restart apache2` | Stops and then immediately starts the service. | Drops active connections during the reset. |
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
 
-### What is a systemd Target?
+## What is a systemd Target?
 
 - A target is a logical grouping of various systemd units (services, sockets, devices, etc.) that represent a specific system state or goal. 
 - Instead of starting individual services one by one, systemd uses targets to bring the system to a defined operational milestone.
@@ -4099,7 +4100,9 @@ systemctl status apache2
   - `multi-user.target`: Boots the system into a non-graphical, multi-user command-line interface (CLI) with networking active.
   - `shutdown.target`: Handles the orderly stopping of services to turn off the computer.
 
-#### View current default target
+### View current default target
+
+- To get the (current) default target
 
 ```bash
 systemctl get-default
@@ -4113,6 +4116,40 @@ systemctl get-default
 systemctl cat graphical.target
 ```
 
+```ini
+# /usr/lib/systemd/system/graphical.target
+#  SPDX-License-Identifier: LGPL-2.1-or-later
+#
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=Graphical Interface
+Documentation=man:systemd.special(7)
+Requires=multi-user.target
+Wants=display-manager.service
+Conflicts=rescue.service rescue.target
+After=multi-user.target rescue.service rescue.target display-manager.service
+AllowIsolate=yes
+```
+
+### Change default target
+
+- To switch target, without rebooting
+
+```bash
+sudo systemctl isolate <target-name>
+```
+
+- To change the current default target
+
+```bash
+sudo systemctl set-default <target-name>
+```
 
 ## What is a cgroup?
 
