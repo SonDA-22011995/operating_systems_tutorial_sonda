@@ -301,6 +301,7 @@
     - [List units](#list-units)
     - [Get the status of a unit](#get-the-status-of-a-unit)
     - [Change the status of a unit](#change-the-status-of-a-unit)
+    - [How to enable / disable a unit](#how-to-enable--disable-a-unit)
     - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -4057,13 +4058,18 @@ systemctl status [unit]
 ### Change the status of a unit 
 
 ```bash
-systemctl {start, stop, restart, reload} [unit]
+sudo systemctl {start, stop, restart, reload} [unit]
 ```
 
 - start: starts a unit
 - stop: stops a unit
+  - Stopping a service using `sudo systemctl stop apache2` only affects the current runtime session.
+    - If the host machine is rebooted, Apache2 will automatically spin back up. This persistent behavior occurs because the package manager configures the service to trigger during specific system boot sequences by default.
+    -  Managing this boot behavior requires configuring systemd Targets (boot modes), which dictates how to permanently enable or disable services across system power cycles.
 - restart: restarts a unit
 - reload: asks the unit to reload its configuration (important: this is not the systemd configuration of this unit)
+
+### How to enable / disable a unit
 
 ### Example
 
@@ -4089,9 +4095,6 @@ systemctl status apache2.service
 
 ### Key Takeaway
 
-- Stopping a service using `sudo systemctl stop apache2` only affects the current runtime session.
-  - If the host machine is rebooted, Apache2 will automatically spin back up. This persistent behavior occurs because the package manager configures the service to trigger during specific system boot sequences by default.
-  -  Managing this boot behavior requires configuring systemd Targets (boot modes), which dictates how to permanently enable or disable services across system power cycles.
 - For standard service units, you can completely drop the suffix extension
   - If you are interacting with other systemd unit types (such as `.timer`, `.mount`, or `.socket`), you must explicitly append the extension.
   
