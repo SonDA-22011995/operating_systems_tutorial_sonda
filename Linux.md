@@ -305,8 +305,8 @@
     - [Core Features of Cgroups](#core-features-of-cgroups)
     - [Structural Concepts inside cgroup](#structural-concepts-inside-cgroup)
     - [Command Reference Table](#command-reference-table-1)
-    - [Cgroup example: Limit Firefox to 100MB RAM](#cgroup-example-limit-firefox-to-100mb-ram)
-      - [Configuration Paths](#configuration-paths)
+  - [Cgroup example: Limit Firefox to 100MB RAM](#cgroup-example-limit-firefox-to-100mb-ram)
+    - [Configuration Paths](#configuration-paths)
     - [Step-by-Step Configuration Guide](#step-by-step-configuration-guide)
       - [Step 1: Create the Nested User Directories](#step-1-create-the-nested-user-directories)
       - [Step 2: Define the Slice Unit File](#step-2-define-the-slice-unit-file)
@@ -314,6 +314,7 @@
       - [Step 4: Launching Applications within a Slice](#step-4-launching-applications-within-a-slice)
       - [Step 5: Troubleshooting Package Wrappers: Native vs. Snap](#step-5-troubleshooting-package-wrappers-native-vs-snap)
       - [How to Find and Target the Real Binary](#how-to-find-and-target-the-real-binary)
+  - [What is a systemd Target?](#what-is-a-systemd-target)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4132,9 +4133,9 @@ systemctl status apache2
 | `systemd-cgtop` | Displays a real-time, top-like view of active cgroups sorted by resource consumption (Tasks, CPU%, Memory, Input/Output). | Press `q` to exit the live monitoring screen. |
 | `systemd-cgtop --depth=5` | Adjusts the tracking depth parameter to print deeply nested subsystems. | By default, `systemd-cgtop` only lists the first 3 levels of cgroups. Adjusting `--depth` reveals isolated sub-components (e.g., individual terminal TTY sessions). |
 
-### Cgroup example: Limit Firefox to 100MB RAM
+## Cgroup example: Limit Firefox to 100MB RAM
 
-#### Configuration Paths
+### Configuration Paths
 
 - System-wide Slices (Root): `/etc/systemd/system/`
 
@@ -4222,6 +4223,9 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 ![Step-by-Step Configuration Guide](static/images/image_0082.png)
 
 ![Step-by-Step Configuration Guide](static/images/image_0083.png)
+
+## What is a systemd Target?
+
 
 # Introducing the Linux shell
 
