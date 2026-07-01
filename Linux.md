@@ -297,13 +297,14 @@
     - [Useful Commands Introduced](#useful-commands-introduced)
       - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
       - [Prints the source files of one or more units](#prints-the-source-files-of-one-or-more-units)
-    - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
-      - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
-      - [Key Takeaway](#key-takeaway)
-      - [Command Reference Table](#command-reference-table)
+  - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
+    - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
+    - [Key Takeaway](#key-takeaway)
+    - [Command Reference Table](#command-reference-table)
   - [What is a systemd Target?](#what-is-a-systemd-target)
     - [View current default target](#view-current-default-target)
     - [Change default target](#change-default-target)
+    - [Listing Available Targets](#listing-available-targets)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4035,7 +4036,7 @@ ls -l /sbin/init
 
 - `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
 
-### How do we manage a unit? - `systemd`
+## How do we manage a unit? - `systemd`
 
 - List units `systemctl list-units`
 - Get the status of a unit `systemctl status [unit]`
@@ -4053,7 +4054,7 @@ sudo systemctl start  apache2.service
 systemctl status apache2.service
 ```
 
-#### Inspecting `systemctl status` Metadata
+### Inspecting `systemctl status` Metadata
 
 - When executing `systemctl status apache2`, `systemd` provides comprehensive telemetry:
 
@@ -4065,7 +4066,7 @@ systemctl status apache2.service
 
 ![Inspecting systemctl status Metadata](static/images/image_0076.png)
 
-#### Key Takeaway
+### Key Takeaway
 
 - Stopping a service using `sudo systemctl stop apache2` only affects the current runtime session.
   - If the host machine is rebooted, Apache2 will automatically spin back up. This persistent behavior occurs because the package manager configures the service to trigger during specific system boot sequences by default.
@@ -4079,7 +4080,7 @@ systemctl status apache2.service
 systemctl status apache2
 ```
 
-#### Command Reference Table
+### Command Reference Table
 
 | Command | Description | Notes / Best Practices |
 |----------|-------------|------------------------|
@@ -4149,6 +4150,14 @@ sudo systemctl isolate <target-name>
 
 ```bash
 sudo systemctl set-default <target-name>
+```
+
+### Listing Available Targets
+
+- To see all the targets configuration files present on your system (active or inactive)
+
+```bash
+systemctl list-units --type=target --all
 ```
 
 ## What is a cgroup?
