@@ -309,7 +309,7 @@
       - [The Hook: How Units Bind to systemd targets](#the-hook-how-units-bind-to-systemd-targets)
       - [Enabling a unit](#enabling-a-unit)
         - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
-    - [Disabling a unit](#disabling-a-unit)
+      - [Disabling a unit](#disabling-a-unit)
     - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -4207,7 +4207,7 @@ sudo systemctl enable --now [unit]
 
 ![Behind the Scenes: The Symlink Machinery](static/images/image_0087.png)
 
-### Disabling a unit
+#### Disabling a unit
 
 - Disabling a service only prevents it from starting on the next boot—it does not stop a currently active process. To completely turn off a service, perform both actions:
 - Step 1: Stop the running service - Immediate effect. This kills the active process and terminates the current running state in system memory
