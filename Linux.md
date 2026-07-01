@@ -4160,6 +4160,8 @@ sudo systemctl set-default <target-name>
 systemctl list-units --type=target --all
 ```
 
+![Listing Available Targets](static/images/image_0085.png)
+
 ## What is a cgroup?
 
 ### Core Concepts & Overview
