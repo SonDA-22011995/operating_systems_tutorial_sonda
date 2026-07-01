@@ -295,6 +295,8 @@
     - [Basic Building Blocks: Units \& Services](#basic-building-blocks-units--services)
     - [Systemd manages "Units"](#systemd-manages-units)
     - [Useful Commands Introduced](#useful-commands-introduced)
+      - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
+      - [Prints the source files of one or more units](#prints-the-source-files-of-one-or-more-units)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -315,6 +317,7 @@
       - [Step 5: Troubleshooting Package Wrappers: Native vs. Snap](#step-5-troubleshooting-package-wrappers-native-vs-snap)
       - [How to Find and Target the Real Binary](#how-to-find-and-target-the-real-binary)
   - [What is a systemd Target?](#what-is-a-systemd-target)
+    - [View current default target](#view-current-default-target)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4018,10 +4021,16 @@ ls -l /sbin/init
 | `/run/systemd/system` | Runtime config | Non-persistent; dynamically generated and lost on reboot. |
 | `/etc/systemd/system` | System Administrator config | Used for custom units or overrides. Files here take precedence over other locations. |
 
-
 ### Useful Commands Introduced
 
+#### A list of all directories from which unit files - `systemd-analyze unit-paths`
+
 - `systemd-analyze --system unit-paths`: Displays all the paths systemd searches for unit files.
+  - `--user`: retrieve the list for the user manager instance. Lists paths specific to your individual user account (e.g., `~/.config/systemd/user/`)
+  - `--global`: The global configuration of user manager instances. Lists paths (like `/etc/systemd/user/`) that apply to every user on the system when they log in, but are managed by the administrator
+  - `--system` (Default): The system-wide manager instance. Lists paths where system-wide services (like nginx, docker, or hardware management daemons) are loaded. These require `root/sudo` privileges to modify.
+
+#### Prints the source files of one or more units
 
 - `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
 
@@ -4225,6 +4234,21 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 ![Step-by-Step Configuration Guide](static/images/image_0083.png)
 
 ## What is a systemd Target?
+
+- A target is a logical grouping of various systemd units (services, sockets, devices, etc.) that represent a specific system state or goal. 
+- Instead of starting individual services one by one, systemd uses targets to bring the system to a defined operational milestone.
+- Key Examples of Targets:
+  - `graphical.target`: Boots the system into a full graphical user interface (GUI) environment.
+  - `multi-user.target`: Boots the system into a non-graphical, multi-user command-line interface (CLI) with networking active.
+  - `shutdown.target`: Handles the orderly stopping of services to turn off the computer.
+
+### View current default target
+
+```bash
+systemctl get-default
+
+# graphical.target
+```
 
 
 # Introducing the Linux shell
