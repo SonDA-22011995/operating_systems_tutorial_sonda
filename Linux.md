@@ -306,6 +306,10 @@
     - [Get the status of a unit](#get-the-status-of-a-unit)
     - [Change the status of a unit](#change-the-status-of-a-unit)
     - [How to enable / disable a unit](#how-to-enable--disable-a-unit)
+      - [The Hook: How Units Bind to systemd targets](#the-hook-how-units-bind-to-systemd-targets)
+      - [Enabling a Service](#enabling-a-service)
+        - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
+    - [Disabling a Service](#disabling-a-service)
     - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -4114,6 +4118,7 @@ systemctl list-units --type=target --all
 
 ## How do we manage a unit? - `systemd`
 
+
 ### List units
 
 ```bash 
@@ -4142,6 +4147,79 @@ sudo systemctl {start, stop, restart, reload} [unit]
 
 ### How to enable / disable a unit
 
+- Enabling a unit configures its boot-time behavior, while starting/stopping affects its active running state in memory.
+
+#### The Hook: How Units Bind to systemd targets
+
+- When a package like Apache (apache2) is installed, it is often configured to start automatically on boot. 
+- This link between an individual service and a target state is defined within the unit file's configuration sections.
+- `WantedBy=multi-user.target`: Dictates which system target triggers this unit. In this case, entering the standard command-line multi-user state (`multi-user.target`) will pull the Apache web server up with it.
+
+```bash
+# view apache unit file
+systemctl cat apache2.service
+```
+
+```ini
+# /usr/lib/systemd/system/apache2.service
+[Unit]
+Description=The Apache HTTP Server
+After=network.target remote-fs.target nss-lookup.target
+Documentation=https://httpd.apache.org/docs/2.4/
+
+[Service]
+Type=forking
+Environment=APACHE_STARTED_BY_SYSTEMD=true
+ExecStart=/usr/sbin/apachectl start
+ExecStop=/usr/sbin/apachectl graceful-stop
+ExecReload=/usr/sbin/apachectl graceful
+KillMode=mixed
+PrivateTmp=true
+Restart=on-abort
+OOMPolicy=continue
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### Enabling a Service
+
+- Enable one or more units or unit instances
+- To ensure a service starts on future boots and turns on immediately right now, use the `--now` flag:
+- Depending on whether `--system` (default), `--user`, `--runtime`, or `--global` is specified, this enables the unit for the system, for the calling user only, for only this boot of the system, or for all future logins of all users. Note that in the last case, no systemd daemon configuration is reloaded.
+
+```bash
+sudo systemctl enable --now [unit]
+```
+
+##### Behind the Scenes: The Symlink Machinery
+
+- Systemd coordinates targets through a system of symbolic links (symlinks) inside the `/etc/systemd/system/` configuration tree.
+
+- When a command like `systemctl enable apache2` is run, systemd does not rewrite script files. Instead, it creates a pointer link:
+
+    - The Location: `/etc/systemd/system/[systemd target].wants/` Eg: `/etc/systemd/system/multi-user.target.wants/`
+    - The Link: A symlink inside that folder points directly back to the master unit configuration file (found in `/lib/systemd/system/apache2.service`).
+
+- On system boot, systemd simply looks into the `.wants` folder of the target it is trying to reach and starts every service it finds linked there. Running `systemctl disable [unit]` cleanly unlinks and removes that file pointer.
+
+### Disabling a Service
+
+- Disabling a service only prevents it from starting on the next boot—it does not stop a currently active process. To completely turn off a service, perform both actions:
+- Step 1: Stop the running service - Immediate effect. This kills the active process and terminates the current running state in system memory
+
+```bash
+sudo systemctl stop [unit]
+sudo systemctl stop apache2.service
+```
+
+- Step 2: Disable the service - Persistent effect. This breaks the boot-time connection to the target, ensuring the service remains inactive when the system restarts.
+
+```bash
+sudo systemctl disable [unit]
+sudo systemctl disable apache2.service
+```
+
 ### Example
 
 ```bash
@@ -4150,6 +4228,10 @@ sudo systemctl stop  apache2.service
 sudo systemctl start  apache2.service
 
 systemctl status apache2.service
+
+sudo systemctl enable --now apache2.service
+
+sudo systemctl disable apache2.service
 ```
 
 ### Inspecting `systemctl status` Metadata
