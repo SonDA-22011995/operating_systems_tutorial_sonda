@@ -307,9 +307,9 @@
     - [Change the status of a unit](#change-the-status-of-a-unit)
     - [How to enable / disable a unit](#how-to-enable--disable-a-unit)
       - [The Hook: How Units Bind to systemd targets](#the-hook-how-units-bind-to-systemd-targets)
-      - [Enabling a Service](#enabling-a-service)
+      - [Enabling a unit](#enabling-a-unit)
         - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
-    - [Disabling a Service](#disabling-a-service)
+    - [Disabling a unit](#disabling-a-unit)
     - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -4182,7 +4182,7 @@ OOMPolicy=continue
 WantedBy=multi-user.target
 ```
 
-#### Enabling a Service
+#### Enabling a unit
 
 - Enable one or more units or unit instances
 - To ensure a service starts on future boots and turns on immediately right now, use the `--now` flag:
@@ -4203,7 +4203,11 @@ sudo systemctl enable --now [unit]
 
 - On system boot, systemd simply looks into the `.wants` folder of the target it is trying to reach and starts every service it finds linked there. Running `systemctl disable [unit]` cleanly unlinks and removes that file pointer.
 
-### Disabling a Service
+![Behind the Scenes: The Symlink Machinery](static/images/image_0086.png)
+
+![Behind the Scenes: The Symlink Machinery](static/images/image_0087.png)
+
+### Disabling a unit
 
 - Disabling a service only prevents it from starting on the next boot—it does not stop a currently active process. To completely turn off a service, perform both actions:
 - Step 1: Stop the running service - Immediate effect. This kills the active process and terminates the current running state in system memory
