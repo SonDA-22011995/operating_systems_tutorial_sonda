@@ -298,6 +298,10 @@
       - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
       - [Prints the source files of one or more units](#prints-the-source-files-of-one-or-more-units)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
+    - [List units](#list-units)
+    - [Get the status of a unit](#get-the-status-of-a-unit)
+    - [Change the status of a unit](#change-the-status-of-a-unit)
+    - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
@@ -4038,13 +4042,30 @@ ls -l /sbin/init
 
 ## How do we manage a unit? - `systemd`
 
-- List units `systemctl list-units`
-- Get the status of a unit `systemctl status [unit]`
-- Change the status of a unit `systemctl {start, stop, restart, reload} [unit]`
-  - start: starts a unit
-  - stop: stops a unit
-  - restart: restarts a unit
-  - reload: asks the unit to reload its configuration (important: this is not the systemd configuration of this unit)
+### List units
+
+```bash 
+systemctl list-units
+```
+
+### Get the status of a unit 
+
+```bash
+systemctl status [unit]
+```
+
+### Change the status of a unit 
+
+```bash
+systemctl {start, stop, restart, reload} [unit]
+```
+
+- start: starts a unit
+- stop: stops a unit
+- restart: restarts a unit
+- reload: asks the unit to reload its configuration (important: this is not the systemd configuration of this unit)
+
+### Example
 
 ```bash
 sudo systemctl stop  apache2.service
