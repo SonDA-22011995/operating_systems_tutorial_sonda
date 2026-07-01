@@ -297,6 +297,10 @@
     - [Useful Commands Introduced](#useful-commands-introduced)
       - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
       - [Prints the source files of one or more units](#prints-the-source-files-of-one-or-more-units)
+  - [What is a systemd Target?](#what-is-a-systemd-target)
+    - [View current default target](#view-current-default-target)
+    - [Change default target](#change-default-target)
+    - [Listing Available Targets](#listing-available-targets)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
     - [List units](#list-units)
     - [Get the status of a unit](#get-the-status-of-a-unit)
@@ -306,10 +310,6 @@
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
-  - [What is a systemd Target?](#what-is-a-systemd-target)
-    - [View current default target](#view-current-default-target)
-    - [Change default target](#change-default-target)
-    - [Listing Available Targets](#listing-available-targets)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4041,6 +4041,77 @@ ls -l /sbin/init
 
 - `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
 
+## What is a systemd Target?
+
+- A target is a logical grouping of various systemd units (services, sockets, devices, etc.) that represent a specific system state or goal. 
+- Instead of starting individual services one by one, systemd uses targets to bring the system to a defined operational milestone.
+- Key Examples of Targets:
+  - `graphical.target`: Boots the system into a full graphical user interface (GUI) environment.
+  - `multi-user.target`: Boots the system into a non-graphical, multi-user command-line interface (CLI) with networking active.
+  - `shutdown.target`: Handles the orderly stopping of services to turn off the computer.
+
+### View current default target
+
+- To get the (current) default target
+
+```bash
+systemctl get-default
+
+# graphical.target
+```
+
+- Prints the source files of get-default
+
+```bash
+systemctl cat graphical.target
+```
+
+```ini
+# /usr/lib/systemd/system/graphical.target
+#  SPDX-License-Identifier: LGPL-2.1-or-later
+#
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=Graphical Interface
+Documentation=man:systemd.special(7)
+Requires=multi-user.target
+Wants=display-manager.service
+Conflicts=rescue.service rescue.target
+After=multi-user.target rescue.service rescue.target display-manager.service
+AllowIsolate=yes
+```
+
+### Change default target
+
+- To switch target, without rebooting
+
+```bash
+sudo systemctl isolate <target-name>
+```
+
+- To change the current default target
+
+```bash
+sudo systemctl set-default <target-name>
+```
+
+### Listing Available Targets
+
+- To see all the targets configuration files present on your system (active or inactive)
+
+```bash
+systemctl list-units --type=target --all
+```
+
+![Listing Available Targets](static/images/image_0085.png)
+
+
 ## How do we manage a unit? - `systemd`
 
 ### List units
@@ -4115,76 +4186,6 @@ systemctl status apache2
 | `sudo systemctl stop apache2` | Stops a running service unit. | Requires `sudo` privileges. Halts the main process and all related subprocesses. |
 | `sudo systemctl restart apache2` | Stops and then immediately starts the service. | Drops active connections during the reset. |
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
-
-## What is a systemd Target?
-
-- A target is a logical grouping of various systemd units (services, sockets, devices, etc.) that represent a specific system state or goal. 
-- Instead of starting individual services one by one, systemd uses targets to bring the system to a defined operational milestone.
-- Key Examples of Targets:
-  - `graphical.target`: Boots the system into a full graphical user interface (GUI) environment.
-  - `multi-user.target`: Boots the system into a non-graphical, multi-user command-line interface (CLI) with networking active.
-  - `shutdown.target`: Handles the orderly stopping of services to turn off the computer.
-
-### View current default target
-
-- To get the (current) default target
-
-```bash
-systemctl get-default
-
-# graphical.target
-```
-
-- Prints the source files of get-default
-
-```bash
-systemctl cat graphical.target
-```
-
-```ini
-# /usr/lib/systemd/system/graphical.target
-#  SPDX-License-Identifier: LGPL-2.1-or-later
-#
-#  This file is part of systemd.
-#
-#  systemd is free software; you can redistribute it and/or modify it
-#  under the terms of the GNU Lesser General Public License as published by
-#  the Free Software Foundation; either version 2.1 of the License, or
-#  (at your option) any later version.
-
-[Unit]
-Description=Graphical Interface
-Documentation=man:systemd.special(7)
-Requires=multi-user.target
-Wants=display-manager.service
-Conflicts=rescue.service rescue.target
-After=multi-user.target rescue.service rescue.target display-manager.service
-AllowIsolate=yes
-```
-
-### Change default target
-
-- To switch target, without rebooting
-
-```bash
-sudo systemctl isolate <target-name>
-```
-
-- To change the current default target
-
-```bash
-sudo systemctl set-default <target-name>
-```
-
-### Listing Available Targets
-
-- To see all the targets configuration files present on your system (active or inactive)
-
-```bash
-systemctl list-units --type=target --all
-```
-
-![Listing Available Targets](static/images/image_0085.png)
 
 ## What is a cgroup?
 
