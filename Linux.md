@@ -4036,6 +4036,13 @@ ls -l /sbin/init
 
 - `Description`: Brief explanation, helps users understand the purpose of the service
 - `Documentation`: Links to relevant documentation
+- `Requires`: Ensures other units are activated before the current unit. If the required unit fails to start, the current unit will not start
+- `Wants`: Similar to Requires, but the current unit will start even if the wanted unit fails. Useful for optional dependencies
+- `After`: Ensures the current unit starts after specified units. Helps to define the order of unit activation
+- `Before`: Ensures the current unit starts before specified units. Also helps to define the order of unit activation
+- `AllowIsolate`: When you run `systemctl isolate <your-target>`, systemd looks at the target unit file. If `AllowIsolate=yes` is set, systemd will:
+  - Start your target unit and all of its required dependencies.
+  - Immediately stop any currently running services or targets that are not dependencies of your new target.
 
 #### The Service Section
 
