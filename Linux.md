@@ -4094,6 +4094,9 @@ ls -l /sbin/init
 | `on-abort` | Only if the service is killed by an uncaught cleanup signal or an internal abort signal. | Debugging specific crashing behavior. |
 | `always` | For any reason the process stops (clean exit, crash, killed by user, etc.). | Absolute critical daemons that must never be offline, no matter what. |
 
+- `User`: User under which the service should be run
+- `Environment`: Defines environment variables for the service
+
 #### The Service Install
 
 - Here, we specify, how the unit should be installed
