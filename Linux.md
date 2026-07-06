@@ -4081,6 +4081,9 @@ ls -l /sbin/init
 - `ExecStart`: Command to start the service. Can include arguments and options. But it's not a full bash command!
 - `ExecStop`: Command to stop the service (optional)
 - `Restart`: Defines when the service should be automatically restarted
+  - Important Companion Directives:
+    - `RestartSec=5s` tells systemd to wait 5 seconds before attempting to boot the service back up.
+    - `StartLimitBurst=5` and `StartLimitIntervalSec=10s` Meaning: "If this service crashes more than 5 times within a 10-second window, stop trying and leave it dead."
 
 | Option | When does it trigger a restart? | Best Used For |
 |--------|----------------------------------|---------------|
