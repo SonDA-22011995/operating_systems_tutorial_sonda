@@ -4076,7 +4076,7 @@ ls -l /sbin/init
     - **Best for**: Standard long-running services where you want quick, basic validation that the command actually executed properly.
   - `Type=notify`
     - This is the most precise and modern mechanism. It behaves similarly to simple, but systemd keeps the service in an activating state. Your application must actively send a specific notification signal back to systemd (`sd_notify("READY=1")`) once it is 100% loaded and ready to accept traffic.- **How it behaves**: Systemd runs the command -> Keeps status as activating -> Waits for the application's code to say "I'm ready" -> Flips status to active.
-    - Best for: Heavy, complex services that take a long time to boot up (like loading huge data chunks into memory), where dependent services must wait until this service is completely ready.
+    - **Best for**: Heavy, complex services that take a long time to boot up (like loading huge data chunks into memory), where dependent services must wait until this service is completely ready.
 
 #### The Service Install
 
