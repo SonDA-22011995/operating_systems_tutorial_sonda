@@ -4066,6 +4066,10 @@ ls -l /sbin/init
     - **Best for**: Classic software that automatically "daemonizes" (shuts down its initial command and runs in the background).
       - **Daemonize** is the act of turning a regular program or script into a daemon (a background service in the operating system that has no user interface and is not attached to any terminal screen)
   - `Type=oneshot`
+    - This is meant for tasks that do a specific job and then exit completely, rather than running continuously in the background
+    - **How it behaves**: Systemd runs the command -> Blocks all subsequent services -> Waits for the process to finish entirely. If it exits with status 0, systemd treats it as a success and moves on.
+    - **Best for**: Administrative scripts, applying firewall rules at boot, running clean-ups, or triggering backups.
+    - **Pro-Tip**: Often paired with `RemainAfterExit=yes`. This ensures that even after the script finishes and exits, systemd still shows its state as active (exited) instead of inactive, letting other services know that this prerequisite task was successfully completed.
 
 #### The Service Install
 
