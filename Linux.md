@@ -4078,6 +4078,19 @@ ls -l /sbin/init
     - This is the most precise and modern mechanism. It behaves similarly to simple, but systemd keeps the service in an activating state. Your application must actively send a specific notification signal back to systemd (`sd_notify("READY=1")`) once it is 100% loaded and ready to accept traffic.- **How it behaves**: Systemd runs the command -> Keeps status as activating -> Waits for the application's code to say "I'm ready" -> Flips status to active.
     - **Best for**: Heavy, complex services that take a long time to boot up (like loading huge data chunks into memory), where dependent services must wait until this service is completely ready.
 
+- `ExecStart`: Command to start the service. Can include arguments and options. But it's not a full bash command!
+- `ExecStop`: Command to stop the service (optional)
+- `Restart`: Defines when the service should be automatically restarted
+
+| Option | When does it trigger a restart? | Best Used For |
+|--------|----------------------------------|---------------|
+| `no` (Default) | Never. If it stops, it stays stopped. | One-time scripts (`Type=oneshot`) or manual tasks. |
+| `on-success` | Only if the service exits cleanly with an exit code of `0`, or via a clean kill signal. | Tasks that should run to completion, but restart if they finish successfully. |
+| `on-failure` | If the service exits with a non-zero code, is terminated by an uncaught signal, or times out. | Most common for production apps. Restarts on crashes but stays dead if you manually stop it. |
+| `on-abnormal` | If the service is killed by a signal (like a crash/segmentation fault) or times out. | Apps that might have intentional non-zero exit codes that shouldn't trigger restarts. |
+| `on-abort` | Only if the service is killed by an uncaught cleanup signal or an internal abort signal. | Debugging specific crashing behavior. |
+| `always` | For any reason the process stops (clean exit, crash, killed by user, etc.). | Absolute critical daemons that must never be offline, no matter what. |
+
 #### The Service Install
 
 - Here, we specify, how the unit should be installed
