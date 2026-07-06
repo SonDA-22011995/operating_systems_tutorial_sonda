@@ -4050,7 +4050,22 @@ ls -l /sbin/init
 
 #### The Service Section
 
-- If this unit is a service (`.service` file), we should write all the configuration for the service into this section ( how should this service be started, how should it be stopped, how should it be executed, etc)
+- Purposes
+  - If this unit is a service (`.service` file), we should write all the configuration for the service into this section ( how should this service be started, how should it be stopped, how should it be executed, etc)
+
+- `Type`: Defines the process type and startup behavior.
+  - `Type=simple`: 
+    - **The default type for service in systemd** 
+    - This is the simplest and most common type
+    - The moment systemd successfully executes the command specified in `ExecStart=`, it immediately considers the service Active and healthy. It does not wait for the application to actually finish loading its internal components
+    - **How it behaves**: Systemd forks the process -> Immediately sets status to active -> Proceeds to start the next services
+    - **Best for**: Modern applications that run continuously in the foreground and don't automatically background themselves.
+  - `Type=forking`
+    - This is the traditional behavior used by older, legacy Unix/Linux daemons. When systemd runs the command, the original process spins up a child process (forks), moves the child to the background, and then the original parent process exits with code 0
+    - **How it behaves**: Systemd runs the command -> Waits for the parent process to exit -> Tracks the child process using a PID file and marks the service active.
+    - **Best for**: Classic software that automatically "daemonizes" (shuts down its initial command and runs in the background).
+      - **Daemonize** is the act of turning a regular program or script into a daemon (a background service in the operating system that has no user interface and is not attached to any terminal screen)
+  - `Type=oneshot`
 
 #### The Service Install
 
