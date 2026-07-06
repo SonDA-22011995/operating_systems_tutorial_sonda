@@ -293,6 +293,10 @@
     - [User Mode](#user-mode)
     - [System Mode vs. User Mode](#system-mode-vs-user-mode)
     - [Basic Building Blocks: Units \& Services](#basic-building-blocks-units--services)
+    - [The format of a unit file](#the-format-of-a-unit-file)
+      - [The Unit Section](#the-unit-section)
+      - [The Service Section](#the-service-section)
+      - [The Service Install](#the-service-install)
     - [Systemd manages "Units"](#systemd-manages-units)
     - [Useful Commands Introduced](#useful-commands-introduced)
       - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
@@ -4021,6 +4025,25 @@ ls -l /sbin/init
 | `.timer` | Manages time-based activation for scheduling tasks (alternative to `cron`). | `certbot.timer`, `logrotate.timer` |
 | `.slice` | Manages resource allocation (CPU, RAM, I/O) via the `cgroups` hierarchy. | `browser.slice`, `system.slice` |
 | `.scope` | Manages resource limits for externally created processes. | `session-1.scope` |
+
+### The format of a unit file
+
+#### The Unit Section
+
+- Purposes
+  - Applies to all unit types (services, targets, timers, etc.) to define context and behaviors during the boot sequence
+  - A general configuration for the unit
+
+- `Description`: Brief explanation, helps users understand the purpose of the service
+- `Documentation`: Links to relevant documentation
+
+#### The Service Section
+
+- If this unit is a service (`.service` file), we should write all the configuration for the service into this section ( how should this service be started, how should it be stopped, how should it be executed, etc)
+
+#### The Service Install
+
+- Here, we specify, how the unit should be installed
 
 ### Systemd manages "Units"
 
