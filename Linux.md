@@ -4043,6 +4043,10 @@ ls -l /sbin/init
 - `AllowIsolate`: When you run `systemctl isolate <your-target>`, systemd looks at the target unit file. If `AllowIsolate=yes` is set, systemd will:
   - Start your target unit and all of its required dependencies.
   - Immediately stop any currently running services or targets that are not dependencies of your new target.
+- `Conflicts`: Directive is how you establish a relationship of mutual exclusion between two or more unit. If Unit A has `Conflicts=Unit B`, it tells systemd: "These two units cannot run at the same time. If one starts, the other must stop.
+  - If Unit B is already running and you manually start Unit A, systemd will automatically stop Unit B first before it spins up Unit A.
+  - If Unit A is already running and you manually start Unit B, systemd will stop Unit A to let Unit B run.
+  - If you try to start both at the exact same time (for example, during system boot), systemd will look at its dependency graph. If there is a tie, the transaction will usually fail, or systemd will pick the one that is explicitly required by another starting target.
 
 #### The Service Section
 
