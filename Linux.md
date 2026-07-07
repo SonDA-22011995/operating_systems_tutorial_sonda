@@ -114,7 +114,7 @@
     - [How can we set the sticky bit?](#how-can-we-set-the-sticky-bit)
     - [How it Works](#how-it-works-1)
     - [Identifying the Sticky Bit](#identifying-the-sticky-bit)
-  - [Set user Id (SUID) \& Set group Id (SGID)](#set-user-id-suid--set-group-id-sgid)
+  - [Set user Id (SUID) and Set group Id (SGID)](#set-user-id-suid-and-set-group-id-sgid)
     - [Understanding SUID and SGID](#understanding-suid-and-sgid)
     - [How to Inspect and Identify](#how-to-inspect-and-identify)
     - [Managing the Bits](#managing-the-bits)
@@ -307,6 +307,8 @@
     - [Listing Available Targets](#listing-available-targets)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
     - [List units](#list-units)
+    - [How can we edit a unit](#how-can-we-edit-a-unit)
+      - [Edit a unit manually](#edit-a-unit-manually)
     - [Get the status of a unit](#get-the-status-of-a-unit)
     - [Change the status of a unit](#change-the-status-of-a-unit)
     - [How to enable / disable a unit](#how-to-enable--disable-a-unit)
@@ -314,7 +316,7 @@
       - [Enabling a unit](#enabling-a-unit)
         - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
       - [Disabling a unit](#disabling-a-unit)
-    - [Example](#example)
+      - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
@@ -1886,7 +1888,7 @@ ls -al /permission
 # drwxrwxrwT  2 sonda  sonda  4096 Apr 29 12:10 .
 ```
 
-## Set user Id (SUID) & Set group Id (SGID)
+## Set user Id (SUID) and Set group Id (SGID)
 
 - The Set User ID (SUID) and Set Group ID (SGID) bits are advanced file permissions that allow a program to run with the privileges of its owner or its group, respectively, rather than the privileges of the user who is actually executing the file.
 
@@ -4100,6 +4102,9 @@ ls -l /sbin/init
 #### The Service Install
 
 - Here, we specify, how the unit should be installed
+- Specifies the target(s) that should include this unit as a dependency
+- Common targets: multi-user.target, graphical.target
+- Enables the unit to be started automatically at boot when `systemctl enable` is used
 
 ### Systemd manages "Units"
 
@@ -4194,14 +4199,28 @@ systemctl list-units --type=target --all
 
 ![Listing Available Targets](static/images/image_0085.png)
 
-
 ## How do we manage a unit? - `systemd`
-
 
 ### List units
 
 ```bash 
 systemctl list-units
+```
+
+### How can we edit a unit
+
+#### Edit a unit manually
+
+- Step 1: We can copy the unit file from `/lib/systemd/system` to `/etc/systemd/system`. This will then take precedence over the original file in `/lib/systemd/system`
+
+```bash
+sudo cp /lib/systemd/system/apache2.service /etc/systemd/system/apache2.service
+```
+
+- Step 2: After this, we need to inform systemd about those changes
+
+```bash
+sudo systemctl daemon-reload
 ```
 
 ### Get the status of a unit 
@@ -4303,7 +4322,7 @@ sudo systemctl disable [unit]
 sudo systemctl disable apache2.service
 ```
 
-### Example
+#### Example
 
 ```bash
 sudo systemctl stop  apache2.service
