@@ -4292,6 +4292,33 @@ sudo systemctl edit apache2.service
 - Why this rules for Package Updates
   - Next month, if an apt upgrade updates Apache and changes the security parameters or core `ExecStart` options in `/lib/systemd/system/apache2.service`, your system receives those updates automatically. Your small `override.conf` just gently layer sits on top, changing only the boot target. No merge conflicts, no broken states.
 
+- The Secret of the Empty Assignment
+  - Because `/etc/systemd/system/apache2.service.d/override.conf` files are extensions, systemd treats many directives (like `WantedBy`, `ExecStart`, or `Environment`) as lists. If you just append a new value, systemd simply adds it to the list.
+  - By passing an empty value right before your new value, you effectively tell systemd: "Clear the existing list, reset it to zero, and start fresh with what I write next."
+- Here is exactly how systemd evaluated your changes internally:
+    - Without the Empty Reset (`WantedBy=graphical.target`)
+
+```ini
+[Install]
+# 1. Reads original file:
+WantedBy=multi-user.target
+# 2. Reads your override (appends to list):
+WantedBy=graphical.target
+# RESULT: Service hooks into BOTH targets!
+```
+  - With the Empty Reset (`WantedBy=` followed by `WantedBy=graphical.target`)
+
+```ini
+[Install]
+# 1. Reads original file:
+WantedBy=multi-user.target
+# 2. Reads your override line 1 (clears the list):
+WantedBy=
+# 3. Reads your override line 2 (starts a new list):
+WantedBy=graphical.target
+# RESULT: Clean override. Only hooks into graphical.target!
+```
+
 ### Get the status of a unit 
 
 ```bash
