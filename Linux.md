@@ -4279,6 +4279,19 @@ sudo systemctl daemon-reload
 
 #### Edit a unit using built-in commands
 
+- Step 1: This allows us to easily edit the configuration. We can only override this with the changes that we did. We don't need to copy'n'paste the whole configuration
+  - Internally, a new folder will be created: `/etc/systemd/system/apache2.service.d/override.conf`. From this folder, override files will be loaded, that can change certain parts of the initial configuration
+
+```bash
+sudo systemctl edit apache2.service
+```
+
+- Step 2: [Optional] Disable/Enable unit
+  - Similar to Step 3 in Edit a Unit Manually: [Edit a unit manually](#edit-a-unit-manually)
+
+- Why this rules for Package Updates
+  - Next month, if an apt upgrade updates Apache and changes the security parameters or core `ExecStart` options in `/lib/systemd/system/apache2.service`, your system receives those updates automatically. Your small `override.conf` just gently layer sits on top, changing only the boot target. No merge conflicts, no broken states.
+
 ### Get the status of a unit 
 
 ```bash
