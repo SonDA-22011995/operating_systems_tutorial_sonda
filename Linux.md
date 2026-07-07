@@ -309,6 +309,7 @@
     - [List units](#list-units)
     - [How can we edit a unit](#how-can-we-edit-a-unit)
       - [Edit a unit manually](#edit-a-unit-manually)
+      - [Edit a unit manually](#edit-a-unit-manually-1)
     - [Get the status of a unit](#get-the-status-of-a-unit)
     - [Change the status of a unit](#change-the-status-of-a-unit)
     - [How to enable / disable a unit](#how-to-enable--disable-a-unit)
@@ -4211,10 +4212,41 @@ systemctl list-units
 
 #### Edit a unit manually
 
+```text
++----------------------------------------------+
+| /lib/systemd/system/apache2.service          |
+| (Package Default)                            |
++----------------------------------------------+
+                    |
+                    | Copy to override
+                    v
++----------------------------------------------+
+| /etc/systemd/system/apache2.service          |
+| (Your Custom File)                           |
++----------------------------------------------+
+                    |
+                    | Run: systemctl daemon-reload
+                    v
++----------------------------------------------+
+| systemd Runtime Memory                       |
++----------------------------------------------+
+                    |
+                    | Run: systemctl disable
+                    |      systemctl enable
+                    v
++----------------------------------------------+
+| /etc/systemd/system/graphical.target.wants/  |
+| (Actual Boot Symlink)                        |
++----------------------------------------------+
+```
+
 - Step 1: We can copy the unit file from `/lib/systemd/system` to `/etc/systemd/system`. This will then take precedence over the original file in `/lib/systemd/system`
 
 ```bash
 sudo cp /lib/systemd/system/apache2.service /etc/systemd/system/apache2.service
+
+# modify a unit file
+sudo nano /etc/systemd/system/apache2.service
 ```
 
 - Step 2: After this, we need to inform systemd about those changes
@@ -4222,6 +4254,33 @@ sudo cp /lib/systemd/system/apache2.service /etc/systemd/system/apache2.service
 ```bash
 sudo systemctl daemon-reload
 ```
+
+- Step 3: [Optional] Disable/Enable unit
+
+  - When you change options under `[Unit]` or `[Service]` (like ExecStart or Restart), systemd reads those directly into memory on a daemon-reload.
+
+  - However, systemd never automatically scans your files to re-create boot symlinks. The `[Install]` section is essentially a blueprint that is only looked at when you explicitly run:
+
+  - `systemctl disable`: Deletes the old symlink (e.g., inside `multi-user.target.wants/`).
+
+  - `systemctl enable`: Reads the new blueprint line (`WantedBy=graphical.target`) and creates a brand-new symlink inside `graphical.target.wants/`.
+
+```bash
+sudo sytemctl disable apache2.service
+sudo sytemctl enable apache2.service
+```
+
+- Step 4: Remove a custom configuration unit file
+
+```bash
+sudo rm /etc/systemd/system/apache2.service
+sudo systemctl daemon-reload
+```
+
+- A Quick Warning on the Manual Method:
+  - If a package update brings a security patch or a new critical parameter to the original file in `/lib/systemd/system/`, your copied file in `/etc/systemd/system/` will completely mask it. You miss out on those updates entirely until you manually diff and merge them.
+
+#### Edit a unit manually
 
 ### Get the status of a unit 
 
