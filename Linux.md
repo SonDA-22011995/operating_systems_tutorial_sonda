@@ -298,18 +298,17 @@
       - [The Service Section](#the-service-section)
       - [The Service Install](#the-service-install)
     - [Systemd manages "Units"](#systemd-manages-units)
-    - [Useful Commands Introduced](#useful-commands-introduced)
-      - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
-      - [Prints the source files of one or more units](#prints-the-source-files-of-one-or-more-units)
   - [What is a systemd Target?](#what-is-a-systemd-target)
     - [View current default target](#view-current-default-target)
     - [Change default target](#change-default-target)
     - [Listing Available Targets](#listing-available-targets)
   - [How do we manage a unit? - `systemd`](#how-do-we-manage-a-unit---systemd)
+    - [A list of all directories from which unit files - `systemd-analyze unit-paths`](#a-list-of-all-directories-from-which-unit-files---systemd-analyze-unit-paths)
+    - [Prints the source files of one or more units](#prints-the-source-files-of-one-or-more-units)
     - [List units](#list-units)
     - [How can we edit a unit](#how-can-we-edit-a-unit)
       - [Edit a unit manually](#edit-a-unit-manually)
-      - [Edit a unit manually](#edit-a-unit-manually-1)
+      - [Edit a unit using built-in commands](#edit-a-unit-using-built-in-commands)
     - [Get the status of a unit](#get-the-status-of-a-unit)
     - [Change the status of a unit](#change-the-status-of-a-unit)
     - [How to enable / disable a unit](#how-to-enable--disable-a-unit)
@@ -4117,19 +4116,6 @@ ls -l /sbin/init
 | `/run/systemd/system` | Runtime config | Non-persistent; dynamically generated and lost on reboot. |
 | `/etc/systemd/system` | System Administrator config | Used for custom units or overrides. Files here take precedence over other locations. |
 
-### Useful Commands Introduced
-
-#### A list of all directories from which unit files - `systemd-analyze unit-paths`
-
-- `systemd-analyze --system unit-paths`: Displays all the paths systemd searches for unit files.
-  - `--user`: retrieve the list for the user manager instance. Lists paths specific to your individual user account (e.g., `~/.config/systemd/user/`)
-  - `--global`: The global configuration of user manager instances. Lists paths (like `/etc/systemd/user/`) that apply to every user on the system when they log in, but are managed by the administrator
-  - `--system` (Default): The system-wide manager instance. Lists paths where system-wide services (like nginx, docker, or hardware management daemons) are loaded. These require `root/sudo` privileges to modify.
-
-#### Prints the source files of one or more units
-
-- `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
-
 ## What is a systemd Target?
 
 - A target is a logical grouping of various systemd units (services, sockets, devices, etc.) that represent a specific system state or goal. 
@@ -4201,6 +4187,17 @@ systemctl list-units --type=target --all
 ![Listing Available Targets](static/images/image_0085.png)
 
 ## How do we manage a unit? - `systemd`
+
+### A list of all directories from which unit files - `systemd-analyze unit-paths`
+
+- `systemd-analyze --system unit-paths`: Displays all the paths systemd searches for unit files.
+  - `--user`: retrieve the list for the user manager instance. Lists paths specific to your individual user account (e.g., `~/.config/systemd/user/`)
+  - `--global`: The global configuration of user manager instances. Lists paths (like `/etc/systemd/user/`) that apply to every user on the system when they log in, but are managed by the administrator
+  - `--system` (Default): The system-wide manager instance. Lists paths where system-wide services (like nginx, docker, or hardware management daemons) are loaded. These require `root/sudo` privileges to modify.
+
+### Prints the source files of one or more units
+
+- `systemctl cat <unit_file_name>`: The preferred way to view a unit file. Unlike standard cat, this combines all applied configuration fragments and overrides from different folders to show the actual running configuration.
 
 ### List units
 
@@ -4280,7 +4277,7 @@ sudo systemctl daemon-reload
 - A Quick Warning on the Manual Method:
   - If a package update brings a security patch or a new critical parameter to the original file in `/lib/systemd/system/`, your copied file in `/etc/systemd/system/` will completely mask it. You miss out on those updates entirely until you manually diff and merge them.
 
-#### Edit a unit manually
+#### Edit a unit using built-in commands
 
 ### Get the status of a unit 
 
