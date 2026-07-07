@@ -4295,8 +4295,8 @@ sudo systemctl edit apache2.service
 - The Secret of the Empty Assignment
   - Because `/etc/systemd/system/apache2.service.d/override.conf` files are extensions, systemd treats many directives (like `WantedBy`, `ExecStart`, or `Environment`) as lists. If you just append a new value, systemd simply adds it to the list.
   - By passing an empty value right before your new value, you effectively tell systemd: "Clear the existing list, reset it to zero, and start fresh with what I write next."
-- Here is exactly how systemd evaluated your changes internally:
-    - Without the Empty Reset (`WantedBy=graphical.target`)
+
+- Here is exactly how systemd evaluated your changes internally. Without the Empty Reset (`WantedBy=graphical.target`)
 
 ```ini
 [Install]
@@ -4307,7 +4307,7 @@ WantedBy=graphical.target
 # RESULT: Service hooks into BOTH targets!
 ```
 
-  - With the Empty Reset (`WantedBy=` followed by `WantedBy=graphical.target`)
+- With the Empty Reset (`WantedBy=` followed by `WantedBy=graphical.target`)
 
 ```ini
 [Install]
