@@ -4320,6 +4320,13 @@ WantedBy=graphical.target
 # RESULT: Clean override. Only hooks into graphical.target!
 ```
 
+- If you ever do want to completely replace a unit file using the native tool (instead of creating a drop-in), you can pass the `--full` flag:
+  - This copies the entire original file into `/etc/systemd/system/apache2.service` for you to edit completely, saving you the manual `cp` and automatically handling the `systemctl daemon-reload` when you save and exit
+
+```bash
+sudo systemctl edit --full apache2.service
+```
+
 ### Get the status of a unit 
 
 ```bash
