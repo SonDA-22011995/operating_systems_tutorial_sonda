@@ -4306,6 +4306,7 @@ WantedBy=multi-user.target
 WantedBy=graphical.target
 # RESULT: Service hooks into BOTH targets!
 ```
+
   - With the Empty Reset (`WantedBy=` followed by `WantedBy=graphical.target`)
 
 ```ini
