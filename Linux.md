@@ -4327,6 +4327,8 @@ WantedBy=graphical.target
 sudo systemctl edit --full apache2.service
 ```
 
+![Edit a unit using built-in commands](static/images/image_0088.png)
+
 ### Get the status of a unit 
 
 ```bash
