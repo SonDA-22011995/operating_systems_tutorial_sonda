@@ -4335,6 +4335,12 @@ sudo systemctl edit --full apache2.service
 systemctl status [unit]
 ```
 
+- Alternatively, we can check the status of the unit with the following command
+
+```bash
+sudo systemctl is-active [unit]
+```
+
 ### Change the status of a unit 
 
 ```bash
