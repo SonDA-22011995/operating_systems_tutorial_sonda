@@ -449,6 +449,10 @@
   - [Searching History](#searching-history)
   - [Other](#other)
     - [The `echo` command](#the-echo-command)
+    - [The `date` command](#the-date-command)
+      - [Common Format Placeholders](#common-format-placeholders)
+      - [Adding/Subtracting Time from a Specific Date](#addingsubtracting-time-from-a-specific-date)
+      - [Practical Problems \& Solutions](#practical-problems--solutions)
   - [Basic file operations](#basic-file-operations)
     - [The `pwd` command](#the-pwd-command)
     - [The `cd` command](#the-cd-command)
@@ -5898,6 +5902,7 @@ history | less
 - By default, bash stores the last 500 commands we have entered, though most modern distributions set this value to 1,000.
 
 ## Other
+
 ### The `echo` command
 
 - The primary purpose of echo is to output text to the terminal.
@@ -5931,6 +5936,88 @@ echo -en "Danh sách mua sắm:\n\t* Táo\n\t* Chuối\n"
 | `\t`           | Tab                                                                     |
 
 
+### The `date` command
+
+- Beyond just showing the current time, it is vital for calculating time differences, time zone conversions, and especially for dynamic file naming (like log and backup files) in Bash scripting.
+- Syntax: `date [OPTION]... [+FORMAT]`
+
+#### Common Format Placeholders
+
+- Crucial Note: When customizing the output format, you must start the format string with a plus sign `+`
+
+| Format | Description | Example Output |
+|--------|-------------|----------------|
+| `%Y` | Year (4 digits) | `2026` |
+| `%m` | Month (01–12) | `07` |
+| `%d` | Day of the month (01–31) | `08` |
+| `%H` | Hour (00–23) | `17` |
+| `%M` | Minute (00–59) | `22` |
+| `%S` | Second (00–60) | `48` |
+| `%A` | Full weekday name | `Wednesday` |
+| `%s` | Unix timestamp (seconds since 1970-01-01) | `1783506168` |
+
+#### Adding/Subtracting Time from a Specific Date 
+
+- Units: sec, second, min, minute, hour, day, week, month, year, fortnight (2 weeks).
+- Time directions: ago, next, last or alternative way is `+` and `-`
+
+| Use Case | Command Syntax | Example Command | Expected Output |
+|----------|----------------|-----------------|-----------------|
+| Add days to Date A | `date -d "YYYY-MM-DD +X days"` | `date -d "2026-05-10 +7 days"` | `Sun May 17 00:00:00 2026` |
+| Subtract days from Date A | `date -d "YYYY-MM-DD -X days"` | `date -d "2026-05-10 -7 days"` | `Sun May 3 00:00:00 2026` |
+| Add months to Date A | `date -d "YYYY-MM-DD +X months"` | `date -d "2026-05-10 +2 months"` | `Fri Jul 10 00:00:00 2026` |
+| Complex date arithmetic | `date -d "YYYY-MM-DD +X weeks -Y days"` | `date -d "2026-05-10 +2 weeks -3 days"` | `Thu May 21 00:00:00 2026` |
+| Date A including time | `date -d "YYYY-MM-DD HH:MM:SS +X days"` | `date -d "2026-05-10 14:30:00 +7 days"` | `Sun May 17 14:30:00 2026` |
+
+#### Practical Problems & Solutions
+
+- Problem 1: Standardizing Date/Time Formats (YYYY-MM-DD)
+
+```bash
+# Print just the date
+date +"%Y-%m-%d"
+# Output: 2026-07-08
+
+# Print date with full time
+date +"%Y-%m-%d %H:%M:%S"
+# Output: 2026-07-08 17:22:48
+```
+
+- Problem 2: Time Travel (Past / Future Calculations)
+
+```bash
+date -d "2026-07-07 +1 days" +"%Y-%m-%d"
+
+# Get yesterday's date
+date -d "yesterday"
+
+# Get next week's date
+date -d "next week"
+
+# Calculate exactly 2 months and 3 days ago
+date -d "2 months ago 3 days ago"
+
+# Format tomorrow's date directly
+date -d "tomorrow" +"%Y-%m-%d"
+```
+
+- Problem 3: Finding the Weekday of a Specific Historical Date
+  - If you want to know what day of the week a historical event occurred, pass that date (format `YYYY-MM-DD`) into the `-d` flag and request %A.
+
+```bash
+date -d "1945-09-02" +"%A"
+# Output: Sunday
+```
+
+- Problem 4: Working with Unix Timestamps
+
+```bash
+# Get the current Unix timestamp
+date +%s
+
+# Convert a specific timestamp back to human-readable format (use the @ prefix)
+date -d @1783506168 +"%Y-%m-%d %H:%M:%S"
+```
 
 ## Basic file operations
 
