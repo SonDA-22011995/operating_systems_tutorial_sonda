@@ -3233,7 +3233,11 @@ sudo dpkg -r neofetch
 
 - To search for a specific package: `sudo apt search <package_name>`
 
-- Install: `sudo apt install <package_name>` (e.g., cowsay `sudo apt install cowsay`).
+- Install: `sudo apt install <package_name>` or  `sudo apt-get install <package_name>` 
+  - e.g., cowsay `sudo apt install cowsay`
+
+- Install from a `.deb` file: `sudo apt install ./[.deb file]` or `sudo apt-get install ./[.deb file]`
+  - Remember to always put `./` in front of the `.deb` file name.
 
 - Suggested/Recommended Packages
   - By default, Ubuntu configures APT to pull in recommended packages alongside the core application. These are not strictly required for the software to run, but they unlock enhanced features.
