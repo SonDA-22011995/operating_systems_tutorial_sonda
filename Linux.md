@@ -5985,12 +5985,13 @@ pwd
 | **`ls -rt`**           | Sort by time in reverse (useful to see newest files at the bottom). |
 | **`ls [path]`**        | List contents of a **specific folder** (e.g., `ls /etc`).           |
 | **`ls --color=never`** | Disable colorized output.                                           |
-| **`ls -l`**            | Display results in long format                                      |
+| **`ls -l`**            | Display results in long format (metadata)                                     |
 | **`ls -h`**            | the -h option shows the size of the file in a human-readable format, with the size in kilobytes or megabytes rather than bytes.|
 | **`ls -R`**            |The -R option shows the contents of the current or specified directory in recursive mode.|
 | **`ls –S`**            |The -S option sorts the files by their size, with the largest file first.|
 | **`ls -l --time-style=TIME_STYLE`**|The TIME_STYLE argument can be full-iso, long-iso, iso, locale|
 | **`ls -F`**            |Display file type|
+| **`ls -d`**            |list directories themselves, not their contents|
 
 - Directory Arguments
   - You can provide a specific path as an argument to see what is inside a different folder without leaving your current location.
