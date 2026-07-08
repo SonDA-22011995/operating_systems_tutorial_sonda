@@ -273,6 +273,7 @@
   - [The Bootloader](#the-bootloader)
     - [What is a Bootloader?](#what-is-a-bootloader)
     - [Configuring GRUB2](#configuring-grub2)
+      - [Additional variables](#additional-variables)
     - [GRUB Features and System Recovery](#grub-features-and-system-recovery)
       - [Security Trade-offs: Accessibility vs. Hardening](#security-trade-offs-accessibility-vs-hardening)
   - [The Kernel](#the-kernel)
@@ -3838,6 +3839,12 @@ sudo dnf search links
   - Never edit the main configuration file (`/boot/grub/grub.cfg` or `/boot/grub2/grub.cfg`) directly. It is automatically overwritten every time the system updates a kernel. Instead, always edit the source file and regenerate the configuration
 
 ![/etc/default/grub](static/images/image_0071.png)
+
+#### Additional variables
+
+-  The `GRUB_CMDLINE_LINUX_DEFAULT` option in the `/etc/default/grub` file is used to add extra command-line parameters to the kernel for the default boot entry. 
+   -  This allows users to pass additional arguments to the kernel during the boot process, such as specifying kernel parameters or enabling certain features
+
 
 ### GRUB Features and System Recovery
 
