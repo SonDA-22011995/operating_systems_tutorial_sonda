@@ -447,10 +447,11 @@
   - [How to execute several commands](#how-to-execute-several-commands)
   - [Ending a Terminal Session](#ending-a-terminal-session)
   - [Searching History](#searching-history)
-  - [The `echo` command](#the-echo-command)
-  - [The `pwd` command](#the-pwd-command)
-  - [The `cd` command](#the-cd-command)
+  - [Other](#other)
+    - [The `echo` command](#the-echo-command)
   - [Basic file operations](#basic-file-operations)
+    - [The `pwd` command](#the-pwd-command)
+    - [The `cd` command](#the-cd-command)
     - [Listing files - The `ls` Command](#listing-files---the-ls-command)
     - [Create files - The `touch` command](#create-files---the-touch-command)
     - [Creating directories - The `mkdir` Command](#creating-directories---the-mkdir-command)
@@ -5896,7 +5897,8 @@ history | less
 
 - By default, bash stores the last 500 commands we have entered, though most modern distributions set this value to 1,000.
 
-## The `echo` command
+## Other
+### The `echo` command
 
 - The primary purpose of echo is to output text to the terminal.
 - **Quotes**: In Bash, single quotes are used to wrap strings
@@ -5929,7 +5931,10 @@ echo -en "Danh sách mua sắm:\n\t* Táo\n\t* Chuối\n"
 | `\t`           | Tab                                                                     |
 
 
-## The `pwd` command
+
+## Basic file operations
+
+### The `pwd` command
 
 - `pwd` (Print Working Directory): Use this command to display the full path of your current location.
 
@@ -5938,7 +5943,7 @@ pwd
 # home/sonda
 ```
 
-## The `cd` command
+### The `cd` command
 
 - The `cd` command is used to move between folders. You can navigate using different types of paths:
 
@@ -5983,7 +5988,6 @@ pwd
 # /usr/bin
 ```
 
-## Basic file operations
 
 ### Listing files - The `ls` Command
 
