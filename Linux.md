@@ -4493,6 +4493,8 @@ systemctl status apache2
 |----------|-------------|------------------------|
 | `systemctl list-units` | Lists all currently active or loaded units. | Generates a long output; use arrow keys to navigate. |
 | `systemctl list-units \| grep apache2` | Filters the unit list specifically for Apache. | Used to quickly identify the exact unit name (`apache2.service`). |
+| `sudo systemctl edit --full apache2` |	Opens the original service unit file for direct modification.	| Requires `sudo`. Unlike default edit (which creates a "drop-in" override file), `--full` copies the whole unit file to `/etc/systemd/system/` for editing. Systemd will automatically issue a daemon-reload after you save and exit |
+| `sudo systemctl edit --force --full new-service.service` |	Force-creates a brand new unit file from scratch.	| Requires `sudo`. Used when the service file does not exist yet. It opens a blank file at `/etc/systemd/system/new-service.service` for you to define a completely new systemd service.|
 | `sudo systemctl daemon-reload` |	Reloads the systemd manager configuration | Requires `sudo`. It forces systemd to rerun its generators and reload all unit files (like custom `.service` files under `/etc/systemd/system/`). Run this whenever you create or modify a service file before trying to start or enable it|
 | `systemctl status apache2` | Displays the current runtime state, uptime, PID, Control Group (cgroup), and recent log entries. | The `.service` extension can be omitted for standard service units. Press `q` to exit the status view. |
 | `sudo systemctl start apache2` | Starts a stopped service unit. | Requires `sudo` privileges. |
