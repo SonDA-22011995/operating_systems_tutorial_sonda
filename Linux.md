@@ -321,6 +321,9 @@
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
+  - [Project: Let's launch our own program on boot!](#project-lets-launch-our-own-program-on-boot)
+    - [The goal in this lecture](#the-goal-in-this-lecture)
+    - [Create own unit file](#create-own-unit-file)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4115,6 +4118,19 @@ ls -l /sbin/init
 - `User`: User under which the service should be run
 - `Environment`: Defines environment variables for the service
 
+- `StandardOutput` and `StandardError` directives control where your application's console logs go.
+  - By default, any standard messages `stdout` or error messages `stderr` printed by your application are automatically captured by systemd and routed to the central system logger `journald`. However, you can use these directives to customize exactly where logs are redirected.
+  - Both `StandardOutput=` and `StandardError=` accept the exact same destination parameters. Here are the most common values used in production
+
+| Value | Description | Typical Use Case |
+|-------|-------------|------------------|
+| `journal` (Default) | Routes logs directly to the systemd journal. You can read them using `journalctl`. | Standard production applications. |
+| `null` | Completely drops the output (equivalent to redirecting it to `/dev/null`). | Disabling noisy debug logs. |
+| `file:/path/to/file` | Writes the output directly to the specified log file on disk. | Legacy applications or simple file-based logging. |
+| `append:/path/to/file` | Appends the output to the specified log file without overwriting existing content. | Standard text log files. |
+| `syslog` | Sends logs to a traditional syslog daemon, such as `rsyslog` or `syslog-ng`. | Multi-server log aggregation. |
+| `inherit` | **(Only for `StandardError`.)** Uses the same destination configured for `StandardOutput`. | Merging `stdout` and `stderr` into the same output destination. |
+
 #### The Service Install
 
 - Here, we specify, how the unit should be installed
@@ -4343,6 +4359,12 @@ WantedBy=graphical.target
 sudo systemctl edit --full apache2.service
 ```
 
+- Force-creates a brand new unit file from scratch. Used when the service file does not exist yet
+
+```bash
+sudo systemctl edit --force --full new-service.service
+```
+
 ![Edit a unit using built-in commands](static/images/image_0088.png)
 
 ### Get the status of a unit 
@@ -4503,6 +4525,34 @@ systemctl status apache2
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
 |`sudo systemctl enable apache2` |	Configures the service to start automatically at system boot.|	Requires sudo. It creates symbolic links (symlinks) from systemd's autostart directories to the service file. Note: This does not start the service immediately; combine with `--now` if you want both, e.g: `sudo systemctl enable --now apache2` |
 |`sudo systemctl disable apache2` |	Prevents the service from starting automatically at system boot.|	Requires `sudo`. It removes the symlinks created by the enable command. Note: This does not stop a currently running service; it only affects the next boot.|
+
+## Project: Let's launch our own program on boot!
+
+### The goal in this lecture
+- You will get an overview about how a service on systemd works
+- You will be able to use the code from this lecture as a base for your own services
+
+### Create own unit file
+
+- Step 1: Create my-network-log.service
+
+```ini
+[Unit]
+Description=My Network Diagnostic Boot Logger
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+StandardOutput=append:/var/log/ping.txt
+ExecStart=/usr/bin/date "+%%T"
+ExecStart=/usr/bin/ping -c 4 google.com
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
 
 ## What is a cgroup?
 
