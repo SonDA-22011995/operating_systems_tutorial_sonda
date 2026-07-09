@@ -298,6 +298,7 @@
       - [The Unit Section](#the-unit-section)
       - [The Service Section](#the-service-section)
       - [The Service Install](#the-service-install)
+      - [The Service Timer](#the-service-timer)
     - [Systemd manages "Units"](#systemd-manages-units)
   - [What is a systemd Target?](#what-is-a-systemd-target)
     - [View current default target](#view-current-default-target)
@@ -4138,10 +4139,12 @@ ls -l /sbin/init
 
 #### The Service Install
 
-- Here, we specify, how the unit should be installed
-- Specifies the target(s) that should include this unit as a dependency
-- Common targets: multi-user.target, graphical.target
-- Enables the unit to be started automatically at boot when `systemctl enable` is used
+- `WantedBy`: Here, we specify, how the unit should be installed
+  - Specifies the target(s) that should include this unit as a dependency
+  - Common targets: `multi-user.target`, `graphical.target`, e.g `WantedBy=multi-user.target`
+  - Enables the unit to be started automatically at boot when `systemctl enable` is used
+
+#### The Service Timer
 
 ### Systemd manages "Units"
 
