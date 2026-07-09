@@ -325,6 +325,7 @@
     - [The goal in this lecture](#the-goal-in-this-lecture)
     - [Create own unit file](#create-own-unit-file)
       - [Step 1: Create my-network-log.service](#step-1-create-my-network-logservice)
+        - [The SElinux Gotcha (CentOS vs. Ubuntu)](#the-selinux-gotcha-centos-vs-ubuntu)
         - [`Requires=` vs. `After=`](#requires-vs-after)
         - [Command line](#command-line)
       - [Step 2: Enable a unit and reboot system](#step-2-enable-a-unit-and-reboot-system)
@@ -4556,6 +4557,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+# StandardOutput=append:/network-log/ping.txt is not work in REHL but it work on Ubuntu
 StandardOutput=append:/var/log/ping.txt
 ExecStart=/usr/bin/date "+%%T"
 ExecStart=/usr/bin/ping -c 4 google.com
@@ -4563,6 +4565,12 @@ ExecStart=/usr/bin/ping -c 4 google.com
 [Install]
 WantedBy=multi-user.target
 ```
+
+##### The SElinux Gotcha (CentOS vs. Ubuntu)
+
+- When your service originally threw a "Permission Denied" error on CentOS, it wasn't a Unix file permission (chmod) issue—it was SELinux (Security-Enhanced Linux).
+
+- Every file and directory in an SELinux system has a mandatory security label context. By creating a custom `/network-log` folder, systemd was blocked because that directory lacked the correct policy label. Moving your logs to `/var/log/` worked instantly because that directory is explicitly labeled by the kernel to allow system daemons to write text files there.
 
 ##### `Requires=` vs. `After=`
 
