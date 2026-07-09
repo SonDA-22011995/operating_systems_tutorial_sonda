@@ -4498,7 +4498,7 @@ systemctl status apache2
 | `sudo systemctl stop apache2` | Stops a running service unit. | Requires `sudo` privileges. Halts the main process and all related subprocesses. |
 | `sudo systemctl restart apache2` | Stops and then immediately starts the service. | Drops active connections during the reset. |
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
-|`sudo systemctl enable apache2` |	Configures the service to start automatically at system boot.|	Requires sudo. It creates symbolic links (symlinks) from systemd's autostart directories to the service file. Note: This does not start the service immediately; combine with --now if you want both (sudo systemctl enable --now apache2) |
+|`sudo systemctl enable apache2` |	Configures the service to start automatically at system boot.|	Requires sudo. It creates symbolic links (symlinks) from systemd's autostart directories to the service file. Note: This does not start the service immediately; combine with `--now` if you want both, e.g: `sudo systemctl enable --now apache2` |
 
 ## What is a cgroup?
 
