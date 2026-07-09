@@ -299,6 +299,9 @@
       - [The Service Section](#the-service-section)
       - [The Service Install](#the-service-install)
       - [The Service Timer](#the-service-timer)
+        - [Monotonic Timers (Relative Time)](#monotonic-timers-relative-time)
+        - [Realtime Timers (Calendar Time)](#realtime-timers-calendar-time)
+        - [Important Helper Options](#important-helper-options)
     - [Systemd manages "Units"](#systemd-manages-units)
   - [What is a systemd Target?](#what-is-a-systemd-target)
     - [View current default target](#view-current-default-target)
@@ -4145,6 +4148,86 @@ ls -l /sbin/init
   - Enables the unit to be started automatically at boot when `systemctl enable` is used
 
 #### The Service Timer
+
+- The most important rule when working with systemd timers is this: A timer unit never executes a script or binary directly.
+
+- Instead, systemd timers use a "twin-unit" system. To schedule a job, you must always declare two separate files with identical names but different extensions inside /etc/systemd/system/:
+
+  - The `.service` file: Defines what to run (the script, the user, the execution context).
+
+  - The `.timer` file: Defines when to run it (the schedule, the frequency)
+
+```text
+┌──────────────────────┐
+│ backup-script.timer  │
+└──────────────────────┘
+            │
+            │ Triggers when the scheduled time arrives
+            ▼
+┌──────────────────────┐
+│ backup-script.service│
+└──────────────────────┘
+            │
+            ▼
+ExecStart=/usr/bin/backup.sh
+```
+##### Monotonic Timers (Relative Time)
+
+- These timers are bound to a specific, volatile system event (like booting up or the service itself stopping). If the system goes to sleep, these timers pause by default.
+
+- `OnBootSec=`:Triggers the service a specific amount of time after the machine finishes booting up.
+  - Example: `OnBootSec=15min` (Runs the service exactly 15 minutes after the system boots.)
+
+- `OnStartupSec=`: Triggers the service after the systemd manager itself starts up. This is usually very close to `OnBootSec`, but it marks when the initialization manager finishes loading.
+  - Example: `OnStartupSec=5min`
+
+- `OnActiveSec=`: Triggers the service relative to when the `.timer` file itself was activated/started.
+  - Example: `OnActiveSec=30s`
+
+- `OnUnitActiveSec=`: Triggers the service relative to when the service was last activated (started). This is perfect for creating a recurring loop (e.g., run every X hours).
+  - Example: `OnUnitActiveSec=1h` Triggers the service every 1 hour after the last time the service was activated
+
+- `OnUnitInactiveSec=`: Triggers the service relative to when the service last deactivated (finished running). This ensures a fixed cool-down period between executions, regardless of how long the job took to run.
+  - Example: `OnUnitInactiveSec=20min`
+
+##### Realtime Timers (Calendar Time)
+
+- These timers use absolute wall-clock time, defined by the `OnCalendar=` option. They are highly flexible and follow the format: `DayOfWeek Year-Month-Day Hour:Minute:Second`.
+
+- `OnCalendar=`: Triggers a service at a specific calendar date and time. You can use asterisks (*) as wildcards for recurring intervals.
+  - Examples:
+    - `OnCalendar=*-*-* 04:00:00` Runs every single day at 4:00 AM
+    - `OnCalendar=Mon,Tue 12:00:00` Runs only on Mondays and Tuesdays at 12:00 PM
+    - `OnCalendar=hourly` A built-in shorthand that runs at the top of every hour, e.g., 1:00, 2:00...
+    - `OnCalendar=weekly` A shorthand that runs every Sunday at midnight
+    - `OnCalendar=daily` Triggers once a day at midnight
+
+##### Important Helper Options
+
+- `Persistent=`: Only applies to `OnCalendar= timers`. If set to true, systemd checks if the timer missed a run while the machine was powered off. If it did, it triggers the service immediately upon boot.
+  - Example: Persistent=true
+
+- `AccuracySec=` Specifies the time window within which the timer is allowed to elapse. Systemd bunches timers together to save CPU wakeups and power. The default is 1min.
+  - Example: `AccuracySec=1s` Forces the timer to be highly precise, down to the second
+
+```ini
+[Unit]
+Description=Run Database Cleanup Script Periodically
+Documentation=https://wiki.internal.net/ops/db
+
+[Timer]
+# Run every day at 3:15 AM
+OnCalendar=*-*-* 03:15:00
+
+# Catch-up mechanism if the server was powered down when it should have run
+Persistent=true
+
+# Prevent all cron jobs from running at the exact same split-second (random delay)
+RandomizedDelaySec=5m
+
+[Install]
+WantedBy=timers.target
+```
 
 ### Systemd manages "Units"
 
