@@ -4493,12 +4493,14 @@ systemctl status apache2
 |----------|-------------|------------------------|
 | `systemctl list-units` | Lists all currently active or loaded units. | Generates a long output; use arrow keys to navigate. |
 | `systemctl list-units \| grep apache2` | Filters the unit list specifically for Apache. | Used to quickly identify the exact unit name (`apache2.service`). |
+| `sudo systemctl daemon-reload` |	Reloads the systemd manager configuration | Requires `sudo`. It forces systemd to rerun its generators and reload all unit files (like custom `.service` files under `/etc/systemd/system/`). Run this whenever you create or modify a service file before trying to start or enable it|
 | `systemctl status apache2` | Displays the current runtime state, uptime, PID, Control Group (cgroup), and recent log entries. | The `.service` extension can be omitted for standard service units. Press `q` to exit the status view. |
 | `sudo systemctl start apache2` | Starts a stopped service unit. | Requires `sudo` privileges. |
 | `sudo systemctl stop apache2` | Stops a running service unit. | Requires `sudo` privileges. Halts the main process and all related subprocesses. |
 | `sudo systemctl restart apache2` | Stops and then immediately starts the service. | Drops active connections during the reset. |
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
 |`sudo systemctl enable apache2` |	Configures the service to start automatically at system boot.|	Requires sudo. It creates symbolic links (symlinks) from systemd's autostart directories to the service file. Note: This does not start the service immediately; combine with `--now` if you want both, e.g: `sudo systemctl enable --now apache2` |
+|`sudo systemctl disable apache2` |	Prevents the service from starting automatically at system boot.|	Requires `sudo`. It removes the symlinks created by the enable command. Note: This does not stop a currently running service; it only affects the next boot.|
 
 ## What is a cgroup?
 
