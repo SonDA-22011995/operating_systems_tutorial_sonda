@@ -4542,10 +4542,10 @@ systemctl status apache2
 #### Step 1: Create my-network-log.service
 
 ```bash
-systemctl edit --fore --full my-network-log.service
+sudo systemctl edit --fore --full my-network-log.service
 
 # or 
-# sudo nao /etc/systemd/system/my-network-log.service
+# sudo nano /etc/systemd/system/my-network-log.service
 ```
 
 - my-network-log.service file
