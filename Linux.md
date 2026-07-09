@@ -4597,18 +4597,6 @@ WantedBy=multi-user.target
 
   - Executable Paths: Historically, systemd required absolute paths (like `/usr/bin/echo`). The documentation confirms that modern systemd allows you to just use the binary name (like `echo`) if it resides in standard system directories (`/usr/bin/`, `/usr/local/bin/`, etc.). systemd will resolve the full path automatically.
 
-- Special Executable Prefixes
-  - You can prefix any command with specific symbols to completely change its behavior, permissions, or how it handles failures. These can be combined in any order (except `+` and `!` which conflict)
-
-| Prefix | Name / Effect | Description | Typical Use Case |
-| :----: | ------------- | ----------- | ---------------- |
-| `-` | **Ignore Failure** | If this command crashes or returns a failure exit code, systemd ignores it, logs it as a success, and continues executing the remaining commands. | Running a cleanup script before a service starts (e.g., `ExecStartPre=-/usr/bin/rm ...`) where it doesn't matter if the file doesn't exist. |
-| `:` | **Disable Variable Expansion** | Prevents systemd from expanding variables on this command line. Everything containing `$` or `%` is passed literally to the executed program. | Running commands or regular expressions that rely on literal `$` or `%` characters without needing to escape them (e.g., `$$`). |
-| `+` | **Full Root Privileges** | Runs this specific command with full root privileges. It overrides restrictions such as `User=`, `Group=`, and security sandboxing options like `PrivateTmp=` for this command only. | When a non-root service needs to execute a setup step that requires unrestricted root access before starting the main process. |
-| `!` | **User/Group Elevation Only** | Similar to `+`, but only bypasses the `User=` and `Group=` settings. Other security restrictions, such as private filesystem namespaces, remain in effect. | When the command needs to run as root while still remaining inside the service's sandbox (e.g., with `PrivateTmp=` enabled). |
-| `@` | **Custom Process Name (`argv[0]`)** | Uses the second argument as the process name (`argv[0]`) instead of the actual executable name. | Advanced debugging or customizing how the process appears in tools such as `ps` or `top`. |
-| `\|` | **Spawn via User's Shell** | Executes the command through the default shell of the configured `User=`. However, explicitly invoking a shell (e.g., `sh -c`) is generally recommended for better portability and reliability. | Running short shell scripts or one-line shell commands directly inside a unit file. e.g: `ExecStart=/bin/sh -c '/usr/bin/cat /var/log/app.log \| /usr/bin/grep "ERROR" > /var/log/errors.log'`|
-
 - Systemd Placeholder Rule Reminder
   - Notice the `%%T` in the date command line. Because systemd treats `%` as a special prefix for its own system variables (like `%u` for user), escaping it as a double-percent `%%` ensures that the raw string `+%T` passes cleanly into the actual binary
 
