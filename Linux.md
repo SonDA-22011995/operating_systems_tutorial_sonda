@@ -4615,6 +4615,8 @@ WantedBy=multi-user.target
 #### Step 2: Enable a unit and reboot system
 
 ```bash
+touch /var/log/ping.txt
+
 systemctl enable my-network-log.service
 
 sudo reboot
