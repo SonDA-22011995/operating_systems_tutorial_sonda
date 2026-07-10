@@ -333,6 +333,7 @@
         - [`Requires=` vs. `After=`](#requires-vs-after)
         - [Command line](#command-line)
       - [Step 2: Enable a unit and reboot system](#step-2-enable-a-unit-and-reboot-system)
+  - [Project: Schedule tasks for our own program](#project-schedule-tasks-for-our-own-program)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4701,6 +4702,10 @@ sudo reboot
 
 cat /var/log/ping.txt
 ```
+
+## Project: Schedule tasks for our own program
+
+- Use the same a my-network-log.service file on [Project: Let's launch our own program on boot!](#project-lets-launch-our-own-program-on-boot)
 
 ## What is a cgroup?
 
