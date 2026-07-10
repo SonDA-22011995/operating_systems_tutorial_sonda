@@ -337,7 +337,7 @@
       - [Step 2: Enable a unit and reboot system](#step-2-enable-a-unit-and-reboot-system)
   - [Project: Schedule tasks for our own program](#project-schedule-tasks-for-our-own-program)
     - [Step 1: Disable my-network-log.service](#step-1-disable-my-network-logservice)
-    - [Step 2: Create a timer unit file](#step-2-create-a-timer-unit-file)
+    - [Step 2: Create and enable a timer unit file](#step-2-create-and-enable-a-timer-unit-file)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4750,7 +4750,7 @@ cat /var/log/ping.txt
 sudo systemctl disable my-network-log.service
 ```
 
-### Step 2: Create a timer unit file
+### Step 2: Create and enable a timer unit file
 
 ```bash
 sudo systemctl edit --full --force my-network-log.timer
@@ -4759,9 +4759,22 @@ sudo systemctl edit --full --force my-network-log.timer
 - my-network-log.timer file
 
 ```ini
+[Unit]
+Description=Run the network logging service on boot
 
+[Timer]
+OnActiveSec=1min
+Unit=my-network-log.service
+
+[Install]
+WantedBy=timers.target
 ```
 
+```bash
+sudo systemctl enable my-network-log.service
+
+sudo reboot
+```
 
 ## What is a cgroup?
 
