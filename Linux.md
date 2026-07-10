@@ -4151,7 +4151,7 @@ ls -l /sbin/init
 
 - The most important rule when working with systemd timers is this: A timer unit never executes a script or binary directly.
 
-- Instead, systemd timers use a "twin-unit" system. To schedule a job, you must always declare two separate files with identical names but different extensions inside /etc/systemd/system/:
+- Instead, systemd timers use a "twin-unit" system. To schedule a job, you must always declare two separate files with identical names but different extensions inside `/etc/systemd/system/`:
 
   - The `.service` file: Defines what to run (the script, the user, the execution context).
 
