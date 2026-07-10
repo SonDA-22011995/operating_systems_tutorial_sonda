@@ -323,8 +323,8 @@
       - [Enabling a unit](#enabling-a-unit)
         - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
       - [Disabling a unit](#disabling-a-unit)
-      - [Show all active timers](#show-all-active-timers)
-      - [Example](#example)
+    - [Show all active timers](#show-all-active-timers)
+    - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
     - [Command Reference Table](#command-reference-table)
@@ -4606,7 +4606,7 @@ sudo systemctl disable [unit]
 sudo systemctl disable apache2.service
 ```
 
-#### Show all active timers
+### Show all active timers
 
 ```bash
 systemctl list-timers
@@ -4618,7 +4618,7 @@ systemctl list-timers
 systemctl list-timers --all
 ```
 
-#### Example
+### Example
 
 ```bash
 sudo systemctl stop  apache2.service
