@@ -4182,7 +4182,7 @@ ExecStart=/usr/bin/backup.sh
   - Example: `OnStartupSec=5min`
 
 - `OnActiveSec=`: Triggers the service relative to when the `.timer` file itself was activated/started.
-  - Example: `OnActiveSec=30s`
+  - Example: `OnActiveSec=30s` Wait 30 seconds after the timer starts, then run once
 
 - `OnUnitActiveSec=`: Triggers the service relative to when the service was last activated (started). This is perfect for creating a recurring loop (e.g., run every X hours).
   - Example: `OnUnitActiveSec=1h` Triggers the service every 1 hour after the last time the service was activated
