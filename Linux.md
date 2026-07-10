@@ -302,6 +302,8 @@
         - [Monotonic Timers (Relative Time)](#monotonic-timers-relative-time)
         - [Realtime Timers (Calendar Time)](#realtime-timers-calendar-time)
         - [Important Helper Options](#important-helper-options)
+      - [The Service Slice](#the-service-slice)
+        - [Key Attributes in systemd Slices](#key-attributes-in-systemd-slices)
     - [Systemd manages "Units"](#systemd-manages-units)
   - [What is a systemd Target?](#what-is-a-systemd-target)
     - [View current default target](#view-current-default-target)
@@ -4143,6 +4145,12 @@ ls -l /sbin/init
 | `syslog` | Sends logs to a traditional syslog daemon, such as `rsyslog` or `syslog-ng`. | Multi-server log aggregation. |
 | `inherit` | **(Only for `StandardError`.)** Uses the same destination configured for `StandardOutput`. | Merging `stdout` and `stderr` into the same output destination. |
 
+- `Slice=`: When you add `Slice=something.slice` to a `[Service]` section, you are telling systemd:
+"Place this service inside the `something.slice` container for resource accounting and control."
+  - If you don't specify a Slice= value in a service unit, systemd automatically places it in a default slice:
+    - `system.slice`: The default home for all system services (like SSH, Docker, or Nginx).
+    - `user.slice`: The default home for user sessions and user-run processes.
+
 #### The Service Install
 
 - `WantedBy`: Here, we specify, how the unit should be installed
@@ -4245,6 +4253,23 @@ RandomizedDelaySec=5m
 [Install]
 WantedBy=timers.target
 ```
+
+#### The Service Slice
+
+- Slices manage how much of the system's total resources that binary (or group of binaries) can consume. 
+- Slices leverage the Linux Kernel's **cgroups** (**Control Groups**) capability to create hierarchical resource containers.
+
+##### Key Attributes in systemd Slices
+
+- When configuring a `.slice` file, the resource limits are defined under the `[Slice]` section. Here are the most important and frequently used attributes you need to know
+
+| Attribute | Description | Example |
+|-----------|-------------|---------|
+| `CPUQuota=` | Assigns a maximum percentage of CPU time across all CPU cores. The value can exceed `100%` on multi-core systems (e.g., `200%` = two full CPU cores). | `CPUQuota=50%` |
+| `MemoryHigh=` | Sets a soft memory limit. When exceeded, processes are heavily throttled and forced to reclaim memory, but they are **not** terminated. | `MemoryHigh=1.5G` |
+| `MemoryMax=` | Sets a hard memory limit. If exceeded, the Linux Out-Of-Memory (OOM) killer immediately terminates the offending processes. | `MemoryMax=2G` |
+| `TasksMax=` | Limits the maximum number of concurrent tasks (processes/threads) that can exist within the slice. Helps prevent fork bombs. | `TasksMax=500` |
+| `IOWeight=` | Configures the relative I/O scheduling weight (`1–10000`). Slices with higher weights receive higher disk I/O priority when the storage device is under heavy load. | `IOWeight=100` |
 
 ### Systemd manages "Units"
 
