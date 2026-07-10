@@ -4658,6 +4658,7 @@ systemctl status apache2
 | `sudo systemctl reload apache2` | Instructs the service to hot-reload its internal configuration files. | Does not reload the systemd unit configuration file itself; it asks the application (e.g., Apache) to update gracefully without dropping active connections. |
 |`sudo systemctl enable apache2` |	Configures the service to start automatically at system boot.|	Requires sudo. It creates symbolic links (symlinks) from systemd's autostart directories to the service file. Note: This does not start the service immediately; combine with `--now` if you want both, e.g: `sudo systemctl enable --now apache2` |
 |`sudo systemctl disable apache2` |	Prevents the service from starting automatically at system boot.|	Requires `sudo`. It removes the symlinks created by the enable command. Note: This does not stop a currently running service; it only affects the next boot.|
+|`systemctl list-timers` |	show all active timers managed by systemd |	If a timer is stopped or disabled, it won't show up in the default list. To see absolutely everything `systemctl list-timers --all`|
 
 ## Project: Let's launch our own program on boot!
 
