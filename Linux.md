@@ -334,6 +334,8 @@
         - [Command line](#command-line)
       - [Step 2: Enable a unit and reboot system](#step-2-enable-a-unit-and-reboot-system)
   - [Project: Schedule tasks for our own program](#project-schedule-tasks-for-our-own-program)
+    - [Step 1: Disable my-network-log.service](#step-1-disable-my-network-logservice)
+    - [Step 2: Create a timer unit file](#step-2-create-a-timer-unit-file)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4706,6 +4708,14 @@ cat /var/log/ping.txt
 ## Project: Schedule tasks for our own program
 
 - Use the same a my-network-log.service file on [Project: Let's launch our own program on boot!](#project-lets-launch-our-own-program-on-boot)
+
+### Step 1: Disable my-network-log.service
+
+```bash
+sudo systemctl disable my-network-log.service
+```
+
+### Step 2: Create a timer unit file
 
 ## What is a cgroup?
 
