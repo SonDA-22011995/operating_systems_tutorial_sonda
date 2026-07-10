@@ -4175,6 +4175,10 @@ ExecStart=/usr/bin/backup.sh
 
 - These timers are bound to a specific, volatile system event (like booting up or the service itself stopping). If the system goes to sleep, these timers pause by default.
 
+- `Unit=`: directive in a systemd `.timer` file specifies exactly which unit (usually a `.service`) should be triggered when the timer goes of
+  - **Default behavior**: If you don't write `Unit=`, systemd automatically looks for a `.service` file with the exact same name as the `.timer` file
+  - Example: `Unit=cleanup-logs.service`
+
 - `OnBootSec=`:Triggers the service a specific amount of time after the machine finishes booting up.
   - Example: `OnBootSec=15min` (Runs the service exactly 15 minutes after the system boots.)
 
