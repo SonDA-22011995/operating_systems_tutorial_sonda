@@ -4224,10 +4224,11 @@ ExecStart=/usr/bin/backup.sh
   - Examples:
     - `OnCalendar=*-*-* 04:00:00` Runs every single day at 4:00 AM
     - `OnCalendar=Mon,Tue 12:00:00` Runs only on Mondays and Tuesdays at 12:00 PM
-    - `OnCalendar=hourly` A built-in shorthand that runs at the top of every hour, e.g., 1:00, 2:00...
-    - `OnCalendar=weekly` A shorthand that runs every Sunday at midnight
-    - `OnCalendar=daily` Triggers once a day at midnight
-    - `OnCalendar=minutely` Every minute, on the 00th second
+    - `OnCalendar=hourly` A built-in shorthand that runs at the top of every hour, e.g., 1:00, 2:00... (*-*-* *:00:00)
+    - `OnCalendar=weekly` A shorthand that runs every Sunday at midnight (Mon *-*-* 00:00:00)
+    - `OnCalendar=daily` Triggers once a day at midnight (*-*-* 00:00:00)
+    - `OnCalendar=minutely` Every minute, on the 00th second (*-*-* *:*:00)
+    - `OnCalendar=monthly` First day of every month at midnight (*-*-01 00:00:00)
 
 ##### Important Helper Options
 
