@@ -4227,6 +4227,7 @@ ExecStart=/usr/bin/backup.sh
     - `OnCalendar=hourly` A built-in shorthand that runs at the top of every hour, e.g., 1:00, 2:00...
     - `OnCalendar=weekly` A shorthand that runs every Sunday at midnight
     - `OnCalendar=daily` Triggers once a day at midnight
+    - `OnCalendar=minutely` Every minute, on the 00th second
 
 ##### Important Helper Options
 
