@@ -323,6 +323,7 @@
       - [Enabling a unit](#enabling-a-unit)
         - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
       - [Disabling a unit](#disabling-a-unit)
+      - [Show all active timers](#show-all-active-timers)
       - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -4603,6 +4604,18 @@ sudo systemctl stop apache2.service
 ```bash
 sudo systemctl disable [unit]
 sudo systemctl disable apache2.service
+```
+
+#### Show all active timers
+
+```bash
+systemctl list-timers
+```
+
+- If a timer is stopped or disabled, it won't show up in the default list. To see absolutely everything (Show All Timers including Inactive Ones)
+
+```bash
+systemctl list-timers --all
 ```
 
 #### Example
