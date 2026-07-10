@@ -4731,6 +4731,12 @@ sudo systemctl disable my-network-log.service
 sudo systemctl edit --full --force my-network-log.timer
 ```
 
+- my-network-log.timer file
+
+```ini
+
+```
+
 
 ## What is a cgroup?
 
@@ -4774,6 +4780,8 @@ sudo systemctl edit --full --force my-network-log.timer
   - Nested inside, you will find user IDs (e.g., `user-1000.slice`), which track all processes initiated by that specific user account (such as terminal terminals, desktop environments, and user-level shells).
 
 ![Structural Concepts inside ](static/images/image_0077.png)
+
+![Structural Concepts inside ](static/images/image_0089.png)
 
 ### Command Reference Table
 
