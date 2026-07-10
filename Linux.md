@@ -4197,6 +4197,16 @@ ExecStart=/usr/bin/backup.sh
 - `OnUnitInactiveSec=`: Triggers the service relative to when the service last deactivated (finished running). This ensures a fixed cool-down period between executions, regardless of how long the job took to run.
   - Example: `OnUnitInactiveSec=20min`
 
+| Suffix | Time Unit | Example |
+|--------|-----------|---------|
+| `us` or `µs` | Microseconds | `OnBootSec=500us` |
+| `ms` | Milliseconds | `OnActiveSec=250ms` |
+| `s`, `sec`, `second`, `seconds` | Seconds | `OnBootSec=30` or `OnBootSec=30s` |
+| `m`, `min`, `minute`, `minutes` | Minutes | `OnBootSec=5m` |
+| `h`, `hr`, `hour`, `hours` | Hours | `OnUnitActiveSec=2h` |
+| `d`, `day`, `days` | Days | `OnUnitActiveSec=1d` |
+| `w`, `week`, `weeks` | Weeks | `OnUnitActiveSec=1w` |
+
 ##### Realtime Timers (Calendar Time)
 
 - These timers use absolute wall-clock time, defined by the `OnCalendar=` option. They are highly flexible and follow the format: `DayOfWeek Year-Month-Day Hour:Minute:Second`.
@@ -4716,6 +4726,11 @@ sudo systemctl disable my-network-log.service
 ```
 
 ### Step 2: Create a timer unit file
+
+```bash
+sudo systemctl edit --full --force my-network-log.timer
+```
+
 
 ## What is a cgroup?
 
