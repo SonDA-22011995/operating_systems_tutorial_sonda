@@ -302,6 +302,7 @@
         - [Monotonic Timers (Relative Time)](#monotonic-timers-relative-time)
         - [Realtime Timers (Calendar Time)](#realtime-timers-calendar-time)
         - [Important Helper Options](#important-helper-options)
+        - [Helpful systemd Utilities](#helpful-systemd-utilities)
       - [The Service Slice](#the-service-slice)
         - [Key Attributes in systemd Slices](#key-attributes-in-systemd-slices)
     - [Systemd manages "Units"](#systemd-manages-units)
@@ -4229,6 +4230,7 @@ ExecStart=/usr/bin/backup.sh
     - `OnCalendar=daily` Triggers once a day at midnight (*-*-* 00:00:00)
     - `OnCalendar=minutely` Every minute, on the 00th second (*-*-* *:*:00)
     - `OnCalendar=monthly` First day of every month at midnight (*-*-01 00:00:00)
+    - `OnCalendar=*-*-* *:00,15,30,45:30` runs every year, month, day, and hour, exactly at the 0, 15, 30, and 45-minute marks, at the 30th second
 
 ##### Important Helper Options
 
@@ -4237,6 +4239,40 @@ ExecStart=/usr/bin/backup.sh
 
 - `AccuracySec=` Specifies the time window within which the timer is allowed to elapse. Systemd bunches timers together to save CPU wakeups and power. The default is 1min.
   - Example: `AccuracySec=1s` Forces the timer to be highly precise, down to the second
+
+##### Helpful systemd Utilities
+
+- `systemd-analyze timestamp now`: Displays the current system date and time in the exact format systemd expects.
+
+- `systemd-analyze calendar 'string'`: Validates and normalizes your calendar string, showing you exactly when the timer will trigger next. Use single quotes to prevent Bash shell expansion.
+
+
+```bash
+systemd-analyze timestamp now
+
+#   Original form: now
+# Normalized form: Mon 2026-07-13 00:48:03 +07
+#        (in UTC): Sun 2026-07-12 17:48:03 UTC
+#    UNIX seconds: @1783878483.605091
+#        From now: 38us ago
+
+systemd-analyze calendar 'monthly'
+
+#   Original form: monthly
+# Normalized form: *-*-01 00:00:00
+#     Next elapse: Sat 2026-08-01 00:00:00 +07
+#        (in UTC): Fri 2026-07-31 17:00:00 UTC
+#        From now: 2 weeks 4 days left
+
+systemd-analyze calendar '*-*-* *:5,10,15,20:*'
+
+#   Original form: *-*-* *:5,10,15,20:*
+# Normalized form: *-*-* *:05,10,15,20:*
+#     Next elapse: Mon 2026-07-13 01:05:00 +07
+#        (in UTC): Sun 2026-07-12 18:05:00 UTC
+#        From now: 15min left
+
+```
 
 ```ini
 [Unit]
