@@ -325,6 +325,7 @@
         - [Behind the Scenes: The Symlink Machinery](#behind-the-scenes-the-symlink-machinery)
       - [Disabling a unit](#disabling-a-unit)
     - [Show all active timers](#show-all-active-timers)
+    - [Editing and Restarting Timers](#editing-and-restarting-timers)
     - [Example](#example)
     - [Inspecting `systemctl status` Metadata](#inspecting-systemctl-status-metadata)
     - [Key Takeaway](#key-takeaway)
@@ -4655,6 +4656,14 @@ systemctl list-timers
 ```bash
 systemctl list-timers --all
 ```
+
+### Editing and Restarting Timers
+
+- Edit the timer: Open the configuration file using `systemctl edit --full my_network_log.timer` and replace the trigger logic with your `OnCalendar=`.
+
+- Apply changes: Simply editing the file does not automatically reload or recalculate an already active timer. You must explicitly restart it: `systemctl restart my_network_log.timer`
+
+- Verify: Use `systemctl list-timers` to check the remaining time until the next scheduled execution
 
 ### Example
 
