@@ -297,8 +297,8 @@
     - [The format of a unit file](#the-format-of-a-unit-file)
       - [The Unit Section](#the-unit-section)
       - [The Service Section](#the-service-section)
-      - [The Service Install](#the-service-install)
-      - [The Service Timer](#the-service-timer)
+      - [The Install Section](#the-install-section)
+      - [The Timer Section](#the-timer-section)
         - [Monotonic Timers (Relative Time)](#monotonic-timers-relative-time)
         - [Realtime Timers (Calendar Time)](#realtime-timers-calendar-time)
         - [Important Helper Options](#important-helper-options)
@@ -4155,14 +4155,14 @@ ls -l /sbin/init
     - `system.slice`: The default home for all system services (like SSH, Docker, or Nginx).
     - `user.slice`: The default home for user sessions and user-run processes.
 
-#### The Service Install
+#### The Install Section
 
 - `WantedBy`: Here, we specify, how the unit should be installed
   - Specifies the target(s) that should include this unit as a dependency
   - Common targets: `multi-user.target`, `graphical.target`, e.g `WantedBy=multi-user.target`
   - Enables the unit to be started automatically at boot when `systemctl enable` is used
 
-#### The Service Timer
+#### The Timer Section
 
 - The most important rule when working with systemd timers is this: A timer unit never executes a script or binary directly.
 
