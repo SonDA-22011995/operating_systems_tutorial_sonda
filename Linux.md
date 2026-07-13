@@ -6986,6 +6986,15 @@ sudo find / -type f -name "*.c" -print | sort > findfile2
 - `-perm -mode`: All of the permission bits mode are set for the file.  Symbolic modes are accepted this form, and this  is  usually  the way  in  which  you would want to use them. 
 - `-perm /mode`: Any of the permission bits mode are set for the file. 
 - `-perm +mode`: Any of the specifi ed permission bits are set. This is no longer supported (and has been deprecated since 2005).  Use `-perm /mode` instead.
+
+| File Name             | Actual Permissions | Matches `-perm -220` (AND)                        | Matches `-perm /220` (OR)                         |
+| --------------------- | ------------------ | ------------------------------------------------- | ------------------------------------------------- |
+| `file_all.txt`        | `777`              | ✓ (Both user and group write permissions are set) | ✓ (Both user and group write permissions are set) |
+| `file_user_group.txt` | `220`              | ✓ (Both user and group write permissions are set) | ✓ (Both user and group write permissions are set) |
+| `file_user_only.txt`  | `200`              | ✗ (Missing group write permission)                | ✓ (User write permission is sufficient)           |
+| `file_read_only.txt`  | `444`              | ✗ (No write permissions)                          | ✗ (No write permissions)                          |
+
+
 - Find all the files in the root directory, with the permission set to 0664:
 ```bash
 sudo find / -type f -perm 0664
