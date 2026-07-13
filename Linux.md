@@ -6983,9 +6983,9 @@ sudo find / -type f -name "*.c" -print | sort > findfile2
   - Symbolic mode: `o` other,`u` user,`g` group,`a` other + user + group
   - For example -perm g=w will only match files which have mode 0020 (that is, ones for which group write permission is the only permission set).  
   - It is more  likely that  you  will want to use the `/` or `-` forms, for example -perm -g=w, which matches any file with group write permission.
-- `-perm -mode`: All of the permission bits mode are set for the file.  Symbolic modes are accepted this form, and this  is  usually  the way  in  which  you would want to use them. 
+- `-perm -mode`: All of the permission bits mode are set for the file. It can have more permissions, but it cannot have less. Symbolic modes are accepted this form, and this  is  usually the way in which  you would want to use them. 
 - `-perm /mode`: Any of the permission bits mode are set for the file. 
-- `-perm +mode`: Any of the specifi ed permission bits are set. This is no longer supported (and has been deprecated since 2005).  Use `-perm /mode` instead.
+- `-perm +mode`: Any of the specified permission bits are set. This is no longer supported (and has been deprecated since 2005).  Use `-perm /mode` instead.
 
 | File Name             | Actual Permissions | Matches `-perm -220` (AND)                        | Matches `-perm /220` (OR)                         |
 | --------------------- | ------------------ | ------------------------------------------------- | ------------------------------------------------- |
