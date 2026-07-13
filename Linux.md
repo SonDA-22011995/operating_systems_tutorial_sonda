@@ -132,6 +132,7 @@
     - [Hierarchy and Trees](#hierarchy-and-trees)
     - [Select by PID](#select-by-pid)
     - [Filtering and Navigation](#filtering-and-navigation)
+    - [Common and Practical `ps` Commands](#common-and-practical-ps-commands)
   - [Monitoring system activity - `top` command](#monitoring-system-activity---top-command)
     - [Overview](#overview)
     - [Using the `top` command](#using-the-top-command)
@@ -2183,6 +2184,22 @@ ps -lf -p 194
 - Filtering with grep: Pipe the output to search for specific terms: `ps -ef | grep firefox`
 
 - Scrolling with less: If you want to browse the entire list manually without it disappearing off the top of your terminal: `ps -ef | less`
+
+
+### Common and Practical `ps` Commands
+
+| Use Case                                        | Command Syntax                 | Example Command                 | Explanation                                                                                                                                     |
+| ----------------------------------------------- | ------------------------------ | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| See every running process (Detailed BSD style)  | `ps aux`                       | `ps aux`                        | The classic BSD-style format. Shows processes for all users (`a`, `x`), including detailed resource usage and user information (`u`).           |
+| See every running process (Standard Unix style) | `ps -ef`                       | `ps -ef`                        | Lists every process on the system (`-e`) in full-format output (`-f`). Great for viewing the complete command path and arguments.               |
+| Filter processes by a specific user             | `ps -u [username]`             | `ps -u root`                    | Displays only the processes owned by the specified user (e.g., `root`, `www-data`, or your own username).                                       |
+| Find a process by its exact name                | `ps -C [command_name]`         | `ps -C nginx`                   | Searches for processes with the specified command name. A cleaner alternative to `ps aux \| grep nginx`.                                        |
+| Find the top CPU consumers                      | `ps aux --sort=-%cpu`          | `ps aux --sort=-%cpu`           | Sorts processes by CPU usage in descending order, making it easy to identify CPU-intensive applications.                                        |
+| Find the top memory consumers                   | `ps aux --sort=-%mem`          | `ps aux --sort=-%mem`           | Sorts processes by memory usage in descending order to quickly locate applications consuming the most RAM.                                      |
+| Create a custom output format                   | `ps -eo [columns]`             | `ps -eo pid,user,%cpu,%mem,cmd` | The `-o` option lets you specify exactly which columns to display. This example shows only the PID, user, CPU usage, memory usage, and command. |
+| View the process hierarchy (Tree view)          | `ps axjf` or `ps -ef --forest` | `ps axjf`                       | Displays processes in a hierarchical tree, showing parent-child relationships. Useful for tracing spawned or orphaned processes.                |
+| Inspect a specific process ID (PID)             | `ps -p [PID] -F`               | `ps -p 1422 -F`                 | Shows detailed information about a specific process. The `-F` option includes additional fields such as the parent PID (PPID).                  |
+| View threads inside a process                   | `ps -T -p [PID]`               | `ps -T -p 3045`                 | Lists all threads (lightweight processes) running within the specified process. Useful for debugging multithreaded applications.                |
 
 
 ## Monitoring system activity - `top` command
