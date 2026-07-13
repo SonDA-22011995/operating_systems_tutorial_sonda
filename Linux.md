@@ -343,6 +343,11 @@
     - [Step 1: Disable my-network-log.service](#step-1-disable-my-network-logservice)
     - [Step 2: Create and enable a timer unit file](#step-2-create-and-enable-a-timer-unit-file)
   - [systemd and logging: journald](#systemd-and-logging-journald)
+    - [Introduction](#introduction)
+    - [Key features](#key-features)
+    - [How Systemd Logging Flows](#how-systemd-logging-flows)
+    - [Generating Custom Logs with `systemd-cat`](#generating-custom-logs-with-systemd-cat)
+    - [The `journalctl` Command Reference](#the-journalctl-command-reference)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4857,6 +4862,82 @@ sudo reboot
 
 ## systemd and logging: journald
 
+### Introduction
+
+- Part of the systemd suite, manages system logs, replaces traditional syslog
+- It's meant for system events rather than heavy application access logs, and the power of its filtering capabilities (by boot, unit, date ranges, etc)
+
+### Key features
+
+- Binary format for efficient storage
+- Centralized logging solution
+- Automatic log rotation and retention
+- Indexing and querying capabilities
+- Also logs messages that happened during boot
+
+### How Systemd Logging Flows
+
+- Before `systemd-journald` even starts during the boot process, the Linux kernel stores early boot messages in a temporary ring buffer. 
+- Once the journal daemon initializes, it pulls those messages in so nothing is lost
+
+```text
+┌──────────────────────────────┐
+│ Early Boot: Kernel Messages  │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Temporary Buffer             │
+└──────────────┬───────────────┘
+               │
+               ▼
+      ┌──────────────────────────────┐
+      │      systemd-journald        │
+      └───────┬───────────────┬──────┘
+              ▲               │
+              │               ▼
+┌──────────────────────────┐  ┌──────────────────────────────┐
+│ System Services / Units  │  │ Compressed Binary Storage    │
+└──────────────────────────┘  └──────────────┬───────────────┘
+                                             │
+┌──────────────────────────┐                 ▼
+│ Custom Apps              │      ┌──────────────────────────┐
+│ (systemd-cat)            ├─────►│ journalctl               │
+└──────────────────────────┘      │ (Structured Human        │
+                                  │  Reading)                │
+                                  └──────────────────────────┘
+```
+
+### Generating Custom Logs with `systemd-cat`
+
+- As you demonstrated, if you are writing a custom shell script or have an application that doesn't natively speak to systemd, you can easily pipe stdout into the central journal using `systemd-cat`
+- By default, piping directly makes the log appear under the **unknown** identifier. Using the `-t` (or `--identifier`) flag gives it a clean, searchable name
+
+```bash
+echo "Application backup completed successfully." | systemd-cat -t backup_script
+```
+
+- If you ever need to view just those specific logs later, you simply run:
+
+```bash
+journalctl -t backup_script
+```
+
+### The `journalctl` Command Reference
+
+- Because journal files are stored in a binary format for efficiency, you rely on `journalctl` to parse and filter them. Here are the core flags you highlighted
+
+| Command / Flag        | Purpose                                                                                          | Example                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------ |
+| `journalctl`          | Opens the complete system journal. By default, the output is displayed through the `less` pager. | `journalctl`                                           |
+| `-b`                  | Displays logs from the current boot only.                                                        | `journalctl -b`                                        |
+| `--list-boots`        | Lists all recorded system boot sessions with their indexes and boot IDs.                         | `journalctl --list-boots`                              |
+| `-b [ID/Index]`       | Displays logs from a specific previous boot session by index or boot ID.                         | `journalctl -b -3`                                     |
+| `-u [Unit]`           | Filters logs for a specific `systemd` service or unit.                                           | `journalctl -u apache2`                                |
+| `--since` / `--until` | Limits the output to a specified date and/or time range.                                         | `journalctl --since "2026-04-18" --until "2026-04-21"` |
+| `-r`                  | Displays logs in reverse chronological order (newest first).                                     | `journalctl -r`                                        |
+| `-f`                  | Follows the journal in real time, displaying new log entries as they are written.                | `journalctl -f -u my_service`                          |
+| `-t [Identifier]`     | Filters logs by a specific syslog identifier (tag).                                              | `journalctl -t my_custom_app`                          |
 
 
 ## What is a cgroup?
