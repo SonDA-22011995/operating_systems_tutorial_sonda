@@ -341,6 +341,7 @@
   - [Project: Schedule tasks for our own program](#project-schedule-tasks-for-our-own-program)
     - [Step 1: Disable my-network-log.service](#step-1-disable-my-network-logservice)
     - [Step 2: Create and enable a timer unit file](#step-2-create-and-enable-a-timer-unit-file)
+  - [systemd and logging: journald](#systemd-and-logging-journald)
   - [What is a cgroup?](#what-is-a-cgroup)
     - [Core Concepts \& Overview](#core-concepts--overview)
     - [Key Advantages](#key-advantages)
@@ -4837,6 +4838,10 @@ sudo systemctl enable my-network-log.service
 sudo reboot
 ```
 
+## systemd and logging: journald
+
+
+
 ## What is a cgroup?
 
 ### Core Concepts & Overview
@@ -6669,10 +6674,16 @@ rm -i output.txt
 
 #### `head` and `tail` Commands
 
-| Command | Function                      | Default  | Customization      |
-| ------- | ----------------------------- | -------- | ------------------ |
-| head    | Shows the beginning of a file | 10 lines | `head -n [number]` |
-| tail    | Shows the end of a file       | 10 lines | `tail -n [number]` |
+
+| Command | Function | Default | Customization / Common Pipelines | Example |
+|---------|----------|---------|----------------------------------|---------|
+| `head` | Displays the beginning of a file. | First 10 lines | `head -n [number] file.txt` | `head -n 20 file.txt` |
+| `tail` | Displays the end of a file. | Last 10 lines | `tail -n [number] file.txt` | `tail -n 20 file.txt` |
+| `tail -f` | Monitors a file in real time (essential for live server logs). | Continuous | Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to stop monitoring. | `tail -f /var/log/nginx/access.log` |
+| `head \| tail` | Extracts specific lines from the middle of a file (e.g., lines 11–20). | N/A | Pipe `head` into `tail` to isolate a line range. | `head -n 20 file.txt \| tail -n 10` |
+| `tail -n +[num]` | Skips the first **N - 1** lines and displays the rest of the file. | N/A | Starts output from the specified line number. | `tail -n +11 file.txt` *(Displays from line 11 to the end.)* |
+| `tail -f \| grep` | Filters live log streams by specific keywords in real time. | N/A | Useful for monitoring only matching log entries. | `tail -f app.log \| grep "ERROR"` |
+| `tail -f \| awk` / `cut` | Monitors live logs while extracting only specific columns or fields. | N/A | Use `awk` for column-based parsing or `cut` for delimiter-based extraction. | `tail -f access.log \| awk '{print $7}'` *(Streams only the 7th column, such as request URLs in Nginx logs.)* |
 
 #### The `less` command
 
