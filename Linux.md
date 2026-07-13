@@ -6987,7 +6987,7 @@ sudo find / -type f -name "*.c" -print | sort > findfile2
 - `-perm /mode`: Any of the permission bits mode are set for the file. 
 - `-perm +mode`: Any of the specified permission bits are set. This is no longer supported (and has been deprecated since 2005).  Use `-perm /mode` instead.
 
-| File Name             | Actual Permissions | Matches `-perm -220` `(_r_-_r_-___)` (AND)                        | Matches `-perm /220 (_r_-_r_-___)` (OR)                         |
+| File Name             | Actual Permissions | Matches `-perm -220` `(_w_-_w_-___)` (AND)                        | Matches `-perm /220 (_w_-_w_-___)` (OR)                         |
 | --------------------- | ------------------ | ------------------------------------------------- | ------------------------------------------------- |
 | `file_all.txt`        | `777 (rwx-rwx-rwx)`              | ✓ (Both user and group write permissions are set) | ✓ (Both user and group write permissions are set) |
 | `file_user_group.txt` | `220 (_w_-_w_-___)`              | ✓ (Both user and group write permissions are set) | ✓ (Both user and group write permissions are set) |
