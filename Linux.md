@@ -4938,7 +4938,11 @@ journalctl -t backup_script
 | `-r`                  | Displays logs in reverse chronological order (newest first).                                     | `journalctl -r`                                        |
 | `-f`                  | Follows the journal in real time, displaying new log entries as they are written.                | `journalctl -f -u my_service`                          |
 | `-t [Identifier]`     | Filters logs by a specific syslog identifier (tag).                                              | `journalctl -t my_custom_app`                          |
-
+| `journalctl -p [level]` | Filter logs by priority/severity level (e.g., err, warning, info, debug) |	`journalctl -p err -b` (Shows only error logs from the current boot) |
+| `journalctl -n [lines]`	| Show a specific number of the most recent log entries. | `journalctl -n 50` (Shows the last 50 log lines) |
+| `journalctl _PID=[pid]`	| View logs tied to a specific Process ID. | `journalctl _PID=1234` |
+| `journalctl --disk-usage` |	Check the current disk space consumption of all journal files.| `journalctl --disk-usage` |
+| `journalctl --vacuum-size= / --vacuum-time=`	| Clean up old logs by forcing the journal to shrink to a size or time limit.	| `journalctl --vacuum-time=7d` (Deletes logs older than 7 days) |
 
 ## What is a cgroup?
 
