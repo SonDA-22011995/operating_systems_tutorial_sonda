@@ -7025,6 +7025,11 @@ by UID is useful if the UID has been orphaned and has no name, but searching by 
   | M         | Megabytes (1,048,576 bytes)                | `find . -size 5M`   |
   | G         | Gigabytes (1,073,741,824 bytes)            | `find . -size 1G`   |
 
+
+- `find ~ -type f -name "*.JPG" -size +1M | wc -l`
+  - `+1M`: The leading plus sign indicates that we are looking for files larger than the specified number
+  - `-1M`: A leading minus sign would change the meaning of the string to be smaller than the specified number
+
 - Find all the files that are 5 MB in size:
 
 ```bash
