@@ -2747,6 +2747,9 @@ ps -elf | grep "[Z] "
 | `Z`   | A defunct or “zombie” process. This is a child process that has terminated but has not been cleaned up by its parent. |
 | `<`   | A high-priority process. It’s possible to grant more importance to a process, giving it more time on the CPU. This property of a process is called niceness. A process with high priority is said to be less nice because it’s taking more of the CPU’s time, which leaves less for everybody else. |
 | `N`   | A low-priority process. A process with low priority (a nice process) will get processor time only after other processes with higher priority have been serviced. |
+|`s`	| Session leader. This process is the leader of a process session (e.g., a shell like bash or a main system service that started other child processes).|
+|`l`	| Multi-threaded. The process has multiple threads running inside it (using CLONE_THREAD, like many modern applications).|
+|`+`	| Foreground process group. The process is running in the foreground of its terminal session (it currently has control of your terminal screen/input).|
 
 ### Running State - R
 
@@ -6825,7 +6828,8 @@ rm -i output.txt
   - Running `du` by itself shows the size of every item in the current directory - Example: `du`.
   - `du filename.txt` shows the size of a specific file.
   - `-s`: Provides a total summary of a directory rather than listing every subfolder.
-  - To avoid confusion over block sizes, use the `-h` flag. This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
+  - To avoid confusion over block sizes, use the `-h` flag. 
+    - This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
 
 ## Commands for file properties
 
