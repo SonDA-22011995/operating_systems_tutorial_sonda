@@ -7193,7 +7193,7 @@ sudo find / -type f -amin -10
 | -size n        | Match files of size `n`.                                                                                                                                            | `find . -size 100M`            |
 | -type c        | Match files of type `c`.                                                                                                                                            | `find . -type f`               |
 | -user name     | Match files or directories belonging to `user`.                                                                                                                     | `find /home -user john`        |
-
+| -writable | Matches files or directories that are writable by the current user. | `find . -type f -writable` |
 
 ### How to edit files
 
