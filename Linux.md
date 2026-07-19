@@ -363,6 +363,11 @@
       - [Step 4: Launching Applications within a Slice](#step-4-launching-applications-within-a-slice)
       - [Step 5: Troubleshooting Package Wrappers: Native vs. Snap](#step-5-troubleshooting-package-wrappers-native-vs-snap)
       - [How to Find and Target the Real Binary](#how-to-find-and-target-the-real-binary)
+- [Mounts and Volumes](#mounts-and-volumes)
+  - [Storage device](#storage-device)
+    - [What is a Storage Device?](#what-is-a-storage-device)
+    - [What is it used for?](#what-is-it-used-for)
+    - [Common Types of Storage Devices](#common-types-of-storage-devices)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5090,6 +5095,38 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 ![Step-by-Step Configuration Guide](static/images/image_0082.png)
 
 ![Step-by-Step Configuration Guide](static/images/image_0083.png)
+
+# Mounts and Volumes
+
+## Storage device
+
+### What is a Storage Device?
+
+- Storage Device is a hardware component that is used to store, retrieve, and manage digital data.
+-  It allows a computer or other electronic device to save information permanently or temporarily so that it can be accessed when needed
+
+### What is it used for?
+
+- Store the operating system (e.g., Windows, Linux)
+- Save applications and software
+- Keep user files, such as documents, images, videos, and music
+- Store databases and business data
+- Back up important information to prevent data loss
+- Transfer files between computers and other devices
+
+### Common Types of Storage Devices
+
+| Storage Device                     | Description                                             | Typical Use                                 |
+| ---------------------------------- | ------------------------------------------------------- | ------------------------------------------- |
+| **Hard Disk Drive (HDD)**          | Magnetic storage with large capacity and lower cost     | General data storage                        |
+| **Solid-State Drive (SSD)**        | Flash-based storage with high speed and no moving parts | Operating systems, applications, gaming     |
+| **USB Flash Drive**                | Portable flash storage                                  | File transfer and backups                   |
+| **Memory Card (SD/microSD)**       | Small removable storage                                 | Cameras, smartphones, Raspberry Pi          |
+| **Optical Disc (CD/DVD/Blu-ray)**  | Laser-readable storage media                            | Software distribution, media, archives      |
+| **External Hard Drive / SSD**      | Portable external storage device                        | Backup and additional storage               |
+| **Network Attached Storage (NAS)** | Storage connected to a network                          | Shared files, backups, media servers        |
+| **Cloud Storage**                  | Data stored on remote servers over the Internet         | File synchronization, backup, collaboration |
+
 
 # Introducing the Linux shell
 
