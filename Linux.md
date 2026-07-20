@@ -370,7 +370,8 @@
     - [Common Types of Storage Devices](#common-types-of-storage-devices)
   - [How data is stored](#how-data-is-stored)
   - [Partition Table](#partition-table)
-    - [### Viewing Partitions with GParted](#-viewing-partitions-with-gparted)
+    - [Viewing Partitions with GParted](#viewing-partitions-with-gparted)
+      - [Ubuntu Partition Layout](#ubuntu-partition-layout)
   - [Partitioning Schemes](#partitioning-schemes)
     - [What are Partitioning Schemes?](#what-are-partitioning-schemes)
     - [What is partitioning scheme used for?](#what-is-partitioning-scheme-used-for)
@@ -5149,7 +5150,28 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
   - Partition 2 → Linux
 - Each operating system stores its own files inside its own partition. Even if a disk contains only one partition, it still requires a partition table.
 
-### ### Viewing Partitions with GParted
+### Viewing Partitions with GParted
+
+- Installation GParted
+
+```bash
+# Ubuntu
+sudo apt install gparted
+
+# CentOS
+sudo yum install gparted
+```
+
+#### Ubuntu Partition Layout
+
+```
+/dev/sda
+├── /dev/sda1 - Boot partition  
+│   
+└── /dev/sda2 - Partition 2, Linux operating system
+```
+
+![Viewing Partitions with GParted](static/images/image_0090.png)
 
 ## Partitioning Schemes
 
