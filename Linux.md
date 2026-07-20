@@ -368,6 +368,12 @@
     - [What is a Storage Device?](#what-is-a-storage-device)
     - [What is it used for?](#what-is-it-used-for)
     - [Common Types of Storage Devices](#common-types-of-storage-devices)
+  - [Partition Table](#partition-table)
+    - [### Viewing Partitions with GParted](#-viewing-partitions-with-gparted)
+  - [Partitioning Schemes](#partitioning-schemes)
+    - [What are Partitioning Schemes?](#what-are-partitioning-schemes)
+    - [What is partitioning scheme used for?](#what-is-partitioning-scheme-used-for)
+    - [Common Partitioning Schemes](#common-partitioning-schemes)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5103,7 +5109,7 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 ### What is a Storage Device?
 
 - Storage Device is a hardware component that is used to store, retrieve, and manage digital data.
--  It allows a computer or other electronic device to save information permanently or temporarily so that it can be accessed when needed
+- It allows a computer or other electronic device to save information permanently or temporarily so that it can be accessed when needed
 
 ### What is it used for?
 
@@ -5126,6 +5132,40 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 | **External Hard Drive / SSD**      | Portable external storage device                        | Backup and additional storage               |
 | **Network Attached Storage (NAS)** | Storage connected to a network                          | Shared files, backups, media servers        |
 | **Cloud Storage**                  | Data stored on remote servers over the Internet         | File synchronization, backup, collaboration |
+
+## Partition Table
+
+- A partition table divides a physical storage device into multiple logical sections called partitions.
+- Each partition acts like an independent storage area.
+- Example: A computer running both Windows and Linux (dual boot)
+  - Partition 1 → Windows
+  - Partition 2 → Linux
+- Each operating system stores its own files inside its own partition. Even if a disk contains only one partition, it still requires a partition table.
+
+### ### Viewing Partitions with GParted
+
+## Partitioning Schemes
+
+### What are Partitioning Schemes?
+
+- A partitioning scheme is a method or standard used to organize and divide a storage device into one or more logical partitions. 
+- It defines how partition information is stored and how the operating system locates and manages partitions on a disk
+
+### What is partitioning scheme used for?
+
+- Divide a storage device into multiple logical partitions
+- Organize data and operating systems efficiently
+- Enable the operating system to locate and access partitions
+- Support booting an operating system
+- Improve compatibility with different hardware and firmware (BIOS or UEFI)
+- Manage disk space more effectively
+
+### Common Partitioning Schemes
+
+- **MBR (Master Boot Record)** 
+  - Supports disks up to 2 TB and a maximum of four primary partitions. Commonly used with BIOS systems.
+- **GPT (GUID Partition Table)**
+  - Supports very large disks and up to 128 partitions. Designed for modern UEFI-based systems.
 
 
 # Introducing the Linux shell
