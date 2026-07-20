@@ -372,7 +372,6 @@
   - [Partition Table](#partition-table)
     - [Viewing Partitions with GParted](#viewing-partitions-with-gparted)
       - [Ubuntu Partition Layout](#ubuntu-partition-layout)
-      - [CentOS Partition Layout](#centos-partition-layout)
   - [Partitioning Schemes](#partitioning-schemes)
     - [What are Partitioning Schemes?](#what-are-partitioning-schemes)
     - [What is partitioning scheme used for?](#what-is-partitioning-scheme-used-for)
@@ -5175,17 +5174,6 @@ sudo yum install gparted
 
 ![Viewing Partitions with GParted](static/images/image_0090.png)
 
-#### CentOS Partition Layout
-
-```
-/dev/sda
-├── /dev/sda1 - 
-│   
-└── /dev/sda2 - The boot partition contains files needed during system startup, including parts of 
-| the bootloader
-|
-└── /dev/sda3 - Logical volume manager (LVM) adds an abstraction layer between physical disks and file systems. Combining multiple physical disks into one logical volume
-```
 
 ## Partitioning Schemes
 
