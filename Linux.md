@@ -368,6 +368,7 @@
     - [What is a Storage Device?](#what-is-a-storage-device)
     - [What is it used for?](#what-is-it-used-for)
     - [Common Types of Storage Devices](#common-types-of-storage-devices)
+  - [How data is stored](#how-data-is-stored)
   - [Partition Table](#partition-table)
     - [### Viewing Partitions with GParted](#-viewing-partitions-with-gparted)
   - [Partitioning Schemes](#partitioning-schemes)
@@ -5132,6 +5133,12 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 | **External Hard Drive / SSD**      | Portable external storage device                        | Backup and additional storage               |
 | **Network Attached Storage (NAS)** | Storage connected to a network                          | Shared files, backups, media servers        |
 | **Cloud Storage**                  | Data stored on remote servers over the Internet         | File synchronization, backup, collaboration |
+
+## How data is stored
+
+- A storage device contains a large sequence of bits stored in consecutive order.
+- Before an operating system can use the disk efficiently, it must define how the disk is organized.
+- This is done using a **partition table**
 
 ## Partition Table
 
