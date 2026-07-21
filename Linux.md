@@ -5213,10 +5213,10 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 | Command  | Default Unit                | `--si` Option                                               | Notes                                                 |
 | -------- | --------------------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
 | `du` or `du -h`     | **KiB (1,024 B)**           | `du --si` → **kB (1,000 B)**                                | Calculates disk usage using 1 KiB blocks by default.  |
-| `df`     | **KiB (1,024 B)**           | `df --si` → **kB (1,000 B)**                                | Displays filesystem space in 1 KiB blocks by default. |
+| `df` or `df -h`    | **KiB (1,024 B)**           | `df --si` → **kB (1,000 B)**                                | Displays filesystem space in 1 KiB blocks by default. |
 | `ls -l`  | Bytes                       | N/A                                                         | Displays the exact file size in bytes.                |
 | `ls -lh` | Human-readable (1024-based) | `ls -l --si` or `ls -lh --si` → **kB, MB, GB (1000-based)** | Human-readable output uses binary units by default.   |
-| `free`   | **KiB**                     | `free --si` → **kB, MB, GB (1,000-based)**                  | Displays memory usage in KiB by default.              |
+| `free` or `free -h`   | **KiB**                     | `free --si` → **kB, MB, GB (1,000-based)**                  | Displays memory usage in KiB by default.              |
 | `stat`   | Bytes                       | N/A                                                         | Displays the exact file size in bytes.                |
 
 
