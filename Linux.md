@@ -368,6 +368,13 @@
     - [What is a Storage Device?](#what-is-a-storage-device)
     - [What is it used for?](#what-is-it-used-for)
     - [Common Types of Storage Devices](#common-types-of-storage-devices)
+  - [Storage Size Units (KB vs KiB, MB vs MiB, GB vs GiB)](#storage-size-units-kb-vs-kib-mb-vs-mib-gb-vs-gib)
+    - [Bit and Byte](#bit-and-byte)
+    - [Decimal Units (Base 10)](#decimal-units-base-10)
+    - [Binary Units (Base 2)](#binary-units-base-2)
+    - [Difference Between Decimal and Binary Units](#difference-between-decimal-and-binary-units)
+      - [Example](#example-1)
+    - [Historical Confusion](#historical-confusion)
   - [How data is stored](#how-data-is-stored)
   - [Partition Table](#partition-table)
     - [Viewing Partitions with GParted](#viewing-partitions-with-gparted)
@@ -5134,6 +5141,72 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 | **External Hard Drive / SSD**      | Portable external storage device                        | Backup and additional storage               |
 | **Network Attached Storage (NAS)** | Storage connected to a network                          | Shared files, backups, media servers        |
 | **Cloud Storage**                  | Data stored on remote servers over the Internet         | File synchronization, backup, collaboration |
+
+## Storage Size Units (KB vs KiB, MB vs MiB, GB vs GiB)
+
+### Bit and Byte
+
+- The smallest unit of storage is a bit: **1 bit = 0 or 1**
+- Eight bits form one byte: **1 Byte (B) = 8 bits**
+
+### Decimal Units (Base 10)
+
+- These units are based on powers of 1000.
+- They are easier for humans to understand.
+- These are commonly used by:
+  - Hard drive manufacturers
+  - SSD manufacturers
+  - USB manufacturers
+
+| Unit | Name     |                        Bytes |
+| ---- | -------- | ---------------------------: |
+| KB   | Kilobyte |                      1,000 B |
+| MB   | Megabyte |         1,000² = 1,000,000 B |
+| GB   | Gigabyte |     1,000³ = 1,000,000,000 B |
+| TB   | Terabyte | 1,000⁴ = 1,000,000,000,000 B |
+
+### Binary Units (Base 2)
+
+- Computers naturally work in powers of 2, so binary units use 1024.
+- These units are commonly used by:
+  - Linux
+  - Memory (RAM)
+  - Operating systems
+  - Some disk utilities
+
+| Unit | Name     |                        Bytes |
+| ---- | -------- | ---------------------------: |
+| KiB  | Kibibyte |                      1,024 B |
+| MiB  | Mebibyte |         1,024² = 1,048,576 B |
+| GiB  | Gibibyte |     1,024³ = 1,073,741,824 B |
+| TiB  | Tebibyte | 1,024⁴ = 1,099,511,627,776 B |
+
+### Difference Between Decimal and Binary Units
+
+| Decimal | Binary | Difference |
+| ------- | ------ | ---------: |
+| KB      | KiB    |      ~2.4% |
+| MB      | MiB    |      ~4.9% |
+| GB      | GiB    |      ~7.4% |
+| TB      | TiB    |       ~10% |
+
+#### Example
+
+- Suppose a manufacturer sells: **500 GB**
+  - They mean: **500 × 1,000³ bytes**
+- Your operating system may display: **≈465 GiB**
+- Nothing is missing. The operating system is simply using GiB, while the manufacturer advertises GB.
+
+### Historical Confusion
+
+- Historically, many operating systems did not distinguish between **GB** and **GiB**.
+- They often displayed **1 GB** when they actually meant **1 GiB**. This made storage sizes confusing
+- Examples:
+  - Older versions of macOS (before Snow Leopard)
+  - Windows (for drives and some storage displays)
+  - RAM specifications
+  - CPU cache
+  - Some applications
 
 ## How data is stored
 
