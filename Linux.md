@@ -383,6 +383,7 @@
     - [What are Partitioning Schemes?](#what-are-partitioning-schemes)
     - [What is partitioning scheme used for?](#what-is-partitioning-scheme-used-for)
     - [Common Partitioning Schemes](#common-partitioning-schemes)
+  - [Filesystems](#filesystems)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5282,6 +5283,8 @@ sudo yum install gparted
   - Supports disks up to 2 TB and a maximum of four primary partitions. Commonly used with BIOS systems.
 - **GPT (GUID Partition Table)**
   - Supports very large disks and up to 128 partitions. Designed for modern UEFI-based systems.
+
+## Filesystems
 
 
 # Introducing the Linux shell
