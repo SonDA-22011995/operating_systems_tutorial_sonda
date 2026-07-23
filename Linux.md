@@ -387,7 +387,11 @@
     - [What is a Filesystem?](#what-is-a-filesystem)
     - [Common Linux Filesystems](#common-linux-filesystems)
       - [Ext3: Third extended FS developed](#ext3-third-extended-fs-developed)
+      - [Ext4: Fourth version of the extended filesystem](#ext4-fourth-version-of-the-extended-filesystem)
+      - [xfs](#xfs)
     - [Filesystems on Other Operating Systems](#filesystems-on-other-operating-systems)
+      - [Windows](#windows)
+      - [Apple](#apple)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5318,8 +5322,36 @@ sudo yum install gparted
 - Still used in some situations, such as boot partitions.
 - Gradually being replaced by Ext4
 
+#### Ext4: Fourth version of the extended filesystem
+
+- The default filesystem on most modern Linux distributions.
+- Supports larger disks.
+- Offers better performance.
+- Includes improved journaling and faster recovery after crashes or power loss.
+- Recommended for most Linux systems
+
+#### xfs
+
+- Especially proficient at managing large files and filesystems
+- Optimized for parallel I/O
+- Snapshot support, files can share the same data blocks
 
 ### Filesystems on Other Operating Systems
+
+#### Windows
+
+- FAT32: Older filesystem. Maximum file size is typically 4 GB.
+- NTFS: Microsoft's primary filesystem. Linux can usually read and often write to it.
+- ReFS: Intended as the successor to NTFS
+- exFAT: Commonly used on USB flash drives and SD cards. Well suited for removable storage devices (external drives).
+
+#### Apple
+
+- APFS:
+  - Used on macOS and iOS.
+  - Supports full-disk encryption.
+  - Includes advanced storage management features.
+
 
 # Introducing the Linux shell
 
