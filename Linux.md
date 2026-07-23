@@ -392,9 +392,9 @@
     - [Filesystems on Other Operating Systems](#filesystems-on-other-operating-systems)
       - [Windows](#windows)
       - [Apple](#apple)
-    - [Managing partitions](#managing-partitions)
-      - [Creating a New Partition with GParted](#creating-a-new-partition-with-gparted)
-      - [Managing Partitions with `parted`](#managing-partitions-with-parted)
+  - [Managing partitions](#managing-partitions)
+    - [Creating a New Partition with GParted](#creating-a-new-partition-with-gparted)
+    - [Managing Partitions with `parted`](#managing-partitions-with-parted)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5355,9 +5355,9 @@ sudo yum install gparted
   - Supports full-disk encryption.
   - Includes advanced storage management features.
 
-### Managing partitions
+## Managing partitions
 
-#### Creating a New Partition with GParted
+### Creating a New Partition with GParted
 
 - Select the second drive (to avoid modifying the system drive).
 - Create a GPT (GUID Partition Table). For more detail [Common Partitioning Schemes](#common-partitioning-schemes)
@@ -5376,7 +5376,9 @@ sudo yum install gparted
 
 ![Creating a New Partition with GParted](static/images/image_0095.png)
 
-#### Managing Partitions with `parted`
+### Managing Partitions with `parted`
+
+
 
 # Introducing the Linux shell
 
