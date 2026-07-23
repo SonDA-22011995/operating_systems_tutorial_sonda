@@ -384,6 +384,10 @@
     - [What is partitioning scheme used for?](#what-is-partitioning-scheme-used-for)
     - [Common Partitioning Schemes](#common-partitioning-schemes)
   - [Filesystems](#filesystems)
+    - [What is a Filesystem?](#what-is-a-filesystem)
+    - [Common Linux Filesystems](#common-linux-filesystems)
+      - [Ext3: Third extended FS developed](#ext3-third-extended-fs-developed)
+    - [Filesystems on Other Operating Systems](#filesystems-on-other-operating-systems)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5296,6 +5300,26 @@ sudo yum install gparted
 
 ## Filesystems
 
+### What is a Filesystem?
+
+- A filesystem is the structure used to organize and manage data on a partition. Almost every partition has a filesystem, while unallocated space does not.
+
+- The filesystem is responsible for:
+  - Data organization: Storing files in folders and files
+  - Space allocation: Managing free and used space, releasing space when files are deleted
+  - Metadata management: Storing permissions, ownership, timestamps (file created at, last updated at,...)
+  - Maintaining data integrity and recovering from unexpected power failures (depending on the filesystem).
+
+### Common Linux Filesystems
+
+#### Ext3: Third extended FS developed
+
+- Older version of the Extended Filesystem.
+- Still used in some situations, such as boot partitions.
+- Gradually being replaced by Ext4
+
+
+### Filesystems on Other Operating Systems
 
 # Introducing the Linux shell
 
