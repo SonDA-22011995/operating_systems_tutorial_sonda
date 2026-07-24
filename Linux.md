@@ -387,6 +387,8 @@
     - [What is a Sector in a Storage Device?](#what-is-a-sector-in-a-storage-device)
     - [Physical Sector vs Logical Sector](#physical-sector-vs-logical-sector)
     - [Why do we need Logical Sectors?](#why-do-we-need-logical-sectors)
+    - [Why Does Linux Start Partitions at Sector 2048?](#why-does-linux-start-partitions-at-sector-2048)
+    - [How to Check Sector Sizes in Linux](#how-to-check-sector-sizes-in-linux)
   - [Filesystems](#filesystems)
     - [What is a Filesystem?](#what-is-a-filesystem)
     - [Common Linux Filesystems](#common-linux-filesystems)
@@ -5344,9 +5346,7 @@ sudo yum install gparted
 
 - Suppose an SSD has: `Physical Sector = 4096 Bytes`
 - But Windows or Linux expects: `512-byte sectors`
-- The SSD firmware simply maps them
-
-One Physical Sector (4096 Bytes)
+- The SSD firmware simply maps them. Example: One Physical Sector (4096 Bytes)
 
 ```
 +----+----+----+----+----+----+----+----+
@@ -5356,8 +5356,53 @@ One Physical Sector (4096 Bytes)
 Logical Sectors
 
 0    1    2    3    4    5    6    7
+
 ```
 
+```
+To Linux:
+
+Physical 0   : Logical 0    - 7
+Physical 1   : Logical 8    - 15
+...
+Physical 255 : Logical 2040 - 2047
+Physical 256 : Logical 2048 - 2055
+```
+
+```
+To the SSD:
+Actually one single 4 KiB (4096 / 1024) physical sector.
+```
+
+### Why Does Linux Start Partitions at Sector 2048?
+
+- Assume: `Logical Sector = 512 Bytes`
+- Then: `2048 × 512 = 1,048,576 Bytes = 1 MiB`
+
+```
+Logical Sectors
+1 sector = 512 Bytes
+From Sector 0 to Sector 20 is 1 MiB
+
+Sector:
+0        1      2      3                    ...                  2047    2048
+|--------|------|------|------ ... ---------|---------------------|--------|
+↑                                                                  ↑
+MBR/GPT metadata                                              Bắt đầu Partition 1
+```
+
+- This alignment works well for: HDDs, SSDs, RAID arrays, Advanced Format disks (4 KB sectors)
+
+### How to Check Sector Sizes in Linux
+
+```bash
+
+lsblk -o NAME,PHY-SEC,LOG-SEC
+
+# NAME   PHY-SEC LOG-SEC
+# sda      4096      512
+# sdb      4096     4096
+```
 ## Filesystems
 
 ### What is a Filesystem?
