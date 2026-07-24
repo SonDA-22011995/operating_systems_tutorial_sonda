@@ -385,9 +385,8 @@
     - [Common Partitioning Schemes](#common-partitioning-schemes)
   - [Sector](#sector)
     - [What is a Sector in a Storage Device?](#what-is-a-sector-in-a-storage-device)
-    - [Physical Sector](#physical-sector)
-    - [Logical Sector](#logical-sector)
     - [Physical Sector vs Logical Sector](#physical-sector-vs-logical-sector)
+    - [Why do we need Logical Sectors?](#why-do-we-need-logical-sectors)
   - [Filesystems](#filesystems)
     - [What is a Filesystem?](#what-is-a-filesystem)
     - [Common Linux Filesystems](#common-linux-filesystems)
@@ -5332,23 +5331,6 @@ sudo yum install gparted
 | S0 | S1 | S2 | S3 | S4 | S5 | S6 | S7 | ...          |
 +------------------------------------------------------+
 
-### Physical Sector
-
-- A physical sector is the real chunk of storage on the disk.
-
-+----------+----------+----------+
-|The SSD hardware actually writes| 
-|data in 4 KB blocks.            |
-|                                |
-| 4 KB     | 4 KB     | 4 KB     |
-+----------+----------+----------+
-
-
-### Logical Sector
-
-- A logical sector is the addressable unit exposed to the operating system.
-- Historically: `Logical Sector Size = 512 Bytes`
-
 ### Physical Sector vs Logical Sector
 
 | Type                | Description                                     | Example Size            |
@@ -5356,6 +5338,23 @@ sudo yum install gparted
 | **Physical Sector** | The actual hardware block on the storage device | 4096 bytes (4 KB)       |
 | **Logical Sector**  | The sector size that the operating system sees  | 512 bytes or 4096 bytes |
 
+### Why do we need Logical Sectors?
+
+- Suppose an SSD has: `Physical Sector = 4096 Bytes`
+- But Windows or Linux expects: `512-byte sectors`
+- The SSD firmware simply maps them
+
+One Physical Sector (4096 Bytes)
+
+```
++----+----+----+----+----+----+----+----+
+|512 |512 |512 |512 |512 |512 |512 |512 |
++----+----+----+----+----+----+----+----+
+
+Logical Sectors
+
+0    1    2    3    4    5    6    7
+```
 
 ## Filesystems
 
