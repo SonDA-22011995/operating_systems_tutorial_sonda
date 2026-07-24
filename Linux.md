@@ -5325,11 +5325,13 @@ sudo yum install gparted
 
 - Even if you want to store just 1 byte, the storage device must read or write an entire sector.
 
+```
 +------------------------------------------------------+
 | Storage device                                       |
 |                                                      |
 | S0 | S1 | S2 | S3 | S4 | S5 | S6 | S7 | ...          |
 +------------------------------------------------------+
+```
 
 ### Physical Sector vs Logical Sector
 
