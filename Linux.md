@@ -383,6 +383,11 @@
     - [What are Partitioning Schemes?](#what-are-partitioning-schemes)
     - [What is partitioning scheme used for?](#what-is-partitioning-scheme-used-for)
     - [Common Partitioning Schemes](#common-partitioning-schemes)
+  - [Sector](#sector)
+    - [What is a Sector in a Storage Device?](#what-is-a-sector-in-a-storage-device)
+    - [Physical Sector](#physical-sector)
+    - [Logical Sector](#logical-sector)
+    - [Physical Sector vs Logical Sector](#physical-sector-vs-logical-sector)
   - [Filesystems](#filesystems)
     - [What is a Filesystem?](#what-is-a-filesystem)
     - [Common Linux Filesystems](#common-linux-filesystems)
@@ -395,6 +400,9 @@
   - [Managing partitions](#managing-partitions)
     - [Creating a New Partition with GParted](#creating-a-new-partition-with-gparted)
     - [Managing Partitions with `parted`](#managing-partitions-with-parted)
+      - [Why Use `parted`?](#why-use-parted)
+      - [Starting `parted`](#starting-parted)
+      - [Selecting a Different Disk](#selecting-a-different-disk)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5305,6 +5313,50 @@ sudo yum install gparted
 - **GPT (GUID Partition Table)**
   - Supports very large disks and up to 128 partitions. Designed for modern UEFI-based systems.
 
+## Sector
+
+### What is a Sector in a Storage Device?
+
+- A sector is the smallest unit of data that a storage device (HDD, SSD, USB drive, etc.) can read or write at one time.
+
+- Think of a storage device as a huge notebook:
+  - The notebook = the disk
+  - Each page = a track
+  - Each small box on a page = a sector
+
+- Even if you want to store just 1 byte, the storage device must read or write an entire sector.
+
++------------------------------------------------------+
+| Storage device                                       |
+|                                                      |
+| S0 | S1 | S2 | S3 | S4 | S5 | S6 | S7 | ...          |
++------------------------------------------------------+
+
+### Physical Sector
+
+- A physical sector is the real chunk of storage on the disk.
+
++----------+----------+----------+
+|The SSD hardware actually writes| 
+|data in 4 KB blocks.            |
+|                                |
+| 4 KB     | 4 KB     | 4 KB     |
++----------+----------+----------+
+
+
+### Logical Sector
+
+- A logical sector is the addressable unit exposed to the operating system.
+- Historically: `Logical Sector Size = 512 Bytes`
+
+### Physical Sector vs Logical Sector
+
+| Type                | Description                                     | Example Size            |
+| ------------------- | ----------------------------------------------- | ----------------------- |
+| **Physical Sector** | The actual hardware block on the storage device | 4096 bytes (4 KB)       |
+| **Logical Sector**  | The sector size that the operating system sees  | 512 bytes or 4096 bytes |
+
+
 ## Filesystems
 
 ### What is a Filesystem?
@@ -5378,7 +5430,43 @@ sudo yum install gparted
 
 ### Managing Partitions with `parted`
 
+#### Why Use `parted`?
 
+- Although GParted provides a graphical interface, parted is useful because:
+  - We can also manage partitions through the CLI (without a GUI). We can do this with the command `sudo parted` (opens a dedicated interactive shell where commands can be executed directly)
+  - It is essential for managing disks on remote servers.
+  - It is helpful when recovering from disk or filesystem problems.
+- Be careful
+  - We can easily cause data loss
+  - I personally have not used it that often:
+    - Remote servers come fully partitioned already
+    - And for external drives, I prefer gparted
+
+#### Starting `parted`
+
+- Launch the interactive shell (It is not bash shell):
+
+```bash
+sudo parted
+```
+
+- Useful commands inside the shell:
+
+```bash
+help                # Show available commands
+print partitions    # Display partitions on the current disk
+print devices       # List all storage devices
+quit                # Exit parted
+```
+
+#### Selecting a Different Disk
+
+- Before modifying a disk, select the correct device.
+
+```bash
+select /dev/sdb
+print partitions
+```
 
 # Introducing the Linux shell
 
