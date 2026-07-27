@@ -404,6 +404,11 @@
       - [Why Use `parted`?](#why-use-parted)
       - [Starting `parted`](#starting-parted)
       - [Selecting a Different Disk](#selecting-a-different-disk)
+      - [Recreating the Partition Table](#recreating-the-partition-table)
+      - [Creating a New Partition](#creating-a-new-partition)
+      - [Naming a Partition](#naming-a-partition)
+      - [Creating the Actual Filesystem](#creating-the-actual-filesystem)
+      - [Running parted Without the Interactive Shell](#running-parted-without-the-interactive-shell)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5513,6 +5518,70 @@ quit                # Exit parted
 select /dev/sdb
 print partitions
 ```
+
+#### Recreating the Partition Table
+
+- To completely erase the disk and create a new partition table. This deletes all existing partitions and data, so confirmation is required. Afterward, the disk contains no partitions
+
+```bash
+mklabel gpt
+```
+
+#### Creating a New Partition
+
+- Create a primary Ext4 partition
+
+```bash
+mkpart primary ext4 2048s 50000MB
+```
+
+- Explanation:
+  - **primary** → GPT uses only primary partitions.
+  - **ext4** → Intended filesystem type.
+  - **2048s** → Start at sector 2048 for proper alignment.
+  - **50000MB** → End position of the partition.
+
+- You can also define partition sizes using percentages:
+
+```bash
+mkpart primary ext4 0% 70%
+```
+
+- You can also define partition sizes using MiB/GiB or MB/GB
+```bash
+mkpart primary ext4 1MiB 20GiB
+mkpart primary ext4 1MB 20000MB
+```
+
+#### Naming a Partition
+
+- Assign a label to the partition
+
+```bash
+name 1 backups
+```
+
+#### Creating the Actual Filesystem
+
+- Creating a partition does not create a filesystem.
+- The ext4 specified in `mkpart` is only a hint stored in the partition table. 
+- The filesystem must be created separately
+
+```bash
+# This initializes the partition with an Ext4 filesystem so it can store files and directories
+
+sudo mkfs.ext4 /dev/sdb1
+```
+
+#### Running parted Without the Interactive Shell
+
+- Instead of entering the parted shell, commands can be executed directly from Bash
+
+```bash
+sudo parted /dev/sdb print
+```
+
+- For more infomation type `sudo parted help`
 
 # Introducing the Linux shell
 
