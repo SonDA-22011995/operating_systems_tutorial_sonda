@@ -412,6 +412,7 @@
   - [Mounting Volumes in Linux](#mounting-volumes-in-linux)
     - [What is a volume?](#what-is-a-volume)
       - [Volume vs Partition](#volume-vs-partition)
+    - [What is a mount](#what-is-a-mount)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5632,6 +5633,41 @@ Your PC
     │ Network
     │
 Remote Storage Server
+```
+
+### What is a mount
+
+- Mounting connects a volume’s file system to the operating system's main directory tree, making its data accessible to programs and user
+
+- Things You Can Mount
+  - Internal, permanent volumes (usually into a subfolder of `/mnt`)
+  - External, removable media (usually into a subfolder of `/media`. Example: USB drives, External disks, SD cards)
+  - External storage servers (for example: FTP)
+  - Folders into other folders (bind mount)
+
+
+```
+# Before mounting:
+
+Disk
+└── Volume
+
+Linux
+/
+├── home
+├── etc
+└── usr
+```
+
+```
+# After mounting
+
+/
+├── home
+├── etc
+├── usr
+└── media
+     └── USB
 ```
 
 # Introducing the Linux shell
