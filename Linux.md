@@ -413,6 +413,7 @@
     - [What is a volume?](#what-is-a-volume)
       - [Volume vs Partition](#volume-vs-partition)
     - [What is a mount](#what-is-a-mount)
+    - [Desktop Automatic Mounting](#desktop-automatic-mounting)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5669,6 +5670,16 @@ Linux
 └── media
      └── USB
 ```
+
+### Desktop Automatic Mounting
+
+- When using Ubuntu's file manager:
+  - Plug in a USB drive or Click the drive.
+  - Ubuntu mounts it automatically `/media/username/UUID/`
+
+![Desktop Automatic Mounting](static/images/image_0096.png)
+
+![Desktop Automatic Mounting](static/images/image_0097.png)
 
 # Introducing the Linux shell
 
