@@ -5387,7 +5387,7 @@ Actually one single 4 KiB (4096 / 1024) physical sector.
 ```
 Logical Sectors
 1 sector = 512 Bytes
-From Sector 0 to Sector 20 is 1 MiB
+From Sector 0 to Sector 2047 is 1 MiB
 
 Sector:
 0        1      2      3                    ...                  2047    2048
