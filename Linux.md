@@ -5597,7 +5597,7 @@ sudo parted /dev/sdb print
 #### Volume vs Partition
 
 - Volumes are more abstract than physical partitions. 
-- A single volume can span multiple physical drives (using a Logical Volume Manager) or reside remotely on a network (cloud computing), whereas partitions are strictly bound to local physical drives.
+- A single volume can span multiple physical drives (using a **Logical Volume Manager**) or reside remotely on a network (cloud computing), whereas partitions are strictly bound to local physical drives.
 
 - Example 1: Normal partition
 
