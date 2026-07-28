@@ -409,6 +409,9 @@
       - [Naming a Partition](#naming-a-partition)
       - [Creating the Actual Filesystem](#creating-the-actual-filesystem)
       - [Running parted Without the Interactive Shell](#running-parted-without-the-interactive-shell)
+  - [Mounting Volumes in Linux](#mounting-volumes-in-linux)
+    - [What is a volume?](#what-is-a-volume)
+      - [Volume vs Partition](#volume-vs-partition)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5582,6 +5585,54 @@ sudo parted /dev/sdb print
 ```
 
 - For more infomation type `sudo parted help`
+
+## Mounting Volumes in Linux
+
+### What is a volume?
+
+- A volume is a logical storage unit that the operating system can use.
+- Usually, a volume is: **Partition + File System (ext4, NTFS, FAT32, etc.)**
+- A volume becomes accessible after it is mounted: **Physical Disk → Partition → File System → Volume → Mounted → Accessible**
+
+#### Volume vs Partition
+
+- Volumes are more abstract than physical partitions. 
+- A single volume can span multiple physical drives (using a Logical Volume Manager) or reside remotely on a network (cloud computing), whereas partitions are strictly bound to local physical drives.
+
+- Example 1: Normal partition
+
+```
+SSD
+┌────────────────────────────┐
+│ Partition 1 (ext4)         │
+└────────────────────────────┘
+        ↓
+      Volume
+```
+
+- Example 2: Logical Volume Manager (LVM). Several partitions can become one volume.
+
+```
+Disk 1          Disk 2
+┌─────────┐     ┌─────────┐
+│Part A   │     │Part B   │
+└─────────┘     └─────────┘
+      \           /
+       \         /
+      Logical Volume
+            │
+        ext4 filesystem
+```
+
+- Example 3: Network Storage. You don't own the partition. But Linux still lets you mount it as a volume
+
+```
+Your PC
+    │
+    │ Network
+    │
+Remote Storage Server
+```
 
 # Introducing the Linux shell
 
