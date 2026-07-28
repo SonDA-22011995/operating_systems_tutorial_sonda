@@ -5327,7 +5327,7 @@ sudo yum install gparted
 
 - Think of a storage device as a huge notebook:
   - The notebook = the disk
-  - Each page = a track
+  - Each page = a partition
   - Each small box on a page = a sector
 
 - Even if you want to store just 1 byte, the storage device must read or write an entire sector.
