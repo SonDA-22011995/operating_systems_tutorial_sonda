@@ -420,8 +420,10 @@
     - [Create a Mount Point](#create-a-mount-point)
       - [Create a directory where the drive will appear](#create-a-directory-where-the-drive-will-appear)
       - [Mount the Drive](#mount-the-drive)
+      - [If Already Mounted](#if-already-mounted)
       - [Verify the Mount](#verify-the-mount)
       - [Unmount a Drive](#unmount-a-drive)
+      - [Common error](#common-error)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5784,6 +5786,10 @@ Device
 Mounted into /mnt/backups
 ```
 
+#### If Already Mounted
+
+- If the drive was mounted automatically by the desktop environment (for example under `/media`), you should first unmount it there before mounting it elsewhere. Once mounted under `/mnt`, it will no longer appear in the GUI's file browse
+
 #### Verify the Mount
 
 - Method 1
@@ -5826,6 +5832,10 @@ sudo umount /dev/sdb1
 ```bash
 sudo umount /mnt/backups
 ```
+
+#### Common error
+
+- **Target is Busy**: You (or another process) are still using the mounted filesystem
 
 # Introducing the Linux shell
 
