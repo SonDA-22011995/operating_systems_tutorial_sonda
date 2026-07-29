@@ -5739,14 +5739,15 @@ sudo mkdir /mnt/backups
   - `sudo mount -t ext4 /dev/sdb1 /mnt/backups`
 
 - `-o` means "options". Common options:
-  - **atime** (Access Time) – The last time the file was read.
-  - **mtime** (Modification Time) – The last time the file's contents were modified.
-  - **ctime** (Change Time) – The last time the file's metadata (permissions, owner, etc.) changed.
+ 
   - How Does **relatime** option work?: **relatime** updates the access time (atime) only when necessary.
-  - Specifically, atime is updated if:
-    - atime is older than mtime, or
-    - atime is older than ctime, or
-    - The last atime update was more than 24 hours ago.
+    - **atime** (Access Time) – The last time the file was read.
+    - **mtime** (Modification Time) – The last time the file's contents were modified.
+    - **ctime** (Change Time) – The last time the file's metadata (permissions, owner, etc.) changed.
+    - Specifically, atime is updated if:
+      - atime is older than mtime, or
+      - atime is older than ctime, or
+      - The last atime update was more than 24 hours ago.
 
 | **Option**   | **Purpose**                                                                                                                                                              | **Example**                                                 |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
