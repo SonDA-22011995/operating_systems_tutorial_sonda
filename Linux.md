@@ -421,6 +421,7 @@
       - [Create a directory where the drive will appear](#create-a-directory-where-the-drive-will-appear)
       - [Mount the Drive](#mount-the-drive)
       - [Verify the Mount](#verify-the-mount)
+      - [Unmount a Drive](#unmount-a-drive)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5785,6 +5786,8 @@ Mounted into /mnt/backups
 
 #### Verify the Mount
 
+- Method 1
+
 ```bash
 mount
 
@@ -5794,6 +5797,8 @@ mount
 # devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
 # tmpfs on /run type tmpfs (rw,nosuid,nodev,noexec,relatime,size=490800k,mode=755,inode64)
 ```
+
+- Method 2
 
 ```bash
 df -h
@@ -5808,6 +5813,19 @@ df -h
 # /dev/sr0         51M   51M     0 100% /media/sonda/VBox_GAs_7.2.61
 ```
 
+#### Unmount a Drive
+
+- By device
+
+```bash
+sudo umount /dev/sdb1
+```
+
+- Or by mount point
+
+```bash
+sudo umount /mnt/backups
+```
 
 # Introducing the Linux shell
 
