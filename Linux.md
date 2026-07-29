@@ -413,7 +413,14 @@
     - [What is a volume?](#what-is-a-volume)
       - [Volume vs Partition](#volume-vs-partition)
     - [What is a mount](#what-is-a-mount)
-    - [Desktop Automatic Mounting](#desktop-automatic-mounting)
+  - [Desktop Automatic Mounting](#desktop-automatic-mounting)
+  - [Manually Mounting a Drive in Linux](#manually-mounting-a-drive-in-linux)
+    - [Why Manually Mount a Drive?](#why-manually-mount-a-drive)
+    - [List Available Drives](#list-available-drives)
+    - [Create a Mount Point](#create-a-mount-point)
+      - [Create a directory where the drive will appear](#create-a-directory-where-the-drive-will-appear)
+      - [Mount the Drive](#mount-the-drive)
+      - [Verify the Mount](#verify-the-mount)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5671,7 +5678,7 @@ Linux
      └── USB
 ```
 
-### Desktop Automatic Mounting
+## Desktop Automatic Mounting
 
 - When using Ubuntu's file manager:
   - Plug in a USB drive or Click the drive.
@@ -5680,6 +5687,122 @@ Linux
 ![Desktop Automatic Mounting](static/images/image_0096.png)
 
 ![Desktop Automatic Mounting](static/images/image_0097.png)
+
+## Manually Mounting a Drive in Linux
+
+### Why Manually Mount a Drive?
+
+- Manual mounting gives much more flexibility.
+- For example:
+  - Store database files on a very fast SSD.
+  - Mount a backup disk anywhere in the filesystem.
+  - Servers usually do not automatically mount removable drives.
+  - Most Linux servers don't even have a GUI.
+
+### List Available Drives
+
+- `lsblk -f` shows: device names, filesystem type, UUID, mount point
+- `lsblk` is recommends  because it is safer than using partitioning tools like `parted`
+
+```bash
+lsblk -f
+
+# NAME FSTYPE FSVER LABEL          UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+# sda                                                                                  
+# ├─sda1
+# │                                                                                    
+# └─sda2
+#      ext4   1.0                  c9647472-d76f-41db-bf17-2f8d673e18df   72.5G    21% /
+# sdb                                                                                  
+# ├─sdb1
+# │    ext4   1.0                  aff17813-874f-4337-9e8a-3ae29a924134                
+# └─sdb2
+#      ext4   1.0                  d4d8905d-28a1-4b8d-8e7b-123eacb59db9   
+```
+
+### Create a Mount Point
+
+#### Create a directory where the drive will appear
+
+```bash
+sudo mkdir /mnt/backups
+```
+
+#### Mount the Drive
+
+- Syntax: `sudo mount [options] device mountpoint`
+
+- Specify filesystem manually. Usually, Linux detects the filesystem automatically: 
+  - `sudo mount -t ext4 /dev/sdb1 /mnt/backups`
+
+- `-o` means "options". Common options:
+  - atime (Access Time) – The last time the file was read.
+  - mtime (Modification Time) – The last time the file's contents were modified.
+  - ctime (Change Time) – The last time the file's metadata (permissions, owner, etc.) changed.
+
+| **Option**   | **Purpose**                                                                                                                                                              | **Example**                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| **defaults** | Uses the default mount options (`rw`, `suid`, `dev`, `exec`, `auto`, `nouser`, `async`).                                                                                 | `mount -o defaults /dev/sdb1 /mnt/data`                     |
+| **rw**       | Mounts the filesystem with **read and write** access.                                                                                                                    | `mount -o rw /dev/sdb1 /mnt/data`                           |
+| **ro**       | Mounts the filesystem as **read-only** to prevent modifications.                                                                                                         | `mount -o ro /dev/sdb1 /mnt/data`                           |
+| **relatime** | Updates the file access time (`atime`) only when necessary, reducing disk writes while preserving compatibility. Default on most Linux distributions (including Ubuntu). | `mount -o relatime /dev/sdb1 /mnt/data`                     |
+| **noatime**  | Never updates the file access time (`atime`), improving performance and reducing SSD wear.                                                                               | `mount -o noatime /dev/sdb1 /mnt/data`                      |
+| **exec**     | Allows programs stored on the filesystem to be executed.                                                                                                                 | `mount -o exec /dev/sdb1 /mnt/data`                         |
+| **noexec**   | Prevents execution of binaries from the mounted filesystem. Commonly used for USB drives or `/tmp`.                                                                      | `mount -o noexec /dev/sdb1 /media/usb`                      |
+| **suid**     | Honors the **Set User ID (SUID)** and **Set Group ID (SGID)** permission bits.                                                                                           | `mount -o suid /dev/sdb1 /mnt/data`                         |
+| **nosuid**   | Ignores SUID/SGID bits, preventing privilege escalation from the mounted filesystem.                                                                                     | `mount -o nosuid /dev/sdb1 /media/usb`                      |
+| **dev**      | Allows device files (e.g., `/dev/null`) on the filesystem to function as device nodes.                                                                                   | `mount -o dev /dev/sdb1 /mnt/data`                          |
+| **nodev**    | Treats device files as ordinary files, preventing their use as devices. Often used for removable media.                                                                  | `mount -o nodev /dev/sdb1 /media/usb`                       |
+| **auto**     | Allows the filesystem to be mounted automatically during boot (`mount -a` or `/etc/fstab`).                                                                              | `/dev/sdb1 /mnt/data ext4 defaults,auto 0 2`                |
+| **noauto**   | Prevents automatic mounting during boot. The filesystem must be mounted manually.                                                                                        | `/dev/sdb1 /mnt/data ext4 defaults,noauto 0 2`              |
+| **nofail**   | Allows the system to continue booting even if the mount fails (useful for external drives).                                                                              | `/dev/sdb1 /backup ext4 defaults,nofail 0 2`                |
+| **bind**     | Mounts an existing directory at another location without copying the data.                                                                                               | `mount --bind /var/www /srv/web`                            |
+| **remount**  | Changes the mount options of an already mounted filesystem without unmounting it.                                                                                        | `mount -o remount,ro /mnt/data`                             |
+| **uid=**     | Sets the owner **user ID** for files on filesystems that do not support Linux ownership (e.g., FAT32, exFAT).                                                            | `mount -o uid=1000 /dev/sdb1 /media/usb`                    |
+| **gid=**     | Sets the owner **group ID** for files on filesystems that do not support Linux ownership.                                                                                | `mount -o gid=1000 /dev/sdb1 /media/usb`                    |
+| **umask=**   | Sets the default file permissions on filesystems such as FAT32 or exFAT by masking permission bits.                                                                      | `mount -o uid=1000,gid=1000,umask=022 /dev/sdb1 /media/usb` |
+
+
+
+```bash
+sudo mount /dev/sdb1 /mnt/backups
+```
+
+```
+Device
+   │
+   ▼
+/dev/sdb1
+   |
+   ▼
+Mounted into /mnt/backups
+```
+
+#### Verify the Mount
+
+```bash
+mount
+
+# sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+# proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+# udev on /dev type devtmpfs (rw,nosuid,relatime,size=1888560k,nr_inodes=472140,mode=755,inode64)
+# devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+# tmpfs on /run type tmpfs (rw,nosuid,nodev,noexec,relatime,size=490800k,mode=755,inode64)
+```
+
+```bash
+df -h
+
+# Filesystem      Size  Used Avail Use% Mounted on
+# tmpfs           480M  1.9M  478M   1% /run
+# /dev/sda2        98G   21G   73G  22% /
+# tmpfs           2.4G     0  2.4G   0% /dev/shm
+# tmpfs           5.0M  8.0K  5.0M   1% /run/lock
+# sonda           251G   83G  169G  33% /media/sf_sonda
+# tmpfs           480M  128K  480M   1% /run/user/1000
+# /dev/sr0         51M   51M     0 100% /media/sonda/VBox_GAs_7.2.61
+```
+
 
 # Introducing the Linux shell
 
