@@ -5896,7 +5896,16 @@ bash script.sh
   - For more detail: [Creating the Actual Filesystem](#creating-the-actual-filesystem)
 
 - Mounting the ExFAT Partition
-  - Syntax: `sudo ount -o gid=1000,uid=1000,umask=0077 /dev/sdb2 /mnt/sonda/backups`
+  - Command: `sudo mount -o gid=1000,uid=1000,umask=0077 /dev/sdb2 /mnt/sonda/backups`
+  - If you mount the filesystem without the `-o` option, you can not create a new file in `/mnt/sonda/backups` because Linux treats the mounted filesystem as being owned by the root user.
+
+```bash
+sudo mount /dev/sdb2 /mnt/sonda/backups
+cd /mnt/sonda/backups
+touch test.txt
+
+# Permission denied
+```
 
 ##### Reference table
 
