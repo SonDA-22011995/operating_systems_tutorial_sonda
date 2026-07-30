@@ -420,6 +420,7 @@
     - [Create a Mount Point](#create-a-mount-point)
       - [Create a directory where the drive will appear](#create-a-directory-where-the-drive-will-appear)
       - [Mount the Drive](#mount-the-drive)
+        - [Common options](#common-options)
       - [If Already Mounted](#if-already-mounted)
       - [Verify the Mount](#verify-the-mount)
       - [Unmount a Drive](#unmount-a-drive)
@@ -5738,16 +5739,19 @@ sudo mkdir /mnt/backups
 - Specify filesystem manually. Usually, Linux detects the filesystem automatically: 
   - `sudo mount -t ext4 /dev/sdb1 /mnt/backups`
 
+##### Common options
+
 - `-o` means "options". Common options:
  
-  - How Does **relatime** option work?: **relatime** updates the access time (atime) only when necessary.
-    - **atime** (Access Time) – The last time the file was read.
-    - **mtime** (Modification Time) – The last time the file's contents were modified.
-    - **ctime** (Change Time) – The last time the file's metadata (permissions, owner, etc.) changed.
-    - Specifically, atime is updated if:
-      - atime is older than mtime, or
-      - atime is older than ctime, or
-      - The last atime update was more than 24 hours ago.
+- How Does **relatime** option work?: 
+  - **relatime** updates the access time (**atime**) only when necessary.
+  - **atime** (Access Time) – The last time the file was read.
+  - **mtime** (Modification Time) – The last time the file's contents were modified.
+  - **ctime** (Change Time) – The last time the file's metadata (permissions, owner, etc.) changed.
+  - Specifically, atime is updated if:
+    - atime is older than mtime, or
+    - atime is older than ctime, or
+    - The last atime update was more than 24 hours ago.
 
 | **Option**   | **Purpose**                                                                                                                                                              | **Example**                                                 |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
