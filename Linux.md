@@ -5744,6 +5744,49 @@ sudo mkdir /mnt/backups
 - `-o` means "options". Common options
 - Syntax: `sudo mount -o option1,option2,... <device> <mount_point>`
  
+- **ro** (Read Only)
+  - Example: `sudo mount -o ro /dev/sdb1 /mnt/backups`
+  - Effects:
+    - Files can be read.
+    - No files can be created, modified, or deleted.
+    - Applies to all users, including the root user.
+
+```bash
+sudo mount -o ro /dev/sdb1 /mnt/backups
+cd /mnt/backups
+touch test.txt
+
+# touch: Read-only file system
+```
+
+- **rw** (Read Write)
+  - Example: `sudo mount -o rw /dev/sdb1 /mnt/backups`
+  - Effects:
+    - Read files
+    - Create files
+    - Modify files
+    - Delete files
+
+- **noexec**: 
+  - Example: `sudo mount -o noexec /dev/sdb1 /mnt/backups`
+  - Effects: 
+    - Prevents programs stored on the mounted filesystem from being executed directly.
+    - Although a script has executable permission, it may still fail to run
+
+```bash
+sudo mount -o noexec /dev/sdb1 /mnt/backups
+cd /mnt/backups
+chmod +x script.sh
+./script.sh
+
+# Permission denied
+```
+
+- **nosuid**: Disables the **SUID (Set User ID)** and **SGID (Set Group ID)** bits on the mounted filesystem.
+  - Example: `sudo mount -o nosuid /dev/sdb1 /mnt/backups`
+  - Effect: 
+    - This improves security, especially for external or removable drives, because programs on those filesystems cannot gain elevated privileges through SUID/SGID. 
+
 - How Does **relatime** option work?: 
   - **relatime** updates the access time (**atime**) only when necessary.
   - **atime** (Access Time) – The last time the file was read.
