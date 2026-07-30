@@ -5741,7 +5741,8 @@ sudo mkdir /mnt/backups
 
 ##### Common options
 
-- `-o` means "options". Common options:
+- `-o` means "options". Common options
+- Syntax: `sudo mount -o option1,option2,... <device> <mount_point>`
  
 - How Does **relatime** option work?: 
   - **relatime** updates the access time (**atime**) only when necessary.
