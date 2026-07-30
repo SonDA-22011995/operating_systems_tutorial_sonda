@@ -70,6 +70,7 @@
     - [Groups](#groups)
     - [On Linux, user information is stored in various files](#on-linux-user-information-is-stored-in-various-files)
       - [Basic account info - `/etc/passwd`](#basic-account-info---etcpasswd)
+      - [Find out information about your identity - `id`](#find-out-information-about-your-identity---id)
       - [Encrypted passwords and aging info - `/etc/shadow`](#encrypted-passwords-and-aging-info---etcshadow)
       - [List of groups and their members - `/etc/group`](#list-of-groups-and-their-members---etcgroup)
     - [Managing user](#managing-user)
@@ -421,6 +422,8 @@
       - [Create a directory where the drive will appear](#create-a-directory-where-the-drive-will-appear)
       - [Mount the Drive](#mount-the-drive)
         - [Common options](#common-options)
+        - [Mount Options for Filesystems Without Native Permissions (e.g., FAT32, exFAT)](#mount-options-for-filesystems-without-native-permissions-eg-fat32-exfat)
+        - [Reference table](#reference-table)
       - [If Already Mounted](#if-already-mounted)
       - [Verify the Mount](#verify-the-mount)
       - [Unmount a Drive](#unmount-a-drive)
@@ -1390,6 +1393,19 @@ cat /etc/passwd
 ```
 
 ![/etc/passwd](static/images/image_0020.png)
+
+
+#### Find out information about your identity - `id`
+
+- The `id` command in Linux is a utility used to display the real and effective user and group IDs. It is essential for troubleshooting permissions, verifying user identities, and managing group affiliations
+
+```bash
+# current user
+id
+# specific user
+id sonda
+# uid=1000(sonda) gid=1000(sonda) groups=1000(sonda),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(users),107(netdev),1001(docker),109(lpadmin)
+```
 
 #### Encrypted passwords and aging info - `/etc/shadow`
 
@@ -5818,6 +5834,24 @@ bash script.sh
     - atime is older than mtime, or
     - atime is older than ctime, or
     - The last atime update was more than 24 hours ago.
+
+##### Mount Options for Filesystems Without Native Permissions (e.g., FAT32, exFAT)
+
+- Why Are Extra Mount Options Needed? Some filesystems (such as ExFAT) do not store:
+  - Linux users (UID)
+  - Linux groups (GID)
+  - Linux file permissions (rwx)
+
+- As a result, when such a filesystem is mounted, Linux must simulate ownership and permissions using mount options.
+
+- **uid=** Mount Option
+  - Example: `sudo mount -o uid=1001 /dev/sdb1 /mnt/backups`
+  - Effect
+    - Assigns ownership of all files to a specific Linux user.
+    - This does not modify the filesystem itself.
+    - Linux simply treats every file as if it belongs to that user while the filesystem is mounted.
+
+##### Reference table
 
 | **Option**   | **Purpose**                                                                                                                                                              | **Example**                                                 |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
