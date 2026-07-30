@@ -5776,7 +5776,7 @@ touch test.txt
     - Although a script has executable permission, it may still fail to run
 
 - **noexec** only blocks direct execution of a file `./script.sh`. `./script.sh` asks the kernel to execute the file directly, which noexec prohibits.
-  - `bash script.sh` executes the Bash interpreter (located on another filesystem) and passes the script to it as input. Bash simply reads the script and interprets it
+
 
 ```bash
 sudo mount -o noexec /dev/sdb1 /mnt/backups
@@ -5785,7 +5785,7 @@ cd /mnt/backups
 nano script.sh
 
 # In the script.sh, paste the script below
-# #!/usr/bin/evn bash
+# #!/usr/bin/env bash
 # echo 'sonda vo doi'
 
 chmod +x script.sh
@@ -5795,6 +5795,7 @@ chmod +x script.sh
 ```
 
 - But **noexec** does not prevent an interpreter such as Bash, Python, or PHP from reading and executing a script as data
+  - `bash script.sh` executes the Bash interpreter (located on another filesystem) and passes the script to it as input. Bash simply reads the script and interprets it
 
 ```bash
 cd /mnt/backups
