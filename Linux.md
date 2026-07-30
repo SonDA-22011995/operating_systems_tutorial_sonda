@@ -5844,12 +5844,44 @@ bash script.sh
 
 - As a result, when such a filesystem is mounted, Linux must simulate ownership and permissions using mount options.
 
+- Installing ExFAT Support
+  - Ubuntu: `sudo apt install exfat-fuse exfatprogs`
+  - CentOS: `sudo dnf install exfatprogs`
+
+| Package        | Description                                                                                                                                                                                                                 |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **exfat-fuse** | **A FUSE-based exFAT driver**, primarily used on older Linux systems that do not have native exFAT driver support in the kernel.                                                                                            |
+| **exfatprogs** | **A suite of exFAT filesystem utilities**, including tools such as `mkfs.exfat` (create an exFAT filesystem), `fsck.exfat` (check and repair an exFAT filesystem), `dump.exfat` (display filesystem information), and more. |
+
+
+
 - **uid=** Mount Option
   - Example: `sudo mount -o uid=1001 /dev/sdb1 /mnt/backups`
   - Effect
     - Assigns ownership of all files to a specific Linux user.
     - This does not modify the filesystem itself.
     - Linux simply treats every file as if it belongs to that user while the filesystem is mounted.
+
+- **gid=** Mount Option
+  - Example: `sudo mount -o gid=1001 /dev/sdb1 /mnt/backups`
+  - Effect
+    - Assigns all files to a Linux group
+
+- **umask=** Mount Option
+  - Example: `sudo mount -o umask=027 /dev/sdb1 /mnt/backups`
+  - Effect
+    - Since ExFAT has no native permission bits, Linux creates virtual permissions.
+
+```
+0777
+-0027
+------
+0750
+```
+
+| Owner   | Group   | Others  |
+| ------- | ------- | ------- |
+| rwx (7) | r-x (5) | --- (0) |
 
 ##### Reference table
 
