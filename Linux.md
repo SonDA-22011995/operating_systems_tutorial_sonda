@@ -423,6 +423,7 @@
       - [Mount the Drive](#mount-the-drive)
         - [Common options](#common-options)
         - [Mount Options for Filesystems Without Native Permissions (e.g., FAT32, exFAT)](#mount-options-for-filesystems-without-native-permissions-eg-fat32-exfat)
+        - [Example Mount Options for ExFAT](#example-mount-options-for-exfat)
         - [Reference table](#reference-table)
       - [If Already Mounted](#if-already-mounted)
       - [Verify the Mount](#verify-the-mount)
@@ -5605,6 +5606,11 @@ name 1 backups
 sudo mkfs.ext4 /dev/sdb1
 ```
 
+- `mkfs` - build a Linux filesystem
+  - `mkfs` (short for make filesystem) is a Linux command used to create a new filesystem on a storage device or partition
+  - When you run `mkfs`, any existing data on the target partition is destroyed, so it should only be used on a new or intentionally reformatted partition
+  - Syntax: `mkfs -t <filesystem_type> <device>` or `mkfs.<filesystem_type> <device>`
+
 #### Running parted Without the Interactive Shell
 
 - Instead of entering the parted shell, commands can be executed directly from Bash
@@ -5844,17 +5850,6 @@ bash script.sh
 
 - As a result, when such a filesystem is mounted, Linux must simulate ownership and permissions using mount options.
 
-- Installing ExFAT Support
-  - Ubuntu: `sudo apt install exfat-fuse exfatprogs`
-  - CentOS: `sudo dnf install exfatprogs`
-
-| Package        | Description                                                                                                                                                                                                                 |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **exfat-fuse** | **A FUSE-based exFAT driver**, primarily used on older Linux systems that do not have native exFAT driver support in the kernel.                                                                                            |
-| **exfatprogs** | **A suite of exFAT filesystem utilities**, including tools such as `mkfs.exfat` (create an exFAT filesystem), `fsck.exfat` (check and repair an exFAT filesystem), `dump.exfat` (display filesystem information), and more. |
-
-
-
 - **uid=** Mount Option
   - Example: `sudo mount -o uid=1001 /dev/sdb1 /mnt/backups`
   - Effect
@@ -5868,7 +5863,7 @@ bash script.sh
     - Assigns all files to a Linux group
 
 - **umask=** Mount Option
-  - Example: `sudo mount -o umask=027 /dev/sdb1 /mnt/backups`
+  - Example: `sudo mount -o umask=0027 /dev/sdb1 /mnt/backups`
   - Effect
     - Since ExFAT has no native permission bits, Linux creates virtual permissions.
 
@@ -5882,6 +5877,26 @@ bash script.sh
 | Owner   | Group   | Others  |
 | ------- | ------- | ------- |
 | rwx (7) | r-x (5) | --- (0) |
+
+##### Example Mount Options for ExFAT
+
+- Installing ExFAT Support
+  - Ubuntu: `sudo apt install exfat-fuse exfatprogs`
+  - CentOS: `sudo dnf install exfatprogs`
+
+| Package        | Description                                                                                                                                                                                                                 |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **exfat-fuse** | **A FUSE-based exFAT driver**, primarily used on older Linux systems that do not have native exFAT driver support in the kernel.                                                                                            |
+| **exfatprogs** | **A suite of exFAT filesystem utilities**, including tools such as `mkfs.exfat` (create an exFAT filesystem), `fsck.exfat` (check and repair an exFAT filesystem), `dump.exfat` (display filesystem information), and more. |
+
+- Creating a new Partition: 
+  - For more detail [Managing Partitions with `parted`](#managing-partitions-with-parted)
+
+- Creating the Actual Filesystem on a new Partition: `sudo mkfs.exfat /dev/sdb1`
+  - For more detail: [Creating the Actual Filesystem](#creating-the-actual-filesystem)
+
+- Mounting the ExFAT Partition
+  - Syntax: `sudo ount -o gid=1000,uid=1000,umask=0077 /dev/sdb2 /mnt/sonda/backups`
 
 ##### Reference table
 
