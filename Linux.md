@@ -5896,6 +5896,8 @@ bash script.sh
   - For more detail: [Creating the Actual Filesystem](#creating-the-actual-filesystem)
 
 - Mounting the ExFAT Partition
+  - Find Your UID and GID: For more detail [Find out information about your identity - `id`](#find-out-information-about-your-identity---id)
+  - ExFAT Does Not Support Permissions. Command `chmod 700 test.txt` has no effect. You can use `umask` instead
   - Command: `sudo mount -o gid=1000,uid=1000,umask=0077 /dev/sdb2 /mnt/sonda/backups`
   - If you mount the filesystem without the `-o` option, you can not create a new file in `/mnt/sonda/backups` because Linux treats the mounted filesystem as being owned by the root user.
 
