@@ -5771,7 +5771,7 @@ lsblk --help
 #  -A, --noempty        don't print empty devices
 #  -D, --discard        print discard capabilities
 #  -E, --dedup <column> de-duplicate output by <column>
-# 
+# ....................................................
 # 
 # 
 # Available output columns:
@@ -5781,6 +5781,7 @@ lsblk --help
 #      DISC-ALN  discard alignment offset
 #           DAX  dax-capable device
 #     DISC-GRAN  discard granularity
+#.....................................................
 ```
 
 ```bash
