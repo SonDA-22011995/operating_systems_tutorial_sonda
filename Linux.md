@@ -429,6 +429,9 @@
       - [Verify the Mount](#verify-the-mount)
       - [Unmount a Drive](#unmount-a-drive)
       - [Common error](#common-error)
+  - [Mounting on boot: `/etc/fstab`](#mounting-on-boot-etcfstab)
+    - [Why use `/etc/fstab`?](#why-use-etcfstab)
+    - [What is `/etc/fstab` format?](#what-is-etcfstab-format)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5730,7 +5733,15 @@ Linux
 - `lsblk -f` shows: device names, filesystem type, UUID, mount point
   - `lsblk` lists information about all available or the specified block devices
   - Syntax: `lsblk [options] [device]`
-- `lsblk` is recommends  because it is safer than using partitioning tools like `parted`
+  - `lsblk` is recommends  because it is safer than using partitioning tools like `parted`
+  - Common options
+
+| Option                | Function                                                                                     |
+| --------------------- | -------------------------------------------------------------------------------------------- |
+| **`-f` (`--fs`)**     | Displays filesystem information such as **FSTYPE**, **LABEL**, **UUID**, and **MOUNTPOINT**. |
+| **`-a` (`--all`)**    | Displays all block devices, including empty or otherwise hidden devices.                     |
+| **`-o` (`--output`)** | Specifies which columns to display in the output (for example: `NAME,FSTYPE,UUID,PARTUUID`). |
+| **`--list-columns`** or **`--help`**  | Lists all available output columns that can be used with the **`-o`** (`--output`) option.   |
 
 ```bash
 lsblk -f
@@ -5746,6 +5757,30 @@ lsblk -f
 # │    ext4   1.0                  aff17813-874f-4337-9e8a-3ae29a924134                
 # └─sdb2
 #      ext4   1.0                  d4d8905d-28a1-4b8d-8e7b-123eacb59db9   
+```
+
+```bash
+lsblk --help
+
+# Usage:
+#  lsblk [options] [<device> ...]
+# 
+# List information about block devices.
+# 
+# Options:
+#  -A, --noempty        don't print empty devices
+#  -D, --discard        print discard capabilities
+#  -E, --dedup <column> de-duplicate output by <column>
+# 
+# 
+# 
+# Available output columns:
+#     ALIGNMENT  alignment offset
+#       ID-LINK  the shortest udev /dev/disk/by-id link name
+#            ID  udev ID (based on ID-LINK)
+#      DISC-ALN  discard alignment offset
+#           DAX  dax-capable device
+#     DISC-GRAN  discard granularity
 ```
 
 ### Create a Mount Point
@@ -5999,6 +6034,33 @@ sudo umount /mnt/backups
 #### Common error
 
 - **Target is Busy**: You (or another process) are still using the mounted filesystem
+
+## Mounting on boot: `/etc/fstab`
+
+### Why use `/etc/fstab`?
+
+- When you mount a drive manually: `sudo mount /dev/sdb1 /mnt/backups`. The mount exists only until the next reboot.
+- After restarting:
+  - The drive is no longer mounted.
+  - You must mount it again manually.
+- The solution is to define the mount in `/etc/fstab`. Linux reads this file during boot and automatically mounts the listed filesystems
+
+### What is `/etc/fstab` format?
+
+- Each line represents a filesystem to be mounted
+- Fields (columns) are separated by spaces or tabs
+- General format: `<device> <mount_point> <filesystem> <options> <dump> <fsck_order>`
+
+| Field         | Description                                |
+| ------------- | ------------------------------------------ |
+| Device        | Device path (`/dev/sdb1`) or UUID (`UUID=57c9...`)|
+| Mount Point   | Directory where the filesystem is mounted  |
+| Filesystem    | ext4, xfs, exfat, vfat, etc.               |
+| Mount Options | `defaults`, `ro`, `noexec`, `nosuid`, etc. |
+| Dump          | Backup option (usually `0=no backup`)                |
+| Fsck Order    | Filesystem check order during boot (fsck priority, 1 = root, 2 = non-root)        |
+
+- Device Identifier: Recommends using **UUID** because it remains the same even if the drive order changes (for example, after moving disks to different ports), making it more reliable than device names like `/dev/sdb1`
 
 # Introducing the Linux shell
 
