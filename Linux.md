@@ -5783,6 +5783,18 @@ lsblk --help
 #     DISC-GRAN  discard granularity
 ```
 
+```bash
+lsblk -o NAME,FSTYPE,UUID,PARTUUID
+
+# NAME   FSTYPE   UUID                                 PARTUUID
+# sda                                                  
+# ├─sda1                                               28d8a5dd-51d9-4db7-aa18-ba23bca96ab9
+# └─sda2 ext4     c9647472-d76f-41db-bf17-2f8d673e18df 015095f9-8826-46ad-b64a-7f9829cdcf1f
+# sdb                                                  
+# ├─sdb1 ext4     aff17813-874f-4337-9e8a-3ae29a924134 882cfd43-94d8-47e5-b222-c8660c4f0e17
+# └─sdb2 exfat    FA7B-DB37                            ba32cdcf-d3ba-49a9-9a04-adb0db049578
+```
+
 ### Create a Mount Point
 
 #### Create a directory where the drive will appear
