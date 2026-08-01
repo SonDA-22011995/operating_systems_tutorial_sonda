@@ -433,6 +433,7 @@
     - [Why use `/etc/fstab`?](#why-use-etcfstab)
     - [What is `/etc/fstab` format?](#what-is-etcfstab-format)
     - [Example Configuration](#example-configuration)
+  - [Mounting an FTP server](#mounting-an-ftp-server)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4808,6 +4809,12 @@ sudo systemctl disable apache2.service
 
   - Logs: Displays the most recent stdout/stderr log outputs generated during the service's startup initialization phase.
 
+- Alternatively, we can check the status of service with the following command:
+
+```bash
+sudo systemctl is-active apache2
+```
+
 ![Inspecting systemctl status Metadata](static/images/image_0076.png)
 
 ### Key Takeaway
@@ -4838,6 +4845,8 @@ systemctl status apache2
 |`sudo systemctl enable apache2` |	Configures the service to start automatically at system boot.|	Requires sudo. It creates symbolic links (symlinks) from systemd's autostart directories to the service file. Note: This does not start the service immediately; combine with `--now` if you want both, e.g: `sudo systemctl enable --now apache2` |
 |`sudo systemctl disable apache2` |	Prevents the service from starting automatically at system boot.|	Requires `sudo`. It removes the symlinks created by the enable command. Note: This does not stop a currently running service; it only affects the next boot.|
 |`systemctl list-timers` |	show all active timers managed by systemd |	If a timer is stopped or disabled, it won't show up in the default list. To see absolutely everything `systemctl list-timers --all`|
+| `systemctl is-active <unit>` | Check whether a service, timer, or other systemd unit is currently active. | Returns states such as `active`, `inactive`, `failed`, or `activating`. |
+
 
 ## Project: Let's launch our own program on boot!
 
@@ -6115,6 +6124,8 @@ sudo nano /etc/fstab
 ```bash
 sudo mount -a
 ```
+
+## Mounting an FTP server
 
 # Introducing the Linux shell
 
