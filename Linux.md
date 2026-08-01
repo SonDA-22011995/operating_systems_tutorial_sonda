@@ -6108,6 +6108,14 @@ sudo nano /etc/fstab
 
 ![Example Configuration](static/images/image_0098.png)
 
+- Step 3: Apply the Changes. Instead of rebooting, reload the configuration with command below
+  - This mounts all filesystems defined in /etc/fstab that are not already mounted.
+  - If no errors occur, the configuration is valid
+
+```bash
+sudo mount -a
+```
+
 # Introducing the Linux shell
 
 ## What is a shell?
