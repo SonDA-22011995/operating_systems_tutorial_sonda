@@ -432,6 +432,7 @@
   - [Mounting on boot: `/etc/fstab`](#mounting-on-boot-etcfstab)
     - [Why use `/etc/fstab`?](#why-use-etcfstab)
     - [What is `/etc/fstab` format?](#what-is-etcfstab-format)
+    - [Example Configuration](#example-configuration)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6063,17 +6064,49 @@ sudo umount /mnt/backups
 - Each line represents a filesystem to be mounted
 - Fields (columns) are separated by spaces or tabs
 - General format: `<device> <mount_point> <filesystem> <options> <dump> <fsck_order>`
+- Device Identifier: 
+  - Recommends using **UUID** because it remains the same even if the drive order changes (for example, after moving disks to different ports), making it more reliable than device names like `/dev/sdb1`
+- Example:
+  - UUID (Recommends): 
+    - `/dev/disk/by-uuid/c9647472-d76f-41db-bf17-2f8d673e18df  /  ext4  defaults  0  1`
+    - `/dev/disk/by-uuid/FA7B-DB37 /mnt/sonda/usb exfat gid=1000,uid=1000,umask=0077 0 1`
+  - Device path: `/dev/sda1  /  ext4  defaults  0  1`
 
 | Field         | Description                                |
 | ------------- | ------------------------------------------ |
-| Device        | Device path (`/dev/sdb1`) or UUID (`UUID=57c9...`)|
+| Device        | Device path (`/dev/sdb1`) or UUID (`/dev/disk/by-uuid/57c9...`)|
 | Mount Point   | Directory where the filesystem is mounted  |
 | Filesystem    | ext4, xfs, exfat, vfat, etc.               |
 | Mount Options | `defaults`, `ro`, `noexec`, `nosuid`, etc. |
 | Dump          | Backup option (usually `0=no backup`)                |
-| Fsck Order    | Filesystem check order during boot (fsck priority, 1 = root, 2 = non-root)        |
+| Fsck Order    | Filesystem check order during boot (fsck priority, 1 = root, 2 = non-root, 0 = Do not check)        |
 
-- Device Identifier: Recommends using **UUID** because it remains the same even if the drive order changes (for example, after moving disks to different ports), making it more reliable than device names like `/dev/sdb1`
+
+- Recommended filesystem check order
+
+| Value | Meaning                                                                                                                                                                                                              |
+| ----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0** | **Do not check** the filesystem during boot. Commonly used for removable media (USB drives, CD/DVD) or filesystems that do not support `fsck` (e.g., exFAT, NTFS).                                                   |
+| **1** | **Check first** during boot. Reserved for the **root filesystem (`/`)**. Only one filesystem should normally use this value.                                                                                         |
+| **2** | **Check after the root filesystem**. Used for all other local filesystems (e.g., `/home`, `/var`, `/data`). Multiple filesystems with value `2` may be checked in parallel if they are on different storage devices. |
+
+
+### Example Configuration
+
+- Step 1: Get UUID 
+
+```bash
+lsblk -f
+```
+
+- Step 2: Edit `/etc/fstab`.Add a new line, save the file, and exit.
+  - UUID: `UUID=<uuid>  /mnt/backups  ext4  defaults,nosuid,noexec  0  2`
+
+```bash
+sudo nano /etc/fstab
+```
+
+![Example Configuration](static/images/image_0098.png)
 
 # Introducing the Linux shell
 
