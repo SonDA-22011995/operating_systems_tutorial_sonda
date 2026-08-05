@@ -435,6 +435,10 @@
     - [Example Configuration](#example-configuration)
   - [Mounting an FTP server](#mounting-an-ftp-server)
     - [Prerequisites](#prerequisites)
+    - [What is FTP?](#what-is-ftp)
+    - [FTP Security](#ftp-security)
+    - [Install Required Software](#install-required-software)
+    - [Mount an FTP Server](#mount-an-ftp-server)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6132,7 +6136,58 @@ sudo mount -a
 - The example only works on Ubuntu, because **curlftpfs** is available in the Ubuntu repositories but not in the CentOS repositories.
 - You need valid FTP credentials (username, password, and server).
 
+### What is FTP?
 
+- FTP (File Transfer Protocol) is a protocol for transferring files between computers.
+- It allows you to: upload files, download files, browse directories on a remote server.
+
+### FTP Security
+
+- Standard FTP
+  - Login credentials are transmitted unencrypted.
+  - File contents are also transmitted unencrypted.
+  - Anyone intercepting the network traffic could potentially read the credentials and data.
+- More Secure Alternatives
+  - FTPS → FTP over SSL/TLS (encrypted)
+  - SFTP → Uses the SSH protocol (a completely different protocol)
+- The tool used in this lecture supports FTP and FTPS, but not SFTP
+
+### Install Required Software
+
+- `fuse`: Filesystem in Userspace framework
+- `urlftpfs`: Allows an FTP server to be mounted as a filesystem
+
+```bash
+sudo apt install fuse urlftpfs
+```
+
+### Mount an FTP Server
+
+- Create a Mount Point
+
+```bash
+sudo mkdir /mnt/ftp
+```
+
+- Mount an FTP Server
+
+```bash
+sudo curlftpfs '[ftp or ftps]://[user]:[password]@[server-path-onserver]' /mnt/ftp
+```
+
+- Debugging Connection Problems
+  - `d` :debug mode
+  - `v` :verbose output
+
+```bash
+sudo curlftpfs -d -v '[ftp or ftps]://[user]:[password]@[server-path-onserver]' /mnt/ftp
+```
+
+- Unmounting a FUSE Filesystem
+
+```bash
+fusermount -u /mnt/ftp
+```
 
 # Introducing the Linux shell
 
