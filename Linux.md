@@ -6247,14 +6247,14 @@ chmod 600 /root/.netrc
 curlftpfs#username:password@server/ /mnt/ftp fuse noauto,allow_other,xsystemd.automount 0 0
 ```
 
-| Field           | Description                        | Example                       |
-| --------------- | ---------------------------------- |-------------------------------|
-| Device          | What to mount                      | curlftpfs#username:password@server/ |
-| Mount point     | Where to mount it                  | /mnt/ftp |
-| Filesystem type | Type of filesystem                 | fuse |
+| Field           | Description                        | Example                               |
+| --------------- | ---------------------------------- |---------------------------------------|
+| Device          | What to mount                      | curlftpfs#username:password@server/   |
+| Mount point     | Where to mount it                  | /mnt/ftp                              |
+| Filesystem type | Type of filesystem                 | fuse                                  |
 | Mount options   | Mount behavior                     | noauto,allow_other,xsystemd.automount |
-| Dump            | Usually `0`                        | 0 |
-| Fsck            | Usually `0` for remote filesystems | 0 |
+| Dump            | Usually `0`                        | 0                                     |
+| Fsck            | Usually `0` for remote filesystems | 0                                     |
 
 
 # Introducing the Linux shell
