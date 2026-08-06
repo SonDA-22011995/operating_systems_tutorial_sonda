@@ -444,7 +444,8 @@
       - [Problems:](#problems)
       - [Solution](#solution)
     - [Automatically mount ftp drive through `/etc/fstab`](#automatically-mount-ftp-drive-through-etcfstab)
-      - [`/etc/fstab` entry format](#etcfstab-entry-format)
+      - [Step 1: edit `/etc/fstab`](#step-1-edit-etcfstab)
+      - [Step 2: Reload the configuration or Reboot](#step-2-reload-the-configuration-or-reboot)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6241,10 +6242,18 @@ chmod 600 /root/.netrc
 
 ### Automatically mount ftp drive through `/etc/fstab`
 
-#### `/etc/fstab` entry format
+#### Step 1: edit `/etc/fstab`
+
+- We automatically mount the drive through `/etc/fstab`
 
 ```bash
 curlftpfs#username:password@server/ /mnt/ftp fuse noauto,allow_other,xsystemd.automount 0 0
+```
+
+- or Without username and password
+
+```bash
+curlftpfs#server/ /mnt/ftp fuse noauto,allow_other,x-systemd.automount 0 0
 ```
 
 | Field           | Description                        | Example                               |
@@ -6252,9 +6261,25 @@ curlftpfs#username:password@server/ /mnt/ftp fuse noauto,allow_other,xsystemd.au
 | Device          | What to mount                      | curlftpfs#username:password@server/   |
 | Mount point     | Where to mount it                  | /mnt/ftp                              |
 | Filesystem type | Type of filesystem                 | fuse                                  |
-| Mount options   | Mount behavior                     | noauto,allow_other,xsystemd.automount |
+| Mount options   | Mount behavior                     | noauto,allow_other,ssl,xsystemd.automount |
 | Dump            | Usually `0`                        | 0                                     |
 | Fsck            | Usually `0` for remote filesystems | 0                                     |
+
+- Important mount options
+
+| Option                | Description                                                              | Why / Behavior                                                                                                                                                                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `noauto`              | Prevents the filesystem from being mounted during boot.                  | Useful when the network may not be ready yet or when mounting could fail during startup.                                                                                                                                                                                                                         |
+| `allow_other`         | Allows users other than the one who mounted the filesystem to access it. | Without it, only the mounting user (typically `root`) can access the mounted files.                                                                                                                                                                                                                              |
+| `ssl`                 | Uses FTP over SSL/TLS if required by the FTP server.                     | Provides an encrypted connection between the client and the FTP server.                                                                                                                                                                                                                                          |
+| `x-systemd.automount` | Delays mounting until the mount point is first accessed.                 | Instead of mounting during boot, `systemd` automatically mounts the filesystem the first time someone accesses the directory (e.g., `cd /mnt/ftp` or `ls /mnt/ftp`). This provides faster boot times, avoids failures when the network is not yet ready, and mounts the filesystem only when needed (on-demand). |
+
+
+#### Step 2: Reload the configuration or Reboot
+
+```bash
+mount -a
+```
 
 
 # Introducing the Linux shell
