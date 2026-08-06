@@ -6250,7 +6250,9 @@ chmod 600 /root/.netrc
 curlftpfs#username:password@server/ /mnt/ftp fuse noauto,allow_other,xsystemd.automount 0 0
 ```
 
-- or Without username and password
+- Do NOT store credentials (user and password) in `/etc/fstab` a line above. 
+  - Because `/etc/fstab` is readable by all users.
+  - Instead: Use only the server name and store credentials securely in `/root/.netrc`
 
 ```bash
 curlftpfs#server/ /mnt/ftp fuse noauto,allow_other,x-systemd.automount 0 0
@@ -6280,7 +6282,6 @@ curlftpfs#server/ /mnt/ftp fuse noauto,allow_other,x-systemd.automount 0 0
 ```bash
 mount -a
 ```
-
 
 # Introducing the Linux shell
 
