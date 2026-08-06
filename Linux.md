@@ -439,6 +439,8 @@
     - [FTP Security](#ftp-security)
     - [Install Required Software](#install-required-software)
     - [Mount an FTP Server](#mount-an-ftp-server)
+    - [Allow all users to access](#allow-all-users-to-access)
+    - [Storing the credentials in `.netrc` (user and password)](#storing-the-credentials-in-netrc-user-and-password)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6188,6 +6190,32 @@ sudo curlftpfs -d -v '[ftp or ftps]://[user]:[password]@[server-path-onserver]' 
 ```bash
 fusermount -u /mnt/ftp
 ```
+
+### Allow all users to access
+
+- Problem: When mounting an FTP filesystem with sudo, the mount is owned by root, so only root can access it.
+
+- Solution: Use the `allow_other` mount option
+  - After mounting:
+    - Root can access the filesystem.
+    - Normal users can also: browse files, create files, copy files
+
+```bash
+sudo curlftpfs -o ssl,allow_other '[ftp or ftps]://[user]:[password]@[server-path-onserver]' /mnt/ftp
+```
+
+### Storing the credentials in `.netrc` (user and password)
+
+- Step 1: `sudo nano /root/.netrc`
+  - Example content:
+
+```bash
+machine ftp.example.com # [server-path-onserver]
+login myuser
+password mypassword
+```
+
+- Step 2: `sudo curlftpfs -o ssl,allow_other '[ftp or ftps]://[server-path-onserver]' /mnt/ftp`
 
 # Introducing the Linux shell
 
