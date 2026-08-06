@@ -441,6 +441,10 @@
     - [Mount an FTP Server](#mount-an-ftp-server)
     - [Allow all users to access](#allow-all-users-to-access)
     - [Storing the credentials in `.netrc` (user and password)](#storing-the-credentials-in-netrc-user-and-password)
+      - [Problems:](#problems)
+      - [Solution](#solution)
+    - [Automatically mount ftp drive through `/etc/fstab`](#automatically-mount-ftp-drive-through-etcfstab)
+      - [`/etc/fstab` entry format](#etcfstab-entry-format)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6206,6 +6210,14 @@ sudo curlftpfs -o ssl,allow_other '[ftp or ftps]://[user]:[password]@[server-pat
 
 ### Storing the credentials in `.netrc` (user and password)
 
+#### Problems:
+
+- Password is visible in shell history.
+- Password can be seen by other users using ps.
+- Not suitable for automatic mounting with `/etc/fstab`.
+
+#### Solution
+
 - Step 1: `sudo nano /root/.netrc`
   - Example content:
 
@@ -6215,7 +6227,35 @@ login myuser
 password mypassword
 ```
 
-- Step 2: `sudo curlftpfs -o ssl,allow_other '[ftp or ftps]://[server-path-onserver]' /mnt/ftp`
+- Step 2: Now the mount command no longer needs credentials (user and password)
+
+```bash
+sudo curlftpfs -o ssl,allow_other '[ftp or ftps]://[server-path-onserver]' /mnt/ftp
+```
+
+- Step 3: Protect the credential file. Restrict access so only **root** can read it
+
+```bash
+chmod 600 /root/.netrc
+```
+
+### Automatically mount ftp drive through `/etc/fstab`
+
+#### `/etc/fstab` entry format
+
+```bash
+curlftpfs#username:password@server/ /mnt/ftp fuse noauto,allow_other,xsystemd.automount 0 0
+```
+
+| Field           | Description                        | Example                       |
+| --------------- | ---------------------------------- |-------------------------------|
+| Device          | What to mount                      | curlftpfs#username:password@server/ |
+| Mount point     | Where to mount it                  | /mnt/ftp |
+| Filesystem type | Type of filesystem                 | fuse |
+| Mount options   | Mount behavior                     | noauto,allow_other,xsystemd.automount |
+| Dump            | Usually `0`                        | 0 |
+| Fsck            | Usually `0` for remote filesystems | 0 |
+
 
 # Introducing the Linux shell
 
