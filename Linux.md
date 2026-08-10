@@ -446,6 +446,11 @@
     - [Automatically mount ftp drive through `/etc/fstab`](#automatically-mount-ftp-drive-through-etcfstab)
       - [Step 1: edit `/etc/fstab`](#step-1-edit-etcfstab)
       - [Step 2: Reload the configuration or Reboot](#step-2-reload-the-configuration-or-reboot)
+  - [Monitoring Disk Health with SMART `smartctl`](#monitoring-disk-health-with-smart-smartctl)
+    - [What is SMART?](#what-is-smart)
+    - [How to use SMART?](#how-to-use-smart)
+    - [What SMART does and does NOT check](#what-smart-does-and-does-not-check)
+  - [Checking Filesystem Errors with `fsck`](#checking-filesystem-errors-with-fsck)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6282,6 +6287,50 @@ curlftpfs#server/ /mnt/ftp fuse noauto,allow_other,x-systemd.automount 0 0
 ```bash
 mount -a
 ```
+
+## Monitoring Disk Health with SMART `smartctl`
+
+### What is SMART?
+
+- **SMART** is a technology built into most: Hard Disk Drives (HDDs), Solid State Drives (SSDs)
+- It continuously monitors the physical health of the drive.
+- Instead of waiting for a disk to fail suddenly, **SMART** can warn you that the drive is beginning to deteriorate.
+
+### How to use SMART?
+
+- Install SMART tools
+
+```bash
+sudo apt install smartmontools
+```
+
+- Check drive health
+
+```bash
+sudo smartctl --all /dev/sda
+```
+
+### What SMART does and does NOT check
+
+- SMART checks only physical hardware health, such as:
+  - bad sectors
+  - read errors
+  - write errors
+  - temperature
+  - SSD wear level
+  - power-on hours
+  - start/stop count
+
+- SMART cannot detect problems with:
+  - partition tables
+  - filesystems (ext4, XFS, etc.)
+  - corrupted files
+  - accidentally deleted files
+  - logical volume configuration
+  - LVM metadata
+  - These require other tools such as: `fsck`, `parted`, `gdisk`, `testdisk`
+
+## Checking Filesystem Errors with `fsck`
 
 # Introducing the Linux shell
 
