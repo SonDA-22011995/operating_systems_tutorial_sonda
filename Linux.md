@@ -450,7 +450,12 @@
     - [What is SMART?](#what-is-smart)
     - [How to use SMART?](#how-to-use-smart)
     - [What SMART does and does NOT check](#what-smart-does-and-does-not-check)
-  - [Checking Filesystem Errors with `fsck`](#checking-filesystem-errors-with-fsck)
+  - [Checking File System Errors with `fsck`](#checking-file-system-errors-with-fsck)
+    - [Why do file systems get errors?](#why-do-file-systems-get-errors)
+    - [`fsck` checks the filesystem, not the physical disk](#fsck-checks-the-filesystem-not-the-physical-disk)
+    - [Checking a filesystem](#checking-a-filesystem)
+    - [Checking a root filesystem - `/`](#checking-a-root-filesystem---)
+    - [Check the filesystem-check logs](#check-the-filesystem-check-logs)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6330,7 +6335,85 @@ sudo smartctl --all /dev/sda
   - LVM metadata
   - These require other tools such as: `fsck`, `parted`, `gdisk`, `testdisk`
 
-## Checking Filesystem Errors with `fsck`
+## Checking File System Errors with `fsck`
+
+### Why do file systems get errors?
+
+- Common causes include:
+  - Unexpected power loss or improper shutdown
+  - Bugs in filesystem drivers
+  - Aging or failing HDD/SSD
+  - Underlying hardware problems
+  - Filesystem corruption
+
+- Modern filesystems such as **ext4** are much more resilient than older filesystems, but corruption can still occur.
+
+### `fsck` checks the filesystem, not the physical disk
+
+- Think of the storage stack like this:
+
+```
+Physical HDD / SSD
+        ↓
+Partition
+        ↓
+Filesystem (ext4, XFS, ...)
+        ↓
+Files
+```
+
+- Different tools operate at different layers:
+
+| Tool               | Checks                  |
+| ------------------ | ----------------------- |
+| `smartctl`         | Physical HDD/SSD health |
+| `fsck`             | Filesystem consistency  |
+| `parted` / `gdisk` | Partition table         |
+
+
+
+
+### Checking a filesystem
+
+- Step 1: The drive needs to be unmounted and should not be encrypted
+
+```bash
+sudo umount /dev/sdb2
+```
+
+- Step 2: Then, we can trigger a check
+
+```bash
+fsck /dev/sdb2
+
+# Note: on some systems, we need to also specify the filesystem
+fsck.ext4 /dev/sdb2
+
+# or
+sudo fsck -t ext4 /dev/sdb1
+```
+
+### Checking a root filesystem - `/`
+
+- The root filesystem `/` cannot normally be unmounted while the running Linux system depends on it.
+- One solution is to force a filesystem check during boot.
+  - With GRUB, add `fsck.mode=force` to the Linux kernel boot parameters. Then boot the system
+  - The filesystem check happens during the boot process, before the filesystem is fully available to the running system.
+- Otherwise, if we don't have access to GRUB
+  - We can always boot a live Linux (from a USB drive / backend of our server). And then check the filesystem from there
+
+![Checking file system errors with fsck](static/images/image_0099.png)
+
+### Check the filesystem-check logs
+
+- After booting, you can inspect the current boot's logs:
+
+```bash
+journalctl -b | grep -i 'file system'
+
+# or
+journalctl -b | grep -i fsck
+```
 
 # Introducing the Linux shell
 
