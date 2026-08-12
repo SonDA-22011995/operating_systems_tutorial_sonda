@@ -6524,6 +6524,7 @@ tune2fs -l /dev/sdb2 | grep -i -F 'mount'
 #### Time based
 
 - Enable time-based checking
+  - No suffix or `d` will interpret the  number as days, `m` as months, and `w` as weeks
   - This would check the volume every 6 months
 
 ```bash
