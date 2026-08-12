@@ -465,6 +465,7 @@
       - [Check the filesystem configuration with `tune2fs`](#check-the-filesystem-configuration-with-tune2fs)
       - [Time based](#time-based)
       - [Mount-count based](#mount-count-based)
+  - [Repairing a Broken Filesystem with `fsck`](#repairing-a-broken-filesystem-with-fsck)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6537,7 +6538,6 @@ sudo tune2fs -i 6m /dev/sdb2
 sudo tune2fs -i 0m /dev/sdb2 
 ```
 
-
 #### Mount-count based
 
 - Enable mount-count checking
@@ -6551,6 +6551,27 @@ sudo tune2fs -c 30 /dev/sda2
 
 ```bash
 sudo tune2fs -c -1 /dev/sdb2 
+```
+
+## Repairing a Broken Filesystem with `fsck`
+
+- `fsck` detects filesystem inconsistencies and attempts to repair them.
+- It may find problems involving:
+  - superblocks
+  - inodes
+  - directory structures
+  - block allocation
+  - orphaned files
+- `fsck` primarily tries to make the filesystem consistent again.
+  
+- It does not guarantee that:
+  - all files will return
+  - filenames will remain intact
+  - directories will be restored
+  - overwritten data can be recovered
+
+```bash
+sudo fsck /dev/sdb1
 ```
 
 # Introducing the Linux shell
