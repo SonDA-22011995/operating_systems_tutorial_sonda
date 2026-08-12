@@ -6511,7 +6511,8 @@ sudo tune2fs -l /dev/sda2 | grep -i -F check
   - If you see: `Maximum mount count:-1` there is no mount-based periodic check configured.
 
 ```bash
-sudo tune2fs -l /dev/sdb2 | grep -i -F 'mount'
+sudo 
+tune2fs -l /dev/sdb2 | grep -i -F 'mount'
 
 # Last mounted on:          /
 # Default mount options:    user_xattr acl
