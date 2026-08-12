@@ -6508,6 +6508,7 @@ sudo tune2fs -l /dev/sda2 | grep -i -F check
 ```
 
 - List only Mount based configuration
+  - If you see: `Maximum mount count:-1` there is no mount-based periodic check configured.
 
 ```bash
 tune2fs -l /dev/sdb2 | grep -i -F 'mount'
@@ -6521,10 +6522,34 @@ tune2fs -l /dev/sdb2 | grep -i -F 'mount'
 
 #### Time based
 
+- Enable
+  - This would check the volume every 6 months
+
+```bash
+ tune2fs -i 6m /dev/sdb2 
+```
+
+- Disable
+
+```bash
+ tune2fs -i 0m /dev/sdb2 
+```
+
 
 #### Mount-count based
 
+- Enable
+  - This would check the volume every 30 mounts
 
+```bash
+sudo tune2fs -c 30 /dev/sda2
+```
+
+- Disable
+
+```bash
+ tune2fs -c -1 /dev/sdb2 
+```
 
 # Introducing the Linux shell
 
