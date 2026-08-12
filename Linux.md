@@ -6523,14 +6523,14 @@ tune2fs -l /dev/sdb2 | grep -i -F 'mount'
 
 #### Time based
 
-- Enable
+- Enable time-based checking
   - This would check the volume every 6 months
 
 ```bash
 sudo tune2fs -i 6m /dev/sdb2 
 ```
 
-- Disable
+- Disable time-based checking
 
 ```bash
 sudo tune2fs -i 0m /dev/sdb2 
@@ -6539,14 +6539,14 @@ sudo tune2fs -i 0m /dev/sdb2
 
 #### Mount-count based
 
-- Enable
+- Enable mount-count checking
   - This would check the volume every 30 mounts
 
 ```bash
 sudo tune2fs -c 30 /dev/sda2
 ```
 
-- Disable
+- Disable mount-count checking
 
 ```bash
 sudo tune2fs -c -1 /dev/sdb2 
