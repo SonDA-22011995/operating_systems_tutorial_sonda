@@ -456,6 +456,15 @@
     - [Checking a filesystem](#checking-a-filesystem)
     - [Checking a root filesystem - `/`](#checking-a-root-filesystem---)
     - [Check the filesystem-check logs](#check-the-filesystem-check-logs)
+  - [Checking File System Errors Automatically](#checking-file-system-errors-automatically)
+    - [Check after an unclean shutdown](#check-after-an-unclean-shutdown)
+      - [Genaral](#genaral)
+      - [How to enable and disable](#how-to-enable-and-disable)
+    - [Periodic filesystem checks](#periodic-filesystem-checks)
+      - [General](#general)
+      - [Check the filesystem configuration with `tune2fs`](#check-the-filesystem-configuration-with-tune2fs)
+      - [Time based](#time-based)
+      - [Mount-count based](#mount-count-based)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6414,6 +6423,108 @@ journalctl -b | grep -i 'file system'
 # or
 journalctl -b | grep -i fsck
 ```
+
+## Checking File System Errors Automatically
+
+```
+                 Filesystem Health
+                        │
+        ┌───────────────┴───────────────┐
+        │                               │
+   Unexpected shutdown             Periodic check
+        │                               │
+   Dirty filesystem              ┌──────┴──────┐
+        │                        │             │
+     Next boot           Mount-count based Time based
+(Check after an                  │             │
+unclean shutdown)             -c 30          -i 6m
+```
+
+### Check after an unclean shutdown
+
+#### Genaral
+
+- If the filesystem was not cleanly unmounted, Linux can detect that and perform a check during the next boot
+- Typical causes: Power outage, System crash, Forced shutdown, Filesystem wasn't properly unmounte
+
+#### How to enable and disable
+
+- The 6th column of `/etc/fstab` controls the filesystem check order during boot
+
+| Value | Meaning                                |
+| ----- | -------------------------------------- |
+| `0`   | Don't automatically check              |
+| `1`   | Check first — normally root filesystem |
+| `2`   | Check after root filesystem            |
+
+- Setting the last field to **0** disables boot-time `fsck` checking associated with `/etc/fstab`
+- For more detail: [What is `/etc/fstab` format?](#what-is-etcfstab-format)
+
+### Periodic filesystem checks
+
+#### General
+
+- You can also configure Linux to check a filesystem periodically even when everything appears to be working correctly.
+- There are two ways:
+  - Mount-count based
+  - Time based
+
+#### Check the filesystem configuration with `tune2fs`
+
+- `tune2fs` can display filesystem parameters for **ext2/ext3/ext4** filesystem
+
+```bash
+sudo tune2fs -l /dev/sdb2
+
+# tune2fs 1.47.0 (5-Feb-2023)
+# tune2fs: Bad magic number in super-block while trying to open /dev/sdb2
+# /dev/sdb2 contains a exfat file system
+
+lsblk -f
+
+# NAME   FSTYPE   FSVER            LABEL          UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+# ....
+# sdb                                                                                                 
+# ├─sdb1 ext4     1.0                             aff17813-874f-4337-9e8a-3ae29a924134   46.4G     0% /mnt/sonda/backups
+# └─sdb2 exfat    1.0                             FA7B-DB37                                  
+```
+
+- List filesystem configuration
+
+```bash
+sudo tune2fs -l /dev/sda2
+```
+
+- List only Time Based configuration
+  - If you see: `Check interval: none` there is no time-based periodic check configured.
+
+```bash
+sudo tune2fs -l /dev/sda2 | grep -i -F check
+
+# Last checked:             Tue Aug 11 11:32:21 2026
+# Check interval:           0 (<none>)
+# Checksum type:            crc32c
+# Checksum:                 0x48dcb921
+```
+
+- List only Mount based configuration
+
+```bash
+tune2fs -l /dev/sdb2 | grep -i -F 'mount'
+
+# Last mounted on:          /
+# Default mount options:    user_xattr acl
+# Last mount time:          Wed Aug 12 10:18:12 2026
+# Mount count:              4
+# Maximum mount count:      -1
+```
+
+#### Time based
+
+
+#### Mount-count based
+
+
 
 # Introducing the Linux shell
 
