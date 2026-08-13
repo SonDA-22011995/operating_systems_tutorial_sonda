@@ -477,6 +477,10 @@
       - [Resize the partition using `parted`](#resize-the-partition-using-parted)
       - [Mounting](#mounting)
     - [Expanding Filesystems and Partitions](#expanding-filesystems-and-partitions)
+      - [Conditions for Expanding a Partition](#conditions-for-expanding-a-partition)
+      - [Increase the partition size first](#increase-the-partition-size-first)
+      - [Grow the ext4 file system](#grow-the-ext4-file-system)
+- [Logical Volume Manager - LVM](#logical-volume-manager---lvm)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6655,7 +6659,8 @@ fsck -t ext4 /dev/sdb2
 
 - Syntax: `resize2fs [option] device [ size ]`
   - The size parameter specifies the requested new size of the file system
-  - the size parameter may be suffixed by one of the following units  designators (either upper-case or lower-case)
+  - If no units are specified, the units of the size  parameter shall be the file system blocksize of the file system
+  - The size parameter may be suffixed by one of the following units  designators (either upper-case or lower-case)
     -  'K' - kilobytes
     -  'M' - megabytes
     -  'G' - gigabytes
@@ -6716,6 +6721,34 @@ sudo mount /dev/sdb2 /mnt/sonda/usb
 ```
 
 ### Expanding Filesystems and Partitions
+
+#### Conditions for Expanding a Partition
+
+- The disk must have unallocated space
+- The unallocated space must be immediately after the partition.
+- The partition must use a filesystem that supports growing (e.g `ext4`)
+
+#### Increase the partition size first
+
+- The important concept is: When growing, increase the partition first, then increase the file system.
+
+```bash
+sudo parted 
+
+select /dev/sdb
+
+resizepart 3 100%
+```
+
+#### Grow the ext4 file system
+
+- `resize2fs` automatically detects the available size of the partition and expands the ext4 file system to use it.
+
+```bash
+sudo resize2fs /dev/sdb3
+```
+
+# Logical Volume Manager - LVM
 
 # Introducing the Linux shell
 
