@@ -466,6 +466,17 @@
       - [Time based](#time-based)
       - [Mount-count based](#mount-count-based)
   - [Repairing a Broken Filesystem with `fsck`](#repairing-a-broken-filesystem-with-fsck)
+  - [Resizing Filesystems and Partitions](#resizing-filesystems-and-partitions)
+    - [Not every filesystem can be resized](#not-every-filesystem-can-be-resized)
+    - [Filesystem and partition are different things](#filesystem-and-partition-are-different-things)
+    - [Reducing Filesystems and Partitions](#reducing-filesystems-and-partitions)
+      - [Changing filesystem if not support resizing](#changing-filesystem-if-not-support-resizing)
+      - [Unmount the filesystem](#unmount-the-filesystem)
+      - [Run `fsck` before resizing](#run-fsck-before-resizing)
+      - [Shrink the filesystem](#shrink-the-filesystem)
+      - [Resize the partition using `parted`](#resize-the-partition-using-parted)
+      - [Mounting](#mounting)
+    - [Expanding Filesystems and Partitions](#expanding-filesystems-and-partitions)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6563,7 +6574,7 @@ sudo tune2fs -c -1 /dev/sdb2
   - block allocation
   - orphaned files
 - `fsck` primarily tries to make the filesystem consistent again.
-  
+
 - It does not guarantee that:
   - all files will return
   - filenames will remain intact
@@ -6573,6 +6584,124 @@ sudo tune2fs -c -1 /dev/sdb2
 ```bash
 sudo fsck /dev/sdb1
 ```
+
+## Resizing Filesystems and Partitions
+
+### Not every filesystem can be resized
+
+- Before resizing anything, you need to know whether the filesystem supports resizing
+  - `ext4`: can be resized
+  - `exfat`: cannot easily be resized on Linux using the demonstrated tools
+- For a filesystem that cannot be resized, the alternative is generally:
+  - Backup data => Delete/recreate filesystem => Restore data
+
+### Filesystem and partition are different things
+
+- This is the most important concept in this lecture
+
+```
+Disk
+└── Partition
+    └── Filesystem
+        └── Files
+```
+
+- Example
+
+```
+/dev/sdb2
+   ↓
+Partition
+   ↓
+ext4 filesystem
+   ↓
+Files
+```
+
+### Reducing Filesystems and Partitions
+
+#### Changing filesystem if not support resizing
+
+- Backup data => Delete/recreate filesystem 
+
+```bash
+# /dev/sdb2 is mounted on /mnt/sonda/usb 
+
+cp -R /mnt/sonda/usb ~/Desktop
+
+sudo mkfs.ext4 /dev/sdb2
+```
+
+#### Unmount the filesystem
+
+- For shrinking, the filesystem normally needs to be unmounted
+  - The exact requirement depends on the filesystem, but shrinking generally requires the filesystem to be offline
+
+```bash
+umount /dev/sdb2
+```
+
+#### Run `fsck` before resizing
+
+- Best practice is to check the filesystem first
+
+```bash
+fsck /dev/sdb2
+
+fsck -t ext4 /dev/sdb2
+```
+
+#### Shrink the filesystem
+
+- Syntax: `resize2fs [option] device [ size ]`
+  - The size parameter specifies the requested new size of the file system
+  - the size parameter may be suffixed by one of the following units  designators (either upper-case or lower-case)
+    -  'K' - kilobytes
+    -  'M' - megabytes
+    -  'G' - gigabytes
+    -  'T' - terabytes
+
+```bash
+sudo resize2fs /dev/sdb2 10G
+```
+
+- Why does GParted still show the partition at its original size after resizing?
+  - Because only the filesystem has been resized
+  - The partition remains its original size GB even though the filesystem occupies only the first 10 GB
+
+![Shrink the filesystem](static/images/image_0100.png)
+
+#### Resize the partition using `parted`
+
+- To resize partition 2
+
+```bash
+sudo parted
+
+# select [device]
+select /dev/sdb
+
+# resizepart 2 <new-end>
+resizepart 2 60GiB
+```
+
+- Very important: **GB** vs **GiB** (For more detail: [Storage Size Units (KB vs KiB, MB vs MiB, GB vs GiB)](#storage-size-units-kb-vs-kib-mb-vs-mib-gb-vs-gib))
+  - `resize2fs` doesn't use Binary Units (Base 2)
+  - `parted` use both Binary Units and Decimal Units
+
+- The partition should be equal or lager than the filesystem
+  - Filesystem = 10 GiB
+  - Partition  = 10.2 GiB or 10GiB
+
+![Resize the partition](static/images/image_0101.png)
+
+#### Mounting
+
+```bash
+sudo mount /dev/sdb2 /mnt/sonda/usb
+```
+
+### Expanding Filesystems and Partitions
 
 # Introducing the Linux shell
 
