@@ -6681,6 +6681,20 @@ sudo parted
 # select [device]
 select /dev/sdb
 
+unit GiB                                                         
+
+print                                                            
+# Model: ATA VBOX HARDDISK (scsi)
+# Disk /dev/sdb: 64.0GiB
+# Sector size (logical/physical): 512B/512B
+# Partition Table: gpt
+# Disk Flags: 
+# 
+# Number  Start    End      Size     File system  Name     Flags
+#  1      0.00GiB  50.0GiB  50.0GiB  ext4         primary
+#  2      50.0GiB  64.0GiB  14.0GiB  ext4         primary
+
+
 # resizepart 2 <new-end>
 resizepart 2 60GiB
 ```
