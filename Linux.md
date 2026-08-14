@@ -481,6 +481,13 @@
       - [Increase the partition size first](#increase-the-partition-size-first)
       - [Grow the ext4 file system](#grow-the-ext4-file-system)
 - [Logical Volume Manager - LVM](#logical-volume-manager---lvm)
+  - [The problem with traditional partitioning](#the-problem-with-traditional-partitioning)
+  - [The idea behind LVM](#the-idea-behind-lvm)
+  - [LVM Architecture and Terminology](#lvm-architecture-and-terminology)
+    - [Traditional storage vs LVM](#traditional-storage-vs-lvm)
+    - [Physical Volume (PV)](#physical-volume-pv)
+    - [Volume Group (VG)](#volume-group-vg)
+    - [Logical Volume (LV)](#logical-volume-lv)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6749,6 +6756,150 @@ sudo resize2fs /dev/sdb3
 ```
 
 # Logical Volume Manager - LVM
+
+## The problem with traditional partitioning
+
+- The size of each partition is ultimately limited by the physical disk
+- With a traditional setup, the storage hierarchy looks like:
+
+```
+Physical Disk
+     ↓
+Partitions
+     ↓
+File Systems
+```
+
+- For example
+
+```
+/dev/sda
+ ├── /dev/sda1
+ ├── /dev/sda2
+ └── /dev/sda3
+```
+
+## The idea behind LVM
+
+- Instead of treating each physical disk independently, LVM can combine storage from multiple physical devices into one storage pool
+- LVM introduces an additional abstraction layer between physical storage and the file system
+
+```
+Physical Disks
+      ↓
+   LVM Layer
+      ↓
+Logical Volumes
+      ↓
+File Systems
+```
+
+## LVM Architecture and Terminology
+
+### Traditional storage vs LVM
+
+- Traditional Linux storage looks like
+
+```
+Example 1                         Example 2
+
+Disk                              Disk
+ ↓                                 ↓
+/dev/sda                          /dev/sdb
+ ↓                                 ↓
+Partition                         Partition
+ ↓                                 ↓
+/dev/sda2                         /dev/sdb2
+ ↓                                 ↓
+File System                       File System
+ ↓                                 ↓
+ext4                              ext4
+ ↓                                 ↓
+Mount Point                       Mount Point
+ ↓                                 ↓
+/                               /data
+```
+
+- With LVM, there is an additional abstraction layer
+  - The key benefit is that the logical volume does not have to correspond directly to one physical partition
+
+```
+Disk              /dev/sdb
+ ↓                    ↓
+Partition         /dev/sdb2
+ ↓                    ↓
+Physical Volume   /dev/sdb2
+ ↓                    ↓
+Volume Group      vg_data
+ ↓                    ↓
+Logical Volume    lv_data
+ ↓                    ↓
+File System         ext4
+ ↓                    ↓
+Mount Point        /data
+```
+
+### Physical Volume (PV)
+
+- The important idea is: PV = physical storage that LVM is allowed to manage.
+- A Physical Volume (PV) is storage that has been assigned to LVM
+- A PV is usually a partition, but an entire disk can also be used as a PV
+
+```
+/dev/sdb2 → PV
+/dev/sdc1 → PV
+/dev/sdd1 → PV
+```
+
+- A disk can also contain traditional partitions alongside LVM partitions
+
+```
+/dev/sdb
+├── sdb1 → ext4 (traditional)
+└── sdb2 → LVM PV
+```
+
+### Volume Group (VG)
+
+- A **Volume Group (VG)** combines one or more physical volumes into a single storage pool.
+
+```
+/dev/sdb2 ─┐
+/dev/sdc1 ─┼──→ Volume Group: vgroup
+/dev/sdd1 ─┘
+```
+
+```
+50 GB + 50 GB + 50 GB
+        ↓
+      vgroup
+        ↓
+      150 GB
+```
+
+### Logical Volume (LV)
+
+- A Logical Volume (LV) is created inside the Volume Group.
+- The logical volumes can then contain file systems
+
+```
+vgroup
+├── data     → ext4 → /data
+└── backups  → ext4 → /backups
+```
+
+- The important point is that an LV can use storage from multiple physical volumes.
+  - The user/application sees the logical volume, while LVM handles where its data is physically stored.
+
+```
+          Logical Volume: data
+        ┌──────────────────────┐
+        │       75 GB          │
+        └──────────────────────┘
+             ↓     ↓     ↓
+           PV1   PV2   PV3
+          50GB  50GB  50GB
+```
 
 # Introducing the Linux shell
 
