@@ -489,6 +489,7 @@
     - [Volume Group (VG)](#volume-group-vg)
     - [Logical Volume (LV)](#logical-volume-lv)
   - [Initializing LVM Physical Volumes](#initializing-lvm-physical-volumes)
+  - [Creating a Volume Group (VG)](#creating-a-volume-group-vg)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7000,6 +7001,61 @@ pvscan
 # PV /dev/sdb1                      lvm2 [<30.00 GiB]
 # PV /dev/sdc1                      lvm2 [<20.00 GiB]
 # Total: 2 [<50.00 GiB] / in use: 0 [0   ] / in no VG: 2 [<50.00 GiB]
+```
+
+## Creating a Volume Group (VG)
+
+- Create a Volume Group
+  - `vgcreate`: creates a Volume Group
+  - `vgroup`: name of the Volume Group. 
+    - `vgroup` as the example name, but you can choose another name
+  - `/dev/sdb1`, `/dev/sdc1`, `/dev/sdd1`: Physical Volumes that belong to the VG
+
+```bash
+sudo vgcreate vgroup /dev/sdb1 /dev/sdc1 /dev/sdd1
+```
+
+- List Volume Groups
+  - Physical Extent (PE): You can think of a Physical Extent as an organizational unit/block used by LVM
+    - For example, if the extent size were: 4 MiB
+    - And you created a logical volume requiring: 1 KiB
+    - LVM would still allocate storage according to its extent units rather than allocating exactly 1 KiB
+
+```bash
+sudo vgs
+
+# VG     #PV #LV #SN Attr   VSize   VFree  
+# vgroup   3   0   0 wz--n- <74.99g <74.99g
+
+sudo vgdisplay
+
+# --- Volume group ---
+#  VG Name               vgroup
+#  System ID             
+#  Format                lvm2
+#  Metadata Areas        3
+#  Metadata Sequence No  1
+#  VG Access             read/write
+#  VG Status             resizable
+#  MAX LV                0
+#  Cur LV                0
+#  Open LV               0
+#  Max PV                0
+#  Cur PV                3
+#  Act PV                3
+#  VG Size               <74.99 GiB
+#  PE Size               4.00 MiB
+#  Total PE              19197
+#  Alloc PE / Size       0 / 0   
+#  Free  PE / Size       19197 / <74.99 GiB
+#  VG UUID               1QBtDe-kJQo-fpIU-g5iQ-0Wjg-hFeA-yuJQ2s
+
+```
+
+- If a Volume Group doesn't appear to be detected, you can scan for existing Volume Groups
+
+```bash
+sudo vgscan
 ```
 
 # Introducing the Linux shell
