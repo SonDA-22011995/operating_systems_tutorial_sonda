@@ -7056,6 +7056,8 @@ sudo vgdisplay
 
 ```bash
 sudo vgscan
+
+# Found volume group "vgroup" using metadata type lvm2
 ```
 
 # Introducing the Linux shell
