@@ -488,6 +488,7 @@
     - [Physical Volume (PV)](#physical-volume-pv)
     - [Volume Group (VG)](#volume-group-vg)
     - [Logical Volume (LV)](#logical-volume-lv)
+  - [Initializing LVM Physical Volumes](#initializing-lvm-physical-volumes)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6899,6 +6900,106 @@ vgroup
              ↓     ↓     ↓
            PV1   PV2   PV3
           50GB  50GB  50GB
+```
+
+## Initializing LVM Physical Volumes
+
+- Create a partition table
+
+```bash
+sudo parted /dev/sdb
+
+# GNU Parted 3.6
+# Using /dev/sdb
+# Welcome to GNU Parted! Type 'help' to view a list of commands
+
+mklabel gpt
+```
+
+- Create a partition
+
+```bash
+# GNU Parted 3.6
+# Using /dev/sdb
+# Welcome to GNU Parted! Type 'help' to view a list of commands
+
+mkpart primary ext4 2048s 30GiB
+```
+
+- Mark the partition as LVM
+
+```bash
+# GNU Parted 3.6
+# Using /dev/sdb
+# Welcome to GNU Parted! Type 'help' to view a list of commands
+print 
+
+# Number  Start   End     Size    File system  Name     Flags
+#  1      1049kB  32.2GB  32.2GB               primary  
+#  2      32.2GB  53.7GB  21.5GB               primary
+
+set 1 lvm on
+```
+
+- Create the Physical Volume
+
+```bash
+# In the Command line 
+
+pvcreate /dev/sdb1
+
+# Physical volume "/dev/sdb1" successfully created.
+```
+
+- Inspect Physical Volumes
+
+```bash
+# In the Command line 
+
+# Short summary
+pvs 
+
+#  PV         VG Fmt  Attr PSize   PFree  
+#  /dev/sdb1     lvm2 ---  <30.00g <30.00g
+#  /dev/sdc1     lvm2 ---  <20.00g <20.00g
+
+sudo pvdisplay
+
+# "/dev/sdb1" is a new physical volume of "<30.00 GiB"
+#  --- NEW Physical volume ---
+#  PV Name               /dev/sdb1
+#  VG Name               
+#  PV Size               <30.00 GiB
+#  Allocatable           NO
+#  PE Size               0   
+#  Total PE              0
+#  Free PE               0
+#  Allocated PE          0
+#  PV UUID               KPIMDi-cuWs-bV2t-AUU7-093e-qfWA-8WABKh
+#   
+#  "/dev/sdc1" is a new physical volume of "<20.00 GiB"
+#  --- NEW Physical volume ---
+#  PV Name               /dev/sdc1
+#  VG Name               
+#  PV Size               <20.00 GiB
+#  Allocatable           NO
+#  PE Size               0   
+#  Total PE              0
+#  Free PE               0
+#  Allocated PE          0
+#  PV UUID               MPqvqw-Rbi7-F5SG-6oxC-wWUH-efsq-EjlZwI
+   
+```
+
+- If a Physical Volume doesn't appear correctly, use:
+  - `pvscan` scans the system for LVM Physical Volumes and discovers them
+
+```bash
+pvscan
+
+# PV /dev/sdb1                      lvm2 [<30.00 GiB]
+# PV /dev/sdc1                      lvm2 [<20.00 GiB]
+# Total: 2 [<50.00 GiB] / in use: 0 [0   ] / in no VG: 2 [<50.00 GiB]
 ```
 
 # Introducing the Linux shell
