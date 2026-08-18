@@ -490,6 +490,8 @@
     - [Logical Volume (LV)](#logical-volume-lv)
   - [Initializing LVM Physical Volumes](#initializing-lvm-physical-volumes)
   - [Creating a Volume Group (VG)](#creating-a-volume-group-vg)
+  - [Creating Logical Volumes (LVs)](#creating-logical-volumes-lvs)
+  - [Modifying Physical Volumes (PVs)](#modifying-physical-volumes-pvs)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7059,6 +7061,129 @@ sudo vgscan
 
 # Found volume group "vgroup" using metadata type lvm2
 ```
+
+## Creating Logical Volumes (LVs)
+
+- Create a Logical Volume with a fixed size
+  - `lvcreate`: creates a Logical Volume
+  - `-L 15GiB`: specifies an absolute size of 15 GiB
+  - `-n data`: names the LV data
+  - `vgroup`: the Volume Group Name where the LV is created
+
+```bash
+sudo lvcreate -L 15GiB -n data vgroup
+
+# The result is:
+# vgroup
+#  └── data
+#       └── 15 GiB
+```
+
+- Create an LV using a percentage of free space
+  - `-l 100%FREE` :Number/percentage of extents. 
+    - Means use 100% of the currently available free space
+
+```bash
+sudo lvcreate -l 100%FREE -n backups vgroup
+
+
+# The result is:
+# vgroup: 74.99 GiB
+#  └── data
+#       └── 15 GiB
+#  └── backups
+#       └── 59.99 GiB
+```
+
+- List Logical Volumes
+  - `LV Path: /dev/vgroup/data`: Logical Volume device paths
+
+```bash
+sudo lvs
+
+#  LV      VG     Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+#  backups vgroup -wi-a----- <59.99g                                                    
+#  data    vgroup -wi-ao----  15.00g 
+
+sudo lvdisplay
+
+#  --- Logical volume ---
+#  LV Path                /dev/vgroup/data
+#  LV Name                data
+#  VG Name                vgroup
+#  LV UUID                oEQWEP-wpYh-NVw3-jMaD-cNF5-ZvfK-fixVkY
+#  LV Write Access        read/write
+#  LV Creation host, time sonda-VirtualBox, 2026-08-18 10:13:21 +0700
+#  LV Status              available
+#  # open                 1
+#  LV Size                15.00 GiB
+#  Current LE             3840
+#  Segments               1
+#  Allocation             inherit
+#  Read ahead sectors     auto
+#  - currently set to     16384
+#  Block device           252:0
+#   
+#  --- Logical volume ---
+#  LV Path                /dev/vgroup/backups
+#  LV Name                backups
+#  VG Name                vgroup
+#  LV UUID                c07tZw-IlDD-XcfC-3Tvy-QuMC-oEe7-dIqEcn
+#  LV Write Access        read/write
+#  LV Creation host, time sonda-VirtualBox, 2026-08-18 10:14:38 +0700
+#  LV Status              available
+#  # open                 0
+#  LV Size                <59.99 GiB
+#  Current LE             15357
+#  Segments               3
+#  Allocation             inherit
+#  Read ahead sectors     auto
+#  - currently set to     16384
+#  Block device           252:1
+
+```
+
+- Create a filesystem on the Logical Volume
+  - The important concept is the layered structure
+
+```
+Hardware
+   ↓
+Partition
+   ↓
+Physical Volume
+   ↓
+Volume Group
+   ↓
+Logical Volume
+   ↓
+Filesystem
+```
+
+```bash
+sudo mkfs.ext4 /dev/vgroup/data
+```
+
+- Mount the Logical Volume
+  - The LV can now be used like a normal filesystem
+
+```bash
+sudo mkdir /vgroup-data
+sudo mount /dev/vgroup/data /vgroup-data
+```
+
+- If Logical Volumes aren't being detected, use:
+
+```bash
+sudo lvscan
+```
+
+- GParted and LVM
+  - When viewing the disks in GParted after creating the LVs, the LVM space may appear to be 100% used.
+  - This does not mean that the filesystems contain 100% data.
+  - Instead, it means that the disk space has been allocated to LVM Logical Volumes
+
+## Modifying Physical Volumes (PVs)
 
 # Introducing the Linux shell
 
