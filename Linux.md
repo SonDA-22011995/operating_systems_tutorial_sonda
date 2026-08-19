@@ -492,6 +492,7 @@
   - [Creating a Volume Group (VG)](#creating-a-volume-group-vg)
   - [Creating Logical Volumes (LVs)](#creating-logical-volumes-lvs)
   - [Modifying Physical Volumes (PVs)](#modifying-physical-volumes-pvs)
+    - [Add a new Physical Volume to a Volume Group](#add-a-new-physical-volume-to-a-volume-group)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -6949,7 +6950,7 @@ set 1 lvm on
 ```bash
 # In the Command line 
 
-pvcreate /dev/sdb1
+sudo pvcreate /dev/sdb1
 
 # Physical volume "/dev/sdb1" successfully created.
 ```
@@ -7184,6 +7185,86 @@ sudo lvscan
   - Instead, it means that the disk space has been allocated to LVM Logical Volumes
 
 ## Modifying Physical Volumes (PVs)
+
+### Add a new Physical Volume to a Volume Group
+
+- Suppose the current setup is
+
+```bash
+sudo pvs
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1  vgroup lvm2 a--  <20.00g      0 
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+```
+
+- And we have another disk: **/dev/sde** that we want to add to the Volume Group. 
+
+- Step 1 — Create a partition table
+
+```bash
+sudo parted /dev/sde
+mklabel gpt
+```
+
+- Step 2 — Create the partition
+
+```bash
+mkpart primary ext4 2048s 35GiB
+```
+
+- Step 3 — Set the LVM flag
+
+```bash
+set 1 lvm on
+```
+
+- Step 4 — Create the Physical Volume
+
+```bash
+sudo pvcreate /dev/sde1
+
+sudo pvs
+
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1  vgroup lvm2 a--  <20.00g      0 
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+#  /dev/sde1         lvm2 ---  <35.00g <35.00g
+
+sudo vgs
+
+#  VG     #PV #LV #SN Attr   VSize   VFree
+#  vgroup   3   2   0 wz--n- <74.99g    0 
+```
+
+- Step 5: Add the PV to the Volume Group
+  - Important
+    - `vgextend` does not automatically increase the size of existing Logical Volumes.
+    - It only increases the storage pool available inside the VG.
+
+```bash
+sudo vgextend vgroup /dev/sde1
+
+sudo pvs
+
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1  vgroup lvm2 a--  <20.00g      0 
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+#  /dev/sde1  vgroup lvm2 a--  <35.00g <35.00g
+
+sudo vgs
+
+#  VG     #PV #LV #SN Attr   VSize   VFree  
+#  vgroup   4   2   0 wz--n- 109.98g <35.00g
+
+sudo lvs
+#  LV      VG     Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+#  backups vgroup -wi-a----- <59.99g                                                    
+#  data    vgroup -wi-a-----  15.00g
+```
+
 
 # Introducing the Linux shell
 
