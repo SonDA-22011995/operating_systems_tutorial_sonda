@@ -7386,7 +7386,12 @@ print
 # reconfigure the disk
 set 1 lvm off
 
-# create a new partition table
+print                                                            
+# Number  Start   End     Size    File system  Name     Flags
+#  1      1049kB  21.5GB  21.5GB               primary
+
+
+# or create a new partition table
 mklabel gpt
 ```
 
