@@ -493,6 +493,11 @@
   - [Creating Logical Volumes (LVs)](#creating-logical-volumes-lvs)
   - [Modifying Physical Volumes (PVs)](#modifying-physical-volumes-pvs)
     - [Add a new Physical Volume to a Volume Group](#add-a-new-physical-volume-to-a-volume-group)
+    - [Remove a Physical Volume from a Volume Group](#remove-a-physical-volume-from-a-volume-group)
+      - [Use `pvmove` to move the data](#use-pvmove-to-move-the-data)
+      - [Remove the PV from the Volume Group](#remove-the-pv-from-the-volume-group)
+      - [Remove the Physical Volume itself](#remove-the-physical-volume-itself)
+      - [What happens to the LVM flag?](#what-happens-to-the-lvm-flag)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7265,6 +7270,125 @@ sudo lvs
 #  data    vgroup -wi-a-----  15.00g
 ```
 
+### Remove a Physical Volume from a Volume Group
+
+- Suppose `/dev/sdc1` needs to be removed because:
+  - The disk is becoming unreliable.
+  - The disk needs to be replaced.
+  - You need the disk for another purpose.
+
+```bash
+sudo pvs
+
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1  vgroup lvm2 a--  <20.00g      0 
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+#  /dev/sde1  vgroup lvm2 a--  <35.00g <35.00g
+
+sudo vgs
+
+#  VG     #PV #LV #SN Attr   VSize   VFree  
+#  vgroup   4   2   0 wz--n- 109.98g <35.00g
+```
+
+#### Use `pvmove` to move the data
+
+- **Critical requirement**: There must be enough free space elsewhere in the VG
+  - There is enough free space on `/dev/sde1`, so LVM can move the data from `/dev/sdc1`.
+
+```bash
+sudo pvs
+
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1  vgroup lvm2 a--  <20.00g      0 
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+#  /dev/sde1  vgroup lvm2 a--  <35.00g <35.00g
+```
+
+- First, the data stored on that PV must be moved somewhere else. The command is: 
+  - The `-v` option provides more detailed output.
+  - LVM moves the allocated Physical Volume from `/dev/sdc1` to other available PVs in the same Volume Group.
+  - `pvmove` can happen while the filesystem is mounted
+
+```bash
+sudo pvmove -v /dev/sdc1
+
+sudo pvs
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1  vgroup lvm2 a--  <20.00g <20.00g
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+#  /dev/sde1  vgroup lvm2 a--  <35.00g  15.00g
+
+sudo vgs
+#  VG     #PV #LV #SN Attr   VSize   VFree  
+#  vgroup   4   2   0 wz--n- 109.98g <35.00g
+
+```
+
+#### Remove the PV from the Volume Group
+
+- `vgreduce` removes a Physical Volume from the Volume Group
+  - After this, `/dev/sdc1` still is a PV, but it is no longer part of the vgroup
+
+```bash
+sudo vgreduce vgroup /dev/sdc1
+
+sudo pvs
+#  PV         VG     Fmt  Attr PSize   PFree  
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g      0 
+#  /dev/sdc1         lvm2 ---  <20.00g <20.00g
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g      0 
+#  /dev/sde1  vgroup lvm2 a--  <35.00g  15.00g
+
+sudo vgs
+#  VG     #PV #LV #SN Attr   VSize   VFree 
+#  vgroup   3   2   0 wz--n- <89.99g 15.00g
+```
+
+#### Remove the Physical Volume itself
+
+- At this point `/dev/sdc1` is still technically an LVM Physical Volume.
+- To completely remove the PV metadata, use the command below
+
+```bash
+sudo pvremove /dev/sdc1
+
+sudo pvs
+#  PV         VG     Fmt  Attr PSize   PFree 
+#  /dev/sdb1  vgroup lvm2 a--  <30.00g     0 
+#  /dev/sdd1  vgroup lvm2 a--  <25.00g     0 
+#  /dev/sde1  vgroup lvm2 a--  <35.00g 15.00g
+```
+
+#### What happens to the LVM flag?
+
+- An important distinction:
+  - `sudo pvremove /dev/sdc1`: removes the LVM PV metadata.
+  - It does not remove the partition itself or necessarily remove its LVM partition flag.
+  - The partition table still exists:
+
+```
+/dev/sdc
+└── /dev/sdc1
+     └── LVM flag
+```
+
+- If you want to completely repurpose the disk, you can create a new partition table or otherwise reconfigure the disk.
+
+```bash
+print
+# Number  Start   End     Size    File system  Name     Flags
+#  1      1049kB  21.5GB  21.5GB               primary  lvm
+
+# reconfigure the disk
+set 1 lvm off
+
+# create a new partition table
+mklabel gpt
+```
 
 # Introducing the Linux shell
 
