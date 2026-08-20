@@ -502,6 +502,10 @@
     - [Extending a Logical Volume](#extending-a-logical-volume)
       - [Adding space to the Volume Group is not enough](#adding-space-to-the-volume-group-is-not-enough)
       - [Extending a Logical Volume](#extending-a-logical-volume-1)
+        - [Requirement](#requirement)
+        - [Extend to a specific amount](#extend-to-a-specific-amount)
+        - [Increase by a specific amount](#increase-by-a-specific-amount)
+        - [What if `--resizefs` was forgotten?](#what-if---resizefs-was-forgotten)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7424,6 +7428,49 @@ sudo lvs
 ```
 
 #### Extending a Logical Volume
+
+##### Requirement
+
+- We need to have enough space available within our volume group (unless we want to use **"thin volumes"** => not part of this course)
+- Extend Logical Volume (LV), then extend Filesystem
+  - The structure is: Logical Volume -> Filesystem
+  - If you increase only the LV:
+    - LV: 10 GB -> 21 GB
+    - Filesystem still 10 GB. The additional space isn't usable by the filesystem yet.
+  - Normally, you therefore need two operations: Extend Logical Volume -> Extend Filesystem
+- Growing the filesystem while it is mounted depends on the filesystem
+  - `ext4` supports growing the filesystem while mounted
+
+##### Extend to a specific amount
+
+- Suppose we want to increase: data: 10 GB -> 25 GB
+  - `-L 25G`: set the LV's new total size to 25 GB
+  - `--resizefs`: option allows `lvextend` to perform the filesystem resize as well.
+  - `/dev/vgroup/data`: the Logical Volume Path
+
+```bash
+sudo lvdisplay
+
+#--- Logical volume ---
+#  LV Path                /dev/vgroup/data
+#.........................................
+#--- Logical volume ---
+#  LV Path                /dev/vgroup/backups
+
+
+sudo lvextend -L 25G --resizefs /dev/vgroup/data
+```
+
+##### Increase by a specific amount
+
+- Instead of specifying the final size, you can specify how much to add.
+  - Means: Current 25 GB + 1 GB = New 26 GB
+
+```bash
+lvextend -L +1G --resizefs /dev/vgroup/data
+```
+
+##### What if `--resizefs` was forgotten?
 
 # Introducing the Linux shell
 
