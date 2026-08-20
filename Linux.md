@@ -498,6 +498,10 @@
       - [Remove the PV from the Volume Group](#remove-the-pv-from-the-volume-group)
       - [Remove the Physical Volume itself](#remove-the-physical-volume-itself)
       - [What happens to the LVM flag?](#what-happens-to-the-lvm-flag)
+  - [Extending and Reducing Logical Volumes](#extending-and-reducing-logical-volumes)
+    - [Extending a Logical Volume](#extending-a-logical-volume)
+      - [Adding space to the Volume Group is not enough](#adding-space-to-the-volume-group-is-not-enough)
+      - [Extending a Logical Volume](#extending-a-logical-volume-1)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7394,6 +7398,32 @@ print
 # or create a new partition table
 mklabel gpt
 ```
+
+## Extending and Reducing Logical Volumes
+
+### Extending a Logical Volume
+
+#### Adding space to the Volume Group is not enough
+
+- For more detail: [Add a new Physical Volume to a Volume Group](#add-a-new-physical-volume-to-a-volume-group)
+- After adding a new Physical Volume, the Volume Group may have additional free space
+
+```bash
+sudo vgs
+#  VG     #PV #LV #SN Attr   VSize   VFree 
+#  vgroup   3   2   0 wz--n- <89.99g 15.00g
+```
+
+- However, existing Logical Volumes do not automatically grow
+
+```bash
+sudo lvs 
+#  LV      VG     Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+#  backups vgroup -wi-a----- <59.99g                                                    
+#  data    vgroup -wi-a-----  15.00g 
+```
+
+#### Extending a Logical Volume
 
 # Introducing the Linux shell
 
