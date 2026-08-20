@@ -7524,14 +7524,14 @@ sudo e2fsck -f /dev/vgroup/data
 
 - Step 3: Reduce the filesystem
   - Suppose the current filesystem is 26 GB and we want 25 GB
-  - After confirming the sizes are consistent again. The filesystem can then be mounted again.
-
+  
 ```bash
 sudo resize2fs /dev/vgroup/data 25G
 ```
 
 - Step 4: Reduce the Logical Volume
   - LVM will warn you because reducing an LV can be destructive.
+  - After confirming the sizes are consistent again. The filesystem can then be mounted again.
 
 ```bash
 sudo lvreduce -L 25G /dev/vgroup/data
