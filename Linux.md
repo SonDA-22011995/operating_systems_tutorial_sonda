@@ -7515,7 +7515,7 @@ reduce LV
 sudo umount /dev/vgroup/data
 ```
 
-- Step 2: Check the filesystem before shrinking
+- Step 2: Check the filesystem before shrinking filesystem
   - For **ext4**, the relevant filesystem check is typically
 
 ```bash
@@ -7529,12 +7529,24 @@ sudo e2fsck -f /dev/vgroup/data
 sudo resize2fs /dev/vgroup/data 25G
 ```
 
-- Step 4: Reduce the Logical Volume
+- Step 4: Check the filesystem after shrinking filesystem
+
+```bash
+sudo e2fsck -f /dev/vgroup/data
+```
+
+- Step 5: Reduce the Logical Volume
   - LVM will warn you because reducing an LV can be destructive.
   - After confirming the sizes are consistent again. The filesystem can then be mounted again.
 
 ```bash
 sudo lvreduce -L 25G /dev/vgroup/data
+```
+
+- Step 6: Check the filesystem after reducing the Logical Volume
+
+```bash
+sudo e2fsck -f /dev/vgroup/data
 ```
 
 # Introducing the Linux shell
