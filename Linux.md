@@ -7472,6 +7472,25 @@ lvextend -L +1G --resizefs /dev/vgroup/data
 
 ##### What if `--resizefs` was forgotten?
 
+- You can manually resize the filesystem using
+  - For more detail: [Reducing Filesystems and Partitions](#reducing-filesystems-and-partitions)
+
+```bash
+sudo resize2fs /dev/vgroup/data
+```
+
+- You can verify the filesystem size with `df` command, but the device must be mounted first
+
+```bash
+sudo mount /dev/vgroup/data /mnt/sonda/data
+
+df -h
+
+# Filesystem               Size  Used Avail Use% Mounted on
+# .........................................................
+# /dev/mapper/vgroup-data   26G   24K   25G   1% /mnt/sonda/data
+```
+
 # Introducing the Linux shell
 
 ## What is a shell?
