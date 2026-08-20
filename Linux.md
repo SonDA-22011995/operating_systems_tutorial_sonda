@@ -506,6 +506,7 @@
         - [Extend to a specific amount](#extend-to-a-specific-amount)
         - [Increase by a specific amount](#increase-by-a-specific-amount)
         - [What if `--resizefs` was forgotten?](#what-if---resizefs-was-forgotten)
+    - [Reducing a Logical Volume](#reducing-a-logical-volume)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7489,6 +7490,51 @@ df -h
 # Filesystem               Size  Used Avail Use% Mounted on
 # .........................................................
 # /dev/mapper/vgroup-data   26G   24K   25G   1% /mnt/sonda/data
+```
+
+### Reducing a Logical Volume
+
+- You must reduce the filesystem first, then reduce the Logical Volume.
+
+```
+# Correct order
+
+Filesystem
+    ↓
+reduce filesystem
+    ↓
+Logical Volume
+    ↓
+reduce LV
+```
+
+- Step 1: Unmount the filesystem
+  - For the **ext4** filesystem in the lecture, it needs to be unmounted before shrinking
+
+```bash
+sudo umount /dev/vgroup/data
+```
+
+- Step 2: Check the filesystem before shrinking
+  - For **ext4**, the relevant filesystem check is typically
+
+```bash
+sudo e2fsck -f /dev/vgroup/data
+```
+
+- Step 3: Reduce the filesystem
+  - Suppose the current filesystem is 26 GB and we want 25 GB
+  - After confirming the sizes are consistent again. The filesystem can then be mounted again.
+
+```bash
+sudo resize2fs /dev/vgroup/data 25G
+```
+
+- Step 4: Reduce the Logical Volume
+  - LVM will warn you because reducing an LV can be destructive.
+
+```bash
+sudo lvreduce -L 25G /dev/vgroup/data
 ```
 
 # Introducing the Linux shell
