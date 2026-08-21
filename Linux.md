@@ -510,6 +510,8 @@
   - [Deleting the LVM Setup (Delete every thing)](#deleting-the-lvm-setup-delete-every-thing)
     - [Unmount the Logical Volumes first](#unmount-the-logical-volumes-first)
     - [Remove the Logical Volumes](#remove-the-logical-volumes)
+    - [Remove the Volume Group](#remove-the-volume-group)
+    - [Remove the Physical Volumes](#remove-the-physical-volumes)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7601,6 +7603,47 @@ sudo lvremove /dev/vgroup/backups
 # lvs or lvsdisplay should show that there are no Logical Volumes remaining.
 sudo lvs
 sudo lvdisplay
+```
+
+### Remove the Volume Group
+
+- Once all Logical Volumes have been removed, the Volume Group can be deleted
+
+```bash
+sudo vgs
+#  VG     #PV #LV #SN Attr   VSize   VFree  
+#  vgroup   3   0   0 wz--n- <89.99g <89.99g
+
+sudo vgremove vgroup
+# Volume group "vgroup" successfully removed
+
+# vgs should show that there are no Volume Groups remaining
+sudo vgs
+```
+
+### Remove the Physical Volumes
+
+- Finally, remove the LVM metadata from each Physical Volume
+- For more detail: [Remove a Physical Volume from a Volume Group](#remove-a-physical-volume-from-a-volume-group)
+
+```bash
+sudo pvs 
+#  PV         VG Fmt  Attr PSize   PFree  
+#  /dev/sdb1     lvm2 ---  <30.00g <30.00g
+#  /dev/sdd1     lvm2 ---  <25.00g <25.00g
+#  /dev/sde1     lvm2 ---  <35.00g <35.00g
+
+sudo pvremove /dev/sdb1
+# Labels on physical volume "/dev/sdb1" successfully wiped.
+
+sudo pvremove /dev/sdd1
+# Labels on physical volume "/dev/sdd1" successfully wiped.
+
+sudo pvremove /dev/sde1
+# Labels on physical volume "/dev/sde1" successfully wiped.
+
+# There should be no Physical Volumes remaining
+sudo pvs 
 ```
 
 # Introducing the Linux shell
