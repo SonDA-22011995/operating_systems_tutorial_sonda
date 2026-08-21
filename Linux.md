@@ -507,6 +507,9 @@
         - [Increase by a specific amount](#increase-by-a-specific-amount)
         - [What if `--resizefs` was forgotten?](#what-if---resizefs-was-forgotten)
     - [Reducing a Logical Volume](#reducing-a-logical-volume)
+  - [Deleting the LVM Setup (Delete every thing)](#deleting-the-lvm-setup-delete-every-thing)
+    - [Unmount the Logical Volumes first](#unmount-the-logical-volumes-first)
+    - [Remove the Logical Volumes](#remove-the-logical-volumes)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7547,6 +7550,57 @@ sudo lvreduce -L 25G /dev/vgroup/data
 
 ```bash
 sudo e2fsck -f /dev/vgroup/data
+```
+
+## Deleting the LVM Setup (Delete every thing)
+
+- When deleting LVM, we work from the top layer downward
+
+```
+Logical Volume (LV)
+        ↓
+Volume Group (VG)
+        ↓
+Physical Volume (PV)
+
+```
+
+### Unmount the Logical Volumes first 
+
+- Before deleting an LV, make sure its filesystem is unmounted
+  - Also check `/etc/fstab`. If you previously added an entry so that the LV is automatically mounted at boot, remove that entry firs
+
+```bash
+# Check mounted filesystems
+df -h
+
+# If an LVM filesystem is mounted, unmount it
+sudo umount /dev/vgroup/data
+```
+
+### Remove the Logical Volumes
+
+- Once the filesystems are unmounted, remove the LVs.
+
+```bash
+sudo lvs
+
+#  LV      VG     Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+#  backups vgroup -wi-a----- <59.99g                                                    
+#  data    vgroup -wi-a-----  25.00g  
+
+sudo lvremove /dev/vgroup/data
+# Do you really want to remove and DISCARD active logical volume vgroup/data? [y/n]: y
+# Logical volume "data" successfully removed.
+
+
+sudo lvremove /dev/vgroup/backups
+# Do you really want to remove and DISCARD active logical volume vgroup/backups? [y/n]: y
+# Logical volume "backups" successfully removed.
+
+# lvs or lvsdisplay should show that there are no Logical Volumes remaining.
+sudo lvs
+sudo lvdisplay
 ```
 
 # Introducing the Linux shell
