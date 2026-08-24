@@ -534,6 +534,8 @@
         - [Advantages](#advantages-4)
         - [Disadvantages](#disadvantages-4)
     - [LVM on top of RAID](#lvm-on-top-of-raid)
+    - [Thin Volumes](#thin-volumes)
+    - [LVM Snapshots](#lvm-snapshots)
 - [Cronjobs - Automate and Shedule Tasks](#cronjobs---automate-and-shedule-tasks)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
@@ -7902,8 +7904,32 @@ Disk 4: D E F
 - Requires at least four disks
 - More expensive per usable TB than RAID 5/6
 
-
 ### LVM on top of RAID
+
+- LVM can work on top of RAID (Redundant Array of Independent Disks)
+- It supports RAID 0, 1, 5, 6 and 10
+
+### Thin Volumes
+
+- LVM also supports thin provisioning / thin volumes.
+- The idea is that the Logical Volume can appear larger than the physical storage currently available
+
+### LVM Snapshots
+
+- A snapshot represents the state of a Logical Volume at a particular point in time.
+- The important concept is that creating a snapshot does not immediately copy the entire volume.
+- Instead, LVM tracks changes that happen after the snapshot is created.
+
+```
+Time 1
+   │
+   ├── Create snapshot
+   │
+   ▼
+Original LV ──────────────── continues changing
+Snapshot   ──────────────── preserves Time 1 state
+```
+
 
 # Cronjobs - Automate and Shedule Tasks
 
