@@ -512,6 +512,29 @@
     - [Remove the Logical Volumes](#remove-the-logical-volumes)
     - [Remove the Volume Group](#remove-the-volume-group)
     - [Remove the Physical Volumes](#remove-the-physical-volumes)
+  - [LVM - Addition feature](#lvm---addition-feature)
+    - [Redundant Array of Independent Disks - RAID](#redundant-array-of-independent-disks---raid)
+      - [Introduction](#introduction-1)
+      - [What is the **Striping**?](#what-is-the-striping)
+      - [What is the **Mirroring**?](#what-is-the-mirroring)
+      - [What is the **Parity**?](#what-is-the-parity)
+      - [RAID 0 — Striping](#raid-0--striping)
+        - [Advantages](#advantages)
+        - [Disadvantages](#disadvantages)
+      - [RAID 1 — Mirroring](#raid-1--mirroring)
+        - [Advantages](#advantages-1)
+        - [Disadvantages](#disadvantages-1)
+      - [RAID 5 — Striping with Distributed Parity](#raid-5--striping-with-distributed-parity)
+        - [Advantages](#advantages-2)
+        - [Disadvantages](#disadvantages-2)
+      - [RAID 6 — Double Parity](#raid-6--double-parity)
+        - [Advantages](#advantages-3)
+        - [Disadvantages](#disadvantages-3)
+      - [RAID 10 — Mirroring + Striping](#raid-10--mirroring--striping)
+        - [Advantages](#advantages-4)
+        - [Disadvantages](#disadvantages-4)
+    - [LVM on top of RAID](#lvm-on-top-of-raid)
+- [Cronjobs - Automate and Shedule Tasks](#cronjobs---automate-and-shedule-tasks)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -7645,6 +7668,244 @@ sudo pvremove /dev/sde1
 # There should be no Physical Volumes remaining
 sudo pvs 
 ```
+
+## LVM - Addition feature
+
+### Redundant Array of Independent Disks - RAID
+
+#### Introduction
+
+- **RAID** stands for Redundant Array of Independent Disks.
+
+- **RAID** is a storage technology that combines multiple physical HDDs or SSDs into a logical storage system
+
+- The main goals of **RAID** are:
+  - Improve performance
+  - Provide redundancy
+  - Improve availability
+  - Combine storage capacity
+
+- However, an important point is **RAID is not a backup**
+  - **RAID** can protect against certain types of disk failures, but it does not protect against accidental deletion, ransomware, filesystem corruption, or other logical problems.
+
+#### What is the **Striping**?
+
+- Striping is a technique of splitting data into smaller blocks and distributing those blocks across multiple disks.
+
+- For example:
+
+```
+# Data:
+
+A B C D E F
+
+# With two disks:
+
+Disk 1: A C E
+Disk 2: B D F
+```
+
+#### What is the **Mirroring**?
+
+- Mirroring means keeping an identical copy of the data on another disk.
+- For example
+
+```
+Disk 1: A B C D
+Disk 2: A B C D
+```
+
+- If Disk 1 fails:
+  - The data is still available.
+  - This is the fundamental principle behind RAID 1.
+
+#### What is the **Parity**?
+
+- Parity is additional calculated information used to detect and reconstruct missing data when a disk fails.
+- Example: In RAID 5, parity is calculated using the XOR (exclusive OR) operation 
+  - `Data A XOR Data B = Parity`
+  - If Data A is lost. Suppose Disk 1 fails and Data A is no longer available
+  - RAID can reconstruct Data A: `Data A = Data B XOR Parity`
+
+```
+Data A: 1010
+Data B: 1100
+
+(XOR exclusive OR)
+------------
+Parity: 0110
+```
+
+```
+Data A = Data B XOR Parity
+
+        1100
+     XOR 0110
+     --------
+        1010
+```
+
+#### RAID 0 — Striping
+
+- RAID 0 uses striping. It requires at least **2 disks**
+
+```
+             RAID 0
+                │
+        ┌───────┴───────┐
+        ↓               ↓
+      Disk 1          Disk 2
+
+       A                 B
+       C                 D
+       E                 F
+```
+
+##### Advantages
+
+- High performance: Multiple disks can read and write simultaneously.
+- Full capacity: 
+  - With two 2 TB disks (2 TB + 2 TB = 4 TB): The usable capacity is approximately 4 TB, ignoring filesystem and RAID metadata overhead
+
+##### Disadvantages
+
+- There is no redundancy
+  - If one disk fails: The RAID 0 array is lost because parts of the data existed on the failed disk.
+
+#### RAID 1 — Mirroring
+
+- RAID 1 uses mirroring. The same data is written to multiple disks
+- If Disk 1 fails: The system can continue operating using Disk 2
+- With two 2 TB disks (2 TB + 2 TB -> 2TB): Approximately 50% of the raw capacity is usable.
+
+```
+             RAID 1
+                │
+        ┌───────┴───────┐
+        ↓               ↓
+      Disk 1          Disk 2
+
+       A                 A
+       B                 B
+       C                 C
+       D                 D
+```
+
+##### Advantages
+
+- Simple
+- Good fault tolerance
+- Good read performance in many implementations
+- Easy to rebuild
+
+##### Disadvantages
+
+- 50% capacity efficiency
+- Write performance is not doubled
+- Does not replace backups
+
+#### RAID 5 — Striping with Distributed Parity
+
+- RAID 5 combines: `Striping + Distributed Parity`
+- An important characteristic of RAID 5 is that parity is distributed across the disks
+  - It is not simply stored on one dedicated disk
+- It requires at least 3 disks
+- RAID 5 can tolerate one disk failure
+- RAID 5 capacity: `(N - 1) × disk capacity`
+
+```
+# P represents parity
+
+Disk 1    Disk 2    Disk 3    Disk 4
+---------------------------------------
+   A         B         C         P
+   D         E         P         F
+   G         P         H         I
+```
+
+##### Advantages
+
+- Good capacity efficiency
+- Can survive one disk failure
+- Good read performance
+- Parity is distributed
+
+##### Disadvantages
+
+- Cannot tolerate two disk failures
+- Write operations have parity overhead
+- Rebuilds can take a long time on large disks
+- Performance and reliability characteristics depend heavily on the workload and implementation
+
+#### RAID 6 — Double Parity
+
+- RAID 6 is similar to RAID 5, but it uses two independent parity calculations.
+- It requires at least 4 disks
+- RAID 6 capacity: `(N - 2) × disk capacity`
+- RAID 6 can tolerate two disk failures.
+
+```
+Disk 1    Disk 2    Disk 3    Disk 4
+---------------------------------------
+   A         B         C         P1
+   D         E         P2        F
+   G         P3        H         I
+```
+
+##### Advantages
+
+- Can tolerate two disk failures
+- Good capacity efficiency compared with mirroring
+- Suitable for larger storage arrays
+
+##### Disadvantages
+
+- More parity overhead
+- More computational/write overhead than RAID 5
+- Rebuild operations can still be lengthy
+
+#### RAID 10 — Mirroring + Striping
+
+- RAID 10 is also called RAID 1+0.
+- It combines: 
+  - RAID 1 -> Mirroring
+  - RAID 0 -> Striping
+- It requires at least 4 disks.
+- RAID 10 typically provides approximately 50% of the raw capacity.
+- RAID 10 can tolerate multiple disk failures depending on which disks fail.
+  - Disk 1, 3 fail -> This can still work
+  - Disk 1, 2 fail -> The entire first mirror pair has been lost
+
+```
+Mirror 1:
+
+Disk 1: A B C
+Disk 2: A B C
+
+
+Mirror 2:
+
+Disk 3: D E F
+Disk 4: D E F
+```
+
+##### Advantages
+
+- Excellent read/write performance
+- Good fault tolerance
+- Faster and simpler rebuilds than parity-based RAID in many scenarios
+- No parity calculation overhead
+
+##### Disadvantages
+
+- Approximately 50% capacity efficiency
+- Requires at least four disks
+- More expensive per usable TB than RAID 5/6
+
+
+### LVM on top of RAID
+
+# Cronjobs - Automate and Shedule Tasks
 
 # Introducing the Linux shell
 
