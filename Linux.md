@@ -230,7 +230,7 @@
       - [dpkg vs. apt / apt-get](#dpkg-vs-apt--apt-get)
       - [A package source / repository in apt](#a-package-source--repository-in-apt)
       - [Updating the Package List](#updating-the-package-list)
-      - [Managing Packages (Search/List/Install/Remove)](#managing-packages-searchlistinstallremove)
+      - [Managing Packages (Search/List/Install/Remove/Reconfiguring)](#managing-packages-searchlistinstallremovereconfiguring)
       - [Managing upgrades (Upgrading Software)](#managing-upgrades-upgrading-software)
         - [`apt` vs. `apt-get`](#apt-vs-apt-get)
       - [Auto-removing packages](#auto-removing-packages)
@@ -3475,7 +3475,7 @@ sudo dpkg -r neofetch
 
 - Note: This requires sudo (root privileges) because it accesses protected system files.
 
-#### Managing Packages (Search/List/Install/Remove)
+#### Managing Packages (Search/List/Install/Remove/Reconfiguring)
 
 - The lecture demonstrates how to search or add or take away specific tools:
 
@@ -3497,6 +3497,8 @@ sudo dpkg -r neofetch
   - Example: neofetch recommends imagemagick. While neofetch runs fine in pure text mode without it, imagemagick is required if you want to display an actual image file instead of the default ASCII distribution logo.
 - Skipping Recommendations
   - If you want to keep your system minimal and install only the core application and its hard dependencies, use the --no-install-recommends flag: `sudo apt install --no-install-recommends neofetch`
+
+- Reconfiguring: For more detail [Reconfiguring packages](#reconfiguring-packages)
 
 - Removes the installed packages and all their dependencies installed by the apt install command: 
 
