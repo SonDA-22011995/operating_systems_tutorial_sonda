@@ -3855,6 +3855,7 @@ sudo apt autoremove #or sudo apt-get autoremove
 
 ```bash
 sudo dpkg-reconfigure <package_name>
+
 ```
 
 #### Practical Example: Managing Locales
