@@ -230,7 +230,7 @@
       - [dpkg vs. apt / apt-get](#dpkg-vs-apt--apt-get)
       - [A package source / repository in apt](#a-package-source--repository-in-apt)
       - [Updating the Package List](#updating-the-package-list)
-      - [Managing Packages (Search/Install/Remove)](#managing-packages-searchinstallremove)
+      - [Managing Packages (Search/List/Install/Remove)](#managing-packages-searchlistinstallremove)
       - [Managing upgrades (Upgrading Software)](#managing-upgrades-upgrading-software)
         - [`apt` vs. `apt-get`](#apt-vs-apt-get)
       - [Auto-removing packages](#auto-removing-packages)
@@ -3475,11 +3475,16 @@ sudo dpkg -r neofetch
 
 - Note: This requires sudo (root privileges) because it accesses protected system files.
 
-#### Managing Packages (Search/Install/Remove)
+#### Managing Packages (Search/List/Install/Remove)
 
 - The lecture demonstrates how to search or add or take away specific tools:
 
 - To search for a specific package: `sudo apt search <package_name>`
+
+- List all installed packages on the system: `dpkg --list`
+  - List packages matching given pattern: `dpkg --list/-l [package-name-pattern]`
+
+- List files installed to your system from package-name: `dpkg --listfiles/-L package-name`
 
 - Install: `sudo apt install <package_name>` or  `sudo apt-get install <package_name>` 
   - e.g., cowsay `sudo apt install cowsay`
