@@ -6164,6 +6164,19 @@ sudo umount /dev/sdb1
 sudo umount /mnt/backups
 ```
 
+- When unmounting a filesystem, you may receive errors if that partition is still in use.
+  - Being in use means that certain programs from that filesystem are still running in memory, using files from that partition
+  - Therefore, you first have to close all running applications, and if other processes are using
+that filesystem, you will have to kill them, too
+  - Sometimes, the reason a filesystem is busy is not clear at first, and to know which files are open and running, you can use the `lsof` command
+
+```bash
+# The lsof command stands for "list open files" and is used to list all open files and the processes that have them open
+
+# sudo lsof | grep mountpoint
+sudo lsof | grep /mnt/sonda/data
+```
+
 #### Common error
 
 - **Target is Busy**: You (or another process) are still using the mounted filesystem
