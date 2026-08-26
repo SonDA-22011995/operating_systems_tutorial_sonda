@@ -378,6 +378,9 @@
     - [The Cron Daemon reads in crontab files](#the-cron-daemon-reads-in-crontab-files)
       - [User-specific crontab files](#user-specific-crontab-files)
       - [System-wide crontab](#system-wide-crontab)
+  - [How to Manage Crontab](#how-to-manage-crontab)
+    - [Creating or Editing the crontab](#creating-or-editing-the-crontab)
+    - [List the crontab](#list-the-crontab)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5419,6 +5422,46 @@ crontab -e
 
 - In addition to user-specific crontabs, Linux also has a system-wide crontab `/etc/crontab`
   - This file can be edited directly
+  - The file must be owned by root, and must not be group or other-writable
+- On Debian/Ubuntu system
+  -  **crond** will also check the contents of `/etc/cron.d`
+  -  But we should not use this folder: "In general, the system administrator should not use `/etc/cron.d/`
+
+## How to Manage Crontab
+
+### Creating or Editing the crontab
+
+- This will open the crontab file for the currently logged in user or We can now define user specific cronjobs
+
+```bash
+crontab -e
+```
+
+- During first launch, we might be asked which editor we'd like to use,  otherwise we might also set the `EDITOR` variable
+
+```bash
+EDITOR=vim crontab -e
+```
+
+### List the crontab
+
+- If you want to list the current crontab for the logged-in user
+
+```bash
+crontab -l
+```
+
+- If you want to list the current crontab for a specific user
+
+```bash
+sudo crontab -u username -l
+```
+
+- If you want to list the current crontab for the root user
+
+```bash
+sudo crontab -l
+```
 
 
 # Mounts and Volumes
