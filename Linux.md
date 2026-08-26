@@ -364,6 +364,12 @@
       - [Step 4: Launching Applications within a Slice](#step-4-launching-applications-within-a-slice)
       - [Step 5: Troubleshooting Package Wrappers: Native vs. Snap](#step-5-troubleshooting-package-wrappers-native-vs-snap)
       - [How to Find and Target the Real Binary](#how-to-find-and-target-the-real-binary)
+- [Cronjobs - Automate and Shedule Tasks](#cronjobs---automate-and-shedule-tasks)
+  - [What is a Cron Job?](#what-is-a-cron-job)
+  - [Why is Cron Still Important?](#why-is-cron-still-important)
+    - [Portability](#portability)
+    - [Cron is Widely Supported](#cron-is-widely-supported)
+  - [Cron vs. systemd](#cron-vs-systemd)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -536,7 +542,6 @@
     - [LVM on top of RAID](#lvm-on-top-of-raid)
     - [Thin Volumes](#thin-volumes)
     - [LVM Snapshots](#lvm-snapshots)
-- [Cronjobs - Automate and Shedule Tasks](#cronjobs---automate-and-shedule-tasks)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5303,6 +5308,52 @@ systemd-run --user --slice=browser.slice /snap/firefox/current/usr/lib/firefox/f
 
 ![Step-by-Step Configuration Guide](static/images/image_0083.png)
 
+# Cronjobs - Automate and Shedule Tasks
+
+## What is a Cron Job?
+
+- A cron job allows us to execute a command or program automatically according to a schedule.
+- Daily backup: Every day at 3:00 AM -> Run backup script
+- Frequent update: Every minute -> Run update script
+
+## Why is Cron Still Important?
+
+### Portability
+
+- Cron is more portable than systemd.
+- Cron can run across Unix systems, not only Linux.
+- Whereas **systemd** depends on Linux-specific kernel functionality and isn't generally available on systems such as macOS.
+
+```
+Linux ──> cron ✓
+Unix  ──> cron ✓
+macOS ──> cron ✓
+```
+
+### Cron is Widely Supported
+
+- Another reason cron remains relevant is that it is already integrated into many existing systems and products.
+- This means that even if you primarily use systemd on your Linux servers, you may still encounter cron when working with:
+  - Web hosting
+  - Unix systems
+  - Existing applications
+  - Older infrastructure
+  - Shared hosting environments
+
+## Cron vs. systemd
+
+| Feature                  | Cron                | systemd timer               |
+| ------------------------ | ------------------- | --------------------------- |
+| Scheduled execution      | ✓                   | ✓                           |
+| Repeated tasks           | ✓                   | ✓                           |
+| Linux                    | ✓                   | ✓                           |
+| Unix/macOS portability   | Better              | Limited                     |
+| Email output             | Built-in capability | Not the same built-in model |
+| Common in web hosting    | ✓                   | Less common                 |
+| Modern Linux integration | Older               | Better                      |
+| Linux-specific           | No                  | Yes                         |
+
+
 # Mounts and Volumes
 
 ## Storage device
@@ -7950,8 +8001,6 @@ Original LV ──────────────── continues changing
 Snapshot   ──────────────── preserves Time 1 state
 ```
 
-
-# Cronjobs - Automate and Shedule Tasks
 
 # Introducing the Linux shell
 
