@@ -5462,6 +5462,24 @@ sudo crontab -u username -l
 ```bash
 sudo crontab -l
 ```
+ 
+- If you want to list the current crontab for all user
+
+```bash
+cd /var/spool/cron
+ls -l
+
+# drwx-wx--T 2 root crontab 4096 Aug 26 17:48 crontabs
+
+cd crontabs
+# -bash: cd: crontabs: Permission denied
+
+sudo -s
+cd crontabs
+ls -l
+# total 4
+# -rw------- 1 sonda crontab 1128 Aug 26 17:48 sonda
+```
 
 
 # Mounts and Volumes
