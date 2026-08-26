@@ -373,6 +373,11 @@
   - [Cron Implementations](#cron-implementations)
     - [Why are there different cron implementations?](#why-are-there-different-cron-implementations)
     - [Some of the most popular implementations](#some-of-the-most-popular-implementations)
+  - [How Cron Jobs Work](#how-cron-jobs-work)
+    - [The Cron Daemon](#the-cron-daemon)
+    - [The Cron Daemon reads in crontab files](#the-cron-daemon-reads-in-crontab-files)
+      - [User-specific crontab files](#user-specific-crontab-files)
+      - [System-wide crontab](#system-wide-crontab)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -709,6 +714,7 @@
       - [Multiple sort keys](#multiple-sort-keys)
       - [Offsets in `--key` or `-k`](#offsets-in---key-or--k)
       - [Some files don’t use tabs and spaces as field delimiters](#some-files-dont-use-tabs-and-spaces-as-field-delimiters)
+      - [Practical Use Case - Finding the part of the line used to sort](#practical-use-case---finding-the-part-of-the-line-used-to-sort)
     - [The `uniq` command](#the-uniq-command)
     - [The `tr` command](#the-tr-command)
     - [The `rev` Command (Reverse Command)](#the-rev-command-reverse-command)
@@ -5379,6 +5385,41 @@ macOS ──> cron ✓
   - The cron implementation on CentOS
   - Fork of vixie-cron, but slightly different features
   - anacron is integrated into it
+
+## How Cron Jobs Work
+
+### The Cron Daemon
+
+- The cron daemon is a background service responsible for managing scheduled tasks.
+- Executes commands at pre-specified intervals
+- It will wake up every minute and check if something needs to be executed
+
+```
+Cron daemon
+     ↓
+Check scheduled tasks
+     ↓
+Execute commands when their scheduled time arrives
+```
+
+### The Cron Daemon reads in crontab files
+
+#### User-specific crontab files
+
+- Each user can have their own crontab containing their scheduled jobs
+- User-specific: `/var/spool/cron/crontabs` or `/var/cron/tabs` in MacOS
+- You should **not manually edit** these file
+- Instead, use the `crontab` command below to edit the crontab belonging to the currently logged-in user
+
+```bash
+crontab -e
+```
+
+#### System-wide crontab
+
+- In addition to user-specific crontabs, Linux also has a system-wide crontab `/etc/crontab`
+  - This file can be edited directly
+
 
 # Mounts and Volumes
 
@@ -10217,6 +10258,10 @@ sudo find / -type f -amin -10
 
   - `-o` (output) Send sorted output to file rather than standard output. Syntax: `-o file`
 
+  - `-f` fold lower case to upper case characters
+
+  - `--debug`  annotate the part of the line used to sort, and warn about questionable usage to stderr
+
 #### Practical Use Case - Standard:
  
 ```bash
@@ -10274,7 +10319,8 @@ sort -u data.txt
 
 #### Practical Use Case - Sorts by a specific column
 
-- **William Shotts** By default, `sort` sees this line as having two fields. The first field contains these characters: "William". The second field contains these characters: "Shotts". This means that whitespace characters (spaces and tabs) are used as delimiters between fields
+- Let’s consider the following simple text **William Shotts**: 
+  - By default, `sort` sees this line as having two fields. The first field contains these characters: "William". The second field contains these characters: "Shotts". This means that whitespace characters (spaces and tabs) are used as delimiters between fields
 
 ```bash
 du -s /usr/share/* | sort -nr | head
@@ -10343,7 +10389,8 @@ Fedora         5         03/20/2006
 #### Offsets in `--key` or `-k`
 
 - Syntax: `-k KEYDEF` or `--key KEYDEF`
-- KEYDEF  is  `F[.C][OPTS][,F[.C][OPTS]]`  for  start  and  stop position, where F is a field number and C a character position in the field; both are origin 1, and the stop position defaults to the line's end.  If neither -t nor -b is in effect,  characters  in  a field  are  counted from the beginning of the preceding whitespace.  OPTS is one or more single-letter ordering options [bdfgiMhnRrV], which override global ordering options for that key.  If no key is given, use the entire line as the key.   Use  `--debug`  to diagnose incorrect key usage.
+- KEYDEF  is  `F[.C][OPTS][,F[.C][OPTS]]`  for  start  and  stop position, where F is a field number and C a character position in the field; both are origin 1, and the stop position defaults to the line's end.  If neither -t nor -b is in effect,  characters  in  a field  are  counted from the beginning of the preceding whitespace.  OPTS is one or more single-letter ordering options [bdfgiMhnRrV], which override global ordering options for that key.  
+- If no key is given, use the entire line as the key. Use  `--debug`  to diagnose incorrect key usage.
 
 
 - The key option allows specification of **offsets** within fields, so we can define keys within fields
@@ -10377,6 +10424,48 @@ head /etc/passwd
 
 - So how would we `sort` this file using a key field? `sort` provides the `-t` option to define the
   field separator character ` sort -t ':' -k 7 /etc/passwd | head`. By specifying the colon character as the field separator, we can sort on the seventh field
+
+
+#### Practical Use Case - Finding the part of the line used to sort
+
+
+```bash
+sort --debug -k 3.7bn distros.txt
+
+# sort: text ordering performed using ‘C.UTF-8’ sorting rules
+# sort: key 1 is numeric and spans multiple fields
+# sort: note numbers use ‘.’ as a decimal point in this locale
+# Distribution   Version   Release Date
+#                                ^ no match for key
+# _____________________________________
+# Fedora         5         03/20/2006
+#                                ____
+# ___________________________________
+# Fedora         6         10/24/2006
+#                                ____
+# ___________________________________
+# SUSE           10.1      05/11/2006
+#                                ____
+# ___________________________________
+# SUSE           10.2      12/07/2006
+#                                ____
+# ___________________________________
+# Ubuntu         6.06      06/01/2006
+#                                ____
+# ___________________________________
+# Ubuntu         6.10      10/26/2006
+#                                ____
+# ___________________________________
+# Fedora         7         05/31/2007
+#                                ____
+# ___________________________________
+# Fedora         8         11/08/2007
+#                                ____
+# ___________________________________
+# SUSE           10.3      10/04/2007
+#                                ____
+# 
+```
 
 ### The `uniq` command
 
