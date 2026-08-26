@@ -369,7 +369,10 @@
   - [Why is Cron Still Important?](#why-is-cron-still-important)
     - [Portability](#portability)
     - [Cron is Widely Supported](#cron-is-widely-supported)
-  - [Cron vs. systemd](#cron-vs-systemd)
+    - [Cron vs. systemd](#cron-vs-systemd)
+  - [Cron Implementations](#cron-implementations)
+    - [Why are there different cron implementations?](#why-are-there-different-cron-implementations)
+    - [Some of the most popular implementations](#some-of-the-most-popular-implementations)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5340,7 +5343,7 @@ macOS ──> cron ✓
   - Older infrastructure
   - Shared hosting environments
 
-## Cron vs. systemd
+### Cron vs. systemd
 
 | Feature                  | Cron                | systemd timer               |
 | ------------------------ | ------------------- | --------------------------- |
@@ -5353,6 +5356,29 @@ macOS ──> cron ✓
 | Modern Linux integration | Older               | Better                      |
 | Linux-specific           | No                  | Yes                         |
 
+## Cron Implementations
+
+### Why are there different cron implementations?
+
+- Historically, different implementations have developed, and they generally share a similar configuration style and syntax.
+- However, they can differ in:
+  - Supported features
+  - Configuration behavior
+  - Default settings
+  - Sometimes the supported syntax
+
+### Some of the most popular implementations
+
+- vixie-cron
+  - Used in Ubuntu as the cron implementation (package: cron)
+- anacron
+  - Used in Ubuntu to support jobs that should run at regular intervals
+  - If the system is shut down, they will be run during the next boot
+  - Different configuration files than normal cron
+- cronie
+  - The cron implementation on CentOS
+  - Fork of vixie-cron, but slightly different features
+  - anacron is integrated into it
 
 # Mounts and Volumes
 
