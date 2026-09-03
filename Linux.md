@@ -5484,6 +5484,14 @@ PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin
 
 #### Day of the Week
 
+- The day-of-week field can be used to filter execution by weekday.
+- For example:
+  - `0 0 * * 1 command`: Runs every Monday at midnight
+- In cron:
+  - 0 = Sunday
+  - 1 = Monday
+  - 7 can also represent Sunday.
+
 ## How to Manage Crontab
 
 ### Creating or Editing the crontab
