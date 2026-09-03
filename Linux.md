@@ -387,6 +387,7 @@
   - [How to Manage Crontab](#how-to-manage-crontab)
     - [Creating or Editing the crontab](#creating-or-editing-the-crontab)
     - [List the crontab](#list-the-crontab)
+  - [Cron Job Output and Email Notifications on Ubuntu](#cron-job-output-and-email-notifications-on-ubuntu)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -2550,6 +2551,7 @@ sudo dnf install htop
 | Scheduling           | The OS mechanism that decides which program runs and for how long.              | Handled by the **CPU Scheduler**; essential for system stability and responsiveness.           |
 | Context Switch       | The process of the CPU stopping one task and starting another.                  |During a context switch, the operating system: Saves the current process's CPU state (registers, program counter, stack pointer, etc.) -> Selects the next process to run -> Restores the saved state of that process -> Continues execution.               |
 | `/proc/[PID]/status` | A virtual file providing real-time status information about a specific process. | Accessible via the `cat` or `grep` commands; not stored on the physical disk. `cat /proc/[process ID]/status \| grep ctxt` or `cat /proc/12345/status \| grep ctxt`           |
+| `/proc/[PID]/cgroup` | A virtual file showing the control group (cgroup) hierarchy and paths that a specific process belongs to. | Useful for identifying the cgroup or systemd unit (`.service`, `.scope`, `.slice`) associated with a process. Not stored on the physical disk. `cat /proc/[process ID]/cgroup` |
 | `watch`              | A utility used to execute a program periodically, showing output in real-time.  | Example: `watch -n 0.5 grep ctxt /proc/12345/status` refreshes every half-second.                             |
 
 - Viewing context switches in Linux
@@ -5546,6 +5548,8 @@ ls -l
 # total 4
 # -rw------- 1 sonda crontab 1128 Aug 26 17:48 sonda
 ```
+
+## Cron Job Output and Email Notifications on Ubuntu
 
 # Mounts and Volumes
 
