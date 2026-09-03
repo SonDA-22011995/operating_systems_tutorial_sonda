@@ -378,6 +378,12 @@
     - [The Cron Daemon reads in crontab files](#the-cron-daemon-reads-in-crontab-files)
       - [User-specific crontab files](#user-specific-crontab-files)
       - [System-wide crontab](#system-wide-crontab)
+  - [Crontab Format and Scheduling Syntax](#crontab-format-and-scheduling-syntax)
+    - [Environment Variables](#environment-variables)
+    - [Basic Crontab Format](#basic-crontab-format)
+    - [Advanced Scheduling Options](#advanced-scheduling-options)
+      - [Minute, Hours, Day, Month](#minute-hours-day-month)
+      - [Day of the Week](#day-of-the-week)
   - [How to Manage Crontab](#how-to-manage-crontab)
     - [Creating or Editing the crontab](#creating-or-editing-the-crontab)
     - [List the crontab](#list-the-crontab)
@@ -590,7 +596,7 @@
   - [Pipes - Data processing through command chaining](#pipes---data-processing-through-command-chaining)
     - [What is a Pipe?](#what-is-a-pipe)
     - [Practical Examples:](#practical-examples)
-  - [Environment variables](#environment-variables)
+  - [Environment variables](#environment-variables-1)
     - [The Nature of Environment Variables](#the-nature-of-environment-variables)
     - [Definition and Conventions](#definition-and-conventions)
     - [Viewing Variables](#viewing-variables)
@@ -5427,6 +5433,57 @@ crontab -e
   -  **crond** will also check the contents of `/etc/cron.d`
   -  But we should not use this folder: "In general, the system administrator should not use `/etc/cron.d/`
 
+## Crontab Format and Scheduling Syntax
+
+### Environment Variables
+
+- You can optionally define environment variables at the beginning of the crontab, such as:
+  - Only possible in most implementations of cron (So for example on ubuntu and db and it should work, but this might fail on linux or red hat linux.)
+  - We might want to set the SHELL variable to bash (commands will otherwise be executed by `/bin/sh`)
+  - And we should consider specifying a PATH, otherwise `/usr/bin:/bin` will be used
+  - If your cron implementation would not support this, you could always just create a shell script.
+
+```bash
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```
+
+### Basic Crontab Format
+
+- A cron job follows this structure: `[Minute] [Hour] [Day] [Month] [Day-of-Week] [Command]`
+- Example:
+
+```bash
+SHELL=/bin/bash #  defines the shell that executes command by default
+PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin
+5 3 * * * ping -c 10 google.com >> ~/ping_cron.txt
+# This means the command runs at 3:05 AM every day.
+# The * wildcard means every possible value for that field.
+```
+
+### Advanced Scheduling Options
+
+#### Minute, Hours, Day, Month
+
+- Cron supports several ways to define schedules:
+
+| Syntax       | Meaning                      |
+| ------------ | ---------------------------- |
+| `*`          | Every value                  |
+| `5`          | A specific value             |
+| `0,15,30,45` | Multiple specific values     |
+| `8-20`       | A range of values            |
+| `*/5`        | Every 5 units                |
+| `1-23/2`     | Every 2 units within a range |
+
+- Examples
+  - Runs every 15 minutes: `0,15,30,45 * * * * [command]`
+  - Runs at the beginning of every hour from 08:00 to 20:00, inclusive: `0 8-20 * * * command`
+  - Runs every 5 minutes `*/5 * * * * command`
+  - Runs every 2 hours at minute 0 `0 */2 * * * command`
+
+#### Day of the Week
+
 ## How to Manage Crontab
 
 ### Creating or Editing the crontab
@@ -5464,6 +5521,7 @@ sudo crontab -l
 ```
  
 - If you want to list the current crontab for all user
+  - Do not directly edit the files in `/var/spool/cron/crontabs`
 
 ```bash
 cd /var/spool/cron
@@ -5480,7 +5538,6 @@ ls -l
 # total 4
 # -rw------- 1 sonda crontab 1128 Aug 26 17:48 sonda
 ```
-
 
 # Mounts and Volumes
 
