@@ -5551,6 +5551,42 @@ ls -l
 
 ## Cron Job Output and Email Notifications on Ubuntu
 
+- Step 1: Create new cronjobs `crontab -e`
+
+```
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin
+
+* * * * * ping -c 10 google.com
+```
+
+- Step 2: Checking Cron Logs
+  - If something goes wrong, you can check the cron service logs using: `journalctl -u cron.service -f`
+  - The `-f` option can be used to follow the latest log entries
+  - **(CRON) info (No MTA installed, discarding output)** => This means the cron job was executed, but cron could not send its output by email because no Mail Transfer Agent (MTA) was available
+
+![Checking Cron Logs](static/images/image_0102.png)
+
+- Step 3: Installing a Mail Transfer Agent 
+  - `sudo apt install mailutils`
+  - During the Postfix configuration, you can choose:
+    - Local only – emails are delivered only to users on the same system.
+    - Internet site – the system can attempt to send emails to external email servers.
+
+- Step 4A: Local Email Storage
+  - When Postfix is configured for local delivery, emails are stored locally under `/var/mail/`
+  - Each user has a corresponding mailbox file containing their received messages
+  - This creates a local mail system inside the Linux machine, without requiring an Internet connection
+
+![Local Email Storage](static/images/image_0104.png)
+
+- Step 4B: Sending Cron Output to an External Email Address
+  - Edit crontab `crontab -e`
+  - Add `MAILTO=your-email@example.com`
+  - Reconfigue postfix package `sudo dpkg-reconfigure postfix`
+
+![Sending Cron Output to an External Email Address](static/images/image_0103.png)
+
 # Mounts and Volumes
 
 ## Storage device
