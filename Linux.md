@@ -5590,7 +5590,7 @@ PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin
 
 ## Cron Job Output and Email Notifications on REHL (CentOS, Rocky Linux)
 
-- Step 1: Create new cronjobs `crontab -e`
+- Step 1: Create new cronjobs `sudo nano /etc/crontab`
 
 ```bash
 SHELL=/bin/bash
@@ -5611,7 +5611,9 @@ MAILTO=root # send mail to /var/mail/root
     -  `sudo systemctl enable --now sendmail`
   - If it is Rocky: 
     - `sudo apt install postfix`
-    - `sudo systemctl enable --now sendmail`
+    - `sudo systemctl enable --now postfix`
+
+
 
 # Mounts and Volumes
 
