@@ -388,6 +388,7 @@
     - [Creating or Editing the crontab](#creating-or-editing-the-crontab)
     - [List the crontab](#list-the-crontab)
   - [Cron Job Output and Email Notifications on Ubuntu](#cron-job-output-and-email-notifications-on-ubuntu)
+  - [Cron Job Output and Email Notifications on REHL (CentOS, Rocky Linux)](#cron-job-output-and-email-notifications-on-rehl-centos-rocky-linux)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5586,6 +5587,31 @@ PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin
   - Reconfigue postfix package `sudo dpkg-reconfigure postfix`
 
 ![Sending Cron Output to an External Email Address](static/images/image_0103.png)
+
+## Cron Job Output and Email Notifications on REHL (CentOS, Rocky Linux)
+
+- Step 1: Create new cronjobs `crontab -e`
+
+```bash
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/local/sbin:/sbin:/usr/sbin:/bin:/usr/bin
+# MAILTO=your email address
+MAILTO=root # send mail to /var/mail/root
+
+* * * * * root ping -c 10 google.com
+```
+
+- Step 2: Checking Cron Logs
+  - If something goes wrong, you can check the cron service logs using: `journalctl -u crond.service -f`
+  - The `-f` option can be used to follow the latest log entries
+
+- Step 3: Installing a Mail Transfer Agent 
+  - If it is CentOS:
+    -  `sudo apt install sendmail`
+    -  `sudo systemctl enable --now sendmail`
+  - If it is Rocky: 
+    - `sudo apt install postfix`
+    - `sudo systemctl enable --now sendmail`
 
 # Mounts and Volumes
 
