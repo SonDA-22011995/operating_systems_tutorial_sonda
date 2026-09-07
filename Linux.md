@@ -390,6 +390,13 @@
   - [Cron Job Output and Email Notifications on Ubuntu](#cron-job-output-and-email-notifications-on-ubuntu)
   - [Cron Job Output and Email Notifications on REHL (CentOS, Rocky Linux)](#cron-job-output-and-email-notifications-on-rehl-centos-rocky-linux)
   - [Using `flock` to Prevent Overlapping Cron Jobs](#using-flock-to-prevent-overlapping-cron-jobs)
+  - [System-Wide Cron Jobs](#system-wide-cron-jobs)
+    - [User-Based Cron Jobs](#user-based-cron-jobs)
+    - [System-Wide Crontab](#system-wide-crontab-1)
+    - [Security of `/etc/crontab`](#security-of-etccrontab)
+    - [Format of `/etc/crontab`](#format-of-etccrontab)
+    - [Why Use `/etc/crontab`?](#why-use-etccrontab)
+  - [Anacron on Ubuntu](#anacron-on-ubuntu)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5690,6 +5697,46 @@ Process A
                 
 ```
 
+## System-Wide Cron Jobs
+
+### User-Based Cron Jobs
+
+- You edit the crontab belonging to the current user `crontab -e`
+- Edits the crontab belonging to the root user `sudo crontab -e`
+- These are still **user-specific cron jobs**.
+
+### System-Wide Crontab
+
+- Linux also provides a system-wide crontab `/etc/crontab`
+- Unlike user crontabs, this is a regular file that can be edited directly `sudo nano /etc/crontab`
+- You do not use `crontab -e` to edit it.
+- The major advantage is that `/etc/crontab` allows you to specify which user should execute the command.
+
+### Security of `/etc/crontab`
+
+- The `/etc/crontab` file must be owned by root, and only root should be allowed to modify it
+
+```bash
+ls -l /etc
+
+# -rw-r--r--  1 root                 root                  1136 Mar 31  2024 crontab
+```
+
+### Format of `/etc/crontab`
+
+- Syntax: `[Minute] [Hour] [Day] [Month] [Day-of-Week] [User] [Command]`
+- Except for the `[User]` option, all other options have the same meaning as user-specific cron jobs.
+  - For more detail, see [Advanced Scheduling Options](#advanced-scheduling-options)
+  - `[User]` specifies the user who should execute the command
+
+![Format of /etc/crontab](static/images/image_0105.png)
+
+### Why Use `/etc/crontab`?
+
+- You can schedule jobs for different users without logging in as those users
+- This is useful because the administrator can centrally manage the job while still ensuring that the application runs with the appropriate user's permissions
+
+## Anacron on Ubuntu
 
 # Mounts and Volumes
 
