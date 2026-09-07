@@ -389,6 +389,7 @@
     - [List the crontab](#list-the-crontab)
   - [Cron Job Output and Email Notifications on Ubuntu](#cron-job-output-and-email-notifications-on-ubuntu)
   - [Cron Job Output and Email Notifications on REHL (CentOS, Rocky Linux)](#cron-job-output-and-email-notifications-on-rehl-centos-rocky-linux)
+  - [Using `flock` to Prevent Overlapping Cron Jobs](#using-flock-to-prevent-overlapping-cron-jobs)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5613,6 +5614,81 @@ MAILTO=root # send mail to /var/mail/root
     - `sudo apt install postfix`
     - `sudo systemctl enable --now postfix`
 
+## Using `flock` to Prevent Overlapping Cron Jobs
+
+- `flock` is a command that can create a lock on a file. 
+- It is not part of cron itself, but it is useful when running commands from cron because it can prevent multiple instances of the same job from running at the same time.
+- Example: `flock file.lock ping google.com`
+  - While the `ping` command is running, the lock file is locked. 
+  - If another process tries to acquire a lock on the same file, it will normally wait until the first process finishe
+- To avoid waiting, the `-n` option can be used
+  - `-n`, `--nb`, `--nonblock`: Fail rather than wait if the lock cannot be immediately acquired
+- `-E 0`, `--conflict-exit-code 0` option is used to make `flock` exit with code 0 when the lock already exists
+
+```bash
+ flock -n -E 0 file.txt ping google.com
+```
+
+```
+# flock -n — Lock is held → Exit immediately
+
+09:00
+Process A
+    │
+    ├── flock -n backup.lock
+    │
+    ├── LOCK acquired
+
+09:01
+Process B
+    │
+    ├── flock -n backup.lock
+    │
+    ├── LOCK acquisition failed
+    │
+    └── EXIT immediately
+```
+
+```
+# flock without -n — Lock is held → Wait
+
+09:00
+Process A
+    │
+    ├── flock backup.lock
+    ├── LOCK acquired
+
+
+09:01
+Process B
+    │
+    ├── flock backup.lock
+    └── WAITING ─────────────────┐
+                                 │
+09:02                            │
+Process C                        │
+    │                            │
+    └── WAITING ─────────────────┤
+                                 │
+09:03                            │
+Process D                        │
+    │                            │
+    └── WAITING ─────────────────┤
+                                 │
+                                 ▼
+09:04
+Process A
+    │
+    └── backup.sh FINISH
+            │
+            └── RELEASE LOCK
+                    │
+                    ▼
+              Process B
+                    │
+                    ├── GET LOCK
+                
+```
 
 
 # Mounts and Volumes
