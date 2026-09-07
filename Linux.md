@@ -396,7 +396,16 @@
     - [Security of `/etc/crontab`](#security-of-etccrontab)
     - [Format of `/etc/crontab`](#format-of-etccrontab)
     - [Why Use `/etc/crontab`?](#why-use-etccrontab)
-  - [Anacron on Ubuntu](#anacron-on-ubuntu)
+  - [Anacron](#anacron)
+    - [Why Use Anacron?](#why-use-anacron)
+    - [How does it detect low battery power?](#how-does-it-detect-low-battery-power)
+    - [Anacron vs Cron](#anacron-vs-cron)
+    - [Anacron on Ubuntu](#anacron-on-ubuntu)
+      - [How does anacron work?](#how-does-anacron-work)
+        - [The easiest way](#the-easiest-way)
+        - [Anacron configuration file](#anacron-configuration-file)
+        - [Why are `cron.daily`,`cron.weekly`, and `cron.monthly` in `etc/crontab`](#why-are-crondailycronweekly-and-cronmonthly-in-etccrontab)
+    - [Anacron on CentOS](#anacron-on-centos)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5736,7 +5745,87 @@ ls -l /etc
 - You can schedule jobs for different users without logging in as those users
 - This is useful because the administrator can centrally manage the job while still ensuring that the application runs with the appropriate user's permissions
 
-## Anacron on Ubuntu
+## Anacron
+
+### Why Use Anacron?
+
+- Cronjobs had a few limitations:
+  - They're only being executed, when the system is running
+  - If the computer is powered off when a cron job should execute, that execution is missed
+- Anacron solves this
+  - By default, anacron jobs are only run when the system is plugged in (due do its default configuration)
+  - If the system is turned off when a job is scheduled to run, Anacron will run the job when the system is turned on again
+- Anacron is designed for jobs where exact execution time is not important. For example:
+  - Cleaning old log files
+  - Cleaning temporary files
+  - Periodic maintenance tasks
+
+### How does it detect low battery power?
+
+- This is controlled through its systemd service configuration `systemctl cat anacron.service`
+- The configuration contains `ConditionACPower=true`
+  - This means Anacron normally runs only when the machine is connected to external power
+  - The setting can be overridden with `systemctl edit anacron.service`
+
+![How does it detect low battery power?](static/images/image_0110.png)
+
+### Anacron vs Cron
+
+| Cron                             | Anacron                                      |
+| -------------------------------- | -------------------------------------------- |
+| Runs at a specific time          | Runs periodically                            |
+| Missed jobs are normally skipped | Missed jobs can run later                    |
+| Requires system to be running    | Designed for systems that may be powered off |
+| Suitable for precise schedules   | Suitable when exact timing is not important  |
+| Commonly used on servers         | Particularly useful on laptops/desktops      |
+
+- Conclusion
+  - If I am a server administrator and need to run an important task regularly, I can use cron to execute it at a specific interval, such as twice a day or every minute, depending on how much processing power it requires. 
+  - Since servers are usually always online and do not rely on batteries, cron is often a suitable choice for these tasks.
+
+### Anacron on Ubuntu
+
+#### How does anacron work?
+
+##### The easiest way
+
+- On Ubuntu/Debian systems, one of the easiest ways to use Anacron is to place executable scripts in:
+  - `/etc/cron.daily/`
+  - `/etc/cron.weekly/`
+  - `/etc/cron.monthly/`
+  - The filenames must contain only `A-Z`, `a-z`, `0-9`, `_`, `-`. Regex would be: `^[a-zA-Z0-9_-]+$`
+
+![The easiest way](static/images/image_0107.png)
+
+![The easiest way](static/images/image_0108.png)
+
+##### Anacron configuration file
+
+- The main Anacron configuration file is: `/etc/anacrontab`
+- Format `[period in days] [minutes after system boot] [identifier for the last execution time] [command]`
+  - `[period in days]`: how frequently the job should run
+  - `[minutes after system boot]`: how many minutes to wait after system boot
+  - `[identifier for the last execution time]`: unique name used by Anacron to track the job
+  - `[command]`: command to execute
+
+![Anacron configuration file](static/images/image_0109.png)
+
+##### Why are `cron.daily`,`cron.weekly`, and `cron.monthly` in `etc/crontab` 
+
+```bash
+25 6    * * *   root    test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.daily; }
+47 6    * * 7   root    test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.weekly; }
+52 6    1 * *   root    test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.monthly; }
+```
+
+- These three entries are used to run the daily, weekly, and monthly cron jobs when anacron is not installed or available.
+  - `test -x`: This checks whether `/usr/sbin/anacron` exists and is executable.
+  - `||`: Run command2 only if command1 fails.
+    - If `test -x /usr/sbin/anacron` succeeds so the command after `||` is not executed
+      - Therefore, `anacron` is responsible for the **daily/weekly/monthly** jobs.
+    - If anacron is not installed `run-parts` runs the executable scripts inside the director
+
+### Anacron on CentOS
 
 # Mounts and Volumes
 
