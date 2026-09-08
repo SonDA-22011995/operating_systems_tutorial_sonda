@@ -398,14 +398,20 @@
     - [Why Use `/etc/crontab`?](#why-use-etccrontab)
   - [Anacron](#anacron)
     - [Why Use Anacron?](#why-use-anacron)
-    - [How does it detect low battery power?](#how-does-it-detect-low-battery-power)
     - [Anacron vs Cron](#anacron-vs-cron)
     - [Anacron on Ubuntu](#anacron-on-ubuntu)
       - [How does anacron work?](#how-does-anacron-work)
         - [The easiest way](#the-easiest-way)
         - [Anacron configuration file](#anacron-configuration-file)
         - [Why are `cron.daily`,`cron.weekly`, and `cron.monthly` in `etc/crontab`](#why-are-crondailycronweekly-and-cronmonthly-in-etccrontab)
+        - [How Anacron Executes Jobs](#how-anacron-executes-jobs)
+        - [How does it detect low battery power?](#how-does-it-detect-low-battery-power)
     - [Anacron on CentOS](#anacron-on-centos)
+      - [Install](#install)
+      - [How does anacron work?](#how-does-anacron-work-1)
+        - [The easiest way](#the-easiest-way-1)
+        - [Anacron configuration file](#anacron-configuration-file-1)
+        - [How Anacron Executes Jobs](#how-anacron-executes-jobs-1)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -5760,15 +5766,6 @@ ls -l /etc
   - Cleaning temporary files
   - Periodic maintenance tasks
 
-### How does it detect low battery power?
-
-- This is controlled through its systemd service configuration `systemctl cat anacron.service`
-- The configuration contains `ConditionACPower=true`
-  - This means Anacron normally runs only when the machine is connected to external power
-  - The setting can be overridden with `systemctl edit anacron.service`
-
-![How does it detect low battery power?](static/images/image_0110.png)
-
 ### Anacron vs Cron
 
 | Cron                             | Anacron                                      |
@@ -5825,7 +5822,85 @@ ls -l /etc
       - Therefore, `anacron` is responsible for the **daily/weekly/monthly** jobs.
     - If anacron is not installed `run-parts` runs the executable scripts inside the director
 
+##### How Anacron Executes Jobs
+
+- Anacron is executed by a systemd service
+
+```bash
+systemctl list-units | grep -F 'anacron'
+
+# anacron.service   loaded active running   Run anacron jobs
+# anacron.timer     loaded active running   Trigger anacron every hour
+```
+
+##### How does it detect low battery power?
+
+- This is controlled through its systemd service configuration `systemctl cat anacron.service`
+- The configuration contains `ConditionACPower=true`
+  - This means Anacron normally runs only when the machine is connected to external power
+  - The setting can be overridden with `systemctl edit anacron.service`
+
+![How does it detect low battery power?](static/images/image_0110.png)
+
 ### Anacron on CentOS
+
+#### Install
+
+```bash
+sduo dnf install cronie-anacron
+```
+
+#### How does anacron work?
+
+##### The easiest way
+
+- On RHEL systems, one of the easiest ways to use Anacron is to place executable scripts in:
+  - `/etc/cron.daily/`
+  - `/etc/cron.weekly/`
+  - `/etc/cron.monthly/`
+  - The filenames must contain only `A-Z`, `a-z`, `0-9`, `_`, `-`. Regex would be: `^[a-zA-Z0-9_-]+$`
+
+
+##### Anacron configuration file
+
+- The main Anacron configuration file is: `/etc/anacrontab`
+- Format `[period in days] [minutes after system boot] [identifier for the last execution time] [command]`
+  - `[period in days]`: how frequently the job should run
+  - `[minutes after system boot]`: how many minutes to wait after system boot
+  - `[identifier for the last execution time]`: unique name used by Anacron to track the job
+  - `[command]`: command to execute
+
+![Anacron configuration file](static/images/image_0111.png)
+
+##### How Anacron Executes Jobs
+
+- On CentOS, the process is a little more complicated
+- A cron job in the **/etc/cron.d/0hourly** mechanism runs the **cron.hourly**
+- A cron job in the **cron.hourly** mechanism runs the **/etc/cron.hourly/0anacron** script
+- The  **/etc/cron.hourly/0anacron** script checks conditions such as:
+  - Whether Anacron has already been run today.
+  - Whether the system is running on battery power.
+- If the conditions allow it, the script starts Anacron.
+
+```
+cron service
+  ↓
+/etc/cron.d/0hourly
+  ↓
+/etc/cron.hourly/0anacron
+  ↓
+Anacron
+  ↓
+/etc/anacrontab
+  ↓
+Check which jobs are due
+  ↓
+cron.daily / cron.weekly / cron.monthly
+```
+
+![How Anacron Executes Jobs](static/images/image_0113.png)
+
+![How Anacron Executes Jobs](static/images/image_0112.png)
 
 # Mounts and Volumes
 
