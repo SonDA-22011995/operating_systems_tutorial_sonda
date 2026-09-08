@@ -667,7 +667,7 @@
       - [Practical Examples](#practical-examples-1)
   - [Command substitution](#command-substitution)
   - [Style terminal line use `tput` and `infocmp` command](#style-terminal-line-use-tput-and-infocmp-command)
-  - [Shel expansions](#shel-expansions)
+  - [Shell expansions](#shell-expansions)
     - [Filename expansion or Pathname Expansion](#filename-expansion-or-pathname-expansion)
     - [Tilde expansion - `~`](#tilde-expansion---)
     - [Variable expansion - `$`](#variable-expansion---)
@@ -9400,7 +9400,7 @@ echo 'There'"'"'re '"$(ls | wc -l)"' files in the current directory'
 
 ## Style terminal line use `tput` and `infocmp` command
 
-## Shel expansions
+## Shell expansions
 
 - **Shell Expansion** is a process where **Bash** "rewrites" or parses your command before it is actually executed.
 
