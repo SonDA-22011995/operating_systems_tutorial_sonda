@@ -412,6 +412,12 @@
         - [The easiest way](#the-easiest-way-1)
         - [Anacron configuration file](#anacron-configuration-file-1)
         - [How Anacron Executes Jobs](#how-anacron-executes-jobs-1)
+  - [Cron Job Best Practices](#cron-job-best-practices)
+    - [Planning and Scheduling](#planning-and-scheduling)
+    - [Logging and Error handling](#logging-and-error-handling)
+    - [Security](#security)
+    - [Test Cron Jobs Before Deployment](#test-cron-jobs-before-deployment)
+    - [Different Cron Implementations](#different-cron-implementations)
 - [Mounts and Volumes](#mounts-and-volumes)
   - [Storage device](#storage-device)
     - [What is a Storage Device?](#what-is-a-storage-device)
@@ -584,6 +590,7 @@
     - [LVM on top of RAID](#lvm-on-top-of-raid)
     - [Thin Volumes](#thin-volumes)
     - [LVM Snapshots](#lvm-snapshots)
+- [Networking](#networking)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -5902,6 +5909,57 @@ cron.daily / cron.weekly / cron.monthly
 
 ![How Anacron Executes Jobs](static/images/image_0112.png)
 
+## Cron Job Best Practices
+
+### Planning and Scheduling
+
+- Distribute scheduled tasks evenly to avoid putting too much load on the system at the same time.
+- Avoid peak traffic hours, especially for CPU-intensive tasks
+- Consider time zones when scheduling jobs for websites with users from different regions.
+- Avoid executing the same task multiple times - `flock`
+
+### Logging and Error handling
+
+- Cron jobs should log errors and be monitored regularly.
+- A cron job may start failing because:
+  - The application code was updated.
+  - Something in the environment changed.
+  - The script itself contains an error.
+- Errors should be handled inside the script and logged or reported so that failures do not go unnoticed.
+
+### Security
+
+- Cron jobs should run with the **least privileges necessary**
+- For example
+  - If a web application runs as **www-data**.
+  - There is usually no reason to run its cron jobs as **root**
+  - Running as root can increase the potential damage if the script contains a bug or security vulnerability.
+- File ownership is also important
+  - If a cron job running as **root** creates files that are later used by **www-data**
+  - The web application may not be able to modify or delete those files because of their ownership and permissions
+- Keep scripts and commands secure with proper permissions
+  - Even if `/etc/crontab` itself is secure, an attacker could potentially modify the executable that the cron job calls if that executable is writable by other users
+  - Therefore, the cron job and all files it executes or loads should have appropriate permissions, and sensitive scripts may need to be read-only for unauthorized users
+- Avoid storing sensitive information such as: Passwords, Credentials, Other secrets directly inside crontab files
+
+### Test Cron Jobs Before Deployment
+
+- Cron jobs should be tested manually before adding them to the crontab
+- One important issue is that cron may have a different environment, especially a different `PATH`
+  - Two common solutions are
+    - Changes environment variables within the program: `export PATH=/usr/local/bin:/usr/bin:/bin...`
+    - Using absolute paths: `/usr/bin/python3 /home/user/script.py`
+- After creating a cron job, monitor its first few executions to make sure it works correctly
+  - You should also monitor cron jobs after:
+    - Major system updates
+    - Application/code updates
+    - Changes to the execution environment
+
+### Different Cron Implementations
+
+- Cron implementations can differ between Linux distributions.
+  - A cron configuration that works on Ubuntu may behave differently on: Red Hat Linux, Arch Linux, Other distributions
+
 # Mounts and Volumes
 
 ## Storage device
@@ -8549,6 +8607,7 @@ Original LV ──────────────── continues changing
 Snapshot   ──────────────── preserves Time 1 state
 ```
 
+# Networking 
 
 # Introducing the Linux shell
 
