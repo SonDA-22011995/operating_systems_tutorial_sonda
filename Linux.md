@@ -591,6 +591,10 @@
     - [Thin Volumes](#thin-volumes)
     - [LVM Snapshots](#lvm-snapshots)
 - [Networking](#networking)
+  - [What Is the Internet?](#what-is-the-internet)
+  - [How Data Travels](#how-data-travels)
+  - [IP Address](#ip-address)
+  - [The `ip` command: Inspecting network configurations](#the-ip-command-inspecting-network-configurations)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8608,6 +8612,28 @@ Snapshot   ──────────────── preserves Time 1 sta
 ```
 
 # Networking 
+
+## What Is the Internet?
+
+- The Internet is a network of interconnected networks. 
+- It consists of many interconnected nodes, such as computers and routers, that can communicate and exchange data with each other
+
+## How Data Travels
+
+- The data is divided into small units called **packets**. 
+- Each **packet** contains an address indicating its destination
+- Routers forward these packets toward the destination. 
+  - A packet can pass through multiple routers before reaching its destination
+- Importantly, packets do not necessarily have to follow the same path. 
+  - Different packets can potentially take different routes depending on the network condition
+
+## IP Address
+
+- Computers communicate using **IP addresses**, which are numerical addresses
+- However, users do not want to remember numerical addresses, so we use domain names such as `google.com`
+  - A system called DNS (Domain Name System) resolves the domain name into the appropriate IP address
+
+## The `ip` command: Inspecting network configurations
 
 # Introducing the Linux shell
 
