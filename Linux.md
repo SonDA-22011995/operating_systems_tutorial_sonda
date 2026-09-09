@@ -595,6 +595,8 @@
   - [How Data Travels](#how-data-travels)
   - [IP Address](#ip-address)
   - [The `ip` command: Inspecting network configurations](#the-ip-command-inspecting-network-configurations)
+    - [What is the `ip` Command?](#what-is-the-ip-command)
+    - [Viewing Network Configuration](#viewing-network-configuration)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8634,6 +8636,56 @@ Snapshot   ──────────────── preserves Time 1 sta
   - A system called DNS (Domain Name System) resolves the domain name into the appropriate IP address
 
 ## The `ip` command: Inspecting network configurations
+
+### What is the `ip` Command?
+
+- `ip` is a powerful Linux command-line tool for managing and diagnosing network configurations.
+- It is used to inspect and modify:
+  - IP addresses
+  - Network interfaces
+  - Routing information
+- It replaces older tools such as: `ifconfig`, `route`, `netstat`
+
+### Viewing Network Configuration
+
+```bash
+ip address show
+
+# 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+#     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+#     inet 127.0.0.1/8 scope host lo
+#        valid_lft forever preferred_lft forever
+#     inet 10.255.255.254/32 brd 10.255.255.254 scope global lo
+#        valid_lft forever preferred_lft forever
+#     inet6 ::1/128 scope host
+#        valid_lft forever preferred_lft forever
+# 2: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+#     link/ether c8:53:09:e0:71:e2 brd ff:ff:ff:ff:ff:ff
+# 3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+#     link/ether 0a:00:27:00:00:0c brd ff:ff:ff:ff:ff:ff
+# 4: loopback0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+#     link/ether 00:15:5d:45:41:61 brd ff:ff:ff:ff:ff:ff
+# 5: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+#     link/ether 54:e4:ed:4f:31:b1 brd ff:ff:ff:ff:ff:ff
+#     inet 192.168.2.48/24 brd 192.168.2.255 scope global noprefixroute eth2
+#        valid_lft forever preferred_lft forever
+#     inet6 fe80::5b41:22f3:c3b9:8190/64 scope link nodad noprefixroute
+#        valid_lft forever preferred_lft forever
+```
+
+| Attribute          | Example                             | Meaning                                                                 |
+| ------------------ | ----------------------------------- | ----------------------------------------------------------------------- |
+| **Interface Name** | `eth2`                              | Name of the network interface                                           |
+| **Flags**          | `<BROADCAST,MULTICAST,UP,LOWER_UP>` | Shows the capabilities and current status of the interface              |
+| **UP**             | `UP`                                | The interface is administratively enabled                               |
+| **DOWN**           | `state DOWN`                        | The interface is currently down/disabled                                |
+| **LOWER_UP**       | `LOWER_UP`                          | The underlying network link is operational                              |
+| **MAC Address**    | `54:e4:ed:4f:31:b1`                 | Layer 2 hardware address of the network interface                       |
+| **IPv4 Address**   | `inet 192.168.2.48/24`                   | Layer 3 IPv4 address assigned to the interface                          |
+| **CIDR Prefix**    | `/24`                               | Specifies how many bits belong to the network portion of the IP address |
+| **Subnet Mask**    | `255.255.255.0`                     | Defines the network and host portions of an IPv4 address                |
+| **IPv6 Address**   | `inet6 fe80::5b41:22f3:c3b9:8190/64`      | Layer 3 IPv6 address assigned to the interface                          |
+
 
 # Introducing the Linux shell
 
