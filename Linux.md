@@ -8757,7 +8757,6 @@ sudo apt install wireshark
 | `!`                                | Same as `not`.                                                   | `!(arp)` → Show everything except ARP traffic.                                                           |
 | `and not`                          | Combines a condition while excluding another condition.          | `tcp and not tcp.port == 22` → Show TCP traffic except SSH traffic.                                      |
 | `&& !`                             | Same as `and not`, using symbolic operators.                     | `tcp && !(tcp.port == 22)` → Show TCP traffic except SSH traffic.                                        |
-| `and` + `tcp.port`                 | Filters traffic by IP address and TCP port.                      | `ip.addr == 192.168.2.49 and tcp.port == 443` → Show TCP traffic on port `443` involving `192.168.2.49`. |
 | `( )`                              | Groups conditions together to control how filters are evaluated. | `ip.addr == 192.168.2.49 and (http or dns)` → Show HTTP or DNS traffic involving `192.168.2.49`.         |
 
 
