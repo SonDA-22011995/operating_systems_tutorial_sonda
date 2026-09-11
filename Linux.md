@@ -597,6 +597,14 @@
   - [The `ip` command: Inspecting network configurations](#the-ip-command-inspecting-network-configurations)
     - [What is the `ip` Command?](#what-is-the-ip-command)
     - [Viewing Network Configuration](#viewing-network-configuration)
+  - [Wireshark](#wireshark)
+    - [What is Wireshark?](#what-is-wireshark)
+    - [Installing Wireshark on Linux](#installing-wireshark-on-linux)
+    - [Filtering Traffic](#filtering-traffic)
+      - [Filtering by Protocol](#filtering-by-protocol)
+      - [Filtering by IP Address](#filtering-by-ip-address)
+      - [Filtering by Port](#filtering-by-port)
+      - [Combining Filters](#combining-filters)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8685,6 +8693,72 @@ ip address show
 | **CIDR Prefix**    | `/24`                               | Specifies how many bits belong to the network portion of the IP address |
 | **Subnet Mask**    | `255.255.255.0`                     | Defines the network and host portions of an IPv4 address                |
 | **IPv6 Address**   | `inet6 fe80::5b41:22f3:c3b9:8190/64`      | Layer 3 IPv6 address assigned to the interface                          |
+
+## Wireshark
+
+### What is Wireshark?
+
+- Wireshark is a GUI-based network analysis tool that can:
+  - Capture network traffic
+  - Monitor network communication
+  - Inspect and analyze packets
+  - Visualize what is happening on a network
+
+### Installing Wireshark on Linux
+
+```bash
+sudo apt install wireshark
+```
+
+### Filtering Traffic
+
+#### Filtering by Protocol
+
+| **Wireshark Filter** | **Description**             |
+| -------------------- | --------------------------- |
+| `http`               | This displays HTTP traffic. |
+| `dns`                | This displays DNS packets.  |
+| `tcp`                | This displays TCP packets.  |
+| `udp`                | This displays UDP packets.  |
+| `icmp`               | This displays ICMP traffic. |
+| `tls`                | This displays TLS traffic.  |
+
+![Filtering by Protocol](static/images/image_0114.png)
+
+#### Filtering by IP Address
+
+- This displays packets where **192.168.2.49** is either the source or destination
+  - `ip.addr == 192.168.2.49`
+- Filter only the source
+  - `ip.src == 192.168.2.4`
+- Or only the destination
+  - `ip.dst == 192.168.2.49`
+
+#### Filtering by Port
+
+- This displays TCP traffic involving port 80
+  - `tcp.port == 80`
+  - Syntax `[Protocol].[Port] == [Port]`
+
+![Filtering by IP Address](static/images/image_0116.png)
+
+![Filtering by IP Address](static/images/image_0115.png)
+
+
+#### Combining Filters
+
+| **Combination / Wireshark Filter** | **Description**                                                  | **Example / Meaning**                                                                                    |
+| ---------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `and`                              | Combines multiple conditions. Both conditions must be true.      | `ip.addr == 192.168.2.49 and tcp` → Show TCP traffic involving `192.168.2.49`.                           |
+| `&&`                               | Same as `and`. Combines multiple conditions.                     | `ip.addr == 192.168.2.49 && tcp` → Show TCP traffic involving `192.168.2.49`.                            |
+| `or`                               | Matches either condition.                                        | `dns or http` → Show either DNS or HTTP traffic.                                                         |
+| `\|\|`                             | Same as `or`.                                                    | `tcp.port == 80 \|\| tcp.port == 443` → Show traffic involving port `80` or `443`.                       |
+| `not`                              | Excludes traffic matching the specified condition.               | `not arp` → Show everything except ARP traffic.                                                          |
+| `!`                                | Same as `not`.                                                   | `!(arp)` → Show everything except ARP traffic.                                                           |
+| `and not`                          | Combines a condition while excluding another condition.          | `tcp and not tcp.port == 22` → Show TCP traffic except SSH traffic.                                      |
+| `&& !`                             | Same as `and not`, using symbolic operators.                     | `tcp && !(tcp.port == 22)` → Show TCP traffic except SSH traffic.                                        |
+| `and` + `tcp.port`                 | Filters traffic by IP address and TCP port.                      | `ip.addr == 192.168.2.49 and tcp.port == 443` → Show TCP traffic on port `443` involving `192.168.2.49`. |
+| `( )`                              | Groups conditions together to control how filters are evaluated. | `ip.addr == 192.168.2.49 and (http or dns)` → Show HTTP or DNS traffic involving `192.168.2.49`.         |
 
 
 # Introducing the Linux shell
