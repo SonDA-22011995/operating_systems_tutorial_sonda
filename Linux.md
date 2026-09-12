@@ -605,6 +605,9 @@
       - [Filtering by IP Address](#filtering-by-ip-address)
       - [Filtering by Port](#filtering-by-port)
       - [Combining Filters](#combining-filters)
+  - [The OSI Model](#the-osi-model)
+    - [What is the OSI Model?](#what-is-the-osi-model)
+    - [The 7 OSI Layers](#the-7-osi-layers)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8757,6 +8760,30 @@ sudo apt install wireshark
 | `and not`                          | Combines a condition while excluding another condition.          | `tcp and not tcp.port == 22` → Show TCP traffic except SSH traffic.                                      |
 | `&& !`                             | Same as `and not`, using symbolic operators.                     | `tcp && !(tcp.port == 22)` → Show TCP traffic except SSH traffic.                                        |
 | `( )`                              | Groups conditions together to control how filters are evaluated. | `ip.addr == 192.168.2.49 and (http or dns)` → Show HTTP or DNS traffic involving `192.168.2.49`.         |
+
+## The OSI Model
+
+### What is the OSI Model?
+
+- OSI (Open Systems Interconnection) is a conceptual framework for understanding and designing computer networks.
+- Its main purposes are to:
+  - Standardize network communication functions and protocols.
+  - Enable interoperability between devices from different vendors.
+  - Provide a common language for discussing network problems.
+  - Help with network troubleshooting.
+
+### The 7 OSI Layers
+
+| Layer | Name         | Main Responsibility                                        | Examples                               | **Data Unit** |
+| ----: | ------------ | ---------------------------------------------------------- | -------------------------------------- | ------------- |
+| **7** | Application  | Interface for applications to communicate over the network | HTTP, FTP, SMTP, SSH                   | **Data**      |
+| **6** | Presentation | Translation, encryption, compression of data               | SSL/TLS                                | **Data**      |
+| **5** | Session      | Establish, maintain, and terminate sessions                | —                                      | **Data**      |
+| **4** | Transport    | Reliable data transfer between hosts                       | TCP                                    | **Segment**   |
+| **3** | Network      | Routing and forwarding between networks                    | IP                                     | **Packet**    |
+| **2** | Data Link    | Data transfer between adjacent network nodes               | Ethernet, MAC                          | **Frame**     |
+| **1** | Physical     | Transmission of raw bits over physical media               | Cables, electrical/light/radio signals | **Bits**      |
+
 
 
 # Introducing the Linux shell
