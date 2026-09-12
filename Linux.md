@@ -8734,16 +8734,15 @@ sudo apt install wireshark
 - Or only the destination
   - `ip.dst == 192.168.2.49`
 
+![Filtering by IP Address](static/images/image_0116.png)
+
+![Filtering by IP Address](static/images/image_0115.png)
+
 #### Filtering by Port
 
 - This displays TCP traffic involving port 80
   - `tcp.port == 80`
   - Syntax `[Protocol].[Port] == [Port]`
-
-![Filtering by IP Address](static/images/image_0116.png)
-
-![Filtering by IP Address](static/images/image_0115.png)
-
 
 #### Combining Filters
 
