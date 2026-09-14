@@ -608,6 +608,17 @@
   - [The OSI Model](#the-osi-model)
     - [What is the OSI Model?](#what-is-the-osi-model)
     - [The 7 OSI Layers](#the-7-osi-layers)
+      - [Layer 1 — Physical](#layer-1--physical)
+      - [Layer 2 — Data Link](#layer-2--data-link)
+      - [Layer 3 — Network](#layer-3--network)
+      - [Layer 4 — Transport](#layer-4--transport)
+      - [Layer 5 — Session](#layer-5--session)
+      - [Layer 6 — Presentation](#layer-6--presentation)
+      - [Layer 7 — Application](#layer-7--application)
+  - [Physical Layer - Layer 1](#physical-layer---layer-1)
+    - [What is the Physical Layer?](#what-is-the-physical-layer)
+    - [Common Layer 1 Problems](#common-layer-1-problems)
+    - [Controlling the Physical Layer with `ip` command](#controlling-the-physical-layer-with-ip-command)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8784,7 +8795,67 @@ sudo apt install wireshark
 | **2** | Data Link    | Data transfer between adjacent network nodes               | Ethernet, MAC                          | **Frame**     |
 | **1** | Physical     | Transmission of raw bits over physical media               | Cables, electrical/light/radio signals | **Bits**      |
 
+#### Layer 1 — Physical
 
+- Transmits raw bits over a physical medium.
+- Examples: cables and physical network hardware.
+
+#### Layer 2 — Data Link
+
+- Provides data transfer between adjacent network nodes.
+- Uses technologies such as Ethernet and MAC addresses.
+- Communication is local; it does not perform routing across multiple networks.
+
+#### Layer 3 — Network
+
+- Handles routing and forwarding between networks.
+- Uses multiple hops/routers to reach a destination.
+- IP operates at this layer.
+- Example: `Computer → Router → Router → Router → Server`
+
+#### Layer 4 — Transport
+
+- Ensures reliable data transfer between hosts (e.g., TCP, UDP)
+- With TCP, lost data can be retransmitted.
+
+#### Layer 5 — Session
+
+- Establishes, maintains, and terminates communication sessions between applications.
+
+#### Layer 6 — Presentation
+
+-  Translates, encrypts, and compresses data for transmission between applications and the network (e.g., TLS/SSL)
+
+#### Layer 7 — Application
+
+- Provides the interface for applications to communicate over the network
+- Examples: HTTP, FTP, SMTP, SSH
+
+## Physical Layer - Layer 1
+
+### What is the Physical Layer?
+
+- The Physical Layer (Layer 1) is the foundation of network communication.
+- It is responsible for the physical medium and transmission of raw bits.
+- Common physical media include:
+  - Copper/Ethernet cables
+  - Fiber-optic cables
+  - Wireless signals (Wi-Fi)
+
+### Common Layer 1 Problems
+
+- Typical problems include: 
+
+| Problem         | Example                      |
+| --------------- | ---------------------------- |
+| Physical medium | Damaged Ethernet cable       |
+| Interference    | Electromagnetic interference |
+| Hardware        | Malfunctioning network card  |
+| Power           | Network device has no power  |
+
+- If Layer 1 is not working, higher-level network communication cannot work properly.
+
+### Controlling the Physical Layer with `ip` command
 
 # Introducing the Linux shell
 
