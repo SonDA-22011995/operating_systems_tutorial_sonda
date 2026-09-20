@@ -694,7 +694,7 @@
     - [`shopt` command](#shopt-command)
       - [Practical Examples](#practical-examples-1)
   - [Command substitution](#command-substitution)
-  - [Style terminal line use `tput` and `infocmp` command](#style-terminal-line-use-tput-and-infocmp-command)
+  - [Stylesss terminal line use `tput` and `infocmp` command](#stylesss-terminal-line-use-tput-and-infocmp-command)
   - [Shell expansions](#shell-expansions)
     - [Filename expansion or Pathname Expansion](#filename-expansion-or-pathname-expansion)
     - [Tilde expansion - `~`](#tilde-expansion---)
@@ -9646,7 +9646,7 @@ echo 'The size of my house directory is: '"$(du -sh ~)"
 echo 'There'"'"'re '"$(ls | wc -l)"' files in the current directory'
 ```
 
-## Style terminal line use `tput` and `infocmp` command
+## Stylesss terminal line use `tput` and `infocmp` command
 
 ## Shell expansions
 
