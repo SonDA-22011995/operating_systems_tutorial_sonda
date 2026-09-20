@@ -8699,7 +8699,7 @@ ip address show
 | ------------------ | ----------------------------------- | ----------------------------------------------------------------------- |
 | **Interface Name** | `eth2`                              | Name of the network interface                                           |
 | **Flags**          | `<BROADCAST,MULTICAST,UP,LOWER_UP>` | Shows the capabilities and current status of the interface              |
-| **UP**             | `UP`                                | The interface is administratively enabled                               |
+| **UP**             | `state UP`                                | The interface is administratively enabled                               |
 | **DOWN**           | `state DOWN`                        | The interface is currently down/disabled                                |
 | **LOWER_UP**       | `LOWER_UP`                          | The underlying network link is operational                              |
 | **MAC Address**    | `54:e4:ed:4f:31:b1`                 | Layer 2 hardware address of the network interface                       |
