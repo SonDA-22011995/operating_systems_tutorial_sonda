@@ -619,6 +619,7 @@
     - [What is the Physical Layer?](#what-is-the-physical-layer)
     - [Common Layer 1 Problems](#common-layer-1-problems)
     - [Controlling the Physical Layer with `ip` command](#controlling-the-physical-layer-with-ip-command)
+      - [Enabling and Disabling a Network Device (NIC - Network Interface Card)](#enabling-and-disabling-a-network-device-nic---network-interface-card)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -694,7 +695,7 @@
     - [`shopt` command](#shopt-command)
       - [Practical Examples](#practical-examples-1)
   - [Command substitution](#command-substitution)
-  - [Stylesss terminal line use `tput` and `infocmp` command](#stylesss-terminal-line-use-tput-and-infocmp-command)
+  - [Style terminal line use `tput` and `infocmp` command](#style-terminal-line-use-tput-and-infocmp-command)
   - [Shell expansions](#shell-expansions)
     - [Filename expansion or Pathname Expansion](#filename-expansion-or-pathname-expansion)
     - [Tilde expansion - `~`](#tilde-expansion---)
@@ -8857,6 +8858,32 @@ sudo apt install wireshark
 
 ### Controlling the Physical Layer with `ip` command
 
+#### Enabling and Disabling a Network Device (NIC - Network Interface Card)
+
+- From software, we cannot physically unplug a cable, but we can enable or disable a network interface card
+
+- Step 1: Find the network interface name
+
+```bash
+ip addr show
+```
+
+- Step 2: Disable the interface
+
+```bash
+sudo ip link set dev <network-interface-name> down
+```
+
+- Step 3: Enable the interface again.
+
+```bash
+sudo ip link set dev <network-interface-name> up
+```
+
+- Why sudo is Required?
+  - Changing the state of a network interface requires additional privileges.
+  - Without `sudo`: `ip link set dev enp0s5 down` => Operation not permitted
+
 # Introducing the Linux shell
 
 ## What is a shell?
@@ -9646,7 +9673,7 @@ echo 'The size of my house directory is: '"$(du -sh ~)"
 echo 'There'"'"'re '"$(ls | wc -l)"' files in the current directory'
 ```
 
-## Stylesss terminal line use `tput` and `infocmp` command
+## Style terminal line use `tput` and `infocmp` command
 
 ## Shell expansions
 
