@@ -619,7 +619,10 @@
     - [What is the Physical Layer?](#what-is-the-physical-layer)
     - [Common Layer 1 Problems](#common-layer-1-problems)
     - [Controlling the Physical Layer with `ip` command](#controlling-the-physical-layer-with-ip-command)
-      - [Enabling and Disabling a Network Device (NIC - Network Interface Card)](#enabling-and-disabling-a-network-device-nic---network-interface-card)
+      - [Network Interface](#network-interface)
+        - [Physical Network Interface](#physical-network-interface)
+        - [Virtual Network Interface](#virtual-network-interface)
+      - [Enabling and Disabling a Network Interface](#enabling-and-disabling-a-network-interface)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8858,7 +8861,31 @@ sudo apt install wireshark
 
 ### Controlling the Physical Layer with `ip` command
 
-#### Enabling and Disabling a Network Device (NIC - Network Interface Card)
+#### Network Interface
+
+- A network interface is an interface that allows a device to communicate and exchange data with a network.
+- There are two main types:
+  - Physical Network Interface
+  - Virtual Network Interface
+
+##### Physical Network Interface
+
+- A network interface associated with physical network hardware, such as:
+  - Ethernet NIC 
+  - Wi-Fi NIC
+  - Fiber NIC
+  - **NIC is an abbreviation for Network Interface Card**
+
+##### Virtual Network Interface
+
+- A network interface created by the operating system or software, such as:
+  - VPN adapter
+  - Hyper-V virtual adapter
+  - VMware adapter
+  - VirtualBox adapter
+  - Loopback interface
+
+#### Enabling and Disabling a Network Interface 
 
 - From software, we cannot physically unplug a cable, but we can enable or disable a network interface card
 
