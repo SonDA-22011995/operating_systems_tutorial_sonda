@@ -8887,7 +8887,7 @@ sudo apt install wireshark
 
 #### Enabling and Disabling a Network Interface 
 
-- From software, we cannot physically unplug a cable, but we can enable or disable a network interface card
+- From software, we cannot physically unplug a cable, but we can enable or disable a network interface
 
 - Step 1: Find the network interface name
 
