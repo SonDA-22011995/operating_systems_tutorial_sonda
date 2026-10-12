@@ -623,6 +623,14 @@
         - [Physical Network Interface](#physical-network-interface)
         - [Virtual Network Interface](#virtual-network-interface)
       - [Enabling and Disabling a Network Interface](#enabling-and-disabling-a-network-interface)
+  - [Data Link Layer - Layer 2](#data-link-layer---layer-2)
+    - [What is the Data Link Layer?](#what-is-the-data-link-layer)
+    - [Responsibilities](#responsibilities)
+    - [Data Link Layer Sublayers](#data-link-layer-sublayers)
+    - [Ethernet (IEEE 802.3)](#ethernet-ieee-8023)
+    - [Wi-Fi (IEEE 802.11)](#wi-fi-ieee-80211)
+    - [What Is a MAC Address?](#what-is-a-mac-address)
+    - [Practical Demonstration with Wireshark](#practical-demonstration-with-wireshark)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8918,6 +8926,82 @@ sudo ip link set dev eth2 up
 - Why sudo is Required?
   - Changing the state of a network interface requires additional privileges.
   - Without `sudo`: `ip link set dev enp0s5 down` => Operation not permitted
+
+## Data Link Layer - Layer 2
+
+### What is the Data Link Layer?
+
+- The Data Link Layer (Layer 2) is responsible for communication between devices on the same local network
+- The Data Link Layer organizes those bits into frames and determines which network interface should receive them
+
+### Responsibilities
+
+- **Framing**: Organizes bits into frames for transmission.
+- **Addressing**: Uses MAC addresses to identify source and destination network interfaces.
+- **Error Detection**: Detects transmission errors using mechanisms such as checksums.
+- **Flow Control**: Helps prevent a sender from overwhelming a receiver.
+- **Reliable Local Communication**: Supports communication between devices on the same network.
+
+### Data Link Layer Sublayers
+
+- The Data Link Layer is divided into two sublayers.
+
+| Sublayer | Full Name            | Main Responsibilities                                                                                                        |
+| -------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| LLC      | Logical Link Control | Provides an interface to the Network Layer and handles flow control and error-related functions as described in the lecture. |
+| MAC      | Media Access Control | Handles MAC addressing and access to the transmission medium.                                                                |
+
+### Ethernet (IEEE 802.3)
+
+- Primarily used in wired LANs, such as home and corporate networks.
+- Transmits data using Ethernet frames.
+- Uses source and destination MAC addresses.
+- Commonly supports an MTU of 1500 bytes; jumbo frames can support larger payloads.
+- Uses a Frame Check Sequence (FCS) for error detection.
+
+### Wi-Fi (IEEE 802.11)
+
+- Provides wireless communication using radio waves.
+- Does not require a physical Ethernet cable between wireless devices and the access point.
+- Uses MAC addresses and wireless frames.
+- Includes additional information needed for wireless communication.
+- A wireless access point bridges wireless and wired networks.
+
+### What Is a MAC Address?
+
+- A MAC address (Media Access Control address) identifies a network interface at Layer 2.
+- A single computer may have several MAC addresses because its Ethernet adapter, Wi-Fi adapter, and virtual network interfaces each have their own addresses.
+- Characteristics:
+  - 48 bits (6 bytes) in a standard MAC address.
+  - Represented by six groups of two hexadecimal digits.
+  - The first three bytes traditionally identify the manufacturer through an assigned organizational identifier (OUI).
+  - The remaining bytes are allocated according to the manufacturer's addressing scheme.
+  - Usually assigned to a network interface, rather than identifying an entire computer.
+  - Can sometimes be changed in software, a practice known as MAC spoofing.
+- Example: `00:1A:2B:3C:4D:5E`
+
+### Practical Demonstration with Wireshark
+
+- Open Wireshark and start a packet capture on the `enp0s3` interface devices
+
+```bash
+sudo wireshark
+```
+
+- Generate traffic by running `ping google.com`
+
+- Apply the display filter by network protocol `imcp`
+  - Because the **imcp - Internet Control Message Protocol** is used by the ping command
+
+- Select a packet and expand the Ethernet II section
+  - Examine the source and destination MAC addresses
+  - **Destination MAC**: Identifies the intended receiving interface.
+  - **Source MAC**: Identifies the sending interface.
+
+![Practical Demonstration with Wireshark](static/images/image_0117.png)
+
+![Practical Demonstration with Wireshark](static/images/image_0118.png)
+
 
 # Introducing the Linux shell
 
