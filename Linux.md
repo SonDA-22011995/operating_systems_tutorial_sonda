@@ -8971,6 +8971,7 @@ sudo ip link set dev eth2 up
 
 - A MAC address (Media Access Control address) identifies a network interface at Layer 2.
 - A single computer may have several MAC addresses because its Ethernet adapter, Wi-Fi adapter, and virtual network interfaces each have their own addresses.
+- How to check a MAC address on Linux `ip address show`
 - Characteristics:
   - 48 bits (6 bytes) in a standard MAC address.
   - Represented by six groups of two hexadecimal digits.
