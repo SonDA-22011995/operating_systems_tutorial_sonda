@@ -8907,6 +8907,14 @@ sudo ip link set dev <network-interface-name> down
 sudo ip link set dev <network-interface-name> up
 ```
 
+- Example
+
+```bash
+sudo ip link set dev eth2 down
+
+sudo ip link set dev eth2 up
+```
+
 - Why sudo is Required?
   - Changing the state of a network interface requires additional privileges.
   - Without `sudo`: `ip link set dev enp0s5 down` => Operation not permitted
