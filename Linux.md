@@ -632,6 +632,11 @@
     - [What Is a MAC Address?](#what-is-a-mac-address)
       - [Practical Demonstration with Wireshark](#practical-demonstration-with-wireshark)
     - [Network devices](#network-devices)
+  - [Network Layer - Layer 3](#network-layer---layer-3)
+    - [Data Link Layer vs. Network Layer](#data-link-layer-vs-network-layer)
+    - [What Is a Network?](#what-is-a-network)
+    - [IP Addresses and Routing](#ip-addresses-and-routing)
+      - [Useful Linux commands](#useful-linux-commands)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9011,6 +9016,63 @@ sudo wireshark
 | Bridge                     | Connects network segments and forwards frames based on MAC addresses.                | Traditionally implemented more in software.       |
 | Switch                     | Forwards Ethernet frames to the appropriate destination port based on MAC addresses. | Typically dedicated hardware with multiple ports. |
 | Wireless Access Point (AP) | Connects wireless devices to a wired network.                                        | Bridges Wi-Fi and Ethernet at Layer 2.            |
+
+## Network Layer - Layer 3
+
+### Data Link Layer vs. Network Layer
+
+- The Data Link Layer (Layer 2) enables communication between devices on the same local network using frames and MAC addresses. However, it cannot independently route data between different networks.
+- The Network Layer (Layer 3) solves this limitation by using packets and IP addresses to enable communication between devices across different networks.
+
+| Feature           | Data Link Layer (Layer 2)            | Network Layer (Layer 3)                  |
+| ----------------- | ------------------------------------ | ---------------------------------------- |
+| Data unit         | Frame                                | Packet                                   |
+| Addressing        | MAC address                          | IP address                               |
+| Main function     | Communication within a local network | Communication between different networks |
+| Forwarding device | Switch / Bridge                      | Router                                   |
+| Scope             | Local network segment                | Multiple interconnected networks         |
+| Key capability    | Frame forwarding                     | Packet routing                           |
+
+### What Is a Network?
+
+- A network is a group of interconnected devices that can communicate and share resources.
+- Common network devices include computers, servers, printers, switches, and routers.
+- There are two main network types discussed in this lecture:
+  - **LAN** (Local Area Network): Covers a small geographical area, such as a home or office.
+  - **WAN** (Wide Area Network): Covers larger geographical areas, connecting networks across cities, countries, or continents. The Internet is a global network of interconnected networks.
+
+### IP Addresses and Routing
+
+- An IP address identifies a device's network interface at the Network Layer.
+- A router uses its routing table to determine where to forward packets.
+- For example, when a computer accesses the Internet:
+  - If the destination is outside the local network, the computer typically sends the packet to its default gateway.
+  - The router checks its routing table to select the appropriate next hop.
+  - The packet is forwarded toward the destination through other routers as necessary.
+
+#### Useful Linux commands
+
+| Command                 | Syntax                     | Purpose                                                  |
+| ----------------------- | -------------------------- | -------------------------------------------------------- |
+| `ip addr show`          | `ip addr show [interface]` | Displays network interfaces and their IP addresses.      |
+| `ip route show`         | `ip route show`            | Displays the routing table, including the default route. |
+| `ping google.com`       | `ping [destination]`       | Tests connectivity by sending ICMP Echo Requests.        |
+| `traceroute google.com` | `traceroute [destination]` | Helps identify the network hops toward a destination.    |
+
+- In this command `ip route show`
+  - `192.168.1.1` is the default gateway
+    - If we want to access, for example, the Internet, we can send a packet to this IP and this device can then forward this for us into the Internet to the actual destination
+  - `192.168.1.1` is a private IP.
+    -  It is used within private networks and are not directly routable across the public Internet
+
+```bash
+ip route show
+
+# default via 192.168.2.1 dev eth2 proto kernel metric 35
+# 192.168.2.0/24 dev eth2 proto kernel scope link metric 291
+# 192.168.2.1 dev eth2 proto kernel scope link metric 35
+```
+
 
 # Introducing the Linux shell
 
