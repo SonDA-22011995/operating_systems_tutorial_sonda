@@ -9006,6 +9006,12 @@ sudo wireshark
 
 ### Network devices
 
+| Device                     | Main Function                                                                        | Key Characteristics                               |
+| -------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| Bridge                     | Connects network segments and forwards frames based on MAC addresses.                | Traditionally implemented more in software.       |
+| Switch                     | Forwards Ethernet frames to the appropriate destination port based on MAC addresses. | Typically dedicated hardware with multiple ports. |
+| Wireless Access Point (AP) | Connects wireless devices to a wired network.                                        | Bridges Wi-Fi and Ethernet at Layer 2.            |
+
 # Introducing the Linux shell
 
 ## What is a shell?
