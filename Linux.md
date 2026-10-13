@@ -630,7 +630,8 @@
     - [Ethernet (IEEE 802.3)](#ethernet-ieee-8023)
     - [Wi-Fi (IEEE 802.11)](#wi-fi-ieee-80211)
     - [What Is a MAC Address?](#what-is-a-mac-address)
-    - [Practical Demonstration with Wireshark](#practical-demonstration-with-wireshark)
+      - [Practical Demonstration with Wireshark](#practical-demonstration-with-wireshark)
+    - [Network devices](#network-devices)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8981,7 +8982,7 @@ sudo ip link set dev eth2 up
   - Can sometimes be changed in software, a practice known as MAC spoofing.
 - Example: `00:1A:2B:3C:4D:5E`
 
-### Practical Demonstration with Wireshark
+#### Practical Demonstration with Wireshark
 
 - Open Wireshark and start a packet capture on the `enp0s3` interface devices
 
@@ -9003,6 +9004,7 @@ sudo wireshark
 
 ![Practical Demonstration with Wireshark](static/images/image_0118.png)
 
+### Network devices
 
 # Introducing the Linux shell
 
