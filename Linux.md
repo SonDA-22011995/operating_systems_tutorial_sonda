@@ -637,6 +637,9 @@
     - [What Is a Network?](#what-is-a-network)
     - [IP Addresses and Routing](#ip-addresses-and-routing)
       - [Useful Linux commands](#useful-linux-commands)
+    - [Inspecting Network Packets with Wireshark](#inspecting-network-packets-with-wireshark)
+      - [Layer 3 – Network](#layer-3--network-1)
+      - [Layer 2 – Data link](#layer-2--data-link-1)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9073,6 +9076,32 @@ ip route show
 # 192.168.2.1 dev eth2 proto kernel scope link metric 35
 ```
 
+### Inspecting Network Packets with Wireshark
+
+- For More Details: Inspecting the Network at the Data Link Layer (OSI Layer 2) [Practical Demonstration with Wireshark](#practical-demonstration-with-wireshark)
+
+#### Layer 3 – Network
+
+- Step 1: Sending ICMP Echo Requests 
+
+```bash
+ping google.com
+```
+
+![ping command](static/images/image_0119.png)
+
+- Step 2: 
+  - When the computer pings Google, it first resolves google.com to an IP address. 
+  - The IP packet uses that address as its destination
+
+![resolves google.com](static/images/image_0120.png)
+
+#### Layer 2 – Data link
+
+- The router receives the frame, extracts the IP packet, and forwards it toward the Internet in a new frame.
+- The Ethernet frame is initially addressed to the MAC address of the local router
+
+![The router receives the frame](static/images/image_0121.png)
 
 # Introducing the Linux shell
 
