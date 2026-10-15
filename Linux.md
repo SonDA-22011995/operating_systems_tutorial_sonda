@@ -767,12 +767,12 @@
     - [Copying and moving files - The `cp` Command](#copying-and-moving-files---the-cp-command)
     - [Deleting files - The `rm` Command](#deleting-files---the-rm-command)
     - [Deleting directories - The `rmdir` Command](#deleting-directories---the-rmdir-command)
+    - [Disk Usage (`du` command)](#disk-usage-du-command)
     - [Read file Command (`cat`,`head`, `tail`)](#read-file-command-cathead-tail)
       - [The `cat` Command](#the-cat-command)
       - [`head` and `tail` Commands](#head-and-tail-commands)
       - [The `less` command](#the-less-command)
       - [The Word Count Program (`wc` command)](#the-word-count-program-wc-command)
-      - [Disk Usage (`du` command)](#disk-usage-du-command)
   - [Commands for file properties](#commands-for-file-properties)
     - [The `stat` command](#the-stat-command)
   - [Commands for locating files](#commands-for-locating-files)
@@ -10777,6 +10777,18 @@ rm -i output.txt
 
 - You must delete the hidden files first before rmdir will work.
 
+### Disk Usage (`du` command)
+
+- The `du` command tells you how much space a file or directory actually occupies on your storage.
+
+- Behavior and Summaries:
+  - Running `du` by itself shows the size of every item in the current directory - Example: `du`.
+  - `du filename.txt` shows the size of a specific file.
+  - `-s`: Provides a total summary of a directory rather than listing every subfolder.
+  - To avoid confusion over block sizes, use the `-h` flag. 
+    - This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
+
+
 ### Read file Command (`cat`,`head`, `tail`)
 
 #### The `cat` Command
@@ -10832,16 +10844,6 @@ rm -i output.txt
 
 - Example: `wc filename.txt`
 
-#### Disk Usage (`du` command)
-
-- The `du` command tells you how much space a file or directory actually occupies on your storage.
-
-- Behavior and Summaries:
-  - Running `du` by itself shows the size of every item in the current directory - Example: `du`.
-  - `du filename.txt` shows the size of a specific file.
-  - `-s`: Provides a total summary of a directory rather than listing every subfolder.
-  - To avoid confusion over block sizes, use the `-h` flag. 
-    - This forces the output into a "Human Readable" format (e.g., 168K, 10M, 2G)
 
 ## Commands for file properties
 
