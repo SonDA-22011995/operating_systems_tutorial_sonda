@@ -790,7 +790,7 @@
       - [Find Size Units](#find-size-units)
       - [Search by modified or accessed or created time](#search-by-modified-or-accessed-or-created-time)
       - [Find Tests](#find-tests)
-    - [How to edit files](#how-to-edit-files)
+  - [How to edit files](#how-to-edit-files)
   - [Pipelines](#pipelines)
     - [The `tee` command](#the-tee-command)
     - [The `grep` Command](#the-grep-command)
@@ -11213,7 +11213,7 @@ sudo find / -type f -amin -10
 | -user name     | Match files or directories belonging to `user`.                                                                                                                     | `find /home -user john`        |
 | -writable | Matches files or directories that are writable by the current user. | `find . -type f -writable` |
 
-### How to edit files
+## How to edit files
 
 - There's no build-in text editor for bash
 - We have to install additional software for that
