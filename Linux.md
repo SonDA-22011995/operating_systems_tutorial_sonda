@@ -640,12 +640,21 @@
     - [Inspecting Network Packets with Wireshark](#inspecting-network-packets-with-wireshark)
       - [Layer 3 – Network](#layer-3--network-1)
       - [Layer 2 – Data link](#layer-2--data-link-1)
-    - [Subnets](#subnets)
-      - [What Is a Subnet?](#what-is-a-subnet)
-      - [Why Do We Need Subnets?](#why-do-we-need-subnets)
     - [Network Communication](#network-communication)
       - [Communicating Within a Local Network](#communicating-within-a-local-network)
       - [Communicating With the Internet](#communicating-with-the-internet)
+    - [Subnets](#subnets)
+      - [What Is a Subnet?](#what-is-a-subnet)
+      - [Why Do We Need Subnets?](#why-do-we-need-subnets)
+    - [Subnet Masks and CIDR Notation](#subnet-masks-and-cidr-notation)
+      - [What Is a Subnet Mask?](#what-is-a-subnet-mask)
+      - [How Does a Subnet Mask Work?](#how-does-a-subnet-mask-work)
+        - [Logical AND Rules](#logical-and-rules)
+        - [Example: Destination on the Same Network](#example-destination-on-the-same-network)
+      - [Subnet Mask in Binary](#subnet-mask-in-binary)
+      - [CIDR Notation](#cidr-notation)
+      - [How Does a Subnet Mask Determine Network Size?](#how-does-a-subnet-mask-determine-network-size)
+      - [Inspecting the Subnet Mask on Linux](#inspecting-the-subnet-mask-on-linux)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -8734,6 +8743,7 @@ ip address show
 | **CIDR Prefix**    | `/24`                               | Specifies how many bits belong to the network portion of the IP address |
 | **Subnet Mask**    | `255.255.255.0`                     | Defines the network and host portions of an IPv4 address                |
 | **IPv6 Address**   | `inet6 fe80::5b41:22f3:c3b9:8190/64`      | Layer 3 IPv6 address assigned to the interface                          |
+| **Broadcast address** | `brd 192.168.2.255`| It is used to send a packet to all hosts within the same network. |
 
 ## Wireshark
 
@@ -9109,20 +9119,6 @@ ping google.com
 
 ![The router receives the frame](static/images/image_0121.png)
 
-### Subnets 
-
-#### What Is a Subnet?
-
-- A subnet (subnetwork) is a logical network within a larger network. 
-- Subnets allow us to divide large networks into smaller networks to improve network efficiency and management.
-
-#### Why Do We Need Subnets?
-
-- Reduce broadcast traffic: Too many broadcast messages can slow down a network.
-- Improve network efficiency: Dividing a large network into smaller subnets helps manage traffic more effectively.
-- Support network scalability: Subnets allow organizations to accommodate more users and devices.
-- Simplify network management: Network administrators can organize devices into separate network segments.
-
 ### Network Communication
 
 #### Communicating Within a Local Network
@@ -9168,6 +9164,109 @@ ping google.com
 ```
 
 ![Communicating With the Internet](static/images/image_0123.png)
+
+### Subnets 
+
+#### What Is a Subnet?
+
+- A subnet (subnetwork) is a logical network within a larger network. 
+- Subnets allow us to divide large networks into smaller networks to improve network efficiency and management.
+
+#### Why Do We Need Subnets?
+
+- Reduce broadcast traffic: Too many broadcast messages can slow down a network.
+- Improve network efficiency: Dividing a large network into smaller subnets helps manage traffic more effectively.
+- Support network scalability: Subnets allow organizations to accommodate more users and devices.
+- Simplify network management: Network administrators can organize devices into separate network segments.
+
+### Subnet Masks and CIDR Notation
+
+#### What Is a Subnet Mask?
+
+- A subnet mask is used to identify which portion of an IP address represents the network and which portion represents the host.
+- It helps a computer determine whether a destination IP address belongs to:
+  - The same network: Send the packet directly to the destination device.
+  - A different network: Send the packet to the default gateway (router), which forwards it toward the destination network.
+
+#### How Does a Subnet Mask Work?
+
+- A computer uses **a bitwise logical AND** operation to determine the network address.
+  - The computer performs a bitwise AND between an IP address and its subnet mask.
+
+##### Logical AND Rules
+
+| Bit A | Bit B | Result |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+##### Example: Destination on the Same Network
+
+- Suppose we have the following configuration:
+
+| Parameter | IP Address | Subnet Mask |
+|---|---|---|
+| Source | `192.168.1.3` | `255.255.255.0` |
+| Destination | `192.168.1.10` | `255.255.255.0` |
+
+- The subnet mask in binary is: `11111111.11111111.11111111.00000000`
+
+- Applying the bitwise AND operation
+  - Source IP:       `192.168.1.3`  - `11000000.10101000.00000001.00000011`
+  - Network address: `192.168.1.0`  - `11000000.10101000.00000001.00000000`
+  - Destination IP:  `192.168.1.10` - `11000000.10101000.00000001.00001010`
+  - Network address: `192.168.1.0`  - `11000000.10101000.00000001.00000000`
+
+- Both addresses produce the same network address.
+- **Result**: The destination belongs to the same network. The source can send the packet directly to the destination through the local network, without sending it to the default gateway.
+
+#### Subnet Mask in Binary
+
+- An IPv4 address contains 32 bits, divided into four octets of 8 bits each.
+- A subnet mask consists of consecutive `1` bits followed by consecutive `0` bits
+  - Bits set to `1` identify the network portion.
+  - Bits set to `0` identify the host portion.
+  - This is **not a valid** standard subnet mask `11111111.11111111.00000000.11111111`
+- Example:
+  - Subnet mask: `11111111.11111111.11111111.00000000`
+  - Decimal notation: `255.255.255.0`
+
+#### CIDR Notation
+
+- CIDR (Classless Inter-Domain Routing) notation provides a shorter way to represent a subnet mask.
+- Instead of writing the entire subnet mask, we append a slash followed by the number of consecutive `1` bits.
+- For example:
+  - IP address: 192.168.1.3
+  - Subnet mask: 255.255.255.0
+  - CIDR notation: 192.168.1.3/24
+  - The `/24` means that the first 24 bits of the subnet mask are 1, leaving 8 bits for host addresses.
+
+#### How Does a Subnet Mask Determine Network Size?
+
+- The number of host bits determines how many IPv4 addresses a subnet contains
+- The formula is **Total addresses = 2^number of host bits**
+- For conventional IPv4 subnets **Usable host addresses = 2^number of host bits - 2**
+  - The two reserved addresses are:
+    - Network address: Identifies the subnet.
+    - Broadcast address: Used to send traffic to all hosts on the subnet.
+- Example
+  - IP address: 192.168.1.3/24
+  - Subnet mask: 255.255.255.0
+  - Total addresses = 2^8 = 256
+  - Usable addresses = 256 - 2 = 254
+
+| Property | Address |
+|---|---|
+| Network address | `192.168.1.0` |
+| First usable address | `192.168.1.1` |
+| Last usable address | `192.168.1.254` |
+| Broadcast address | `192.168.1.255` |
+
+#### Inspecting the Subnet Mask on Linux
+
+- For more detail: [Viewing Network Configuration](#viewing-network-configuration)
 
 # Introducing the Linux shell
 
