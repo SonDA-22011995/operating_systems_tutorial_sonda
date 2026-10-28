@@ -655,6 +655,11 @@
     - [Network Communication](#network-communication)
       - [Communicating Within a Local Network](#communicating-within-a-local-network)
       - [Communicating With the Internet](#communicating-with-the-internet)
+    - [How Devices Determine the Destination MAC Address](#how-devices-determine-the-destination-mac-address)
+      - [IP Packets and Ethernet Frames](#ip-packets-and-ethernet-frames)
+      - [How Does a Computer Find the Destination MAC Address?](#how-does-a-computer-find-the-destination-mac-address)
+      - [ARP Cache](#arp-cache)
+      - [ARP Broadcast Messages](#arp-broadcast-messages)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9268,6 +9273,58 @@ ping google.com
 
 ![Communicating With the Internet](static/images/image_0123.png)
 
+### How Devices Determine the Destination MAC Address
+
+#### IP Packets and Ethernet Frames
+
+- When a computer sends data to another device, it uses both IP addresses and MAC addresses.
+- IP address (Layer 3 – Network Layer): Identifies the source and destination devices at the IP layer.
+- MAC address (Layer 2 – Data Link Layer): Identifies the destination interface on the local Ethernet network.
+- Before transmitting an IP packet over Ethernet, the computer encapsulates it inside an Ethernet frame.
+- The IP packet contains:
+  - Source IP address
+  - Destination IP address
+  - Payload (data)
+- The Ethernet frame contains:
+  - Source MAC address
+  - Destination MAC address
+  - Encapsulated IP packet
+- **Key point**: The destination **IP address identifies the ultimate destination**, while the destination **MAC address identifies the next device** that should receive the Ethernet frame.
+
+#### How Does a Computer Find the Destination MAC Address?
+
+- Computers use the **Address Resolution Protocol (ARP)** to resolve an IPv4 address into its corresponding MAC address on the local network.
+- For example, suppose Computer A wants to send a packet to Computer B.
+  - Computer A checks whether the destination IP address belongs to its local subnet.
+  - If the destination is on the same subnet, Computer A needs Computer B's MAC address.
+  - Computer A checks its **ARP cache** for an existing IP-to-MAC address mapping.
+  - If no mapping exists, **Computer A broadcasts an ARP request** asking which device owns the destination IP address.
+  - The device with that IP address responds with its MAC address.
+  - Computer A stores the mapping in its ARP cache and sends the Ethernet frame to the destination MAC address.
+
+#### ARP Cache
+
+- Devices maintain an ARP cache containing recently learned IP-to-MAC address mappings.
+- You can inspect the ARP cache using the following commands
+
+```bash
+ip neigh show
+```
+
+- Clear ARP Cache
+
+```bash
+sudo ip neigh flush all
+```
+
+#### ARP Broadcast Messages
+
+- ARP uses broadcast messages to discover which device owns a particular IPv4 address.
+- For example: Computer 192.168.2.43 wants to find the MAC address associated with 192.168.2.234
+  - It broadcasts a request asking: "Who has IP address 192.168.2.234? Please tell me your MAC address."
+  - The device using that IP address responds with its MAC address.
+
+![ARP Broadcast Messages](static/images/image_0124.png)
 
 # Introducing the Linux shell
 
