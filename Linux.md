@@ -640,9 +640,6 @@
     - [Inspecting Network Packets with Wireshark](#inspecting-network-packets-with-wireshark)
       - [Layer 3 – Network](#layer-3--network-1)
       - [Layer 2 – Data link](#layer-2--data-link-1)
-    - [Network Communication](#network-communication)
-      - [Communicating Within a Local Network](#communicating-within-a-local-network)
-      - [Communicating With the Internet](#communicating-with-the-internet)
     - [Subnets](#subnets)
       - [What Is a Subnet?](#what-is-a-subnet)
       - [Why Do We Need Subnets?](#why-do-we-need-subnets)
@@ -655,6 +652,9 @@
       - [CIDR Notation](#cidr-notation)
       - [How Does a Subnet Mask Determine Network Size?](#how-does-a-subnet-mask-determine-network-size)
       - [Inspecting the Subnet Mask on Linux](#inspecting-the-subnet-mask-on-linux)
+    - [Network Communication](#network-communication)
+      - [Communicating Within a Local Network](#communicating-within-a-local-network)
+      - [Communicating With the Internet](#communicating-with-the-internet)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9119,52 +9119,6 @@ ping google.com
 
 ![The router receives the frame](static/images/image_0121.png)
 
-### Network Communication
-
-#### Communicating Within a Local Network
-
-- When one computer communicates with another computer in the same local network, it can send an Ethernet frame directly to the destination computer's MAC address.
-- Communication Process
-  - The sender determines the destination IP address.
-  - It identifies the destination MAC address, typically using ARP for IPv4.
-  - It encapsulates the packet inside an Ethernet frame.
-  - The frame is transmitted to the destination MAC address.
-  - The destination computer receives the frame and processes the packet.
-- In this scenario, the router's Layer 3 routing function is not required to forward the packet between devices in the same subnet.
-- However, a switch or wireless access point (WAP) may still be involved in transmitting the frame to the correct device.
-
-- Example: Ping a Local Device (a printer)
-  - Destination IP: The printer's IP address.
-  - Destination MAC: The printer's MAC address.
-
-```bash
-# a printer's IPv4 address
-
-ping 192.168.2.234 
-```
-
-![Communicating Within a Local Network](static/images/image_0122.png)
-
-#### Communicating With the Internet
-
-- When a computer sends data to a destination outside its local network, it sends the frame to its default gateway, usually the local router.
-- Communication Process
-  - The sender determines that the destination IP address is outside its local network.
-  - It identifies the MAC address of the default gateway.
-  - It encapsulates the packet inside an Ethernet frame addressed to the gateway's MAC address.
-  - The router receives the frame and extracts the packet.
-  - The router forwards the packet toward its destination
-- Important: The destination IP address remains the intended remote destination, while the destination MAC address identifies the next hop on the local network.
-- Example : Ping an Internet Host
-  - Destination IP: An IP address associated with Google.
-  - Destination MAC: The MAC address of the router.
-
-```bash
-ping google.com
-```
-
-![Communicating With the Internet](static/images/image_0123.png)
-
 ### Subnets 
 
 #### What Is a Subnet?
@@ -9267,6 +9221,53 @@ ping google.com
 #### Inspecting the Subnet Mask on Linux
 
 - For more detail: [Viewing Network Configuration](#viewing-network-configuration)
+
+### Network Communication
+
+#### Communicating Within a Local Network
+
+- When one computer communicates with another computer in the same local network, it can send an Ethernet frame directly to the destination computer's MAC address.
+- Communication Process
+  - The sender determines the destination IP address.
+  - It identifies the destination MAC address, typically using ARP for IPv4.
+  - It encapsulates the packet inside an Ethernet frame.
+  - The frame is transmitted to the destination MAC address.
+  - The destination computer receives the frame and processes the packet.
+- In this scenario, the router's Layer 3 routing function is not required to forward the packet between devices in the same subnet.
+- However, a switch or wireless access point (WAP) may still be involved in transmitting the frame to the correct device.
+
+- Example: Ping a Local Device (a printer)
+  - Destination IP: The printer's IP address.
+  - Destination MAC: The printer's MAC address.
+
+```bash
+# a printer's IPv4 address
+
+ping 192.168.2.234 
+```
+
+![Communicating Within a Local Network](static/images/image_0122.png)
+
+#### Communicating With the Internet
+
+- When a computer sends data to a destination outside its local network, it sends the frame to its default gateway, usually the local router.
+- Communication Process
+  - The sender determines that the destination IP address is outside its local network.
+  - It identifies the MAC address of the default gateway.
+  - It encapsulates the packet inside an Ethernet frame addressed to the gateway's MAC address.
+  - The router receives the frame and extracts the packet.
+  - The router forwards the packet toward its destination
+- Important: The destination IP address remains the intended remote destination, while the destination MAC address identifies the next hop on the local network.
+- Example : Ping an Internet Host
+  - Destination IP: An IP address associated with Google.
+  - Destination MAC: The MAC address of the router.
+
+```bash
+ping google.com
+```
+
+![Communicating With the Internet](static/images/image_0123.png)
+
 
 # Introducing the Linux shell
 
