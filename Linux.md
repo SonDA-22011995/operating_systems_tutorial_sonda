@@ -663,6 +663,9 @@
     - [Managing IP Addresses in Linux (Viewing/Adding/Removing/Assigning IP Address)](#managing-ip-addresses-in-linux-viewingaddingremovingassigning-ip-address)
       - [Viewing IP Addresses](#viewing-ip-addresses)
       - [Adding an IP Address](#adding-an-ip-address)
+      - [Removing an IP Address](#removing-an-ip-address)
+      - [Dynamic IP Addresses and DHCP](#dynamic-ip-addresses-and-dhcp)
+      - [DHCP Reservation](#dhcp-reservation)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9349,9 +9352,15 @@ sudo ip neigh flush all
   - `<PREFIX_LENGTH>`: The network prefix length, which defines the subnet mask.
   - `dev <INTERFACE>`: Specifies the network interface.
 
+- Important points:
+  - A network interface can have multiple IP addresses.
+  - Adding an IP address does not necessarily replace the existing address.
+
 - Example: 
   - This command adds the IP address `192.168.2.199` with a `/24` prefix to the `eth2` interface.
   - We can verify the result using `ip addr show`
+  - The `ip addr add` command requires elevated privileges, so we typically use `sudo`.
+  - The address added using this command is generally temporary and will not persist after a reboot unless configured through the system's network configuration.
 
 ```bash
 sudo ip addr add 192.168.2.199/24 dev eth2
@@ -9366,6 +9375,50 @@ ip addr show
 #     inet6 fe80::5b41:22f3:c3b9:8190/64 scope link nodad noprefixroute
 #        valid_lft forever preferred_lft forever
 ```
+
+```bash
+ip addr add 192.168.2.199/24 dev enp0s3
+
+# RTNETLINK answers: Operation not permitted
+```
+
+#### Removing an IP Address
+
+- Syntax: `sudo ip addr del <IP_ADDRESS>/<PREFIX_LENGTH> dev <INTERFACE>`
+
+
+#### Dynamic IP Addresses and DHCP
+
+- In most local area networks (LANs), a router or dedicated DHCP server automatically assigns IP addresses to client devices.
+- This process uses Dynamic Host Configuration Protocol (DHCP).
+- DHCP can automatically provide clients with:
+  - IP addresses.
+  - Subnet masks or prefix lengths.
+  - Default gateway addresses.
+  - DNS server addresses.
+- Dynamic IP assignment reduces the need to configure each client manually
+
+
+#### DHCP Reservation
+
+- Instead of manually configuring a static IP address on a device, we can configure a DHCP reservation on the router.
+- A DHCP reservation maps a device's MAC address to a preferred IP address.
+- When a device requests an IP address through DHCP, the server can assign its reserved address.
+- For example
+
+| MAC Address       | Reserved IP Address |
+|-------------------|---------------------|
+| AA:BB:CC:11:22:33 | 192.168.1.100       |
+| DD:EE:FF:44:55:66 | 192.168.1.101       |
+
+- Advantages of DHCP reservations:
+  - Centralized IP address management.
+  - Easier administration than manually configuring individual devices.
+  - Consistent IP addresses for selected devices.
+  - Reduced risk of address conflicts when the DHCP server and network are configured correctly.
+
+- It might be better to configure a MAC -> IP mapping in our router backend 
+  - Might be called something like: LAN Setup / Reserved addresses / DHCP reservations / Address Reservation / Reserved Addresses / Bind IP to MAC
 
 
 # Introducing the Linux shell
