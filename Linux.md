@@ -9420,6 +9420,20 @@ ip addr add 192.168.2.199/24 dev enp0s3
 - It might be better to configure a MAC -> IP mapping in our router backend 
   - Might be called something like: LAN Setup / Reserved addresses / DHCP reservations / Address Reservation / Reserved Addresses / Bind IP to MAC
 
+- Static IP Addresses vs. DHCP Reservations
+  - Both methods can provide a predictable IP address, but they work differently.
+  - For a home network, DHCP reservations are often convenient for devices such as printers, NAS devices, and computers that need consistent IP addresses.
+  - In a corporate network, servers may use manually configured static IP addresses or DHCP reservations, depending on the organization's network design.
+  - Regardless of the method, IP address assignments must be coordinated to prevent conflicts.
+
+| Feature | Manually Configured Static IP | DHCP Reservation |
+|---------|-------------------------------|------------------|
+| Configuration location | On the device | On the DHCP server or router |
+| IP assignment | Configured directly on the interface | Assigned through DHCP |
+| Centralized management | No | Yes |
+| Requires DHCP | No | Yes |
+| Common use cases | Servers, network infrastructure | Clients or servers that need consistent addresses |
+| Potential IP conflicts | Possible if addresses are not coordinated | Possible if reservations and address pools are misconfigured |
 
 # Introducing the Linux shell
 
