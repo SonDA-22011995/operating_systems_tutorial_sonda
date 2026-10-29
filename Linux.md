@@ -660,6 +660,9 @@
       - [How Does a Computer Find the Destination MAC Address?](#how-does-a-computer-find-the-destination-mac-address)
       - [ARP Cache](#arp-cache)
       - [ARP Broadcast Messages](#arp-broadcast-messages)
+    - [Managing IP Addresses in Linux (Viewing/Adding/Removing/Assigning IP Address)](#managing-ip-addresses-in-linux-viewingaddingremovingassigning-ip-address)
+      - [Viewing IP Addresses](#viewing-ip-addresses)
+      - [Adding an IP Address](#adding-an-ip-address)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9309,6 +9312,10 @@ ping google.com
 
 ```bash
 ip neigh show
+
+# 192.168.2.234 dev eth2 lladdr 00:26:73:b1:0a:68 REACHABLE
+# 192.168.2.1 dev eth2 lladdr 14:49:bc:6e:82:90 REACHABLE
+# 169.254.73.152 dev loopback0 lladdr 00:11:22:33:44:55 PERMANENT
 ```
 
 - Clear ARP Cache
@@ -9325,6 +9332,41 @@ sudo ip neigh flush all
   - The device using that IP address responds with its MAC address.
 
 ![ARP Broadcast Messages](static/images/image_0124.png)
+
+### Managing IP Addresses in Linux (Viewing/Adding/Removing/Assigning IP Address)
+
+#### Viewing IP Addresses
+
+- Syntax: `ip addr show`
+- For more detail: [Viewing Network Configuration](#viewing-network-configuration)
+
+#### Adding an IP Address
+
+- Syntax: `sudo ip addr add <IP_ADDRESS>/<PREFIX_LENGTH> dev <INTERFACE>`
+  - `sudo`: Executes the command with elevated privileges.
+  - `ip addr add`: Adds an IP address to an interface.
+  - `<IP_ADDRESS>`: The IP address to assign.
+  - `<PREFIX_LENGTH>`: The network prefix length, which defines the subnet mask.
+  - `dev <INTERFACE>`: Specifies the network interface.
+
+- Example: 
+  - This command adds the IP address `192.168.2.199` with a `/24` prefix to the `eth2` interface.
+  - We can verify the result using `ip addr show`
+
+```bash
+sudo ip addr add 192.168.2.199/24 dev eth2
+
+ip addr show
+# eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1492 qdisc mq state UP group default qlen 1000
+#     link/ether 54:e4:ed:4f:31:b1 brd ff:ff:ff:ff:ff:ff
+#     inet 192.168.2.44/24 brd 192.168.2.255 scope global noprefixroute eth2
+#        valid_lft forever preferred_lft forever
+#     inet 192.168.2.199/24 scope global secondary eth2
+#        valid_lft forever preferred_lft forever
+#     inet6 fe80::5b41:22f3:c3b9:8190/64 scope link nodad noprefixroute
+#        valid_lft forever preferred_lft forever
+```
+
 
 # Introducing the Linux shell
 
