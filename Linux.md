@@ -660,7 +660,7 @@
       - [How Does a Computer Find the Destination MAC Address?](#how-does-a-computer-find-the-destination-mac-address)
       - [ARP Cache](#arp-cache)
       - [ARP Broadcast Messages](#arp-broadcast-messages)
-    - [Managing IP Addresses in Linux (Viewing/Adding/Removing/Assigning IP Address)](#managing-ip-addresses-in-linux-viewingaddingremovingassigning-ip-address)
+    - [Managing IP Addresses in Linux (Viewing/Adding/Removing IP Address)](#managing-ip-addresses-in-linux-viewingaddingremoving-ip-address)
       - [Viewing IP Addresses](#viewing-ip-addresses)
       - [Adding an IP Address](#adding-an-ip-address)
       - [Removing an IP Address](#removing-an-ip-address)
@@ -9336,7 +9336,7 @@ sudo ip neigh flush all
 
 ![ARP Broadcast Messages](static/images/image_0124.png)
 
-### Managing IP Addresses in Linux (Viewing/Adding/Removing/Assigning IP Address)
+### Managing IP Addresses in Linux (Viewing/Adding/Removing IP Address)
 
 #### Viewing IP Addresses
 
