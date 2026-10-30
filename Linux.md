@@ -666,6 +666,9 @@
       - [Removing an IP Address](#removing-an-ip-address)
       - [Dynamic IP Addresses and DHCP](#dynamic-ip-addresses-and-dhcp)
       - [DHCP Reservation](#dhcp-reservation)
+    - [Inspecting and Modifying Network Routes in Linux](#inspecting-and-modifying-network-routes-in-linux)
+      - [What Is a Routing Table?](#what-is-a-routing-table)
+      - [Inspecting the Routing Table](#inspecting-the-routing-table)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9434,6 +9437,67 @@ ip addr add 192.168.2.199/24 dev enp0s3
 | Requires DHCP | No | Yes |
 | Common use cases | Servers, network infrastructure | Clients or servers that need consistent addresses |
 | Potential IP conflicts | Possible if addresses are not coordinated | Possible if reservations and address pools are misconfigured |
+
+### Inspecting and Modifying Network Routes in Linux
+
+#### What Is a Routing Table?
+
+- A routing table is a data structure maintained by the operating system that determines where to send IP packets to reach their destinations.
+
+- It contains information such as:
+  - Destination network: The destination IP address or network.
+  - Gateway: The next-hop router used to reach the destination.
+  - Network interface: The interface used to send packets.
+  - Subnet mask / prefix length: Determines which destination IP addresses match a route
+
+#### Inspecting the Routing Table
+
+- Display all routes `ip route show table all`
+  - This command displays the current IPv4 routing table `ip route show` or `ip -4 route show`
+  - This command displays the current IPv4 routing table `ip -6 route show`
+
+```bash
+ip -4 route show table all
+
+# 127.0.0.1 via 169.254.73.152 dev loopback0 table 127 proto kernel src 127.0.0.1 onlink
+# default via 192.168.2.1 dev eth2 proto kernel metric 35
+# 192.168.2.0/24 dev eth2 proto kernel scope link metric 291
+# 192.168.2.1 dev eth2 proto kernel scope link metric 35
+# local 10.255.255.254 dev lo table local proto kernel scope host src 10.255.255.254
+# broadcast 10.255.255.254 dev lo table local proto kernel scope link src 10.255.255.254
+# local 127.0.0.0/8 dev lo table local proto kernel scope host src 127.0.0.1
+# local 127.0.0.1 dev lo table local proto kernel scope host src 127.0.0.1
+# broadcast 127.255.255.255 dev lo table local proto kernel scope link src 127.0.0.1
+# local 192.168.2.199 dev eth2 table local proto kernel scope host src 192.168.2.199
+# broadcast 192.168.2.255 dev eth2 table local proto kernel scope link src 192.168.2.199
+```
+
+- Explanation
+
+| Field             | Meaning                  |Example                    |
+| ------------------|------------------------- | ------------------------- |
+| `127.0.0.1 via 169.254.73.152 dev loopback0`   | Defines a route to 127.0.0.1 through the loopback0 interface. | `127.0.0.1 via 169.254.73.152 dev loopback0 table 127 proto kernel src 127.0.0.1 onlink` |
+| `default`         | The default route, used when no more specific matching route is available.        | `default via 192.168.2.1`   |
+| `192.168.2.0/24`  | The destination network prefix.                                                   | `192.168.2.0/24`            |
+| `via`             | Specifies the gateway or next-hop IP address.                                     | `via 192.168.2.1`           |
+| `dev`             | Specifies the network interface used to forward packets.                          | `dev eth2`                  |
+| `proto`           | Indicates the protocol or source associated with the route.                       | `proto kernel`              |
+| `scope`           | Defines the scope of the route.                                                   | `scope link`, `scope host`  |
+| `scope link`  | The route applies to destinations directly reachable on the local link, typically without requiring a gateway. | `192.168.2.0/24 dev eth2 ... scope link`      |
+| `scope host`  | The route applies to destinations on the local machine.                                                      | `local 127.0.0.1 ... scope host`             |
+| `src`             | Specifies the preferred source IP address when using the route.                   | `src 192.168.2.199`         |
+| `metric`          | Represents the route's cost and can be used to compare otherwise suitable routes. | `metric 35`                 |
+| `table`           | Identifies the routing table containing the route.                                | `table local`, `table 127`  |
+| `table 127`   | A routing table identified by the numeric ID `127`. It contains the first route in the output. | |
+| `main table`  | The primary routing table, which contains ordinary routes such as the default route and LAN routes. It is used for most traffic unless other routing policy rules affect route selection. | |
+| `local table` | A kernel-managed table used to handle local addresses and special address types, such as broadcast addresses. | |
+| `local`           | Indicates a route for an address recognized as local by the system.               | `local 192.168.2.199`       |
+| `broadcast`       | Indicates a route associated with a broadcast address.                            | `broadcast 192.168.2.255`  |
+| `onlink`          | Tells the kernel to treat the next hop as directly reachable on the link.         | `onlink`                    |
+
+
+
+
 
 # Introducing the Linux shell
 
