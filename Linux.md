@@ -9696,6 +9696,18 @@ sudo ip route del default
 
 ##### Scenario 3: A computer on the main LAN accesses the secondary LAN
 
+- Suppose computer `192.168.1.27` wants to communicate with `192.168.2.2`
+- Without a specific route, the computer might send the packet to its default gateway, `192.168.1.1`
+- If the main router does not have a route to `192.168.2.0/24`, it cannot correctly forward the packet to the secondary LAN.
+- To resolve this, configure a route on the main computer
+
+```bash
+sudo ip route add 192.168.2.0/24 via 192.168.1.5 dev eth0
+```
+
+- Now, traffic destined for `192.168.2.0/24` is sent to the secondary router at `192.168.1.5`
+- The secondary router can then forward the packet to the destination computer
+
 # Introducing the Linux shell
 
 ## What is a shell?
