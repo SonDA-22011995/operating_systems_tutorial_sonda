@@ -669,6 +669,13 @@
     - [Inspecting and Modifying Network Routes in Linux](#inspecting-and-modifying-network-routes-in-linux)
       - [What Is a Routing Table?](#what-is-a-routing-table)
       - [Inspecting the Routing Table](#inspecting-the-routing-table)
+      - [Inspecting the Route to a Specific Destination](#inspecting-the-route-to-a-specific-destination)
+      - [Adding a Route](#adding-a-route)
+      - [Removing a Route](#removing-a-route)
+      - [Why configure routes manually?](#why-configure-routes-manually)
+        - [Scenario 1: A computer on the secondary LAN accesses the Internet](#scenario-1-a-computer-on-the-secondary-lan-accesses-the-internet)
+        - [Scenario 2: A computer on the secondary LAN accesses a computer on the main LAN](#scenario-2-a-computer-on-the-secondary-lan-accesses-a-computer-on-the-main-lan)
+        - [Scenario 3: A computer on the main LAN accesses the secondary LAN](#scenario-3-a-computer-on-the-main-lan-accesses-the-secondary-lan)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9476,11 +9483,11 @@ ip -4 route show table all
 
 | Field             | Meaning                  |Example                    |
 | ------------------|------------------------- | ------------------------- |
-| `127.0.0.1 via 169.254.73.152 dev loopback0`   | Defines a route to 127.0.0.1 through the loopback0 interface. | `127.0.0.1 via 169.254.73.152 dev loopback0 table 127 proto kernel src 127.0.0.1 onlink` |
+| `127.0.0.1 via 169.254.73.152 dev loopback0...`   | Defines a route to 127.0.0.1 through the loopback0 interface. | `127.0.0.1 via 169.254.73.152 dev loopback0 table 127 proto kernel src 127.0.0.1 onlink` |
 | `default`         | The default route, used when no more specific matching route is available.        | `default via 192.168.2.1`   |
 | `192.168.2.0/24`  | The destination network prefix.                                                   | `192.168.2.0/24`            |
 | `via`             | Specifies the gateway or next-hop IP address.                                     | `via 192.168.2.1`           |
-| `dev`             | Specifies the network interface used to forward packets.                          | `dev eth2`                  |
+| `dev`             | Specifies the network interface used to forward packets.                          | `dev eth2`, `dev lo`, `dev loopback0`                  |
 | `proto`           | Indicates the protocol or source associated with the route.                       | `proto kernel`              |
 | `scope`           | Defines the scope of the route.                                                   | `scope link`, `scope host`  |
 | `scope link`  | The route applies to destinations directly reachable on the local link, typically without requiring a gateway. | `192.168.2.0/24 dev eth2 ... scope link`      |
@@ -9490,14 +9497,204 @@ ip -4 route show table all
 | `table`           | Identifies the routing table containing the route.                                | `table local`, `table 127`  |
 | `table 127`   | A routing table identified by the numeric ID `127`. It contains the first route in the output. | |
 | `main table`  | The primary routing table, which contains ordinary routes such as the default route and LAN routes. It is used for most traffic unless other routing policy rules affect route selection. | |
-| `local table` | A kernel-managed table used to handle local addresses and special address types, such as broadcast addresses. | |
-| `local`           | Indicates a route for an address recognized as local by the system.               | `local 192.168.2.199`       |
+| `table local` | A kernel-managed table used to handle local addresses and special address types, such as broadcast addresses. | `local 10.255.255.254 dev lo table local...` |
+| `local`           | Indicates a route for an address recognized as local by the system (IPv4 address on this machine)             | `local 192.168.2.199`       |
 | `broadcast`       | Indicates a route associated with a broadcast address.                            | `broadcast 192.168.2.255`  |
 | `onlink`          | Tells the kernel to treat the next hop as directly reachable on the link.         | `onlink`                    |
 
 
+#### Inspecting the Route to a Specific Destination
 
+- Syntax `ip route get <destination_IP>`
+- This command shows how Linux would route a packet to a particular destination.
 
+- Example: Accessing a remote IP address
+  - Possible output: `8.8.8.8 via 192.168.2.1 dev eth2 src 192.168.2.199 uid 1000`
+  - Explanation:
+    - Destination: `8.8.8.8`
+    - Gateway (Router ipv4 address): `192.168.2.1`
+    - Interface (NIC): `eth2` 
+    - Source IP (IPv4 address on this device): `192.168.1.199`
+
+```bash
+ip route get 8.8.8.8
+
+# 8.8.8.8 via 192.168.2.1 dev eth2 src 192.168.2.199 uid 1000
+#     cache
+```
+
+- Example: Accessing a computer on the local network (Printer)
+  - Possible output: `192.168.2.234 dev eth2 src 192.168.2.199 uid 1000`
+  - Explanation:
+    - Because `192.168.2.234` belongs to the directly connected network `192.168.2.0/24`, Linux can send packets directly through eth0 without using a gateway.
+    - The computer uses ARP to discover the destination's MAC address before sending the Ethernet frame, assuming the address is not already in its neighbor cache.
+
+```bash
+ip route get 192.168.2.234
+
+# 192.168.2.234 dev eth2 src 192.168.2.199 uid 1000
+#     cache
+```
+
+#### Adding a Route
+
+- Syntax `sudo ip route add <destination_network>/<prefix> via <gateway_ip> dev <interface>`
+- Linux allows administrators to add routes manually
+- Example: Add a route to a single IP address
+  - This route specifies that packets destined for `9.9.9.9` should be sent through gateway `192.168.2.35` using interface eth0
+  - The `/32` prefix represents a single `9.9.9.9` IPv4 address because all `32` bits must match.
+  - Consequently, this route applies specifically to `9.9.9.9`, rather than the entire `9.9.9.0/24` network.
+    - Here are examples belongs to `9.9.9.0/24` network: `9.9.9.1`, `9.9.9.2`, `9.9.9.10`, `9.9.9.50` ...
+
+| Prefix | Network bits | Host bits | Meaning                        |
+| ------ | ------------ | --------- | ------------------------------ |
+| `/32`  | 32           | 0         | Matches exactly one IP address |
+| `/24`  | 24           | 8         | Matches the first 24 bits      |
+| `/16`  | 16           | 16        | Matches the first 16 bits      |
+| `/8`   | 8            | 24        | Matches the first 8 bits       |
+| `/0`   | 0            | 32        | Matches all IPv4 addresses     |
+
+```bash
+ip route show
+
+# default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100 
+# default via 192.168.2.1 dev enp0s8 proto dhcp src 192.168.2.83 metric 101 
+# 10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100 
+# 192.168.2.0/24 dev enp0s8 proto kernel scope link src 192.168.2.83 metric 101 
+
+ip route get 9.9.9.9
+
+# 9.9.9.9 via 192.168.2.199 dev enp0s8 src 192.168.2.83 uid 1000 
+#     cache 
+
+sudo ip route add 9.9.9.9/32 via 192.168.2.199 dev enp0s8 
+
+ip route get 9.9.9.9
+
+# 9.9.9.9 via 192.168.2.199 dev enp0s8 src 192.168.2.83 uid 1000 
+#     cache 
+
+ping -c 4 9.9.9.9
+
+# PING 9.9.9.9 (9.9.9.9) 56(84) bytes of data.
+# 
+# --- 9.9.9.9 ping statistics ---
+# 4 packets transmitted, 0 received, 100% packet loss, time 3149ms
+
+sudo ip route del 9.9.9.9 via 192.168.2.199 dev enp0s8
+
+ip route get 9.9.9.9
+
+# 9.9.9.9 via 10.0.2.2 dev enp0s3 src 10.0.2.15 uid 1000 
+#     cache 
+
+ping -c 4 9.9.9.9
+
+# PING 9.9.9.9 (9.9.9.9) 56(84) bytes of data.
+# 64 bytes from 9.9.9.9: icmp_seq=1 ttl=255 time=66.8 ms
+# 64 bytes from 9.9.9.9: icmp_seq=2 ttl=255 time=67.1 ms
+# 64 bytes from 9.9.9.9: icmp_seq=3 ttl=255 time=69.0 ms
+# 64 bytes from 9.9.9.9: icmp_seq=4 ttl=255 time=67.8 ms
+# 
+# --- 9.9.9.9 ping statistics ---
+# 4 packets transmitted, 4 received, 0% packet loss, time 3053ms
+# rtt min/avg/max/mdev = 66.825/67.660/68.961/0.829 ms
+```
+
+#### Removing a Route
+
+- Syntax: `sudo ip route del [destination] [via gateway] [dev interface]`
+- Remove a route to a single IP address
+
+```bash
+sudo ip route del 9.9.9.9/32
+```
+
+- Remove a route to an entire subnet
+
+```bash
+sudo ip route del 192.168.2.0/24
+```
+
+- Delete a route via a specific gateway
+
+```bash
+sudo ip route del 192.168.10.0/24 via 192.168.2.1
+```
+
+- Delete a route through a specific network interface
+
+```bash
+sudo ip route del 192.168.2.0/24 dev eth0
+```
+
+- You can also specify the gateway and interface to identify the route
+
+```bash
+sudo ip route del 192.168.2.0/24 via 192.168.1.5 dev eth0
+```
+
+- Remove default router
+
+```bash
+sudo ip route del default
+```
+
+#### Why configure routes manually?
+
+- Manual routes are useful when:
+  - A network contains multiple routers.
+  - Different subnets are connected through different gateways.
+  - Traffic to a particular network must use a specific gateway.
+  - A destination cannot be reached through the default gateway.
+
+```
+                         Internet
+                            |
+                            |
+                    +----------------+
+                    |    Router 1    |
+                    |    Gateway     |
+                    +----------------+
+                            |
+             +--------------+--------------+
+             |              |              |
+             |              |              |
+        PC: 192.168.1.2  Another PC    Router 2 (WAN)
+        Mask: /24                      IP: 192.168.1.5
+                                       Mask: /24
+                                            |
+                                     +----------------+
+                                     |    Router 2    |
+                                     |  LAN: 192.168.2.1
+                                     +----------------+
+                                            |
+                              +-------------+-------------+
+                              |             |             |
+                              |             |             |
+                         PC: 192.168.2.2 PC: 192.168.2.3 PC: 192.168.2.4
+                         Mask: /24       Mask: /24       Mask: /24
+```
+
+##### Scenario 1: A computer on the secondary LAN accesses the Internet
+
+- Suppose the computer `192.168.2.2` wants to communicate with `8.8.8.8`
+- The packet follows this path:
+  - The computer identifies `8.8.8.8` as an address outside its local subnet.
+  - It sends the packet to its default gateway, 192.168.2.1.
+  - The secondary router forwards the packet to the main router, `192.168.1.1`
+  - The main router forwards the packet toward the Internet.
+
+##### Scenario 2: A computer on the secondary LAN accesses a computer on the main LAN
+
+- Suppose the computer 192.168.2.2 wants to communicate with the computer 192.168.1.2.
+- The packet follows this path:
+  - The computer identifies `192.168.1.2` as an address outside its local subnet `192.168.2.0/24`.
+  - It sends the packet to its default gateway, `192.168.2.1`
+  - The secondary router checks its routing table and forwards the packet through its WAN interface toward the main LAN.
+  - The main router `192.168.1.1` receives the packet and forwards it to the destination computer `192.168.1.2`
+
+##### Scenario 3: A computer on the main LAN accesses the secondary LAN
 
 # Introducing the Linux shell
 
