@@ -676,6 +676,12 @@
         - [Scenario 1: A computer on the secondary LAN accesses the Internet](#scenario-1-a-computer-on-the-secondary-lan-accesses-the-internet)
         - [Scenario 2: A computer on the secondary LAN accesses a computer on the main LAN](#scenario-2-a-computer-on-the-secondary-lan-accesses-a-computer-on-the-main-lan)
         - [Scenario 3: A computer on the main LAN accesses the secondary LAN](#scenario-3-a-computer-on-the-main-lan-accesses-the-secondary-lan)
+    - [Dynamic Host Configuration Protocol - DHCP](#dynamic-host-configuration-protocol---dhcp)
+      - [What is DHCP?](#what-is-dhcp)
+      - [Main Components of DHCP](#main-components-of-dhcp)
+        - [DHCP Server](#dhcp-server)
+        - [DHCP Client](#dhcp-client)
+        - [DHCP Relay Agent](#dhcp-relay-agent)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -4839,8 +4845,8 @@ sudo systemctl daemon-reload
   - `systemctl enable`: Reads the new blueprint line (`WantedBy=graphical.target`) and creates a brand-new symlink inside `graphical.target.wants/`.
 
 ```bash
-sudo sytemctl disable apache2.service
-sudo sytemctl enable apache2.service
+sudo systemctl disable apache2.service
+sudo systemctl enable apache2.service
 ```
 
 - Step 4: Remove a custom configuration unit file
@@ -5110,7 +5116,7 @@ systemctl status apache2
 #### Step 1: Create my-network-log.service
 
 ```bash
-sudo systemctl edit --fore --full my-network-log.service
+sudo systemctl edit --force --full my-network-log.service
 
 # or 
 # sudo nano /etc/systemd/system/my-network-log.service
@@ -9707,6 +9713,58 @@ sudo ip route add 192.168.2.0/24 via 192.168.1.5 dev eth0
 
 - Now, traffic destined for `192.168.2.0/24` is sent to the secondary router at `192.168.1.5`
 - The secondary router can then forward the packet to the destination computer
+
+### Dynamic Host Configuration Protocol - DHCP
+
+#### What is DHCP?
+
+- DHCP (Dynamic Host Configuration Protocol) is a network protocol that automatically assigns IP addresses and other network configuration information to devices when they connect to a network.
+- Instead of manually configuring each device, DHCP allows a DHCP server to manage IP address allocation automatically.
+- A DHCP server is usually running on a router, but it can also run on a separate server.
+
+#### Main Components of DHCP
+
+- There are three main components involved in DHCP:
+  - DHCP Server
+  - DHCP Client
+  - DHCP Relay Agent
+
+##### DHCP Server
+
+- The DHCP server is responsible for managing IP address allocation.
+- Its main responsibilities include:
+  - Maintaining an IP address pool (available IP addresses).
+  - Assigning IP addresses to DHCP clients.
+  - Managing IP address leases to prevent IP address conflicts.
+  - Managing lease expiration and renewal.
+  - Providing additional network configuration, such as:
+    - IP address
+    - Subnet mask
+    - Default gateway
+    - DNS servers
+- IP Address Lease: A lease is a temporary assignment of an IP address to a client for a specific period.
+  - When a lease expires, the IP address can be allocated to another device if it is no longer in use.
+
+##### DHCP Client
+
+- A DHCP client is a device that requests network configuration from a DHCP server.
+- Its responsibilities include:
+  - Requesting an IP address from a DHCP server.
+  - Receiving network configuration.
+  - Periodically renewing its IP address lease.
+  - Releasing its IP address lease when appropriate.
+- Examples:
+  - Desktop computers
+  - Laptops
+  - Smartphones
+  - Network printers
+
+##### DHCP Relay Agent
+
+- A DHCP Relay Agent forwards DHCP messages between different subnets.
+- It is useful in networks with multiple subnets where the DHCP server is located in a different subnet from the client.
+- Without a DHCP Relay Agent, DHCP broadcast messages generally cannot cross router
+
 
 # Introducing the Linux shell
 
