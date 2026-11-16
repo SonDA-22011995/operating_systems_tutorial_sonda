@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily DMS Inventory Sync Timer
+
+[Timer]
+OnCalendar=*-*-* 07,12,16:*:*
+Persistent=true
+Unit=dms-sync-inventory.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=DMS Inventory Synchronization
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+
+User=root
+WorkingDirectory=/home/sonda/bravo_cron_jobs
+
+Environment="API_USERNAME=bhl"
+Environment="API_PASSWORD=Bia@2025"
+
+ExecStart=/usr/bin/bash /home/sonda/bravo_cron_jobs/dms_sync_inventory.sh
+
+StandardOutput=journal
+StandardError=journal
