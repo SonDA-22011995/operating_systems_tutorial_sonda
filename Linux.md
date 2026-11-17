@@ -4806,6 +4806,23 @@ systemctl list-unit-files | grep -I 'dms'
 # dms-sync-inventory.timer     enabled         enabled
 ```
 
+- `systemctl list-units` – Available Options
+
+| Option                | Description                                                                     |
+| --------------------- | ------------------------------------------------------------------------------- |
+| `--all` (`-a`)        | List all loaded units, including inactive units                                 |
+| `--type=TYPE` (`-t`)  | Filter units by type, e.g. `service`, `timer`, `socket`, `target`               |
+| `--state=STATE`       | Filter units by state, e.g. `active`, `inactive`, `failed`, `running`, `exited` |
+| `--failed`            | List units that have failed                                                     |
+| `--full` (`-l`)       | Do not truncate unit names or output                                            |
+| `--no-pager`          | Display output directly without using a pager                                   |
+| `--plain`             | Output without column headers and footers                                       |
+| `--legend=BOOL`       | Show or hide the legend                                                         |
+| `--no-legend`         | Hide column headers and footers                                                 |
+| `--no-ask-password`   | Do not prompt for passwords                                                     |
+| `--reverse` (`-r`)    | Show reverse dependencies                                                       |
+| `--with-dependencies` | Show units required by or wanted by the specified units                         |
+
 ### How can we edit a unit
 
 #### Edit a unit manually
