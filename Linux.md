@@ -4787,6 +4787,25 @@ systemctl list-units --type=target --all
 systemctl list-units
 ```
 
+| Command                      | Description                                               |
+| ---------------------------- | --------------------------------------------------------- |
+| `systemctl list-units`       | List currently active units                               |
+| `systemctl list-units --all` | List all loaded units, including inactive units           |
+| `systemctl list-unit-files`  | List all installed unit files and their enablement status |
+
+
+```bash
+systemctl list-units --all | grep -I 'dms'
+
+# dms-sync-inventory.service  loaded    inactive dead      DMS Inventory Synchronization
+# dms-sync-inventory.timer   loaded    active   waiting   Daily DMS Inventory Sync Timer
+
+systemctl list-unit-files | grep -I 'dms'
+
+# dms-sync-inventory.service   static          -
+# dms-sync-inventory.timer     enabled         enabled
+```
+
 ### How can we edit a unit
 
 #### Edit a unit manually

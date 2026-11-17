@@ -2,7 +2,7 @@
 Description=Daily DMS Inventory Sync Timer
 
 [Timer]
-OnCalendar=*-*-* 07,12,16:*:*
+OnCalendar=*-*-* 07,12,16:00:00
 Persistent=true
 Unit=dms-sync-inventory.service
 
