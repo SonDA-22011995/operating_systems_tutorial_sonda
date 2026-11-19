@@ -682,6 +682,8 @@
         - [DHCP Server](#dhcp-server)
         - [DHCP Client](#dhcp-client)
         - [DHCP Relay Agent](#dhcp-relay-agent)
+      - [DHCP Process (DORA)](#dhcp-process-dora)
+      - [DHCP Packet Analysis Using Wireshark](#dhcp-packet-analysis-using-wireshark)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9801,6 +9803,58 @@ sudo ip route add 192.168.2.0/24 via 192.168.1.5 dev eth0
 - It is useful in networks with multiple subnets where the DHCP server is located in a different subnet from the client.
 - Without a DHCP Relay Agent, DHCP broadcast messages generally cannot cross router
 
+#### DHCP Process (DORA)
+
+- DHCP uses a four-step process commonly known as DORA.
+
+```
+        DHCP CLIENT                         DHCP SERVER
+             |                                    |
+             |  1. DISCOVER                       |
+             |----------------------------------->|
+             |       Broadcast: Find server       |
+             |                                    |
+             |  2. OFFER                          |
+             |<-----------------------------------|
+             |       Offer an available IP        |
+             |                                    |
+             |  3. REQUEST                        |
+             |----------------------------------->|
+             |       Request offered IP           |
+             |                                    |
+             |  4. ACKNOWLEDGE (ACK)              |
+             |<-----------------------------------|
+             |       Confirm IP assignment        |
+             |                                    |
+             v                                    v
+       IP Address assigned                  IP Pool managed
+```
+
+- Step 1: DHCP Discover
+  - The DHCP client broadcasts a DHCP Discover message to search for available DHCP servers.
+    - Source IP: 0.0.0.0
+    - Destination IP: 255.255.255.255
+    - Destination MAC: FF:FF:FF:FF:FF:FF
+  - The client does not have an IP address yet, so it uses 0.0.0.0 as its source IP address.
+
+- Step 2: DHCP Offer
+  - The DHCP server responds with a DHCP Offer message.
+  - The offer contains:
+    - Available IP address.
+    - Subnet mask.
+    - Default gateway.
+    - DNS server addresses.
+    - Lease duration.
+
+- Step 3: DHCP Request
+  - The client sends a DHCP Request message to indicate which DHCP server's offer it accepts.
+  - If multiple DHCP servers provide offers, the client selects one.
+
+- Step 4: DHCP Acknowledge (ACK)
+  - The DHCP server sends a DHCP ACK message to confirm the IP address assignment.
+  - The client can now configure its network interface and communicate with other devices.
+
+#### DHCP Packet Analysis Using Wireshark
 
 # Introducing the Linux shell
 
