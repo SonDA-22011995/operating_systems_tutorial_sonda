@@ -684,6 +684,7 @@
         - [DHCP Relay Agent](#dhcp-relay-agent)
       - [DHCP Process (DORA)](#dhcp-process-dora)
       - [DHCP Packet Analysis Using Wireshark](#dhcp-packet-analysis-using-wireshark)
+        - [Why are only two messages (DHCP Request, DHCP Acknowledge) captured instead of four?](#why-are-only-two-messages-dhcp-request-dhcp-acknowledge-captured-instead-of-four)
 - [Introducing the Linux shell](#introducing-the-linux-shell)
   - [What is a shell?](#what-is-a-shell)
   - [Identifying Commands](#identifying-commands)
@@ -9855,6 +9856,29 @@ sudo ip route add 192.168.2.0/24 via 192.168.1.5 dev eth0
   - The client can now configure its network interface and communicate with other devices.
 
 #### DHCP Packet Analysis Using Wireshark
+
+- The demonstration follows these steps:
+  - Start capturing network traffic in Wireshark 
+    - `sudo wireshark`
+  - Disable the network interface 
+    - `sudo ip link set enp0s8 down`
+  - Enable the network interface again.
+    - `sudo ip link set enp0s8 up`
+  - Apply the following Wireshark display filter: `dhcp`
+
+##### Why are only two messages (DHCP Request, DHCP Acknowledge) captured instead of four?
+
+- Because the computer was already connected to the network previously. 
+- When reconnecting, it could request renewal of its existing IP address lease directly.
+- Therefore, it did not necessarily need to perform the entire DORA process.
+- Because the computer was already connected to the network previously.
+- When reconnecting, it could request renewal of its existing IP address lease directly.
+- Therefore, it did not necessarily need to perform the entire DORA process
+
+![DHCP Request](static/images/image_0125.png)
+
+![DHCP Acknowledge](static/images/image_0126.png)
+
 
 # Introducing the Linux shell
 
